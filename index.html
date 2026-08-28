@@ -1,0 +1,8161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduPortal - Student Portal</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<!-- ==========================
+Loading Screen
+========================== -->
+
+<div id="loadingScreen">
+
+<div class="loader-content">
+
+<div class="loader-logo">
+🎓
+</div>
+
+<h1>
+EduPortal
+</h1>
+
+<p>
+Student Portal Loading...
+</p>
+
+<div class="loader-bar">
+
+<div class="loader-progress"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="container">
+<!-- ===========================
+Login Campus Panel
+=========================== -->
+
+<div class="login-side-panel"></div>
+<div class="login-box">
+
+<!-- Logo -->
+<div class="logo">
+
+<div class="logo-circle">🎓</div>
+
+<h1>EduPortal</h1>
+
+<p>Student Portal</p>
+
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+
+<button id="loginTab" class="active" type="button">
+
+Login
+
+</button>
+
+</div>
+
+
+
+<form id="loginForm">
+
+<div class="input-group">
+
+<label>Account Type</label>
+
+<select id="loginRole">
+
+<option value="student">
+🎓 Student
+</option>
+
+<option value="administrator">
+👨‍💼 Administrator
+</option>
+
+<option value="teacher">
+    👨‍🏫 Teacher
+</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>Username</label>
+
+<input type="text" id="username" placeholder="Enter Username">
+
+</div>
+
+<!-- Password -->
+
+<div class="input-group">
+
+<label>Password</label>
+
+<div class="password-box">
+
+<input type="password" id="password" placeholder="Enter Password">
+
+<span id="togglePassword">👁️</span>
+
+</div>
+
+</div>
+
+
+<div class="login-options">
+
+<label class="remember-box">
+
+<input type="checkbox" id="rememberMe">
+
+<span>Remember Me</span>
+
+</label>
+
+
+<!-- Administrator Forgot Password -->
+
+<p class="forgot-password" id="adminForgotPasswordBox">
+
+<a href="javascript:void(0);" id="adminForgotPasswordLink">
+
+Forgot Password?
+
+</a>
+</p>
+
+</div>
+
+
+<!-- Login Button -->
+
+<button type="button" id="loginBtn">
+
+Login
+
+</button>
+
+
+<p id="message"></p>
+</form>
+
+<!-- ============== REGISTER FORM ================= -->
+<form id="registerForm" style="display:none;">
+
+<div class="input-group">
+<label>Full Name</label>
+<input type="text" id="fullName" placeholder="Enter Full Name">
+</div>
+
+<div class="input-group">
+<label>Father Name</label>
+<input type="text" id="fatherName" placeholder="Enter Father Name">
+</div>
+
+<div class="input-group">
+<label>Class</label>
+<select id="studentClass">
+
+<option value="">Select Class</option>
+<option value="9th">9th</option>
+<option value="10th">10th</option>
+<option value="11th">11th</option>
+<option value="12th">12th</option>
+
+</select>
+</div>
+
+<div class="input-group">
+<label>Section</label>
+<input type="text" id="section" placeholder="Enter Section (A, B, C)">
+</div>
+
+<div class="input-group">
+<label>Roll Number</label>
+<input type="text" id="rollNumber" placeholder="Enter Roll Number">
+</div>
+
+<div class="input-group">
+<label>Date of Birth</label>
+<input type="date" id="dob">
+</div>
+
+<div class="input-group">
+<label>Email</label>
+<input type="email" id="email" placeholder="Enter Email">
+</div>
+
+<div class="input-group">
+<label>Mobile Number</label>
+<input type="text" id="mobile" placeholder="Enter Mobile Number">
+</div>
+
+<div class="input-group">
+<label>Create Username</label>
+<input type="text" id="newUsername" placeholder="Create Username">
+</div>
+
+<div class="input-group">
+<label>Create Password</label>
+<div class="password-box">
+
+<input type="password" id="newPassword" placeholder="Create Password">
+
+<span id="toggleNewPassword">👁️</span>
+
+</div>
+</div>
+
+<div class="input-group">
+<label>Confirm Password</label>
+<div class="password-box">
+
+<input type="password" id="confirmPassword" placeholder="Confirm Password">
+
+<span id="toggleConfirmPassword">👁️</span>
+
+</div>
+</div>
+
+</form>
+</div>
+
+</div>
+
+</div>
+<!-- =========================
+     TEACHER DASHBOARD
+========================= -->
+
+<div id="teacherDashboard" style="display:none;">
+
+    <!-- Teacher Sidebar -->
+    <div class="sidebar">
+
+        <h2>🎓 EduPortal</h2>
+
+        <ul>
+
+            <li class="active" id="teacherDashboardMenu">
+                🏠 Dashboard
+            </li>
+
+<li id="teacherStudentsMenu">
+    👨‍🎓 My Students
+</li>
+
+<li id="teacherAttendanceMenu">
+    📅 Attendance
+</li>
+
+            <li id="teacherAssignmentsMenu">
+                📚 Assignments
+            </li>
+
+            <li id="teacherResultsMenu">
+                📝 Results
+            </li>
+
+            <li id="teacherNoticesMenu">
+                📢 Notices
+            </li>
+
+            <li id="teacherProfileMenu">
+                👤 My Profile
+            </li>
+
+            <li id="teacherSettingsMenu">
+                ⚙️ Settings
+            </li>
+
+            <li id="teacherLogoutBtn">
+                🚪 Logout
+            </li>
+
+        </ul>
+
+    </div>
+
+
+    <!-- Teacher Main Content -->
+
+    <div class="main-content">
+
+        <!-- Header -->
+
+        <div class="top-header">
+
+            <div>
+
+                <h1 id="teacherName">
+                    Welcome Teacher 👋
+                </h1>
+
+                <p>
+                    Teacher Dashboard
+                </p>
+
+            </div>
+
+
+            <div class="profile-box">
+
+                <div class="profile-circle">
+
+                    <span>
+                        👨‍🏫
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+        <!-- Teacher Information Cards -->
+
+        <div class="dashboard-cards">
+
+
+            <!-- My Students -->
+
+            <div class="card">
+
+                <div class="card-icon">
+                    👨‍🎓
+                </div>
+
+                <div>
+
+                    <h3>
+                        My Students
+                    </h3>
+
+                    <strong id="teacherTotalStudents">
+                        0
+                    </strong>
+
+                    <p>
+                        Assigned Students
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Attendance -->
+
+            <div class="card">
+
+                <div class="card-icon">
+                    📅
+                </div>
+
+                <div>
+
+                    <h3>
+                        Attendance
+                    </h3>
+
+                    <strong id="teacherAttendanceToday">
+                        0%
+                    </strong>
+
+                    <p>
+                        Today's Attendance
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Assignments -->
+
+            <div class="card">
+
+                <div class="card-icon">
+                    📚
+                </div>
+
+                <div>
+
+                    <h3>
+                        Assignments
+                    </h3>
+
+                    <strong id="teacherTotalAssignments">
+                        0
+                    </strong>
+
+                    <p>
+                        Total Assignments
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Results -->
+
+            <div class="card">
+
+                <div class="card-icon">
+                    📝
+                </div>
+
+                <div>
+
+                    <h3>
+                        Results
+                    </h3>
+
+                    <strong id="teacherTotalResults">
+                        0
+                    </strong>
+
+                    <p>
+                        Published Results
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Teacher Profile / Class Information -->
+
+        <div class="admin-section-card">
+
+            <h2>
+                👨‍🏫 Teacher Information
+            </h2>
+
+
+            <div class="admin-dashboard-grid">
+
+
+                <div>
+
+                    <span>
+                        Name
+                    </span>
+
+                    <strong id="teacherInfoName">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Subject
+                    </span>
+
+                    <strong id="teacherInfoSubject">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Class
+                    </span>
+
+                    <strong id="teacherInfoClass">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Email
+                    </span>
+
+                    <strong id="teacherInfoEmail">
+                        —
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- Quick Actions -->
+
+        <div class="admin-dashboard-actions">
+
+            <h3>
+                Quick Actions
+            </h3>
+
+
+            <div class="admin-dashboard-action-grid">
+
+
+                <button
+                    type="button"
+                    id="teacherQuickStudents">
+
+                    👨‍🎓
+                    <span>
+                        My Students
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    id="teacherQuickAttendance">
+
+                    📅
+                    <span>
+                        Mark Attendance
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    id="teacherQuickAssignments">
+
+                    📚
+                    <span>
+                        Assignments
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    id="teacherQuickResults">
+
+                    📝
+                    <span>
+                        Manage Results
+                    </span>
+
+                </button>
+
+
+            </div>
+
+        </div>
+
+    </div>
+<!-- =========================================================
+     TEACHER MY PROFILE
+========================================================= -->
+
+<div
+    id="teacherProfileSection"
+    style="display:none;"
+>
+
+    <div class="teacher-profile-page">
+
+        <!-- PROFILE HEADER -->
+        <div class="teacher-profile-header">
+
+            <div class="teacher-profile-avatar">
+                👨‍🏫
+            </div>
+
+            <div class="teacher-profile-header-info">
+
+                <h2 id="teacherProfileName">
+                    Teacher Name
+                </h2>
+
+                <p id="teacherProfileSubject">
+                    Subject Teacher
+                </p>
+
+                <span
+                    id="teacherProfileStatus"
+                    class="teacher-profile-status"
+                >
+                    Active
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- BASIC INFORMATION -->
+
+        <div class="teacher-profile-card">
+
+            <div class="teacher-profile-card-header">
+
+                <div>
+                    <h3>👤 Personal Information</h3>
+
+                    <p>
+                        Your basic teacher information
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="teacher-profile-grid">
+
+                <!-- NAME -->
+                <div class="teacher-profile-field">
+
+                    <span class="teacher-profile-label">
+                        Full Name
+                    </span>
+
+                    <strong id="teacherProfileFullName">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <!-- EMAIL -->
+                <div class="teacher-profile-field">
+
+                    <span class="teacher-profile-label">
+                        Email Address
+                    </span>
+
+                    <strong id="teacherProfileEmail">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <!-- PHONE -->
+                <div class="teacher-profile-field">
+
+                    <span class="teacher-profile-label">
+                        Mobile Number
+                    </span>
+
+                    <strong id="teacherProfilePhone">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <!-- USERNAME -->
+                <div class="teacher-profile-field">
+
+                    <span class="teacher-profile-label">
+                        Username
+                    </span>
+
+                    <strong id="teacherProfileUsername">
+                        —
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PROFESSIONAL INFORMATION -->
+
+        <div class="teacher-profile-card">
+
+            <div class="teacher-profile-card-header">
+
+                <div>
+                    <h3>🎓 Professional Information</h3>
+
+                    <p>
+                        Your teaching and employment details
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="teacher-profile-grid">
+
+                <!-- SUBJECT -->
+                <div class="teacher-profile-field">
+
+                    <span class="teacher-profile-label">
+                        Subject
+                    </span>
+
+                    <strong id="teacherProfileSubjectValue">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <!-- CLASS -->
+                <div class="teacher-profile-field">
+
+                    <span class="teacher-profile-label">
+                        Assigned Class
+                    </span>
+
+                    <strong id="teacherProfileClass">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <!-- QUALIFICATION -->
+                <div class="teacher-profile-field">
+
+                    <span class="teacher-profile-label">
+                        Qualification
+                    </span>
+
+                    <strong id="teacherProfileQualification">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <!-- JOINING DATE -->
+                <div class="teacher-profile-field">
+
+                    <span class="teacher-profile-label">
+                        Joining Date
+                    </span>
+
+                    <strong id="teacherProfileJoiningDate">
+                        —
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACCOUNT STATUS -->
+
+        <div class="teacher-profile-card teacher-profile-account-card">
+
+            <div class="teacher-profile-account-icon">
+                🔐
+            </div>
+
+            <div>
+
+                <h3>
+                    Account Status
+                </h3>
+
+                <p>
+                    Your EduPortal teacher account is currently
+                    <strong id="teacherProfileAccountStatus">
+                        Active
+                    </strong>.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- =========================================================
+     TEACHER SETTINGS SECTION
+========================================================= -->
+
+<div id="teacherSettingsSection" style="display:none;">
+
+    <div class="teacher-settings-page">
+
+        <div class="teacher-settings-header">
+
+            <div class="teacher-settings-icon">
+                ⚙️
+            </div>
+
+            <div>
+                <h2>Settings</h2>
+                <p>Manage your teacher account and preferences.</p>
+            </div>
+
+        </div>
+
+        <div class="teacher-settings-card">
+
+            <div class="teacher-settings-card-header">
+
+                <h3>👤 Account Information</h3>
+
+                <p>
+                    Basic information associated with your account.
+                </p>
+
+            </div>
+
+            <div class="teacher-settings-grid">
+
+                <div class="teacher-settings-field">
+
+                    <label>Username</label>
+
+                    <input
+                        type="text"
+                        id="teacherSettingsUsername"
+                        readonly
+                    >
+
+                </div>
+
+                <div class="teacher-settings-field">
+
+                    <label>Email Address</label>
+
+                    <input
+                        type="email"
+                        id="teacherSettingsEmail"
+                    >
+
+                </div>
+
+                <div class="teacher-settings-field">
+
+                    <label>Mobile Number</label>
+
+                    <input
+                        type="text"
+                        id="teacherSettingsPhone"
+                    >
+
+                </div>
+
+                <div class="teacher-settings-field">
+
+                    <label>Account Status</label>
+
+                    <input
+                        type="text"
+                        id="teacherSettingsStatus"
+                        readonly
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="teacher-settings-card">
+
+            <div class="teacher-settings-card-header">
+
+                <h3>🔔 Notifications</h3>
+
+                <p>
+                    Manage your notification preferences.
+                </p>
+
+            </div>
+
+            <div class="teacher-settings-option">
+
+                <div>
+
+                    <strong>
+                        Assignment Notifications
+                    </strong>
+
+                    <p>
+                        Receive notifications about assignments.
+                    </p>
+
+                </div>
+
+                <label class="teacher-switch">
+
+                    <input
+                        type="checkbox"
+                        id="teacherAssignmentNotifications"
+                        checked
+                    >
+
+                    <span></span>
+
+                </label>
+
+            </div>
+
+
+            <div class="teacher-settings-option">
+
+                <div>
+
+                    <strong>
+                        Notice Notifications
+                    </strong>
+
+                    <p>
+                        Receive notifications about new notices.
+                    </p>
+
+                </div>
+
+                <label class="teacher-switch">
+
+                    <input
+                        type="checkbox"
+                        id="teacherNoticeNotifications"
+                        checked
+                    >
+
+                    <span></span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <div class="teacher-settings-card">
+
+            <div class="teacher-settings-card-header">
+
+                <h3>🔐 Change Password</h3>
+
+                <p>
+                    Update your account password.
+                </p>
+
+            </div>
+
+            <div class="teacher-settings-grid">
+
+                <div class="teacher-settings-field">
+
+                    <label>Current Password</label>
+
+                    <input
+                        type="password"
+                        id="teacherCurrentPassword"
+                        placeholder="Enter current password"
+                    >
+
+                </div>
+
+                <div class="teacher-settings-field">
+
+                    <label>New Password</label>
+
+                    <input
+                        type="password"
+                        id="teacherNewPassword"
+                        placeholder="Enter new password"
+                    >
+
+                </div>
+
+                <div class="teacher-settings-field">
+
+                    <label>Confirm New Password</label>
+
+                    <input
+                        type="password"
+                        id="teacherConfirmPassword"
+                        placeholder="Confirm new password"
+                    >
+
+                </div>
+
+            </div>
+
+            <div class="teacher-settings-actions">
+
+                <button
+                    type="button"
+                    id="teacherChangePasswordBtn"
+                >
+                    🔐 Change Password
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="teacher-settings-footer">
+
+            <button
+                type="button"
+                id="teacherSaveSettingsBtn"
+            >
+                💾 Save Settings
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- =========================================================
+     TEACHER SETTINGS
+========================================================= -->
+
+<div
+    id="teacherSettingsSection"
+    style="display:none;"
+>
+
+    <div class="teacher-settings-page">
+
+        <!-- HEADER -->
+        <div class="teacher-settings-header">
+
+            <div class="teacher-settings-icon">
+                ⚙️
+            </div>
+
+            <div>
+                <h2>Settings</h2>
+
+                <p>
+                    Manage your teacher account and preferences.
+                </p>
+            </div>
+
+        </div>
+
+
+        <!-- ACCOUNT SETTINGS -->
+        <div class="teacher-settings-card">
+
+            <div class="teacher-settings-card-header">
+
+                <div>
+                    <h3>👤 Account Information</h3>
+
+                    <p>
+                        Basic information associated with your account.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="teacher-settings-grid">
+
+                <div class="teacher-settings-field">
+
+                    <label>
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="teacherSettingsUsername"
+                        readonly
+                    >
+
+                </div>
+
+
+                <div class="teacher-settings-field">
+
+                    <label>
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="teacherSettingsEmail"
+                    >
+
+                </div>
+
+
+                <div class="teacher-settings-field">
+
+                    <label>
+                        Mobile Number
+                    </label>
+
+                    <input
+                        type="text"
+                        id="teacherSettingsPhone"
+                    >
+
+                </div>
+
+
+                <div class="teacher-settings-field">
+
+                    <label>
+                        Account Status
+                    </label>
+
+                    <input
+                        type="text"
+                        id="teacherSettingsStatus"
+                        readonly
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- NOTIFICATION SETTINGS -->
+        <div class="teacher-settings-card">
+
+            <div class="teacher-settings-card-header">
+
+                <div>
+                    <h3>🔔 Notifications</h3>
+
+                    <p>
+                        Choose which notifications you want to receive.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="teacher-settings-option">
+
+                <div>
+
+                    <strong>
+                        Assignment Notifications
+                    </strong>
+
+                    <p>
+                        Receive notifications about new assignments.
+                    </p>
+
+                </div>
+
+                <label class="teacher-switch">
+
+                    <input
+                        type="checkbox"
+                        id="teacherAssignmentNotifications"
+                        checked
+                    >
+
+                    <span></span>
+
+                </label>
+
+            </div>
+
+
+            <div class="teacher-settings-option">
+
+                <div>
+
+                    <strong>
+                        Notice Notifications
+                    </strong>
+
+                    <p>
+                        Receive notifications when new notices are published.
+                    </p>
+
+                </div>
+
+                <label class="teacher-switch">
+
+                    <input
+                        type="checkbox"
+                        id="teacherNoticeNotifications"
+                        checked
+                    >
+
+                    <span></span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <!-- PASSWORD -->
+        <div class="teacher-settings-card">
+
+            <div class="teacher-settings-card-header">
+
+                <div>
+                    <h3>🔐 Change Password</h3>
+
+                    <p>
+                        Update your account password.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="teacher-settings-grid">
+
+                <div class="teacher-settings-field">
+
+                    <label>
+                        Current Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="teacherCurrentPassword"
+                        placeholder="Enter current password"
+                    >
+
+                </div>
+
+
+                <div class="teacher-settings-field">
+
+                    <label>
+                        New Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="teacherNewPassword"
+                        placeholder="Enter new password"
+                    >
+
+                </div>
+
+
+                <div class="teacher-settings-field">
+
+                    <label>
+                        Confirm New Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="teacherConfirmPassword"
+                        placeholder="Confirm new password"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="teacher-settings-actions">
+
+                <button
+                    type="button"
+                    id="teacherChangePasswordBtn"
+                >
+                    🔐 Change Password
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- SAVE -->
+        <div class="teacher-settings-footer">
+
+            <button
+                type="button"
+                id="teacherSaveSettingsBtn"
+            >
+                💾 Save Settings
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- =========================================================
+     TEACHER ATTENDANCE SECTION
+========================================================= -->
+
+<div
+    id="teacherAttendanceSection"
+    style="display:none;"
+>
+
+    <div class="teacher-section-page">
+
+        <div class="teacher-section-header">
+
+            <div class="teacher-section-title">
+
+                <div class="teacher-section-icon">
+                    📅
+                </div>
+
+                <div>
+
+                    <h2>
+                        Attendance
+                    </h2>
+
+                    <p>
+                        Manage attendance of your class
+                        students.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="teacher-class-badge">
+
+                📚 Class:
+                <strong id="teacherAttendanceClass">
+                    —
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="teacher-attendance-controls">
+
+            <div class="teacher-attendance-control">
+
+                <label>
+                    Attendance Date
+                </label>
+
+                <input
+                    type="date"
+                    id="teacherAttendanceDate"
+                >
+
+            </div>
+
+
+            <div class="teacher-attendance-summary">
+
+                <div class="attendance-summary-card present">
+
+                    <span>
+                        Present
+                    </span>
+
+                    <strong
+                        id="teacherPresentCount">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="attendance-summary-card absent">
+
+                    <span>
+                        Absent
+                    </span>
+
+                    <strong
+                        id="teacherAbsentCount">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="attendance-summary-card late">
+
+                    <span>
+                        Late
+                    </span>
+
+                    <strong
+                        id="teacherLateCount">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="teacher-attendance-card">
+
+            <div class="teacher-attendance-card-header">
+
+                <div>
+
+                    <h3>
+                        Student Attendance
+                    </h3>
+
+                    <p>
+                        Mark today's attendance
+                        for your students.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="teacherMarkAllPresentBtn"
+                >
+                    ✓ Mark All Present
+                </button>
+
+            </div>
+
+
+            <div class="teacher-attendance-table-wrapper">
+
+                <table
+                    class="teacher-attendance-table"
+                >
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                #
+                            </th>
+
+                            <th>
+                                Student
+                            </th>
+
+                            <th>
+                                Student ID
+                            </th>
+
+                            <th>
+                                Class
+                            </th>
+
+                            <th>
+                                Attendance
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="teacherAttendanceTableBody"
+                    >
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <div class="teacher-attendance-footer">
+
+                <span
+                    id="teacherAttendanceMessage"
+                >
+                </span>
+
+
+                <button
+                    type="button"
+                    id="teacherSaveAttendanceBtn"
+                >
+
+                    💾 Save Attendance
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- =========================================================
+     TEACHER MY STUDENTS
+========================================================= -->
+
+<div
+    id="teacherStudentsSection"
+    style="display:none;"
+>
+
+    <div class="teacher-section-page">
+
+        <!-- HEADER -->
+
+        <div class="teacher-section-header">
+
+            <div class="teacher-section-title">
+
+                <div class="teacher-section-icon">
+                    🎓
+                </div>
+
+                <div>
+
+                    <h2>
+                        My Students
+                    </h2>
+
+                    <p>
+                        View and manage students
+                        assigned to your class.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="teacher-class-badge">
+
+                📚 Class:
+
+                <strong id="teacherStudentsClass">
+                    —
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- SUMMARY -->
+
+        <div class="teacher-students-summary">
+
+            <div class="teacher-student-summary-card">
+
+                <div class="teacher-summary-icon">
+                    👨‍🎓
+                </div>
+
+                <div>
+
+                    <span>
+                        Total Students
+                    </span>
+
+                    <strong
+                        id="teacherStudentsTotal">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="teacher-student-summary-card">
+
+                <div class="teacher-summary-icon">
+                    🟢
+                </div>
+
+                <div>
+
+                    <span>
+                        Active Students
+                    </span>
+
+                    <strong
+                        id="teacherStudentsActive">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SEARCH -->
+
+        <div class="teacher-students-card">
+
+            <div class="teacher-students-toolbar">
+
+                <div>
+
+                    <h3>
+                        Student List
+                    </h3>
+
+                    <p>
+                        Students assigned to your class
+                    </p>
+
+                </div>
+
+
+                <div class="teacher-student-search">
+
+                    <span>
+                        🔍
+                    </span>
+
+                    <input
+                        type="text"
+                        id="teacherStudentSearch"
+                        placeholder="Search student..."
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- TABLE -->
+
+            <div class="teacher-students-table-wrapper">
+
+                <table
+                    class="teacher-students-table"
+                >
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                #
+                            </th>
+
+                            <th>
+                                Student
+                            </th>
+
+                            <th>
+                                Student ID
+                            </th>
+
+                            <th>
+                                Class
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="teacherStudentsTableBody"
+                    >
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =========================================================
+     TEACHER ASSIGNMENTS
+========================================================= -->
+
+<div
+    id="teacherAssignmentsSection"
+    style="display:none;"
+>
+
+    <div class="teacher-section-page">
+
+        <!-- HEADER -->
+
+        <div class="teacher-section-header">
+
+            <div class="teacher-section-title">
+
+                <div class="teacher-section-icon">
+                    📝
+                </div>
+
+                <div>
+
+                    <h2>
+                        Assignments
+                    </h2>
+
+                    <p>
+                        Create and manage assignments
+                        for your students.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="teacher-class-badge">
+
+                📚 Class:
+
+                <strong id="teacherAssignmentsClass">
+                    —
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- CREATE ASSIGNMENT -->
+
+        <div class="teacher-assignment-create-card">
+
+            <div class="teacher-assignment-card-title">
+
+                <div>
+
+                    <h3>
+                        Create Assignment
+                    </h3>
+
+                    <p>
+                        Add a new assignment for your class.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form
+                id="teacherAssignmentForm"
+                class="teacher-assignment-form"
+            >
+
+                <div class="teacher-assignment-form-grid">
+
+                    <!-- TITLE -->
+
+                    <div class="teacher-form-group">
+
+                        <label>
+                            Assignment Title
+                        </label>
+
+                        <input
+                            type="text"
+                            id="teacherAssignmentTitle"
+                            placeholder="Enter assignment title"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- SUBJECT -->
+
+                    <div class="teacher-form-group">
+
+                        <label>
+                            Subject
+                        </label>
+
+                        <input
+                            type="text"
+                            id="teacherAssignmentSubject"
+                            placeholder="e.g. Mathematics"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- DUE DATE -->
+
+                    <div class="teacher-form-group">
+
+                        <label>
+                            Due Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="teacherAssignmentDueDate"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- TOTAL MARKS -->
+
+                    <div class="teacher-form-group">
+
+                        <label>
+                            Total Marks
+                        </label>
+
+                        <input
+                            type="number"
+                            id="teacherAssignmentMarks"
+                            placeholder="e.g. 20"
+                            min="1"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="teacher-form-group">
+
+                    <label>
+                        Description
+                    </label>
+
+                    <textarea
+                        id="teacherAssignmentDescription"
+                        rows="4"
+                        placeholder="Write assignment details..."
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <!-- ACTIONS -->
+
+                <div class="teacher-assignment-form-actions">
+
+                    <button
+                        type="button"
+                        id="teacherAssignmentCancelBtn"
+                        style="display:none;"
+                    >
+                        Cancel
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        id="teacherAssignmentSaveBtn"
+                    >
+                        ➕ Create Assignment
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- ASSIGNMENT LIST -->
+
+        <div class="teacher-assignments-card">
+
+            <div class="teacher-assignments-toolbar">
+
+                <div>
+
+                    <h3>
+                        My Assignments
+                    </h3>
+
+                    <p>
+                        Assignments created for your class.
+                    </p>
+
+                </div>
+
+
+                <div class="teacher-assignment-search">
+
+                    🔍
+
+                    <input
+                        type="text"
+                        id="teacherAssignmentSearch"
+                        placeholder="Search assignment..."
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="teacherAssignmentsList"
+                class="teacher-assignments-list"
+            >
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =========================================================
+     TEACHER RESULTS / MARKS
+========================================================= -->
+
+<div
+    id="teacherResultsSection"
+    style="display:none;"
+>
+
+    <div class="teacher-section-page">
+
+        <!-- HEADER -->
+
+        <div class="teacher-section-header">
+
+            <div class="teacher-section-title">
+
+                <div class="teacher-section-icon">
+                    📊
+                </div>
+
+                <div>
+
+                    <h2>
+                        Results & Marks
+                    </h2>
+
+                    <p>
+                        Enter and manage marks for
+                        your students.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="teacher-class-badge">
+
+                📚 Class:
+
+                <strong id="teacherResultsClass">
+                    —
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- MARKS ENTRY -->
+
+        <div class="teacher-results-card">
+
+            <div class="teacher-results-card-header">
+
+                <div>
+
+                    <h3>
+                        Enter Student Marks
+                    </h3>
+
+                    <p>
+                        Select a subject and enter
+                        marks for your students.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="teacher-results-form">
+
+                <!-- SUBJECT -->
+
+                <div class="teacher-form-group">
+
+                    <label>
+                        Subject
+                    </label>
+
+                    <input
+                        type="text"
+                        id="teacherResultSubject"
+                        placeholder="e.g. Mathematics"
+                    >
+
+                </div>
+
+
+                <!-- TOTAL MARKS -->
+
+                <div class="teacher-form-group">
+
+                    <label>
+                        Total Marks
+                    </label>
+
+                    <input
+                        type="number"
+                        id="teacherResultTotalMarks"
+                        placeholder="e.g. 100"
+                        min="1"
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- STUDENT MARKS TABLE -->
+
+        <div class="teacher-results-card">
+
+            <div class="teacher-results-toolbar">
+
+                <div>
+
+                    <h3>
+                        Student Results
+                    </h3>
+
+                    <p>
+                        Enter obtained marks for
+                        each student.
+                    </p>
+
+                </div>
+
+
+                <div class="teacher-result-search">
+
+                    🔍
+
+                    <input
+                        type="text"
+                        id="teacherResultSearch"
+                        placeholder="Search student..."
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="teacher-results-table-wrapper">
+
+                <table
+                    class="teacher-results-table"
+                >
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                #
+                            </th>
+
+                            <th>
+                                Student
+                            </th>
+
+                            <th>
+                                Student ID
+                            </th>
+
+                            <th>
+                                Total Marks
+                            </th>
+
+                            <th>
+                                Obtained Marks
+                            </th>
+
+                            <th>
+                                Percentage
+                            </th>
+
+                            <th>
+                                Grade
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="teacherResultsTableBody"
+                    >
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- SAVE -->
+
+            <div class="teacher-results-actions">
+
+                <button
+                    type="button"
+                    id="teacherSaveResultsBtn"
+                >
+                    💾 Save Results
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =========================================================
+     TEACHER NOTICES
+========================================================= -->
+
+<div
+    id="teacherNoticesSection"
+    style="display:none;"
+>
+
+    <div class="teacher-section-page">
+
+        <!-- HEADER -->
+
+        <div class="teacher-section-header">
+
+            <div class="teacher-section-title">
+
+                <div class="teacher-section-icon">
+                    📢
+                </div>
+
+                <div>
+
+                    <h2>
+                        Notices
+                    </h2>
+
+                    <p>
+                        Create and manage notices
+                        for your students.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="teacher-class-badge">
+
+                📚 Class:
+
+                <strong id="teacherNoticesClass">
+                    —
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- CREATE NOTICE -->
+
+        <div class="teacher-notice-create-card">
+
+            <div class="teacher-notice-card-header">
+
+                <div>
+
+                    <h3>
+                        Create Notice
+                    </h3>
+
+                    <p>
+                        Share important information
+                        with your students.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form
+                id="teacherNoticeForm"
+                class="teacher-notice-form"
+            >
+
+                <div class="teacher-notice-form-grid">
+
+                    <!-- TITLE -->
+
+                    <div class="teacher-form-group">
+
+                        <label>
+                            Notice Title
+                        </label>
+
+                        <input
+                            type="text"
+                            id="teacherNoticeTitle"
+                            placeholder="Enter notice title"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- PRIORITY -->
+
+                    <div class="teacher-form-group">
+
+                        <label>
+                            Priority
+                        </label>
+
+                        <select
+                            id="teacherNoticePriority"
+                            required
+                        >
+
+                            <option value="">
+                                Select Priority
+                            </option>
+
+                            <option value="Normal">
+                                Normal
+                            </option>
+
+                            <option value="Important">
+                                Important
+                            </option>
+
+                            <option value="Urgent">
+                                Urgent
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- DATE -->
+
+                    <div class="teacher-form-group">
+
+                        <label>
+                            Notice Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="teacherNoticeDate"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="teacher-form-group">
+
+                    <label>
+                        Notice Details
+                    </label>
+
+                    <textarea
+                        id="teacherNoticeDescription"
+                        rows="5"
+                        placeholder="Write notice details..."
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <!-- ACTIONS -->
+
+                <div class="teacher-notice-form-actions">
+
+                    <button
+                        type="button"
+                        id="teacherNoticeCancelBtn"
+                        style="display:none;"
+                    >
+                        Cancel
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        id="teacherNoticeSaveBtn"
+                    >
+                        ➕ Publish Notice
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- NOTICE LIST -->
+
+        <div class="teacher-notices-card">
+
+            <div class="teacher-notices-toolbar">
+
+                <div>
+
+                    <h3>
+                        My Notices
+                    </h3>
+
+                    <p>
+                        Notices published for your class.
+                    </p>
+
+                </div>
+
+
+                <div class="teacher-notice-search">
+
+                    🔍
+
+                    <input
+                        type="text"
+                        id="teacherNoticeSearch"
+                        placeholder="Search notices..."
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="teacherNoticesList"
+                class="teacher-notices-list"
+            >
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =========================================================
+     TEACHER ATTENDANCE
+========================================================= -->
+
+<div
+    id="teacherAttendanceSection"
+    style="display:none;"
+>
+
+    <div class="teacher-section-page">
+
+        <!-- HEADER -->
+
+        <div class="teacher-section-header">
+
+            <div class="teacher-section-title">
+
+                <div class="teacher-section-icon">
+                    📅
+                </div>
+
+                <div>
+
+                    <h2>
+                        Attendance
+                    </h2>
+
+                    <p>
+                        Mark and manage student attendance.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="teacher-class-badge">
+
+                📚 Class:
+
+                <strong id="teacherAttendanceClass">
+                    —
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- ATTENDANCE CONTROLS -->
+
+        <div class="teacher-attendance-card">
+
+            <div class="teacher-attendance-controls">
+
+                <!-- DATE -->
+
+                <div class="teacher-form-group">
+
+                    <label>
+                        Attendance Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="teacherAttendanceDate"
+                    >
+
+                </div>
+
+
+                <!-- SEARCH -->
+
+                <div class="teacher-form-group">
+
+                    <label>
+                        Search Student
+                    </label>
+
+                    <div class="teacher-attendance-search">
+
+                        🔍
+
+                        <input
+                            type="text"
+                            id="teacherAttendanceSearch"
+                            placeholder="Search student..."
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- STUDENTS -->
+
+        <div class="teacher-attendance-card">
+
+            <div class="teacher-attendance-header">
+
+                <div>
+
+                    <h3>
+                        Student Attendance
+                    </h3>
+
+                    <p>
+                        Mark each student's attendance
+                        status for the selected date.
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="teacher-attendance-summary"
+                >
+
+                    <span class="attendance-present-count">
+                        Present: 0
+                    </span>
+
+                    <span class="attendance-absent-count">
+                        Absent: 0
+                    </span>
+
+                    <span class="attendance-late-count">
+                        Late: 0
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="teacherAttendanceList"
+                class="teacher-attendance-list"
+            >
+            </div>
+
+
+            <!-- SAVE -->
+
+            <div class="teacher-attendance-actions">
+
+                <button
+                    type="button"
+                    id="teacherSaveAttendanceBtn"
+                >
+                    💾 Save Attendance
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+<!-- =========================
+Student Dashboard
+========================= -->
+
+<div id="studentDashboard" style="display:none;">
+
+<div class="sidebar">
+
+<h2>🎓 EduPortal</h2>
+
+<ul>
+
+<li id="dashboardMenu">🏠 Dashboard</li>
+
+<li id="profileMenu">👤 My Profile</li>
+
+<li id="attendanceMenu">📅 Attendance</li>
+
+<li id="subjectsMenu">📚 Subjects</li>
+
+<li id="assignmentsMenu">📚 Assignments</li>
+
+<li id="resultsMenu">📝 Results</li>
+
+<li id="feeMenu">💰 Fee Status</li>
+
+<li id="noticesMenu">📢 Notices</li>
+
+<li id="settingsMenu">⚙️ Settings</li>
+
+<li id="logoutBtn">🚪 Logout</li>
+
+</ul>
+
+</div>
+
+<div class="main-content">
+
+<!-- ===============================
+     STUDENT DASHBOARD HEADER
+================================ -->
+
+<div class="top-header" id="topHeader">
+
+    <!-- PAGE TITLE -->
+    <div class="dashboard-page-title">
+        <h1>Student Dashboard</h1>
+    </div>
+
+
+    <!-- HEADER ACTIONS -->
+    <div class="header-actions">
+
+        <!-- NOTIFICATION -->
+        <div class="notification-wrapper">
+
+            <button
+                type="button"
+                id="studentNotificationBtn"
+                class="student-notification-btn"
+                title="Notifications"
+            >
+                🔔
+
+                <span
+                    id="studentNotificationBadge"
+                    class="student-notification-badge"
+                >0</span>
+
+            </button>
+
+
+            <!-- NOTIFICATION DROPDOWN -->
+            <div
+                id="studentNotificationDropdown"
+                class="student-notification-dropdown"
+            >
+
+                <div class="student-notification-header">
+
+                    <div>
+
+                        <h3>Notifications</h3>
+
+                        <span id="studentNotificationCount">
+                            No new notifications
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="markNotificationsRead"
+                    >
+                        Mark all read
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="studentNotificationList"
+                    class="student-notification-list"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PROFILE -->
+        <div class="profile-box">
+
+            <div class="profile-circle">
+
+                <img
+                    id="headerProfileImage"
+                    src=""
+                    alt="Profile Image"
+                    style="display:none;"
+                >
+
+                <span id="headerProfileIcon">
+                    👤
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =========================
+     STUDENT ID CARD
+========================== -->
+    <div
+        class="student-id-card"
+        id="studentIdCardSection"
+    >
+
+        <div class="student-photo">
+
+            <img
+                id="idCardImage"
+                src=""
+                alt="Student"
+            >
+
+            <span id="idCardIcon">
+                👤
+            </span>
+
+        </div>
+
+
+        <div class="student-details">
+
+            <h2 id="idCardName">
+                Student Name
+            </h2>
+
+            <p>
+                <strong>ID:</strong>
+                <span id="studentId">
+                    EDU-000001
+                </span>
+            </p>
+
+            <p>
+                <strong>Class:</strong>
+                <span id="idCardClass">
+                    Not Assigned
+                </span>
+            </p>
+
+            <p>
+                <strong>Session:</strong>
+                2026-27
+            </p>
+
+            <p>
+                <strong>Status:</strong>
+                <span class="active-status">
+                    Active
+                </span>
+            </p>
+
+        </div>
+
+    </div>
+<!-- Dashboard Cards -->
+
+
+<div class="dashboard-cards">
+
+<div class="card">
+<h3>👤 Profile</h3>
+<p id="profileCompletion">100%</p>
+</div>
+
+<div class="card">
+<h3>📅 Attendance</h3>
+<p id="attendancePercent">0%</p>
+</div>
+
+<div class="card">
+<h3>📚 Subjects</h3>
+<p id="subjectsCount">5 Subjects</p>
+</div>
+
+<div class="card">
+<h3>💰 Fee Status</h3>
+<p id="feeStatus">Pending</p>
+</div>
+
+</div>
+<!-- ==========================================
+     STUDENT ANALYTICS CHARTS
+========================================== -->
+
+<div class="student-charts-section" id="analyticsSection">
+
+
+    <!-- ==========================================
+         ACADEMIC PERFORMANCE
+    ========================================== -->
+
+    <div class="student-chart-card academic-chart-card">
+
+        <div class="student-chart-header">
+
+            <div>
+                <span class="student-chart-icon">📊</span>
+
+                <div>
+                    <h3>Academic Performance</h3>
+                    <p>Subject-wise performance</p>
+                </div>
+            </div>
+
+            <span class="student-chart-badge">
+                89% Overall
+            </span>
+
+        </div>
+
+
+        <div class="academic-chart">
+
+            <!-- Computer Science -->
+
+            <div class="academic-row">
+
+                <div class="academic-label">
+                    <span>Computer Science</span>
+                    <strong id="computerSciencePercentage">
+                        92%
+                    </strong>
+                </div>
+
+                <div class="academic-bar">
+                    <div
+                        id="computerScienceBar"
+                        class="academic-bar-fill"
+                        style="width:92%">
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- Mathematics -->
+
+            <div class="academic-row">
+
+                <div class="academic-label">
+                    <span>Mathematics</span>
+                    <strong id="mathematicsPercentage">
+                        87%
+                    </strong>
+                </div>
+
+                <div class="academic-bar">
+                    <div
+                        id="mathematicsBar"
+                        class="academic-bar-fill"
+                        style="width:87%">
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- English -->
+
+            <div class="academic-row">
+
+                <div class="academic-label">
+                    <span>English</span>
+                    <strong id="englishPercentage">
+                        88%
+                    </strong>
+                </div>
+
+                <div class="academic-bar">
+                    <div
+                        id="englishBar"
+                        class="academic-bar-fill"
+                        style="width:88%">
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- Physics -->
+
+            <div class="academic-row">
+
+                <div class="academic-label">
+                    <span>Physics</span>
+                    <strong id="physicsPercentage">
+                        90%
+                    </strong>
+                </div>
+
+                <div class="academic-bar">
+                    <div
+                        id="physicsBar"
+                        class="academic-bar-fill"
+                        style="width:90%">
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- Overall -->
+
+            <div class="academic-overall">
+
+                <span>Overall Performance</span>
+
+                <strong id="overallPerformanceChart">
+                    89%
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==========================================
+         ATTENDANCE
+    ========================================== -->
+
+    <div class="student-chart-card attendance-chart-card">
+
+        <div class="student-chart-header">
+
+            <div>
+                <span class="student-chart-icon">📅</span>
+
+                <div>
+                    <h3>Attendance Overview</h3>
+                    <p>Attendance summary</p>
+                </div>
+            </div>
+
+            <span
+                class="student-chart-badge attendance-badge"
+                id="attendanceChartStatus">
+                Good
+            </span>
+
+        </div>
+
+
+        <div class="attendance-chart-layout">
+
+
+            <!-- DONUT -->
+
+            <div
+                class="attendance-donut-chart"
+                id="studentAttendanceDonut">
+
+                <div class="attendance-donut-center">
+
+                    <strong
+                        id="studentAttendancePercentage">
+                        93%
+                    </strong>
+
+                    <span>Attendance</span>
+
+                </div>
+
+            </div>
+
+
+            <!-- LEGEND -->
+
+            <div class="attendance-chart-legend">
+
+                <div class="chart-legend-item">
+
+                    <span
+                        class="chart-dot present-dot">
+                    </span>
+
+                    <div>
+                        <strong>Present</strong>
+                        <span id="chartPresentDays">
+                            28 Days
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div class="chart-legend-item">
+
+                    <span
+                        class="chart-dot absent-dot">
+                    </span>
+
+                    <div>
+                        <strong>Absent</strong>
+                        <span id="chartAbsentDays">
+                            2 Days
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div class="chart-legend-item">
+
+                    <span
+                        class="chart-dot leave-dot">
+                    </span>
+
+                    <div>
+                        <strong>Leave</strong>
+                        <span id="chartLeaveDays">
+                            1 Day
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==========================================
+         FEE STATUS
+    ========================================== -->
+
+    <div class="student-chart-card fee-chart-card">
+
+        <div class="student-chart-header">
+
+            <div>
+                <span class="student-chart-icon">💰</span>
+
+                <div>
+                    <h3>Fee Status</h3>
+                    <p>Current payment overview</p>
+                </div>
+            </div>
+
+            <span
+                class="student-chart-badge fee-badge"
+                id="feeChartStatus">
+                No Fee
+            </span>
+
+        </div>
+
+
+        <div class="fee-chart-layout">
+
+
+            <!-- DONUT -->
+
+            <div
+                class="fee-donut-chart"
+                id="studentFeeDonut">
+
+                <div class="fee-donut-center">
+
+                    <strong id="feeChartPercentage">
+                        0%
+                    </strong>
+
+                    <span>Paid</span>
+
+                </div>
+
+            </div>
+
+
+            <!-- FEE DETAILS -->
+
+            <div class="fee-chart-details">
+
+                <div class="fee-detail-row">
+
+                    <span>
+                        Total Fee
+                    </span>
+
+                    <strong id="chartTotalFee">
+                        Rs. 100,000
+                    </strong>
+
+                </div>
+
+
+                <div class="fee-detail-row paid">
+
+                    <span>
+                        Paid
+                    </span>
+
+                    <strong id="chartPaidFee">
+                        Rs. 70,000
+                    </strong>
+
+                </div>
+
+
+                <div class="fee-detail-row remaining">
+
+                    <span>
+                        Remaining
+                    </span>
+
+                    <strong id="chartRemainingFee">
+                        Rs. 30,000
+                    </strong>
+
+                </div>
+
+
+                <div class="fee-mini-progress">
+
+                    <div
+                        id="feeChartProgress"
+                        style="width:70%">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+<!-- ===========================
+My Profile Section
+=========================== -->
+
+<div id="profileSection" style="display:none;">
+
+<div class="profile-card">
+
+<h2>👤 My Profile</h2>
+
+<hr>
+
+<div class="profile-image">
+
+<img id="profileImage" src="" alt="Profile Image" style="display:none;">
+
+<span id="profileIcon">👤</span>
+
+</div>
+
+<input type="file" id="profileImageInput" accept="image/*">
+
+<p><strong>Full Name:</strong> <span id="profileFullName">Not Available</span></p>
+
+<p><strong>Father Name:</strong> <span id="profileFatherName">Not Available</span></p>
+
+<p><strong>Class:</strong> <span id="profileStudentClass">Not Assigned</span></p>
+
+<p><strong>Section:</strong> <span id="profileSectionName">Not Assigned</span></p>
+
+<p><strong>Roll Number:</strong> <span id="profileRollNumber">Not Assigned</span></p>
+
+<p><strong>Date of Birth:</strong> <span id="profileDOB">Not Available</span></p>
+
+<p><strong>Email:</strong> <span id="profileEmail">Not Available</span></p>
+
+<p><strong>Mobile:</strong> <span id="profileMobile">Not Available</span></p>
+
+<button id="editProfileBtn">Edit Profile</button>
+<div id="editProfileForm" style="display:none; margin-top:20px;">
+
+<div class="input-group">
+<label>Full Name</label>
+<input type="text" id="editFullName">
+</div>
+
+<div class="input-group">
+<label>Father Name</label>
+<input type="text" id="editFatherName">
+</div>
+
+<div class="input-group">
+<label>Email</label>
+<input type="email" id="editEmail">
+</div>
+
+<div class="input-group">
+<label>Mobile</label>
+<input type="text" id="editMobile">
+</div>
+
+<button type="button" id="saveProfileBtn">
+Save Changes
+</button>
+
+</div>
+</div>
+</div>
+<!-- ================= ATTENDANCE SECTION ================= -->
+
+<div id="attendanceSection" style="display:none;">
+
+    <div class="profile-card student-attendance-page">
+
+        <!-- ==========================================
+             HEADER
+        =========================================== -->
+
+        <div class="student-attendance-header">
+
+            <div class="student-attendance-title">
+
+                <div class="student-attendance-icon">
+                    📅
+                </div>
+
+                <div>
+
+                    <h2>
+                        Attendance
+                    </h2>
+
+                    <p>
+                        Your attendance record and overview
+                    </p>
+
+                </div>
+
+            </div>
+
+            <span
+                class="student-attendance-badge"
+                id="attendanceStatus">
+                No Attendance Data
+            </span>
+
+        </div>
+
+
+        <hr>
+
+
+        <!-- ==========================================
+             TODAY'S ATTENDANCE
+        =========================================== -->
+
+    <div class="today-attendance-card">
+
+    <div class="today-attendance-content">
+
+        <div class="today-attendance-small-icon">
+            📅
+        </div>
+
+        <div>
+
+            <h3>
+                Today's Attendance
+            </h3>
+
+            <p id="todayAttendanceMessage">
+                You have not checked in today.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="today-attendance-action">
+
+        <div
+            class="today-attendance-status"
+            id="todayAttendanceStatus">
+            Not Checked In
+        </div>
+
+        <button
+            type="button"
+            id="studentCheckInBtn"
+            class="student-check-in-btn">
+
+            🟢 Check In
+
+        </button>
+
+    </div>
+
+</div>
+
+
+        <!-- ==========================================
+             ATTENDANCE SUMMARY
+        =========================================== -->
+
+        <div class="attendance-summary">
+
+            <!-- Total Classes -->
+
+            <div class="attendance-box">
+
+                <div class="attendance-box-icon">
+                    📚
+                </div>
+
+                <div>
+
+                    <h3>
+                        Total Classes
+                    </h3>
+
+                    <p id="totalClasses">
+                        0
+                    </p>
+
+                    <span>
+                        All Attendance Records
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Present -->
+
+            <div class="attendance-box present-box">
+
+                <div class="attendance-box-icon">
+                    ✓
+                </div>
+
+                <div>
+
+                    <h3>
+                        Present
+                    </h3>
+
+                    <p id="presentClasses">
+                        0
+                    </p>
+
+                    <span>
+                        Classes
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Absent -->
+
+            <div class="attendance-box absent-box">
+
+                <div class="attendance-box-icon">
+                    ✕
+                </div>
+
+                <div>
+
+                    <h3>
+                        Absent
+                    </h3>
+
+                    <p id="absentClasses">
+                        0
+                    </p>
+
+                    <span>
+                        Classes
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Attendance Percentage -->
+
+            <div class="attendance-box percentage-box">
+
+                <div class="attendance-box-icon">
+                    %
+                </div>
+
+                <div>
+
+                    <h3>
+                        Attendance
+                    </h3>
+
+                    <p id="attendancePercentage">
+                        0%
+                    </p>
+
+                    <span>
+                        Overall
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==========================================
+             PROGRESS
+        =========================================== -->
+
+        <div class="attendance-progress-container">
+
+            <div class="attendance-progress-label">
+
+                <span>
+                    Overall Attendance
+                </span>
+
+                <strong
+                    id="attendanceProgressText">
+                    0%
+                </strong>
+
+            </div>
+
+            <div class="attendance-progress">
+
+                <div
+                    id="attendanceBar"
+                    style="width:0%;">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==========================================
+             TODAY'S ATTENDANCE TABLE
+        =========================================== -->
+
+        <div class="today-attendance-table-card">
+
+            <div class="today-attendance-table-header">
+
+                <div>
+
+                    <h3>
+                        Today's Attendance
+                    </h3>
+
+                    <p>
+                        Attendance marked by your teacher
+                    </p>
+
+                </div>
+
+                <div
+                    class="today-attendance-date"
+                    id="todayAttendanceDate">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="today-attendance-table-wrapper">
+
+                <table class="today-attendance-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Subject
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="todayAttendanceTableBody">
+
+                        <tr>
+
+                            <td colspan="3">
+
+                                <div class="attendance-empty-state">
+
+                                    <div>
+                                        📅
+                                    </div>
+
+                                    <strong>
+                                        No attendance marked today
+                                    </strong>
+
+                                    <span>
+                                        Your teacher has not entered today's attendance yet.
+                                    </span>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- ================= Results Section ================= -->
+
+<div id="resultsSection" style="display:none;">
+
+<div class="profile-card">
+
+<h2>📝 Results</h2>
+
+<hr>
+
+<div class="results-summary">
+
+<div class="result-box">
+<h3>Total Marks</h3>
+<p id="totalMarks">0</p>
+</div>
+
+<div class="result-box">
+<h3>Obtained</h3>
+<p id="obtainedMarks">0</p>
+</div>
+
+<div class="result-box">
+<h3>Percentage</h3>
+<p id="percentage">0%</p>
+</div>
+
+<div class="result-box">
+<h3>Grade</h3>
+<p id="grade">-</p>
+</div>
+
+</div>
+
+<br>
+
+<p>
+<strong>Status:</strong>
+<span id="resultStatus">No Result</span>
+</p>
+
+</div>
+
+</div>
+
+<!-- ==========================================
+     SUBJECT-WISE RESULTS
+========================================== -->
+
+<div
+    id="studentResults"
+    class="student-results-list"
+>
+</div>
+<!-- ================= Subjects Section ================= -->
+
+<div id="subjectsSection" style="display:none;">
+
+<div class="profile-card">
+
+<h2>📚 My Subjects</h2>
+
+<hr>
+
+<div class="subjects-grid">
+
+<div class="subject-card">
+<h3>💻 Computer Science</h3>
+<p><strong>Code:</strong> CS-101</p>
+<p><strong>Teacher:</strong> Sir Ali</p>
+<p><strong>Classes:</strong> 5 / Week</p>
+</div>
+
+<div class="subject-card">
+<h3>📐 Mathematics</h3>
+<p><strong>Code:</strong> MTH-101</p>
+<p><strong>Teacher:</strong> Sir Ahmed</p>
+<p><strong>Classes:</strong> 6 / Week</p>
+</div>
+
+<div class="subject-card">
+<h3>📖 English</h3>
+<p><strong>Code:</strong> ENG-101</p>
+<p><strong>Teacher:</strong> Miss Sana</p>
+<p><strong>Classes:</strong> 4 / Week</p>
+</div>
+
+<div class="subject-card">
+<h3>⚡ Physics</h3>
+<p><strong>Code:</strong> PHY-101</p>
+<p><strong>Teacher:</strong> Sir Bilal</p>
+<p><strong>Classes:</strong> 5 / Week</p>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ==========================
+Fee Status Section
+========================== -->
+
+<div id="feeSection" style="display:none;">
+
+<div class="profile-card">
+
+<h2>💰 Fee Status</h2>
+
+<hr>
+
+<div class="fee-summary">
+
+<div class="fee-box">
+<h3>Total Fee</h3>
+<p id="totalFee">Rs. 50,000</p>
+</div>
+
+<div class="fee-box">
+<h3>Paid Amount</h3>
+<p id="paidFee">Rs. 30,000</p>
+</div>
+
+<div class="fee-box">
+<h3>Remaining</h3>
+<p id="remainingFee">Rs. 20,000</p>
+</div>
+
+<div class="fee-box">
+<h3>Status</h3>
+<p id="feeStatus">Pending</p>
+</div>
+
+</div>
+
+<div class="fee-details">
+
+<p>
+<strong>Due Date:</strong>
+<span id="feeDueDate">15 September 2026</span>
+</p>
+
+<p>
+<strong>Payment Method:</strong>
+<span id="paymentMethod">Not Paid</span>
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ==========================
+Assignments Section
+========================== -->
+
+<div id="assignmentsSection" style="display:none;">
+<div class="profile-card">
+
+<h2>📚 Assignments</h2>
+
+<hr>
+<div
+    id="studentAssignments"
+    class="assignment-list"
+>
+</div>
+</div>
+
+</div>
+
+<!-- ==========================
+Settings Section
+========================== -->
+
+<div id="settingsSection" style="display:none;">
+
+<div class="profile-card">
+
+<h2>⚙️ Settings</h2>
+
+<hr>
+
+<div class="input-group">
+
+<label>Username</label>
+
+<input type="text" id="settingsUsername">
+
+</div>
+
+
+<div class="input-group">
+
+<label>Change Password</label>
+
+<input type="password" id="settingsPassword" placeholder="Enter new password">
+
+</div>
+
+
+<button id="saveSettingsBtn">
+Save Settings
+</button>
+
+</div>
+
+</div>
+
+</div>
+<!-- ===========================
+Administrator Dashboard
+=========================== -->
+
+<div id="adminDashboard" style="display:none;">
+
+<!-- Admin Sidebar -->
+<div class="admin-sidebar">
+
+<h2>🛡️ EduPortal Admin</h2>
+
+<ul>
+
+<li id="adminDashboardMenu"
+    onclick="setTimeout(function(){ window.showAdminModuleDirect('dashboard'); }, 0)">
+    🏠 Dashboard
+</li>
+
+<li id="adminStudentsMenu"
+    onclick="setTimeout(function(){ window.showAdminModuleDirect('students'); }, 0)">
+    👨‍🎓 Students
+</li>
+
+<li id="adminTeachersMenu"
+    onclick="setTimeout(function(){ window.showAdminModuleDirect('teachers'); }, 0)">
+    👨‍🏫 Teachers
+</li>
+
+<li id="adminAttendanceMenu"
+    onclick="setTimeout(function(){ window.showAdminModuleDirect('attendance'); }, 0)">
+    📅 Attendance
+</li>
+
+<li id="adminResultsMenu"
+    onclick="setTimeout(function(){ window.showAdminModuleDirect('results'); }, 0)">
+    📝 Results
+</li>
+
+<li id="adminFeesMenu"
+    onclick="setTimeout(function(){ window.showAdminModuleDirect('fees'); }, 0)">
+    💰 Fee Management
+</li>
+
+<li id="adminAssignmentsMenu"
+    onclick="setTimeout(function(){ window.showAdminModuleDirect('assignments'); }, 0)">
+    📚 Assignments
+</li>
+
+<li id="adminNoticesMenu"
+    onclick="setTimeout(function(){ window.showAdminModuleDirect('notices'); }, 0)">
+    📢 Notices
+</li>
+
+<li id="adminUsersMenu"
+    onclick="setTimeout(function(){ window.showAdminModuleDirect('users'); }, 0)">
+    👥 User Management
+</li>
+
+<li id="adminSettingsMenu"
+    onclick="setTimeout(function(){ window.showAdminModuleDirect('settings'); }, 0)">
+    ⚙️ Settings
+</li>
+<li id="adminLogoutBtn">
+🚪 Logout
+</li>
+
+</ul>
+
+</div>
+
+<!-- Admin Main Content -->
+<div class="admin-main-content">
+
+<!-- Admin Header -->
+<div class="admin-top-header">
+
+<div>
+<h1 id="adminName">
+Welcome Administrator 👋
+</h1>
+
+<p>
+Administrator Dashboard
+</p>
+</div>
+
+<div class="admin-profile-circle">
+🛡️
+</div>
+
+</div>
+
+<!-- ==========================================
+ADMIN DASHBOARD HOME
+PROFESSIONAL ANALYTICS
+========================================== -->
+
+<div id="adminHomeSection">
+
+<!-- Dashboard Heading -->
+<div class="admin-dashboard-title">
+
+<div>
+<h2>Dashboard Analytics</h2>
+<p>Quick visual overview of EduPortal</p>
+</div>
+
+<div class="admin-dashboard-date">
+<span class="dashboard-date-icon">📅</span>
+
+<input type="date" id="adminDashboardDate" class="dashboard-date-input">
+</div>
+
+</div>
+
+
+<!-- Top Statistics -->
+<div class="admin-analytics-stats">
+
+<!-- Students -->
+<div class="admin-analytics-stat students">
+
+<div class="analytics-stat-icon">
+👨‍🎓
+</div>
+
+<div class="analytics-stat-content">
+<span>Total Students</span>
+<strong id="analyticsTotalStudents">0</strong>
+<small>Registered Students</small>
+</div>
+
+</div>
+
+
+<!-- Attendance -->
+<div class="admin-analytics-stat attendance">
+
+<div class="analytics-stat-icon">
+📅
+</div>
+
+<div class="analytics-stat-content">
+<span>Today's Attendance</span>
+<strong id="analyticsAttendance">0%</strong>
+<small>Present Today</small>
+</div>
+
+</div>
+
+
+<!-- Results -->
+<div class="admin-analytics-stat results">
+
+<div class="analytics-stat-icon">
+📊
+</div>
+
+<div class="analytics-stat-content">
+<span>Average Performance</span>
+<strong id="analyticsAverageResult">0%</strong>
+<small>Overall Results</small>
+</div>
+
+</div>
+
+
+<!-- Fees -->
+<div class="admin-analytics-stat fees">
+
+<div class="analytics-stat-icon">
+💰
+</div>
+
+<div class="analytics-stat-content">
+<span>Total Collected</span>
+<strong id="analyticsTotalCollected">Rs. 0</strong>
+<small>Fee Collection</small>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- Analytics Grid -->
+<div class="admin-analytics-grid">
+
+
+<!-- Students Overview -->
+<div class="admin-analytics-card">
+
+<div class="analytics-card-header">
+
+<div>
+<h3>👨‍🎓 Students Overview</h3>
+<p>Total registered students</p>
+</div>
+
+<span class="analytics-badge blue">
+Live
+</span>
+
+</div>
+
+
+<div class="students-chart">
+
+<div class="students-chart-value">
+<strong id="studentsChartValue">0</strong>
+<span>Students</span>
+</div>
+
+<div class="students-progress">
+
+<div id="studentsProgressBar" class="students-progress-fill">
+</div>
+
+</div>
+
+<div class="students-chart-footer">
+<span>Current Enrollment</span>
+<strong id="studentsChartPercent">0%</strong>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- Attendance -->
+<div class="admin-analytics-card">
+
+<div class="analytics-card-header">
+
+<div>
+<h3>📅 Attendance</h3>
+<p>Today's attendance overview</p>
+</div>
+
+<span class="analytics-badge green">
+Today
+</span>
+
+</div>
+
+
+<div class="attendance-chart-area">
+
+<div class="attendance-donut" id="attendanceDonut">
+
+<div class="attendance-donut-center">
+    <strong id="attendanceDonutValue">
+        0%
+    </strong>
+    <span>Present</span>
+</div>
+
+</div>
+
+
+<div class="attendance-legend">
+
+<div>
+    <span class="legend-dot present"></span>
+    <span>Present</span>
+    <strong id="attendancePresentCount">0</strong>
+</div>
+
+<div>
+    <span class="legend-dot absent"></span>
+    <span>Absent</span>
+    <strong id="attendanceAbsentCount">0</strong>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- Results Performance -->
+<div class="admin-analytics-card">
+
+<div class="analytics-card-header">
+
+<div>
+<h3>📈 Results Performance</h3>
+<p>Academic performance overview</p>
+</div>
+
+<span class="analytics-badge purple">
+Results
+</span>
+
+</div>
+
+
+<div class="results-performance">
+
+<div class="results-main-value">
+<strong id="resultsPerformanceValue">
+    0%
+</strong>
+
+<span>Average Performance</span>
+</div>
+
+
+<div class="result-bars">
+
+<div class="result-bar-row">
+
+    <span>Passed</span>
+
+    <div class="result-bar">
+        <div id="passedBar" class="passed-fill">
+        </div>
+    </div>
+
+    <strong id="passedCount">0</strong>
+
+</div>
+
+
+<div class="result-bar-row">
+
+    <span>Failed</span>
+
+    <div class="result-bar">
+        <div id="failedBar" class="failed-fill">
+        </div>
+    </div>
+
+    <strong id="failedCount">0</strong>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- Fee Collection -->
+<div class="admin-analytics-card">
+
+<div class="analytics-card-header">
+
+<div>
+<h3>💰 Fee Collection</h3>
+<p>Overall fee collection status</p>
+</div>
+
+<span class="analytics-badge orange">
+Fees
+</span>
+
+</div>
+
+
+<div class="fee-chart">
+
+<div class="fee-chart-header">
+
+<div>
+    <span>Collection Rate</span>
+    <strong id="feeCollectionRate">
+        0%
+    </strong>
+</div>
+
+<div class="fee-total">
+    <span>Collected</span>
+    <strong id="feeCollectedAmount">
+        Rs. 0
+    </strong>
+</div>
+
+</div>
+
+
+<div class="fee-progress">
+
+<div id="feeProgressBar" class="fee-progress-fill">
+</div>
+
+</div>
+
+
+<div class="fee-chart-footer">
+
+<span>Total Fee</span>
+
+<strong id="feeTotalAmount">
+    Rs. 0
+</strong>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- Compact Quick Actions -->
+<div class="admin-dashboard-actions">
+
+<h3>Quick Actions</h3>
+
+<div class="admin-dashboard-action-grid">
+
+<button type="button" onclick="document.getElementById('adminStudentsMenu').click()">
+
+👨‍🎓
+<span>Add / Manage Students</span>
+
+</button>
+
+
+<button type="button" onclick="document.getElementById('adminAttendanceMenu').click()">
+
+📅
+<span>Mark Attendance</span>
+
+</button>
+
+
+<button type="button" onclick="document.getElementById('adminAssignmentsMenu').click()">
+
+📚
+<span>Assignments</span>
+
+</button>
+
+
+<button type="button" onclick="document.getElementById('adminNoticesMenu').click()">
+
+📢
+<span>Publish Notice</span>
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+<!-- ===========================
+ADMIN TEACHERS MANAGEMENT
+=========================== -->
+
+<div id="adminTeachersSection" style="display:none;">
+
+<div class="admin-section-header">
+
+<div>
+<h2>👨‍🏫 Teachers Management</h2>
+
+<p>
+View and manage all teacher records.
+</p>
+</div>
+
+<button type="button" id="adminAddTeacherBtn">
+➕ Add Teacher
+</button>
+
+</div>
+
+
+<div id="adminTeachersList">
+
+<div class="admin-empty-state">
+
+<h3>👨‍🏫 No Teachers Yet</h3>
+
+<p>
+Click <strong>Add Teacher</strong>
+to add a new teacher.
+</p>
+
+</div>
+
+</div>
+
+</div>
+<!-- ==========================================
+ADMIN ATTENDANCE MANAGEMENT
+========================================== -->
+
+<div id="adminAttendanceSection" style="display:none;">
+
+<!-- Attendance Header -->
+<div class="attendance-page-header">
+
+<div>
+<h2>📅 Attendance</h2>
+<p>Track and manage student attendance.</p>
+</div>
+
+<div class="attendance-header-actions">
+
+<div class="attendance-search-box">
+<span>🔍</span>
+
+<input type="text" id="adminAttendanceSearch" placeholder="Search students...">
+</div>
+
+<button type="button" id="attendanceHeaderDateBtn" class="attendance-date-btn">
+📅
+</button>
+
+<button type="button" id="adminMarkAttendanceBtn" class="attendance-primary-btn">
+➕ Mark Attendance
+</button>
+
+</div>
+
+</div>
+
+
+<!-- Attendance Statistics -->
+<div class="attendance-stats-grid">
+
+<div class="attendance-stat-card">
+
+<div class="attendance-stat-icon students-icon">
+👥
+</div>
+
+<div>
+<span>Total Students</span>
+
+<strong id="attendanceTotalStudents">
+0
+</strong>
+
+<small>
+All Registered Students
+</small>
+</div>
+
+</div>
+
+
+<div class="attendance-stat-card">
+
+<div class="attendance-stat-icon present-icon">
+✓
+</div>
+
+<div>
+<span>Present Today</span>
+
+<strong id="attendancePresentToday">
+0
+</strong>
+
+<small id="attendancePresentPercent">
+0% of total
+</small>
+</div>
+
+</div>
+
+
+<div class="attendance-stat-card">
+
+<div class="attendance-stat-icon absent-icon">
+×
+</div>
+
+<div>
+<span>Absent Today</span>
+
+<strong id="attendanceAbsentToday">
+0
+</strong>
+
+<small id="attendanceAbsentPercent">
+0% of total
+</small>
+</div>
+
+</div>
+
+
+<div class="attendance-stat-card">
+
+<div class="attendance-stat-icon rate-icon">
+📅
+</div>
+
+<div>
+<span>Attendance Rate</span>
+
+<strong id="attendanceRate">
+0%
+</strong>
+
+<small>
+Today's Attendance
+</small>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- Attendance Filters -->
+<div class="attendance-filter-card">
+
+<div class="attendance-filter-field">
+
+<label for="attendanceClassFilter">
+Class
+</label>
+
+<select id="attendanceClassFilter">
+
+<option value="all">
+All Classes
+</option>
+
+<option value="9">
+Class 9
+</option>
+
+<option value="10">
+Class 10
+</option>
+
+<option value="11">
+Class 11
+</option>
+
+<option value="12">
+Class 12
+</option>
+
+</select>
+
+</div>
+
+
+<div class="attendance-filter-field">
+
+<label for="attendanceSectionFilter">
+Section
+</label>
+
+<select id="attendanceSectionFilter">
+
+<option value="all">
+All Sections
+</option>
+
+<option value="A">
+Section A
+</option>
+
+<option value="B">
+Section B
+</option>
+
+<option value="C">
+Section C
+</option>
+
+</select>
+
+</div>
+
+
+<div class="attendance-filter-field">
+
+<label for="attendanceDateFilter">
+Date
+</label>
+
+<div class="attendance-date-input">
+
+<span>📅</span>
+
+<input type="date" id="attendanceDateFilter">
+
+</div>
+
+</div>
+
+
+<button type="button" id="applyAttendanceFilters" class="attendance-filter-btn">
+
+🔎 Apply Filters
+
+</button>
+
+</div>
+
+
+<!-- Attendance List -->
+<div class="attendance-list-card">
+
+<div class="attendance-list-header">
+
+<div>
+
+<h3>
+📅 Attendance List
+</h3>
+
+<p>
+Student attendance records
+</p>
+
+</div>
+
+
+<div class="attendance-export-actions">
+
+<button type="button" id="exportAttendanceExcel" class="attendance-export-btn">
+📊 Export Excel
+</button>
+
+<button type="button" id="exportAttendancePDF" class="attendance-export-btn">
+📄 Export PDF
+</button>
+
+<button type="button" id="refreshAttendance" class="attendance-refresh-btn">
+↻
+</button>
+
+</div>
+
+</div>
+
+
+<!-- Attendance Table -->
+<div class="attendance-table-wrapper">
+
+<table class="attendance-table">
+
+<thead>
+
+<tr>
+
+    <th>
+        <input type="checkbox" id="selectAllAttendance">
+    </th>
+
+    <th>#</th>
+
+    <th>Roll No.</th>
+
+    <th>Student Name</th>
+
+    <th>Class</th>
+
+    <th>Section</th>
+
+    <th>Daily Mark</th>
+
+    <th>Check In Time</th>
+
+    <th>Check Out Time</th>
+
+
+</tr>
+
+</thead>
+
+
+<tbody id="attendanceTableBody">
+
+<tr class="attendance-empty-row">
+
+    <td colspan="9">
+
+        <div class="attendance-empty-state">
+
+            <div>
+                📅
+            </div>
+
+            <h3>
+                No Attendance Records
+            </h3>
+
+            <p>
+                Mark attendance to see
+                student records here.
+            </p>
+
+        </div>
+
+    </td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<!-- Attendance Footer -->
+<div class="attendance-table-footer">
+
+<span id="attendanceEntriesText">
+Showing 0 entries
+</span>
+
+
+<div class="attendance-pagination">
+
+<button type="button" class="attendance-page-btn" id="attendanceFirstPage">
+«
+</button>
+
+<button type="button" class="attendance-page-btn" id="attendancePreviousPage">
+‹
+</button>
+
+<button type="button" class="attendance-page-btn active" id="attendanceCurrentPage">
+1
+</button>
+
+<button type="button" class="attendance-page-btn" id="attendanceNextPage">
+›
+</button>
+
+<button type="button" class="attendance-page-btn" id="attendanceLastPage">
+»
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<!-- ==========================================
+ADMIN RESULTS MANAGEMENT
+========================================== -->
+
+<div id="adminResultsSection" style="display:none;">
+
+<!-- Results Header -->
+<div class="results-page-header">
+
+<div>
+<h2>📊 Results</h2>
+<p>Manage and view student academic results</p>
+</div>
+
+<div class="results-header-actions">
+
+<div class="results-search-box">
+<span>🔍</span>
+
+<input type="text" id="adminResultsSearch" placeholder="Search students...">
+</div>
+
+<button type="button" id="exportResultsBtn" class="results-secondary-btn">
+📥 Export Results
+</button>
+
+<button type="button" id="addNewResultBtn" class="results-primary-btn">
+➕ Add New Result
+</button>
+
+</div>
+
+</div>
+
+
+<!-- Results Filters -->
+
+<div class="results-filter-card">
+
+<div class="results-filter-field">
+
+<label>Select Class</label>
+
+<select id="resultsClassFilter">
+
+<option value="all">
+All Classes
+</option>
+
+<option value="9">
+Class 9
+</option>
+
+<option value="10">
+Class 10
+</option>
+
+<option value="11">
+Class 11
+</option>
+
+<option value="12">
+Class 12
+</option>
+
+</select>
+
+</div>
+
+
+<div class="results-filter-field">
+
+<label>Select Section</label>
+
+<select id="resultsSectionFilter">
+
+<option value="all">
+All Sections
+</option>
+
+<option value="A">
+Section A
+</option>
+
+<option value="B">
+Section B
+</option>
+
+<option value="C">
+Section C
+</option>
+
+</select>
+
+</div>
+
+
+<div class="results-filter-field">
+
+<label>Select Exam</label>
+
+<select id="resultsExamFilter">
+
+<option value="all">
+All Exams
+</option>
+
+<option value="Mid Term">
+Mid Term
+</option>
+
+<option value="Final Term">
+Final Term
+</option>
+
+<option value="Monthly Test">
+Monthly Test
+</option>
+
+</select>
+
+</div>
+
+
+<button type="button" id="applyResultsFilters" class="results-filter-btn">
+
+🔎 Filter
+
+</button>
+
+
+<button type="button" id="resetResultsFilters" class="results-reset-btn">
+
+↻ Reset
+
+</button>
+
+</div>
+
+
+<!-- Results Statistics -->
+
+<div class="results-stats-grid">
+
+<div class="results-stat-card students-stat">
+
+<div class="results-stat-icon">
+👥
+</div>
+
+<div>
+
+<span>Total Students</span>
+
+<strong id="resultsTotalStudents">
+0
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="results-stat-card average-stat">
+
+<div class="results-stat-icon">
+📈
+</div>
+
+<div>
+
+<span>Average Percentage</span>
+
+<strong id="resultsAveragePercentage">
+0%
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="results-stat-card highest-stat">
+
+<div class="results-stat-icon">
+🏆
+</div>
+
+<div>
+
+<span>Highest Percentage</span>
+
+<strong id="resultsHighestPercentage">
+0%
+</strong>
+
+<small id="resultsHighestStudent">
+—
+</small>
+
+</div>
+
+</div>
+
+
+<div class="results-stat-card pass-stat">
+
+<div class="results-stat-icon">
+🥇
+</div>
+
+<div>
+
+<span>Pass Percentage</span>
+
+<strong id="resultsPassPercentage">
+0%
+</strong>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- Results Main Area -->
+
+<div class="results-main-grid">
+
+<!-- Results List -->
+
+<div class="results-list-card">
+
+<div class="results-list-header">
+
+<div>
+
+<h3>
+    📄 Results List
+</h3>
+
+<p>
+    Student academic performance
+</p>
+
+</div>
+
+</div>
+
+
+<div class="results-table-wrapper">
+
+<table class="results-table">
+
+<thead>
+
+    <tr>
+
+        <th>#</th>
+
+        <th>Student ID</th>
+
+        <th>Student Name</th>
+
+        <th>Class - Section</th>
+
+        <th>Exam</th>
+
+        <th>Total Marks</th>
+
+        <th>Obtained Marks</th>
+
+        <th>Percentage</th>
+
+        <th>Grade</th>
+
+        <th>Action</th>
+
+    </tr>
+
+</thead>
+
+
+<tbody id="resultsTableBody">
+
+    <tr class="results-empty-row">
+
+        <td colspan="10">
+
+            <div class="results-empty-state">
+
+                <div>📊</div>
+
+                <h3>
+                    No Results Found
+                </h3>
+
+                <p>
+                    Add student results to see
+                    records here.
+                </p>
+
+            </div>
+
+        </td>
+
+    </tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<div class="results-table-footer">
+
+<span id="resultsEntriesText">
+Showing 0 results
+</span>
+
+
+<div class="results-pagination">
+
+<button type="button" class="results-page-btn" id="resultsFirstPage">
+    «
+</button>
+
+<button type="button" class="results-page-btn" id="resultsPreviousPage">
+    ‹
+</button>
+
+<button type="button" class="results-page-btn active" id="resultsCurrentPage">
+    1
+</button>
+
+<button type="button" class="results-page-btn" id="resultsNextPage">
+    ›
+</button>
+
+<button type="button" class="results-page-btn" id="resultsLastPage">
+    »
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ==========================================
+ADD NEW RESULT MODAL
+========================================== -->
+
+<div id="addResultModal" class="result-modal-overlay" style="display:none;">
+
+<div class="result-modal">
+
+<div class="result-modal-header">
+
+<div>
+<h3>➕ Add New Result</h3>
+<p>Enter student examination result</p>
+</div>
+
+<button type="button" id="closeResultModal" class="result-modal-close">
+×
+</button>
+
+</div>
+
+
+<div class="result-modal-body">
+
+<!-- Student -->
+
+<div class="result-form-group">
+
+<label>Student</label>
+
+<select id="resultStudent">
+
+<option value="">
+    Select Student
+</option>
+
+</select>
+
+</div>
+
+
+<!-- Exam -->
+
+<div class="result-form-group">
+
+<label>Exam</label>
+
+<select id="resultExam">
+
+<option value="">
+    Select Exam
+</option>
+
+<option value="Monthly Test">
+    Monthly Test
+</option>
+
+<option value="Mid Term">
+    Mid Term
+</option>
+
+<option value="Final Term">
+    Final Term
+</option>
+
+</select>
+
+</div>
+
+
+<!-- Subject -->
+
+<div class="result-form-group">
+
+<label>Subject</label>
+
+<select id="resultSubject">
+
+<option value="">
+    Select Subject
+</option>
+
+<option value="English">
+    English
+</option>
+
+<option value="Urdu">
+    Urdu
+</option>
+
+<option value="Mathematics">
+    Mathematics
+</option>
+
+<option value="Physics">
+    Physics
+</option>
+
+<option value="Chemistry">
+    Chemistry
+</option>
+
+<option value="Biology">
+    Biology
+</option>
+
+<option value="Computer Science">
+    Computer Science
+</option>
+
+<option value="Pakistan Studies">
+    Pakistan Studies
+</option>
+
+<option value="Islamiyat">
+    Islamiyat
+</option>
+
+</select>
+
+</div>
+
+
+<div class="result-form-row">
+
+<!-- Total Marks -->
+
+<div class="result-form-group">
+
+<label>Total Marks</label>
+
+<input type="number" id="resultTotalMarks" placeholder="e.g. 100" min="1">
+
+</div>
+
+
+<!-- Obtained Marks -->
+
+<div class="result-form-group">
+
+<label>Obtained Marks</label>
+
+<input type="number" id="resultObtainedMarks" placeholder="e.g. 85" min="0">
+
+</div>
+
+</div>
+
+
+<!-- Auto Percentage -->
+
+<div class="result-calculation-box">
+
+<div>
+
+<span>Percentage</span>
+
+<strong id="resultPercentagePreview">
+    0%
+</strong>
+
+</div>
+
+
+<div>
+
+<span>Grade</span>
+
+<strong id="resultGradePreview">
+    —
+</strong>
+
+</div>
+
+</div>
+
+
+<!-- Remarks -->
+
+<div class="result-form-group">
+
+<label>Remarks</label>
+
+<textarea id="resultRemarks" rows="3" placeholder="Enter remarks (optional)"></textarea>
+
+</div>
+
+</div>
+
+
+<div class="result-modal-footer">
+
+<button type="button" id="cancelResultBtn" class="result-cancel-btn">
+
+Cancel
+
+</button>
+
+
+<button type="button" id="saveResultBtn" class="result-save-btn">
+
+💾 Save Result
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+<!-- ==========================================
+ADMIN FEE MANAGEMENT
+========================================== -->
+
+<section id="adminFeesSection" class="admin-content-section" style="display:none;">
+
+<!-- HEADER -->
+<div class="admin-section-header">
+
+<div>
+<h2>💰 Fee Management</h2>
+
+<p>
+Manage monthly student fees
+</p>
+</div>
+
+<button type="button" id="addMonthlyFeeBtn" class="admin-primary-btn">
+
+➕ Add Monthly Fee
+
+</button>
+
+</div>
+
+
+<!-- ==========================================
+FEE SUMMARY CARDS
+========================================== -->
+
+<div class="fee-summary-grid">
+
+<div class="fee-summary-card">
+
+<div class="fee-summary-icon">
+💰
+</div>
+
+<div>
+<span>Total Fees</span>
+
+<strong id="adminTotalMonthlyFees">
+Rs. 0
+</strong>
+</div>
+
+</div>
+
+
+<div class="fee-summary-card">
+
+<div class="fee-summary-icon">
+✅
+</div>
+
+<div>
+<span>Total Paid</span>
+
+<strong id="adminTotalPaidFees">
+Rs. 0
+</strong>
+</div>
+
+</div>
+
+
+<div class="fee-summary-card">
+
+<div class="fee-summary-icon">
+⏳
+</div>
+
+<div>
+<span>Pending</span>
+
+<strong id="adminTotalPendingFees">
+Rs. 0
+</strong>
+</div>
+
+</div>
+
+
+<div class="fee-summary-card">
+
+<div class="fee-summary-icon">
+⚠️
+</div>
+
+<div>
+<span>Overdue</span>
+
+<strong id="adminTotalOverdueFees">
+Rs. 0
+</strong>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ==========================================
+ADD MONTHLY FEE FORM
+========================================== -->
+
+<div id="monthlyFeeForm" class="monthly-fee-form" style="display:none;">
+
+<div class="fee-form-header">
+
+<div>
+
+<h3>
+➕ Add Monthly Fee
+</h3>
+
+<p>
+Enter monthly fee information
+</p>
+
+</div>
+
+<button type="button" id="closeMonthlyFeeForm">
+
+✕
+
+</button>
+
+</div>
+
+
+<div class="fee-form-grid">
+
+
+<!-- STUDENT -->
+
+<div class="fee-input-group">
+
+<label>
+Student <span>*</span>
+</label>
+
+<select id="feeStudent">
+
+<option value="">
+    Select Student
+</option>
+
+</select>
+
+</div>
+
+
+<!-- CLASS / SECTION -->
+
+<div class="fee-input-group">
+
+<label>
+Class / Section
+</label>
+
+<input type="text" id="feeStudentClass" readonly placeholder="Auto filled">
+
+</div>
+
+
+<!-- FEE MONTH -->
+
+<div class="fee-input-group">
+
+<label>
+Fee Month <span>*</span>
+</label>
+
+<select id="feeMonth">
+
+<option value="">
+    Select Month
+</option>
+
+<option value="January">January</option>
+<option value="February">February</option>
+<option value="March">March</option>
+<option value="April">April</option>
+<option value="May">May</option>
+<option value="June">June</option>
+<option value="July">July</option>
+<option value="August">August</option>
+<option value="September">September</option>
+<option value="October">October</option>
+<option value="November">November</option>
+<option value="December">December</option>
+
+</select>
+
+</div>
+
+
+<!-- MONTHLY FEE -->
+
+<div class="fee-input-group">
+
+<label>
+Monthly Fee <span>*</span>
+</label>
+
+<input type="number" id="monthlyFeeAmount" min="0" placeholder="Enter monthly fee">
+
+</div>
+
+
+<!-- DUE DATE -->
+
+<div class="fee-input-group">
+
+<label>
+Due Date <span>*</span>
+</label>
+
+<input type="date" id="feeDueDate">
+
+</div>
+
+
+<!-- PAID AMOUNT -->
+
+<div class="fee-input-group">
+
+<label>
+Paid Amount
+</label>
+
+<input type="number" id="feePaidAmount" min="0" placeholder="Enter paid amount">
+
+</div>
+
+
+<!-- PAYMENT DATE -->
+
+<div class="fee-input-group">
+
+<label>
+Payment Date
+</label>
+
+<input type="date" id="feePaymentDate">
+
+</div>
+
+
+<!-- STATUS -->
+
+<div class="fee-input-group">
+
+<label>
+Status
+</label>
+
+<select id="feeStatus">
+
+<option value="Pending">
+    Pending
+</option>
+
+<option value="Partial">
+    Partial
+</option>
+
+<option value="Paid">
+    Paid
+</option>
+
+<option value="Overdue">
+    Overdue
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<!-- REMAINING AMOUNT -->
+
+<div class="fee-calculation-box">
+
+<span>
+Remaining Amount
+</span>
+
+<strong id="feeRemainingAmount">
+Rs. 0
+</strong>
+
+</div>
+
+
+<!-- BUTTONS -->
+
+<div class="fee-form-actions">
+
+<button type="button" id="resetMonthlyFeeBtn">
+
+↻ Reset
+
+</button>
+
+<button type="button" id="saveMonthlyFeeBtn">
+
+💾 Save Fee Record
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- ==========================================
+MONTHLY FEE RECORDS
+========================================== -->
+
+<div class="fee-records-card">
+
+<div class="fee-records-header">
+
+<div>
+
+<h3>
+📋 Monthly Fee Records
+</h3>
+
+<p>
+Manage student monthly fee records
+</p>
+
+</div>
+
+</div>
+
+
+<!-- FILTERS -->
+
+<div class="fee-filter-row">
+
+<input type="text" id="feeSearch" placeholder="🔍 Search student or ID...">
+
+
+<select id="feeStatusFilter">
+
+<option value="all">
+All Status
+</option>
+
+<option value="Paid">
+Paid
+</option>
+
+<option value="Partial">
+Partial
+</option>
+
+<option value="Pending">
+Pending
+</option>
+
+<option value="Overdue">
+Overdue
+</option>
+
+</select>
+
+
+<select id="feeMonthFilter">
+
+<option value="all">
+All Months
+</option>
+
+<option value="January">January</option>
+<option value="February">February</option>
+<option value="March">March</option>
+<option value="April">April</option>
+<option value="May">May</option>
+<option value="June">June</option>
+<option value="July">July</option>
+<option value="August">August</option>
+<option value="September">September</option>
+<option value="October">October</option>
+<option value="November">November</option>
+<option value="December">December</option>
+
+</select>
+
+</div>
+
+
+<!-- TABLE -->
+
+<div class="fee-table-wrapper">
+
+<table class="fee-table">
+
+<thead>
+
+<tr>
+
+    <th>#</th>
+    <th>Student</th>
+    <th>Student ID</th>
+    <th>Class / Section</th>
+    <th>Month</th>
+    <th>Fee Amount</th>
+    <th>Paid</th>
+    <th>Remaining</th>
+    <th>Status</th>
+    <th>Daily Mark</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="feeTableBody">
+
+<tr>
+
+    <td colspan="10">
+
+        <div class="fee-empty-state">
+
+            <div>
+                💰
+            </div>
+
+            <h3>
+                No Fee Records
+            </h3>
+
+            <p>
+                Add a monthly fee record
+                to see it here.
+            </p>
+
+        </div>
+
+    </td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<div class="fee-table-footer">
+
+<span id="feeEntriesText">
+Showing 0 entries
+</span>
+
+</div>
+
+</div>
+
+</section>
+<!-- ==========================================
+ADMIN STUDENTS MANAGEMENT
+========================================== -->
+
+<div id="adminStudentsSection" style="display:none;">
+
+<div class="admin-section-card students-admin-card">
+
+<!-- PAGE HEADER -->
+<div class="admin-section-header">
+
+<div>
+
+<h2>👨‍🎓 Students Management</h2>
+
+<p>
+View and manage all student records.
+</p>
+
+</div>
+
+</div>
+
+
+<!-- SEARCH & FILTER -->
+<div class="students-toolbar">
+
+<div class="students-search-box">
+
+<span>🔍</span>
+
+<input type="text" id="adminStudentSearch" placeholder="Search student...">
+
+</div>
+
+
+<select id="adminStudentClassFilter">
+
+<option value="all">
+All Classes
+</option>
+
+<option value="9">
+Class 9
+</option>
+
+<option value="10">
+Class 10
+</option>
+
+<option value="11">
+Class 11
+</option>
+
+<option value="12">
+Class 12
+</option>
+
+</select>
+
+</div>
+
+
+<!-- STUDENTS TABLE -->
+<div class="students-table-wrapper">
+
+<table class="students-admin-table">
+
+<thead>
+
+<tr>
+
+    <th>#</th>
+
+    <th>Student ID</th>
+
+    <th>Student Name</th>
+
+    <th>Father Name</th>
+
+    <th>Class</th>
+
+    <th>Section</th>
+
+    <th>Roll No.</th>
+
+    <th>Date of Birth</th>
+
+    <th>Email</th>
+
+    <th>Mobile</th>
+
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="adminStudentsTableBody">
+
+<tr>
+
+    <td colspan="10">
+
+        <div class="admin-empty-state">
+
+            <h3>
+                👨‍🎓 No Student Records
+            </h3>
+
+            <p>
+                No student records are currently available.
+            </p>
+
+        </div>
+
+    </td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<!-- TABLE FOOTER -->
+<div class="students-table-footer">
+
+<span id="adminStudentsEntriesText">
+Showing 0 students
+</span>
+
+</div>
+
+</div>
+
+</div>
+<!-- ==========================================
+ADMIN ASSIGNMENTS SECTION
+========================================== -->
+
+<div id="adminAssignmentsSection" style="display:none;">
+
+<div class="admin-section-card">
+
+<div class="admin-section-header">
+<div>
+<h2>📚 Assignment Management</h2>
+<p>Create and manage student assignments</p>
+</div>
+
+<button id="adminAddAssignmentBtn" type="button">
+➕ Add Assignment
+</button>
+</div>
+
+<hr>
+
+<div id="adminAssignmentsList">
+
+<div class="admin-empty-state">
+<h3>📚 No Assignments Yet</h3>
+<p>
+Click <strong>Add Assignment</strong>
+to create a new assignment.
+</p>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<!-- ==========================================
+ADMIN NOTICES SECTION
+========================================== -->
+
+<div id="adminNoticesSection" style="display:none;">
+
+<div class="admin-section-card notice-admin-card">
+
+<!-- HEADER -->
+<div class="admin-section-header notice-admin-header">
+
+<div>
+<h2>📢 Notices Management</h2>
+
+<p>
+Create and manage school notices
+</p>
+</div>
+
+<button id="adminAddNoticeBtn" type="button">
+
+➕ Add Notice
+
+</button>
+
+</div>
+
+
+<!-- SUMMARY -->
+<div class="notice-summary">
+
+<div class="notice-summary-card">
+
+<div class="notice-summary-icon">
+📢
+</div>
+
+<div>
+
+<span>
+    Total Notices
+</span>
+
+<strong id="adminTotalNotices">
+    0
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="notice-summary-card">
+
+<div class="notice-summary-icon">
+📅
+</div>
+
+<div>
+
+<span>
+    This Month
+</span>
+
+<strong id="adminMonthlyNotices">
+    0
+</strong>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ==========================================
+ADD NOTICE FORM
+========================================== -->
+
+<div id="adminNoticeForm" class="admin-notice-form" style="display:none;">
+
+<div class="notice-form-header">
+
+<div>
+<h3>➕ Create New Notice</h3>
+<p>Enter the notice information below.</p>
+</div>
+
+<button type="button" id="closeAdminNoticeForm">
+✕
+</button>
+
+</div>
+
+
+<div class="notice-form-grid">
+
+<div class="notice-form-group">
+
+<label>
+    Notice Title
+</label>
+
+<input type="text" id="adminNoticeTitle" placeholder="Enter notice title">
+
+</div>
+
+
+<div class="notice-form-group">
+
+<label>
+    Audience
+</label>
+
+<select id="adminNoticeAudience">
+
+    <option value="">
+        Select Audience
+    </option>
+
+    <option value="All Students">
+        All Students
+    </option>
+
+    <option value="All Parents">
+        All Parents
+    </option>
+
+    <option value="All Teachers">
+        All Teachers
+    </option>
+
+    <option value="Class">
+        Specific Class
+    </option>
+
+</select>
+
+</div>
+
+
+<div class="notice-form-group">
+
+<label>
+    Notice Date
+</label>
+
+<input type="date" id="adminNoticeDate">
+
+</div>
+
+
+<div class="notice-form-group notice-form-full">
+
+<label>
+    Notice Description
+</label>
+
+<textarea id="adminNoticeDescription" rows="5"
+    placeholder="Write notice details..."></textarea>
+
+</div>
+
+</div>
+
+
+<div class="notice-form-actions">
+
+<button type="button" id="cancelAdminNotice">
+Cancel
+</button>
+
+<button type="button" id="saveAdminNotice">
+💾 Save Notice
+</button>
+
+</div>
+
+</div>
+<!-- SEARCH / FILTER -->
+
+<div class="notice-filter-row">
+
+<input type="text" id="adminNoticeSearch" placeholder="🔍 Search notices...">
+
+<select id="adminNoticeAudienceFilter">
+
+<option value="all">
+All Audiences
+</option>
+
+<option value="All Students">
+All Students
+</option>
+
+<option value="All Parents">
+All Parents
+</option>
+
+<option value="All Teachers">
+All Teachers
+</option>
+
+<option value="Class">
+Specific Class
+</option>
+
+</select>
+
+<select id="adminNoticeSort">
+
+<option value="latest">
+Latest
+</option>
+
+<option value="oldest">
+Oldest
+</option>
+
+<option value="title">
+Title
+</option>
+
+</select>
+
+</div>
+
+
+<!-- NOTICE TABLE -->
+
+<div class="notice-table-wrapper">
+
+<table class="notice-admin-table">
+
+<thead>
+
+<tr>
+
+    <th>#</th>
+
+    <th>Title</th>
+
+    <th>Audience</th>
+
+    <th>Date</th>
+
+</tr>
+
+</thead>
+
+<tbody id="adminNoticesTableBody">
+
+<tr>
+
+    <td colspan="4">
+
+        <div class="admin-empty-state">
+
+            <h3>
+                📢 No Notices Yet
+            </h3>
+
+            <p>
+                Click
+                <strong>Add Notice</strong>
+                to create a new notice.
+            </p>
+
+        </div>
+
+    </td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<!-- ENTRY COUNT -->
+
+<div id="adminNoticeEntriesText" class="notice-entry-count">
+
+Showing 0 notices
+
+</div>
+
+</div>
+
+</div>
+<!-- ==========================================
+USER MANAGEMENT - STUDENTS
+========================================== -->
+
+<div id="adminUsersStudentsSection" style="display:none;">
+
+<div class="admin-page-header">
+
+<div>
+<h2>👨‍🎓 Student User Management</h2>
+<p>Manage student login accounts and access.</p>
+<div class="user-management-actions">
+
+ <button type="button" id="adminAddStudentBtn">
+    ➕ Add New Student
+</button>
+
+    <button
+        type="button"
+        id="adminUsersAddTeacherBtn">
+
+        ➕ Add Teacher
+
+    </button>
+
+</div>
+</div>
+
+</div>
+
+
+<div class="admin-students-table-container">
+
+<table class="admin-students-table">
+
+<thead>
+<tr>
+    <th>#</th>
+    <th>Role</th>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Class / Subject</th>
+    <th>Username</th>
+    <th>Password</th>
+    <th>Status</th>
+    <th>Actions</th>
+</tr>
+</thead>
+
+<tbody id="adminUsersStudentsTableBody">
+
+<tr>
+<td colspan="8">
+    No student accounts found.
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+
+</div>
+<!-- ==========================================
+ADMIN SETTINGS SECTION
+========================================== -->
+
+<div id="adminSettingsSection" style="display:none;">
+
+<div class="admin-settings-container">
+
+<!-- HEADER -->
+
+<div class="admin-settings-header">
+
+<div>
+
+<h2>⚙️ Settings</h2>
+
+<p>
+Manage your EduPortal settings
+</p>
+
+</div>
+
+</div>
+
+
+<!-- SETTINGS GRID -->
+
+<div class="admin-settings-grid">
+
+
+<!-- SCHOOL / COLLEGE INFO -->
+
+<div class="admin-settings-card">
+
+<div class="admin-settings-icon">
+🏫
+</div>
+
+<div class="admin-settings-content">
+
+<h3 id="institutionSettingsTitle">
+    Institution Info
+</h3>
+
+<p>
+    <strong>Name:</strong>
+    <span id="settingsInstitutionName">
+        EduPortal
+    </span>
+</p>
+
+<p>
+    <strong>Address:</strong>
+    <span id="settingsInstitutionAddress">
+        Not Added
+    </span>
+</p>
+
+<p>
+    <strong>Phone:</strong>
+    <span id="settingsInstitutionPhone">
+        Not Added
+    </span>
+</p>
+
+<button type="button" id="editInstitutionInfoBtn" class="settings-edit-btn">
+
+    ✏️ Edit
+
+</button>
+
+</div>
+<!-- ==========================================
+EDIT INSTITUTION INFO MODAL
+========================================== -->
+
+<div id="institutionInfoModal" class="settings-modal">
+
+<div class="settings-modal-box">
+
+    <button type="button" id="closeInstitutionInfoModal"
+        class="settings-modal-close">
+
+        ✕
+
+    </button>
+
+
+    <div class="settings-modal-header">
+
+        <div class="settings-modal-icon">
+            🏫
+        </div>
+
+        <div>
+
+            <h2 id="institutionModalTitle">
+                School Information
+            </h2>
+
+            <p>
+                Update your institution information
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="settings-form">
+
+
+        <div class="settings-input-group">
+
+            <label>
+                School / College Name
+            </label>
+
+            <input type="text" id="institutionNameInput"
+                placeholder="Enter institution name">
+
+        </div>
+
+
+        <div class="settings-input-group">
+
+            <label>
+                Address
+            </label>
+
+            <input type="text" id="institutionAddressInput"
+                placeholder="Enter address">
+
+        </div>
+
+
+        <div class="settings-input-group">
+
+            <label>
+                Phone Number
+            </label>
+
+            <input type="text" id="institutionPhoneInput"
+                placeholder="Enter phone number">
+
+        </div>
+
+
+    </div>
+
+
+    <div class="settings-modal-actions">
+
+        <button type="button" id="cancelInstitutionInfoBtn"
+            class="settings-cancel-btn">
+
+            Cancel
+
+        </button>
+
+
+        <button type="button" id="saveInstitutionInfoBtn" class="settings-save-btn">
+
+            💾 Save Changes
+
+        </button>
+
+    </div>
+
+</div>
+
+</div>
+</div>
+<!-- ==========================================
+EMAIL SETTINGS
+========================================== -->
+
+<div class="admin-settings-card">
+
+<div class="admin-settings-icon">
+📧
+</div>
+
+<div class="admin-settings-content">
+
+<h3>
+    Email
+</h3>
+
+<p>
+    <strong>Email Address:</strong>
+    <span id="settingsEmailValue">
+        admin@eduportal.com
+    </span>
+</p>
+
+<p>
+    <strong>Updated Email:</strong>
+    <span id="settingsUpdatedEmailValue">
+        Not Added
+    </span>
+</p>
+
+<p>
+    <strong>Phone:</strong>
+    <span id="settingsPhoneValue">
+        Not Added
+    </span>
+</p>
+
+<button type="button" id="editEmailSettingsBtn" class="settings-manage-btn">
+
+    ✏️ Edit
+
+</button>
+
+</div>
+
+</div>
+<!-- ==========================================
+EMAIL SETTINGS MODAL
+========================================== -->
+
+<div id="emailSettingsModal" class="settings-modal">
+
+<div class="settings-modal-box">
+
+<button type="button" id="closeEmailSettingsModal" class="settings-modal-close">
+
+    ✕
+
+</button>
+
+
+<div class="settings-modal-header">
+
+    <div class="settings-modal-icon">
+        📧
+    </div>
+
+    <div>
+
+        <h2>Email Settings</h2>
+
+        <p>
+            Update email and contact information
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="settings-form">
+
+    <div class="settings-input-group">
+
+        <label>
+            New Email Address
+        </label>
+
+        <input type="email" id="newSettingsEmail"
+            placeholder="Enter new email address">
+
+    </div>
+
+
+    <div class="settings-input-group">
+
+        <label>
+            Phone Number
+        </label>
+
+        <input type="text" id="settingsPhoneInput" placeholder="Enter phone number">
+
+    </div>
+
+</div>
+
+
+<div class="settings-modal-actions">
+
+    <button type="button" id="cancelEmailSettingsBtn" class="settings-cancel-btn">
+
+        Cancel
+
+    </button>
+
+
+    <button type="button" id="saveEmailSettingsBtn" class="settings-save-btn">
+
+        💾 Save Changes
+
+    </button>
+
+</div>
+
+</div>
+
+</div>
+<!-- ==========================================
+SECURITY SETTINGS
+========================================== -->
+
+<div class="admin-settings-card">
+
+<div class="admin-settings-icon">
+🔐
+</div>
+
+<div class="admin-settings-content">
+
+<h3>
+    Security
+</h3>
+
+<p>
+    <strong>Password:</strong>
+    ••••••••
+</p>
+
+<p>
+    <strong>Login Security:</strong>
+    <span id="loginSecurityValue">
+        Enabled
+    </span>
+</p>
+
+<button type="button" id="changePasswordBtn" class="settings-manage-btn">
+
+    🔑 Change Password
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+</div>
+<!-- ===========================
+ADD NEW STUDENT MODAL
+=========================== -->
+<!-- ==========================================
+CHANGE PASSWORD MODAL
+========================================== -->
+
+<div id="changePasswordModal" class="settings-modal">
+
+<div class="settings-modal-box">
+
+<button type="button" id="closeChangePasswordModal" class="settings-modal-close">
+    ✕
+</button>
+
+<div class="settings-modal-header">
+
+    <div class="settings-modal-icon">
+        🔐
+    </div>
+
+    <div>
+        <h2>Change Password</h2>
+
+        <p>
+            Update your administrator password
+        </p>
+    </div>
+
+</div>
+
+<div class="settings-form">
+
+    <div class="settings-input-group">
+
+        <label>Current Password</label>
+
+        <input type="password" id="currentAdminPassword"
+            placeholder="Enter current password">
+
+    </div>
+
+
+    <div class="settings-input-group">
+
+        <label>New Password</label>
+
+        <input type="password" id="newAdminPassword"
+            placeholder="Enter new password">
+
+    </div>
+
+
+    <div class="settings-input-group">
+
+        <label>Confirm New Password</label>
+
+        <input type="password" id="confirmAdminPassword"
+            placeholder="Confirm new password">
+
+    </div>
+
+</div>
+
+
+<div class="settings-modal-actions">
+
+    <button type="button" id="cancelChangePasswordBtn" class="settings-cancel-btn">
+
+        Cancel
+
+    </button>
+
+
+    <button type="button" id="saveNewPasswordBtn" class="settings-save-btn">
+
+        🔒 Update Password
+
+    </button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div id="adminAddStudentModal" class="admin-student-modal">
+
+<div class="admin-student-modal-box">
+
+<div class="student-modal-header-v2">
+
+    <div class="student-title-wrap-v2">
+
+        <div class="student-title-icon-v2">
+            +
+        </div>
+
+        <div>
+            <h2>Add New Student</h2>
+
+            <p>
+                Enter student information below
+            </p>
+        </div>
+
+    </div>
+
+    <button
+        type="button"
+        id="closeAdminAddStudentModal"
+        class="admin-student-modal-close">
+
+        ×
+
+    </button>
+
+</div>
+
+
+<div class="admin-student-form-grid">
+
+    <div class="input-group">
+
+        <label>Full Name</label>
+
+        <input type="text" id="adminNewStudentName" placeholder="Enter full name">
+
+    </div>
+
+    <div class="input-group">
+
+        <label>Father Name</label>
+
+        <input type="text" id="adminNewStudentFather"
+            placeholder="Enter father name">
+
+    </div>
+
+
+    <div class="input-group">
+
+        <div class="input-group">
+
+            <label>Student ID</label>
+
+            <input type="text" id="adminNewStudentId" placeholder="Auto Generated"
+                readonly>
+
+        </div>
+    </div>
+
+
+    <div class="input-group">
+
+        <label>Class</label>
+
+        <select id="adminNewStudentClass">
+
+            <option value="">
+                Select Class
+            </option>
+
+            <option value="9">
+                Class 9
+            </option>
+
+            <option value="10">
+                Class 10
+            </option>
+
+            <option value="11">
+                Class 11
+            </option>
+
+            <option value="12">
+                Class 12
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div class="input-group">
+
+        <label>Section</label>
+
+        <select id="adminNewStudentSection">
+
+            <option value="">
+                Select Section
+            </option>
+
+            <option value="A">
+                Section A
+            </option>
+
+            <option value="B">
+                Section B
+            </option>
+
+            <option value="C">
+                Section C
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div class="input-group">
+
+        <label>Roll Number</label>
+
+        <input type="text" id="adminNewStudentRoll" placeholder="Enter roll number">
+
+    </div>
+
+
+    <div class="input-group">
+
+        <label>Date of Birth (YYYY-MM-DD)</label>
+
+        <input type="text" id="adminNewStudentDOB" placeholder="YYYY-MM-DD"
+            maxlength="10" inputmode="numeric" autocomplete="off">
+
+    </div>
+
+    <div class="input-group">
+
+        <label>Email</label>
+
+        <input type="email" id="adminNewStudentEmail"
+            placeholder="student@email.com">
+
+    </div>
+    <div class="input-group">
+
+        <label>Username (Auto Generated)</label>
+
+        <input type="text" id="adminNewStudentUsername"
+            placeholder="Username will be generated automatically" readonly>
+
+        <small style="display:block; margin-top:6px; color:#64748b;">
+            Username is automatically generated.
+        </small>
+
+    </div>
+    <div class="input-group">
+
+        <label>Password</label>
+
+        <input type="password" id="adminNewStudentPassword"
+            placeholder="Enter password">
+
+    </div>
+    <div class="input-group">
+
+        <label>Mobile Number</label>
+
+        <input type="tel" id="adminNewStudentMobile" placeholder="03XXXXXXXXX"
+            maxlength="11" inputmode="numeric">
+
+    </div>
+
+</div>
+
+
+<div class="admin-student-modal-actions">
+
+    <button id="cancelAdminAddStudent" type="button">
+        Cancel
+    </button>
+
+    <button id="saveAdminStudent" type="button">
+        💾 Save Student
+    </button>
+
+</div>
+
+</div>
+
+</div>
+<!-- ===========================
+VIEW STUDENT MODAL
+=========================== -->
+
+<div id="adminViewStudentModal" class="admin-view-student-modal">
+
+<div class="admin-view-student-box">
+
+<button id="closeAdminViewStudentModal" class="admin-view-student-close"
+    type="button">
+    ✕
+</button>
+
+
+<div class="admin-view-student-header">
+
+    <div class="admin-view-student-avatar">
+        👨‍🎓
+    </div>
+
+    <div>
+
+        <h2 id="viewStudentName">
+            Student Name
+        </h2>
+
+        <p id="viewStudentStatus">
+            Active
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="admin-view-student-details">
+
+    <div class="admin-view-detail">
+
+        <span>Student ID</span>
+
+        <strong id="viewStudentId">
+            —
+        </strong>
+
+    </div>
+
+
+    <div class="admin-view-detail">
+
+        <span>Father Name</span>
+
+        <strong id="viewStudentFather">
+            —
+        </strong>
+
+    </div>
+
+
+    <div class="admin-view-detail">
+
+        <span>Class</span>
+
+        <strong id="viewStudentClass">
+            —
+        </strong>
+
+    </div>
+
+
+    <div class="admin-view-detail">
+
+        <span>Section</span>
+
+        <strong id="viewStudentSection">
+            —
+        </strong>
+
+    </div>
+
+
+    <div class="admin-view-detail">
+
+        <span>Roll Number</span>
+
+        <strong id="viewStudentRoll">
+            —
+        </strong>
+
+    </div>
+
+
+    <div class="admin-view-detail">
+
+        <span>Date of Birth</span>
+
+        <strong id="viewStudentDOB">
+            —
+        </strong>
+
+    </div>
+
+
+    <div class="admin-view-detail">
+
+        <span>Email</span>
+
+        <strong id="viewStudentEmail">
+            —
+        </strong>
+
+    </div>
+
+
+    <div class="admin-view-detail">
+
+        <span>Mobile Number</span>
+
+        <strong id="viewStudentMobile">
+            —
+        </strong>
+
+    </div>
+
+</div>
+
+
+<button id="closeViewStudentBtn" type="button" class="admin-view-student-done">
+
+    Close
+
+</button>
+
+</div>
+
+</div>
+<!-- ===========================
+EDIT STUDENT MODAL
+=========================== -->
+
+<div id="adminEditStudentModal" class="admin-edit-student-modal">
+
+<div class="admin-edit-student-box">
+
+<button id="closeAdminEditStudentModal" class="admin-edit-student-close"
+    type="button">
+    ✕
+</button>
+
+<h2>✏️ Edit Student</h2>
+
+<p class="admin-edit-subtitle">
+    Update student information
+</p>
+
+
+<div class="admin-edit-form-grid">
+
+    <div class="input-group">
+        <label>Full Name</label>
+
+        <input type="text" id="editStudentName" placeholder="Enter full name">
+    </div>
+
+
+    <div class="input-group">
+        <label>Father Name</label>
+
+        <input type="text" id="editStudentFather" placeholder="Enter father name">
+    </div>
+
+
+    <div class="input-group">
+        <label>Student ID</label>
+
+        <input type="text" id="editStudentId" placeholder="Enter student ID">
+    </div>
+
+
+    <div class="input-group">
+        <label>Class</label>
+
+        <select id="editStudentClass">
+
+            <option value="">Select Class</option>
+            <option value="9">Class 9</option>
+            <option value="10">Class 10</option>
+            <option value="11">Class 11</option>
+            <option value="12">Class 12</option>
+
+        </select>
+    </div>
+
+
+    <div class="input-group">
+        <label>Section</label>
+
+        <select id="editStudentSection">
+
+            <option value="">Select Section</option>
+            <option value="A">Section A</option>
+            <option value="B">Section B</option>
+            <option value="C">Section C</option>
+
+        </select>
+    </div>
+
+
+    <div class="input-group">
+        <label>Roll Number</label>
+
+        <input type="text" id="editStudentRoll" placeholder="Enter roll number">
+    </div>
+
+
+    <div class="input-group">
+        <label>Date of Birth</label>
+
+        <input type="date" id="editStudentDOB">
+    </div>
+
+
+    <div class="input-group">
+        <label>Email</label>
+
+        <input type="email" id="editStudentEmail" placeholder="student@email.com">
+    </div>
+
+
+    <div class="input-group">
+        <label>Mobile Number</label>
+
+        <input type="text" id="editStudentMobile" placeholder="03XX-XXXXXXX">
+    </div>
+
+
+    <div class="input-group">
+        <label>Status</label>
+
+        <select id="editStudentStatus">
+
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+
+        </select>
+    </div>
+
+</div>
+
+
+<div class="admin-edit-student-actions">
+
+    <button id="cancelEditStudent" type="button">
+        Cancel
+    </button>
+
+    <button id="saveEditedStudent" type="button">
+        💾 Save Changes
+    </button>
+
+</div>
+
+</div>
+
+</div>
+<!-- ==========================================
+ADMIN VIEW STUDENT MODAL
+========================================== -->
+
+<div id="adminViewStudentModal">
+
+<div class="admin-view-student-box">
+
+<button type="button" id="closeAdminViewStudentModal"
+    class="admin-view-student-close">
+    ×
+</button>
+
+<div class="admin-view-student-header">
+
+    <div class="admin-view-student-avatar">
+        👨‍🎓
+    </div>
+
+    <div>
+        <h2 id="viewStudentName">
+            Student Name
+        </h2>
+
+        <span id="viewStudentStatus">
+            Active
+        </span>
+    </div>
+
+</div>
+
+
+<div class="admin-view-student-details">
+
+    <div class="admin-view-detail">
+        <span>Student ID</span>
+        <strong id="viewStudentId">—</strong>
+    </div>
+
+    <div class="admin-view-detail">
+        <span>Father Name</span>
+        <strong id="viewStudentFather">—</strong>
+    </div>
+
+    <div class="admin-view-detail">
+        <span>Class</span>
+        <strong id="viewStudentClass">—</strong>
+    </div>
+
+    <div class="admin-view-detail">
+        <span>Section</span>
+        <strong id="viewStudentSection">—</strong>
+    </div>
+
+    <div class="admin-view-detail">
+        <span>Roll Number</span>
+        <strong id="viewStudentRoll">—</strong>
+    </div>
+
+    <div class="admin-view-detail">
+        <span>Date of Birth</span>
+        <strong id="viewStudentDOB">—</strong>
+    </div>
+
+    <div class="admin-view-detail">
+        <span>Email</span>
+        <strong id="viewStudentEmail">—</strong>
+    </div>
+
+    <div class="admin-view-detail">
+        <span>Mobile</span>
+        <strong id="viewStudentMobile">—</strong>
+    </div>
+
+</div>
+
+
+<button type="button" id="closeViewStudentBtn" class="admin-view-student-done">
+    Close
+</button>
+
+</div>
+
+</div>
+<!-- ===========================
+Teacher Contact Modal
+=========================== -->
+
+<div id="teacherModal" class="teacher-modal">
+
+<div class="teacher-modal-content">
+
+<button id="closeTeacherModal" class="close-teacher-modal">
+    ×
+</button>
+
+<div class="teacher-modal-icon">
+    👨‍🏫
+</div>
+
+<h2>Contact Teacher</h2>
+
+<p class="teacher-modal-subtitle">
+    Select a teacher to view contact details
+</p>
+
+<div class="teacher-contact-card">
+
+    <div class="teacher-avatar">
+        👨‍🏫
+    </div>
+
+    <div class="teacher-info">
+
+        <h3>Sir Ali</h3>
+
+        <p>
+            <strong>Subject:</strong>
+            Computer Science
+        </p>
+
+        <p>
+            <strong>Email:</strong>
+            sir.ali@eduportal.com
+        </p>
+
+        <p>
+            <strong>Office:</strong>
+            Room 101
+        </p>
+
+    </div>
+
+</div>
+
+<div class="teacher-modal-actions">
+
+    <button id="emailTeacherBtn">
+        ✉️ Email Teacher
+    </button>
+
+    <button id="closeTeacherBtn">
+        Close
+    </button>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<!-- ==========================================
+ADMIN ADD ASSIGNMENT MODAL
+========================================== -->
+
+<div id="adminAssignmentModal" class="admin-assignment-modal">
+
+<div class="admin-assignment-modal-box">
+
+<div class="admin-assignment-modal-header">
+    <h2>➕ Add New Assignment</h2>
+
+    <button type="button" id="closeAdminAssignmentModal">
+        ✖
+    </button>
+</div>
+
+<form id="adminAssignmentForm">
+
+    <div class="admin-assignment-field">
+        <label>Assignment Title</label>
+        <input type="text" id="adminAssignmentTitle"
+            placeholder="Enter assignment title" required>
+    </div>
+
+    <div class="admin-assignment-field">
+        <label>Subject</label>
+        <input type="text" id="adminAssignmentSubject" placeholder="Enter subject"
+            required>
+    </div>
+
+    <div class="admin-assignment-field">
+        <label>Teacher</label>
+        <input type="text" id="adminAssignmentTeacher"
+            placeholder="Enter teacher name" required>
+    </div>
+
+    <div class="admin-assignment-field">
+        <label>Class</label>
+        <input type="text" id="adminAssignmentClass" placeholder="Enter class"
+            required>
+    </div>
+
+    <div class="admin-assignment-field">
+        <label>Due Date</label>
+        <input type="date" id="adminAssignmentDueDate" required>
+    </div>
+
+    <div class="admin-assignment-field">
+        <label>Description</label>
+        <textarea id="adminAssignmentDescription" rows="4"
+            placeholder="Enter assignment description" required></textarea>
+    </div>
+
+    <div class="admin-assignment-modal-actions">
+
+        <button type="button" id="cancelAdminAssignment">
+            Cancel
+        </button>
+
+        <button type="submit" id="saveAdminAssignment">
+            💾 Save Assignment
+        </button>
+
+    </div>
+
+</form>
+
+</div>
+
+</div>
+<!-- ==========================================
+ADMIN ADD TEACHER MODAL - PREMIUM
+========================================== -->
+
+<div id="adminTeacherModal" class="admin-assignment-modal teacher-modal-v2">
+
+<div class="admin-assignment-modal-box teacher-modal-box-v2">
+
+<!-- HEADER -->
+<div class="teacher-modal-header-v2">
+
+    <div class="teacher-title-wrap-v2">
+
+        <div class="teacher-title-icon-v2">
+            +
+        </div>
+
+        <div>
+            <h2>Add New Teacher</h2>
+            <p>Enter teacher information below</p>
+        </div>
+
+    </div>
+
+    <button type="button" id="closeAdminTeacherModal" class="teacher-close-v2">
+        ×
+    </button>
+
+</div>
+
+
+<!-- FORM -->
+<form
+    id="adminTeacherForm"
+    autocomplete="off">
+
+    <div class="teacher-form-grid-v2">
+
+        <!-- TEACHER NAME -->
+        <div class="teacher-field-v2">
+
+            <label for="adminTeacherName">
+                Teacher Name
+                <span>*</span>
+            </label>
+
+            <div class="teacher-input-v2">
+
+                <span>♙</span>
+
+                <input type="text" id="adminTeacherName"
+                    placeholder="Enter teacher name" autocomplete="name" required>
+
+            </div>
+
+        </div>
+
+
+        <!-- EMAIL -->
+        <div class="teacher-field-v2">
+
+            <label for="adminTeacherEmail">
+                Email
+                <span>*</span>
+            </label>
+
+            <div class="teacher-input-v2">
+
+                <span>✉</span>
+
+               <input
+    type="email"
+    id="adminTeacherEmail"
+    placeholder="Enter email address"
+    autocomplete="off"
+    required>
+
+            </div>
+
+        </div>
+
+
+        <!-- PHONE -->
+        <div class="teacher-field-v2">
+
+            <label for="adminTeacherPhone">
+                Phone Number
+                <span>*</span>
+            </label>
+
+            <div class="teacher-input-v2">
+
+                <span>☎</span>
+
+                <input type="tel" id="adminTeacherPhone" class="pak-phone-11"
+                    inputmode="numeric" autocomplete="tel" minlength="11"
+                    maxlength="11" pattern="03[0-9]{9}"
+                    title="Enter a valid 11-digit Pakistani mobile number" required>
+
+            </div>
+
+        </div>
+
+
+        <!-- SUBJECT -->
+        <div class="teacher-field-v2">
+
+            <label for="adminTeacherSubject">
+                Subject
+                <span>*</span>
+            </label>
+
+            <div class="teacher-input-v2">
+
+                <span>▣</span>
+
+                <input type="text" id="adminTeacherSubject"
+                    placeholder="Enter subject" required>
+
+            </div>
+
+        </div>
+
+
+        <!-- CLASS -->
+        <div class="teacher-field-v2">
+
+            <label for="adminTeacherClass">
+                Class
+                <span>*</span>
+            </label>
+
+            <div class="teacher-input-v2">
+
+                <span>◇</span>
+
+                <input type="text" id="adminTeacherClass" placeholder="Enter class"
+                    required>
+
+            </div>
+
+        </div>
+
+
+        <!-- QUALIFICATION -->
+        <div class="teacher-field-v2">
+
+            <label for="adminTeacherQualification">
+                Qualification
+                <span>*</span>
+            </label>
+
+            <div class="teacher-input-v2">
+
+                <span>▤</span>
+
+                <input type="text" id="adminTeacherQualification"
+                    placeholder="Enter qualification" required>
+
+            </div>
+
+        </div>
+<!-- USERNAME -->
+<div class="teacher-field-v2">
+
+    <label for="adminTeacherUsername">
+        Username
+        <span>*</span>
+    </label>
+
+    <div class="teacher-input-v2">
+
+        <span>👤</span>
+
+        <input
+            type="text"
+            id="adminTeacherUsername"
+            placeholder="Username will be generated automatically"
+            autocomplete="off"
+            readonly
+        >
+
+    </div>
+
+</div>
+
+        <!-- JOINING DATE -->
+        <div class="teacher-field-v2 teacher-date-field-v2">
+
+            <label for="adminTeacherJoiningDate">
+                Joining Date
+                <span>*</span>
+            </label>
+
+            <div class="teacher-input-v2">
+
+                <span>▣</span>
+
+                <input type="date" id="adminTeacherJoiningDate" required>
+
+            </div>
+
+        </div>
+
+    </div>
+
+<!-- PASSWORD -->
+<div class="teacher-field-v2">
+
+    <label for="adminTeacherPassword">
+        Password
+        <span>*</span>
+    </label>
+
+    <div class="teacher-password-input">
+
+        <span>🔒</span>
+<input
+    type="password"
+    id="adminTeacherPassword"
+    placeholder="Enter 6–8 digit password"
+    autocomplete="new-password"
+    inputmode="numeric"
+    minlength="6"
+    maxlength="8"
+    pattern="[0-9]{6,8}"
+    title="Password must contain 6 to 8 digits only"
+    required>
+        >
+
+        <button
+            type="button"
+            id="toggleAdminTeacherPassword"
+            class="teacher-password-toggle"
+            title="Show Password">
+
+            👁️
+
+        </button>
+
+    </div>
+
+</div>
+    <!-- ACTIONS -->
+    <div class="teacher-modal-actions-v2">
+
+        <button type="button" id="cancelAdminTeacher" class="teacher-cancel-v2">
+            Cancel
+        </button>
+
+        <button type="submit" id="saveAdminTeacher" class="teacher-save-v2">
+            💾 Save Teacher
+        </button>
+
+    </div>
+
+</form>
+
+</div>
+
+</div>
+<!-- ==========================================
+ADMIN PASSWORD RECOVERY MODAL
+========================================== -->
+
+<div id="adminPasswordRecoveryModal" class="admin-recovery-modal" style="display:none;">
+
+<div class="admin-recovery-box">
+
+<button type="button" id="closeAdminRecovery" class="admin-recovery-close">
+    ✕
+</button>
+
+<div class="admin-recovery-icon">
+    🔐
+</div>
+
+<h2>Administrator Recovery</h2>
+
+<p class="admin-recovery-subtitle">
+    Verify your registered email to reset
+    your Administrator password.
+</p>
+
+<!-- STEP 1 -->
+
+<div id="recoveryEmailStep">
+
+    <label>Registered Email</label>
+
+    <input type="email" id="recoveryAdminEmail"
+        placeholder="Enter administrator email">
+
+    <button type="button" id="sendAdminOtpBtn">
+
+        Send OTP
+
+    </button>
+
+</div>
+
+
+<!-- STEP 2 -->
+
+<div id="recoveryOtpStep" style="display:none;">
+
+    <label>Verification Code</label>
+
+    <input type="text" id="adminOtpInput" placeholder="Enter 6-digit OTP"
+        maxlength="6" inputmode="numeric">
+
+    <button type="button" id="verifyAdminOtpBtn">
+
+        Verify OTP
+
+    </button>
+
+</div>
+
+
+<!-- STEP 3 -->
+
+<div id="recoveryPasswordStep" style="display:none;">
+
+    <label>New Password</label>
+
+    <input type="password" id="recoveryNewPassword"
+        placeholder="Enter new password">
+
+    <label>Confirm Password</label>
+
+    <input type="password" id="recoveryConfirmPassword"
+        placeholder="Confirm new password">
+
+    <button type="button" id="resetAdminPasswordBtn">
+
+        Reset Password
+
+    </button>
+
+</div>
+
+
+<p id="adminRecoveryMessage" class="admin-recovery-message">
+</p>
+
+</div>
+
+</div>
+<!-- ==========================================
+ADMINISTRATOR PASSWORD RECOVERY
+========================================== -->
+
+<section id="adminRecoveryPage" class="admin-recovery-page">
+
+<div class="admin-recovery-container">
+
+<!-- LEFT / INFO SIDE -->
+<div class="admin-recovery-info">
+
+    <div class="admin-recovery-brand">
+        🔐
+    </div>
+
+    <h1>Administrator Recovery</h1>
+
+    <p>
+        Reset your Administrator password securely
+        using your registered email address.
+    </p>
+
+    <div class="admin-recovery-security">
+
+        <div>
+            ✓ Registered email verification
+        </div>
+
+        <div>
+            ✓ One-time OTP verification
+        </div>
+
+        <div>
+            ✓ Secure password reset
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- RIGHT / RECOVERY SIDE -->
+<div class="admin-recovery-card">
+
+    <button type="button" id="adminRecoveryBackToLogin" class="admin-recovery-back">
+        ← Back to Login
+    </button>
+
+
+    <div class="admin-recovery-header">
+
+        <div class="admin-recovery-icon">
+            🔑
+        </div>
+
+        <h2>Forgot Password?</h2>
+
+        <p>
+            Enter your registered Administrator
+            email address to continue.
+        </p>
+
+    </div>
+
+
+    <!-- STEP 1 : EMAIL -->
+
+    <div id="adminRecoveryEmailStep" class="admin-recovery-step">
+
+        <label for="adminRecoveryEmail">
+            Registered Email
+        </label>
+
+        <input type="email" id="adminRecoveryEmail"
+            placeholder="Enter registered email" autocomplete="email">
+
+        <button type="button" id="adminSendOtpBtn"
+            class="admin-recovery-primary-btn">
+
+            Send OTP
+
+        </button>
+
+    </div>
+
+
+    <!-- STEP 2 : OTP -->
+
+    <div id="adminRecoveryOtpStep" class="admin-recovery-step"
+        style="display:none;">
+
+        <label for="adminRecoveryOtp">
+            Verification OTP
+        </label>
+
+        <input type="text" id="adminRecoveryOtp" placeholder="Enter 6-digit OTP"
+            maxlength="6" inputmode="numeric">
+
+        <button type="button" id="adminVerifyOtpBtn"
+            class="admin-recovery-primary-btn">
+
+            Verify OTP
+
+        </button>
+
+    </div>
+
+
+    <!-- STEP 3 : NEW PASSWORD -->
+
+    <div id="adminRecoveryPasswordStep" class="admin-recovery-step"
+        style="display:none;">
+
+        <label for="adminNewPassword">
+            New Password
+        </label>
+
+        <input type="password" id="adminNewPassword"
+            placeholder="Enter new password">
+
+        <label for="adminConfirmPassword">
+            Confirm New Password
+        </label>
+
+        <input type="password" id="adminConfirmPassword"
+            placeholder="Confirm new password">
+
+        <button type="button" id="adminResetPasswordBtn"
+            class="admin-recovery-primary-btn">
+
+            Reset Password
+
+        </button>
+
+    </div>
+
+
+    <!-- MESSAGE -->
+
+    <div id="adminRecoveryMessage" class="admin-recovery-message">
+    </div>
+
+</div>
+
+</div>
+
+</section>
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- EduPortal -->
+<script src="script.js"></script>
+
+<!-- ==========================================
+     USER MANAGEMENT - EDIT USER MODAL
+========================================== -->
+
+<div
+    id="editUserManagementModal"
+    style="
+        display:none;
+        position:fixed;
+        inset:0;
+        width:100vw;
+        height:100vh;
+        background:rgba(15,23,42,0.65);
+        z-index:99999999;
+        align-items:center;
+        justify-content:center;
+        padding:20px;
+        box-sizing:border-box;
+    "
+>
+
+    <div
+        style="
+            width:min(700px, 95vw);
+            max-height:90vh;
+            overflow-y:auto;
+            background:#ffffff;
+            border-radius:20px;
+            padding:30px;
+            box-shadow:0 25px 70px rgba(0,0,0,0.25);
+            box-sizing:border-box;
+        "
+    >
+
+        <!-- HEADER -->
+
+        <div
+            style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                margin-bottom:25px;
+            "
+        >
+
+            <div>
+                <h2
+                    style="
+                        margin:0;
+                        font-size:26px;
+                        color:#0f172a;
+                    "
+                >
+                    ✏️ Edit User
+                </h2>
+
+                <p
+                    style="
+                        margin:6px 0 0;
+                        color:#64748b;
+                    "
+                >
+                    Update user account information
+                </p>
+            </div>
+
+            <button
+                type="button"
+                id="closeEditUserManagementModal"
+                style="
+                    border:none;
+                    background:#f1f5f9;
+                    color:#334155;
+                    width:38px;
+                    height:38px;
+                    border-radius:10px;
+                    cursor:pointer;
+                    font-size:20px;
+                "
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <!-- USER TYPE -->
+
+        <div
+            style="
+                margin-bottom:18px;
+            "
+        >
+
+            <label
+                style="
+                    display:block;
+                    margin-bottom:7px;
+                    font-weight:600;
+                    color:#334155;
+                "
+            >
+                User Type
+            </label>
+
+            <input
+                type="text"
+                id="editUserType"
+                readonly
+                style="
+                    width:100%;
+                    padding:12px 14px;
+                    border:1px solid #cbd5e1;
+                    border-radius:10px;
+                    background:#f8fafc;
+                    box-sizing:border-box;
+                "
+            >
+
+        </div>
+
+
+        <!-- NAME -->
+
+        <div
+            style="
+                margin-bottom:18px;
+            "
+        >
+
+            <label
+                style="
+                    display:block;
+                    margin-bottom:7px;
+                    font-weight:600;
+                    color:#334155;
+                "
+            >
+                Full Name
+            </label>
+
+            <input
+                type="text"
+                id="editUserName"
+                style="
+                    width:100%;
+                    padding:12px 14px;
+                    border:1px solid #cbd5e1;
+                    border-radius:10px;
+                    box-sizing:border-box;
+                "
+            >
+
+        </div>
+
+
+        <!-- USERNAME -->
+
+        <div
+            style="
+                margin-bottom:18px;
+            "
+        >
+
+            <label
+                style="
+                    display:block;
+                    margin-bottom:7px;
+                    font-weight:600;
+                    color:#334155;
+                "
+            >
+                Username
+            </label>
+
+            <input
+                type="text"
+                id="editUserUsername"
+                style="
+                    width:100%;
+                    padding:12px 14px;
+                    border:1px solid #cbd5e1;
+                    border-radius:10px;
+                    box-sizing:border-box;
+                "
+            >
+
+        </div>
+
+
+        <!-- PASSWORD -->
+
+        <!-- CURRENT PASSWORD -->
+
+<div
+    style="
+        margin-bottom:18px;
+    "
+>
+    <label
+        style="
+            display:block;
+            margin-bottom:7px;
+            font-weight:600;
+            color:#334155;
+        "
+    >
+        Current Password
+    </label>
+
+    <input
+        type="text"
+        id="editUserCurrentPassword"
+        readonly
+        style="
+            width:100%;
+            padding:12px 14px;
+            border:1px solid #cbd5e1;
+            border-radius:10px;
+            box-sizing:border-box;
+            background:#f8fafc;
+        "
+    >
+
+</div>
+
+
+<!-- NEW PASSWORD -->
+
+<div
+    style="
+        margin-bottom:18px;
+    "
+>
+    <label
+        style="
+            display:block;
+            margin-bottom:7px;
+            font-weight:600;
+            color:#334155;
+        "
+    >
+        New Password
+    </label>
+
+    <input
+        type="text"
+        id="editUserNewPassword"
+        placeholder="Enter new password"
+        style="
+            width:100%;
+            padding:12px 14px;
+            border:1px solid #cbd5e1;
+            border-radius:10px;
+            box-sizing:border-box;
+        "
+    >
+
+</div>
+
+
+        <!-- STATUS -->
+
+        <div
+            style="
+                margin-bottom:25px;
+            "
+        >
+
+            <label
+                style="
+                    display:block;
+                    margin-bottom:7px;
+                    font-weight:600;
+                    color:#334155;
+                "
+            >
+                Status
+            </label>
+
+            <select
+                id="editUserStatus"
+                style="
+                    width:100%;
+                    padding:12px 14px;
+                    border:1px solid #cbd5e1;
+                    border-radius:10px;
+                    box-sizing:border-box;
+                    background:white;
+                "
+            >
+                <option value="Active">Active</option>
+                <option value="Disabled">Disabled</option>
+            </select>
+
+        </div>
+
+
+        <!-- BUTTONS -->
+
+        <div
+            style="
+                display:flex;
+                justify-content:flex-end;
+                gap:12px;
+            "
+        >
+
+            <button
+                type="button"
+                id="cancelEditUserManagement"
+                style="
+                    border:none;
+                    background:#e2e8f0;
+                    color:#334155;
+                    padding:12px 20px;
+                    border-radius:10px;
+                    cursor:pointer;
+                    font-weight:600;
+                "
+            >
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                id="saveEditUserManagement"
+                style="
+                    border:none;
+                    background:#2563eb;
+                    color:white;
+                    padding:12px 22px;
+                    border-radius:10px;
+                    cursor:pointer;
+                    font-weight:600;
+                "
+            >
+                💾 Save Changes
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
