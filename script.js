@@ -13287,39 +13287,27 @@ async function () {
     // SAVE TO SUPABASE
     // ==========================================
 
-    const noticeRecord = {
+      const noticeRecord = {
 
-        id:
-            String(
-                noticeId
-            ),
+       id:
+           String(
+               noticeId
+           ),
 
-        title:
-            title,
+       title:
+           title,
 
-        message:
-            description,
+       message:
+           description,
 
-        notice_type:
-            "General",
+       target_role:
+           audience,
 
-        target_audience:
-            audience,
+       created_at:
+           new Date()
+               .toISOString()
 
-        class_name:
-            null,
-
-        created_by:
-            "Administrator",
-
-        status:
-            "Published",
-
-        updated_at:
-            new Date()
-                .toISOString()
-
-    };
+   };
 
     const {
         data,
@@ -13643,8 +13631,8 @@ notice.id,
 title:
 notice.title || "",
 
-audience:
-notice.target_audience || "",
+ audience:
+       notice.target_role || "",
 
 date:
 notice.created_at
@@ -14345,26 +14333,22 @@ async function loadLatestAdminNotice() {
     // LOAD LATEST PUBLISHED NOTICE
     // ==========================================
 
-    const {
-        data: notices,
-        error
-    } =
-        await supabaseClient
-            .from("notices")
-            .select(
-                "id, title, message, target_audience, created_at"
-            )
-            .eq(
-                "status",
-                "Published"
-            )
-            .order(
-                "created_at",
-                {
-                    ascending: false
-                }
-            )
-            .limit(1);
+       const {
+       data: notices,
+       error
+   } =
+       await supabaseClient
+           .from("notices")
+           .select(
+               "id, title, message, target_role, created_at"
+           )
+           .order(
+               "created_at",
+               {
+                   ascending: false
+               }
+           )
+           .limit(1);
 
 
     // ==========================================
@@ -30941,7 +30925,7 @@ latestResults.forEach(function (result) {
     cleanResults.push(result);
 
 });
-    }
+    
 
     // ==========================================
     // TOTAL RESULT
@@ -31205,93 +31189,31 @@ this.setText(
         }
     );
 
-},
+};
  /* -------------------------
    Assignments
 ------------------------- */
-
-async loadAssignments(student) {
+StudentDashboard.loadAssignments = async function(student) {
 
     const container =
-        document.getElementById(
-            "studentAssignments"
-        );
+        document.getElementById("studentAssignments");
 
     if (!container) {
         return;
     }
 
-
-    // =====================================
-    // SUPABASE CHECK
-    // =====================================
-
-    if (
-        typeof supabaseClient ===
-        "undefined"
-    ) {
-
-        console.error(
-            "Supabase connection missing."
-        );
-
+    if (typeof supabaseClient === "undefined") {
+        console.error("Supabase connection missing.");
         return;
     }
 
+    const studentClass =
+        student?.studentClass ||
+        student?.class_name ||
+        student?.className ||
+        "";
 
-   // =====================================
-// FIND STUDENT CLASS
-// =====================================
-
-let studentClass =
-    student.studentClass ||
-    student.class_name ||
-    student.className ||
-    "";
-
-
-// =====================================
-// IF CLASS NOT AVAILABLE LOCALLY
-// GET IT FROM SUPABASE
-// =====================================
-
-if (!studentClass && student.id) {
-
-    const {
-        data: dbStudent,
-        error: studentError
-    } =
-        await supabaseClient
-            .from("students")
-            .select(
-                "id, student_class"
-            )
-            .eq(
-                "id",
-                student.id
-            )
-            .maybeSingle();
-
-    if (
-        !studentError &&
-        dbStudent
-    ) {
-
-        studentClass =
-            dbStudent.student_class ||
-            "";
-
-    }
-
-}
-
-
-// =====================================
-// LOAD ASSIGNMENTS
-// =====================================
-
-let assignmentsQuery =
-    supabaseClient
+    let query = supabaseClient
         .from("assignments")
         .select(
             "id, title, subject, due_date, marks, description, class_name, status, teacher_name"
@@ -31303,183 +31225,109 @@ let assignmentsQuery =
             }
         );
 
+    if (studentClass) {
 
-// =====================================
-// FILTER BY STUDENT CLASS
-// =====================================
-
-if (studentClass) {
-
-    assignmentsQuery =
-        assignmentsQuery.eq(
+        query = query.eq(
             "class_name",
             studentClass
         );
 
-}
+    }
 
+    const {
+        data: assignments,
+        error
+    } = await query;
 
-const {
-    data: assignments,
-    error
-} =
-    await assignmentsQuery;
-
-    // =====================================
-    // ERROR
-    // =====================================
 
     if (error) {
 
         console.error(
-            "STUDENT ASSIGNMENTS ERROR:",
+            "Assignments Error:",
             error
         );
 
         container.innerHTML = `
-            <div class="empty-state">
-                Unable to load assignments.
+            <div class="student-assignment-empty">
+
+                <div class="student-assignment-empty-icon">
+                    ⚠️
+                </div>
+
+                <h3>
+                    Unable to Load Assignments
+                </h3>
+
+                <p>
+                    Please try again later.
+                </p>
+
             </div>
         `;
 
         return;
     }
 
-    // =====================================
-    // CLEAR
-    // =====================================
+
+    const list =
+        assignments || [];
+
 
     container.innerHTML = "";
 
 
-    // =====================================
-    // EMPTY
-    // =====================================
+    const total =
+        list.length;
 
-    if (
-        !assignments ||
-        assignments.length === 0
-    ) {
 
-        container.innerHTML = `
-            <div class="empty-state">
-                No assignments available.
-            </div>
-        `;
-
-        this.setText(
-            "pendingAssignments",
-            "0"
+    const totalHeader =
+        document.getElementById(
+            "studentAssignmentTotal"
         );
 
-        this.setText(
-            "completedAssignments",
-            "0"
+    const totalStat =
+        document.getElementById(
+            "studentAssignmentTotalStat"
         );
 
-        this.setText(
-            "overdueAssignments",
-            "0"
-        );
 
-        return;
+    if (totalHeader) {
+        totalHeader.textContent =
+            total;
     }
 
 
-    // =====================================
-    // COUNTERS
-    // =====================================
+    if (totalStat) {
+        totalStat.textContent =
+            total;
+    }
+
 
     let pending = 0;
-    let completed = 0;
+    let submitted = 0;
     let overdue = 0;
 
 
-    // =====================================
-    // RENDER
-    // =====================================
+    list.forEach(
+        function (assignment) {
 
-    assignments.forEach(
-        function(assignment) {
-
-            const title =
-                assignment.title ||
-                "Assignment";
-
-
-            const subject =
-                assignment.subject ||
-                "";
-
-
-            const dueDate =
-                assignment.due_date ||
-                "";
-
-
-            let status =
+            const status =
                 String(
                     assignment.status ||
-                    "Pending"
+                    "pending"
                 ).toLowerCase();
 
-            // =================================
-            // OVERDUE
-            // =================================
 
-            if (
-                dueDate &&
-                status !== "completed"
-            ) {
+            if (status === "completed") {
 
-                const due =
-                    new Date(
-                        dueDate
-                    );
-
-
-                const today =
-                    new Date();
-
-
-                today.setHours(
-                    0,
-                    0,
-                    0,
-                    0
-                );
-
-
-                if (
-                    !isNaN(
-                        due.getTime()
-                    ) &&
-                    due < today
-                ) {
-
-                    status =
-                        "overdue";
-
-                }
-
-            }
-
-
-            // =================================
-            // COUNT
-            // =================================
-
-            if (
-                status ===
-                "completed"
-            ) {
-
-                completed++;
+                submitted++;
 
             }
             else if (
-                status ===
-                "overdue"
+                assignment.due_date &&
+                new Date(
+                    assignment.due_date
+                ) < new Date()
             ) {
 
                 overdue++;
@@ -31491,187 +31339,327 @@ const {
 
             }
 
+        }
+    );
 
-            // =================================
-            // STATUS LABEL
-            // =================================
 
-            let statusLabel =
-                "Pending";
+    const pendingElement =
+        document.getElementById(
+            "studentAssignmentPending"
+        );
+
+    const submittedElement =
+        document.getElementById(
+            "studentAssignmentSubmitted"
+        );
+
+    const overdueElement =
+        document.getElementById(
+            "studentAssignmentOverdue"
+        );
+
+
+    if (pendingElement) {
+        pendingElement.textContent =
+            pending;
+    }
+
+
+    if (submittedElement) {
+        submittedElement.textContent =
+            submitted;
+    }
+
+
+    if (overdueElement) {
+        overdueElement.textContent =
+            overdue;
+    }
+
+
+    if (list.length === 0) {
+
+        container.innerHTML = `
+            <div class="student-assignment-empty">
+
+                <div class="student-assignment-empty-icon">
+                    📚
+                </div>
+
+                <h3>
+                    No Assignments Found
+                </h3>
+
+                <p>
+                    There are currently no assignments
+                    available for your class.
+                </p>
+
+            </div>
+        `;
+
+        return;
+    }
+
+
+    list.forEach(
+        function (assignment) {
+
+            const title =
+                assignment.title ||
+                "Assignment";
+
+
+            const subject =
+                assignment.subject ||
+                "General";
+
+
+            const dueDate =
+                assignment.due_date ||
+                "N/A";
+
+
+            const marks =
+                assignment.marks ??
+                0;
+
+
+            const description =
+                assignment.description ||
+                "No description provided.";
+
+
+            const teacher =
+                assignment.teacher_name ||
+                "Teacher";
+
+
+            let status =
+                String(
+                    assignment.status ||
+                    "pending"
+                ).toLowerCase();
 
 
             if (
-                status ===
-                "completed"
+                status !== "completed" &&
+                dueDate !== "N/A" &&
+                new Date(dueDate) < new Date()
             ) {
 
-                statusLabel =
-                    "Completed";
+                status =
+                    "overdue";
+
+            }
+
+
+            let statusText =
+                "Pending";
+
+
+            let statusClass =
+                "";
+
+
+            if (
+                status === "completed"
+            ) {
+
+                statusText =
+                    "Submitted";
+
+                statusClass =
+                    "submitted";
 
             }
             else if (
-                status ===
-                "overdue"
+                status === "overdue"
             ) {
 
-                statusLabel =
+                statusText =
                     "Overdue";
+
+                statusClass =
+                    "overdue";
 
             }
 
 
-            // =================================
-            // CARD
-            // =================================
-
-            const item =
+            const card =
                 document.createElement(
                     "div"
                 );
 
 
-       item.className =
-    "assignment-card";
-
-item.dataset.assignmentId =
-    assignment.id;
-            item.innerHTML = `
-
-                <div>
-
-                    <strong>
-                        ${
-                            title
-                        }
-                    </strong>
+            card.className =
+                "student-assignment-card";
 
 
-                    <small>
-
-                        ${
-                            subject
-                                ? subject + " • "
-                                : ""
-                        }
-
-                        Due:
-                        ${
-                            dueDate ||
-                            "N/A"
-                        }
-
-                    </small>
+            card.dataset.assignmentId =
+                assignment.id;
 
 
-                    <small>
+            card.innerHTML = `
 
-                        Marks:
-                        ${
-                            assignment.marks ??
-                            0
-                        }
+                <div
+                    class="student-assignment-card-top"
+                >
 
-                    </small>
+                    <div>
+
+                        <h3
+                            class="student-assignment-title"
+                        >
+                            ${title}
+                        </h3>
+
+                        <div
+                            class="student-assignment-subject"
+                        >
+                            📘 ${subject}
+                        </div>
+
+                    </div>
 
 
-                    ${
-                        assignment.description
-                            ? `
-                                <p>
-                                    ${
-                                        assignment.description
-                                    }
-                                </p>
-                            `
-                            : ""
-                    }
+                    <span
+                        class="
+                            student-assignment-status
+                            ${statusClass}
+                        "
+                    >
+                        ${statusText}
+                    </span>
 
-
-                    ${
-                        assignment.teacher_name
-                            ? `
-                                <small>
-                                    Teacher:
-                                    ${
-                                        assignment.teacher_name
-                                    }
-                                </small>
-                            `
-                            : ""
-                    }
-
-      
-<button
-    type="button"
-    class="view-assignment-btn"
-    data-assignment-id="${assignment.id}"
->
-    👁 View Assignment
-</button>
-
-<button
-    type="button"
-    class="submit-assignment-btn"
-    data-assignment-id="${assignment.id}"
->
-    📤 Submit Assignment
-</button>
                 </div>
 
 
-                <span
-                    class="status-badge ${
-                        status === "completed"
-                            ? "status-success"
-                            : status === "overdue"
-                                ? "status-danger"
-                                : "status-warning"
-                    }"
+                <p
+                    class="student-assignment-description"
                 >
-                    ${
-                        statusLabel
-                    }
-                </span>
+                    ${description}
+                </p>
+
+
+                <div
+                    class="student-assignment-meta"
+                >
+
+                    <div
+                        class="student-assignment-meta-item"
+                    >
+
+                        <small>
+                            📅 Due Date
+                        </small>
+
+                        <strong>
+                            ${dueDate}
+                        </strong>
+
+                    </div>
+
+
+                    <div
+                        class="student-assignment-meta-item"
+                    >
+
+                        <small>
+                            🎯 Marks
+                        </small>
+
+                        <strong>
+                            ${marks}
+                        </strong>
+
+                    </div>
+
+
+                    <div
+                        class="student-assignment-meta-item"
+                    >
+
+                        <small>
+                            📚 Subject
+                        </small>
+
+                        <strong>
+                            ${subject}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="student-assignment-teacher"
+                >
+
+                    <div
+                        class="
+                            student-assignment-teacher-avatar
+                        "
+                    >
+                        👨‍🏫
+                    </div>
+
+                    <span>
+                        Teacher:
+                        <strong>
+                            ${teacher}
+                        </strong>
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="student-assignment-actions"
+                >
+
+                    <button
+                        type="button"
+                        class="
+                            student-assignment-view-btn
+                            view-assignment-btn
+                        "
+                        data-assignment-id="${assignment.id}"
+                    >
+                        👁 View Assignment
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="
+                            student-assignment-submit-btn
+                            submit-assignment-btn
+                        "
+                        data-assignment-id="${assignment.id}"
+                    >
+                        📤 Submit Assignment
+                    </button>
+
+                </div>
 
             `;
 
 
             container.appendChild(
-                item
+                card
             );
 
         }
     );
 
-
-    // =====================================
-    // UPDATE SUMMARY
-    // =====================================
-
-    this.setText(
-        "pendingAssignments",
-        pending
-    );
-
-
-    this.setText(
-        "completedAssignments",
-        completed
-    );
-
-
-    this.setText(
-        "overdueAssignments",
-        overdue
-    );
-
-},
-
+};
 /* -------------------------
    Assignment Results
 ------------------------- */
 
-async loadAssignmentResults(student) {
+StudentDashboard.loadAssignmentResults = async function(student) {
 
     if (
         typeof supabaseClient ===
@@ -31884,13 +31872,13 @@ if (!studentDbId) {
 
         }
     );
-},
+};
 
 /* -------------------------
    Fees - SUPABASE
 ------------------------- */
 
-async loadFees(student) {
+StudentDashboard.loadFees = async function(student) {
 
     // ==========================================
     // DEFAULT VALUES
@@ -32164,12 +32152,12 @@ if (statusElement) {
 }
 
 
-},
+};
 /* -------------------------
    Notices - SUPABASE
 ------------------------- */
 
-async loadNotices(student) {
+StudentDashboard.loadNotices = async function(student) {
 
 const container =
     document.getElementById(
@@ -32581,12 +32569,12 @@ const notices =
         }
     );
 
-},
+};
     /* -------------------------
        Utility
     ------------------------- */
 
-    setText(id, value) {
+    StudentDashboard.setText = function(id, value) {
 
         const element =
             document.getElementById(id);
@@ -32595,9 +32583,6 @@ const notices =
             element.textContent =
                 value;
         }
-    }
-};
-
 // ==========================================
 // STUDENT SUBMIT ASSIGNMENT
 // ==========================================
@@ -34777,632 +34762,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 });
-// =========================================================
-// STUDENT DASHBOARD CHARTS
-// =========================================================
 
-function updateStudentCharts() {
-
-    // ==========================================
-    // ACADEMIC PERFORMANCE
-    // ==========================================
-
-    const academicData = {
-
-        computerScience: 92,
-
-        mathematics: 87,
-
-        english: 88,
-
-        physics: 90,
-
-        overall: 89
-    };
-
-
-    // Computer Science
-
-    const csBar =
-        document.getElementById(
-            "computerScienceBar"
-        );
-
-    const csPercentage =
-        document.getElementById(
-            "computerSciencePercentage"
-        );
-
-    if (csBar) {
-
-        csBar.style.width =
-            academicData.computerScience + "%";
-    }
-
-    if (csPercentage) {
-
-        csPercentage.textContent =
-            academicData.computerScience + "%";
-    }
-
-
-    // Mathematics
-
-    const mathBar =
-        document.getElementById(
-            "mathematicsBar"
-        );
-
-    const mathPercentage =
-        document.getElementById(
-            "mathematicsPercentage"
-        );
-
-    if (mathBar) {
-
-        mathBar.style.width =
-            academicData.mathematics + "%";
-    }
-
-    if (mathPercentage) {
-
-        mathPercentage.textContent =
-            academicData.mathematics + "%";
-    }
-
-
-    // English
-
-    const englishBar =
-        document.getElementById(
-            "englishBar"
-        );
-
-    const englishPercentage =
-        document.getElementById(
-            "englishPercentage"
-        );
-
-    if (englishBar) {
-
-        englishBar.style.width =
-            academicData.english + "%";
-    }
-
-    if (englishPercentage) {
-
-        englishPercentage.textContent =
-            academicData.english + "%";
-    }
-
-
-    // Physics
-
-    const physicsBar =
-        document.getElementById(
-            "physicsBar"
-        );
-
-    const physicsPercentage =
-        document.getElementById(
-            "physicsPercentage"
-        );
-
-    if (physicsBar) {
-
-        physicsBar.style.width =
-            academicData.physics + "%";
-    }
-
-    if (physicsPercentage) {
-
-        physicsPercentage.textContent =
-            academicData.physics + "%";
-    }
-
-
-    // Overall
-
-    const overall =
-        document.getElementById(
-            "overallPerformanceChart"
-        );
-
-    if (overall) {
-
-        overall.textContent =
-            academicData.overall + "%";
-    }
-
-// ==========================================
-// REAL STUDENT ATTENDANCE CHART
-// SUPABASE
-// ==========================================
-
-async function loadRealStudentAttendanceChart() {
-
-    try {
-
-        // Get logged-in student
-        const savedStudent =
-            JSON.parse(
-                localStorage.getItem(
-                    "loggedInStudent"
-                )
-            );
-
-
-        if (!savedStudent) {
-
-            console.warn(
-                "No logged-in student found."
-            );
-
-            return;
-        }
-
-
-        // Student database ID
-        const studentDatabaseId =
-            savedStudent.id;
-
-
-        if (!studentDatabaseId) {
-
-            console.warn(
-                "Student database ID not found."
-            );
-
-            return;
-        }
-
-
-        // ==========================================
-        // GET REAL ATTENDANCE
-        // ==========================================
-
-        const {
-            data: attendanceRecords,
-            error
-        } =
-            await supabaseClient
-                .from("attendance")
-                .select(
-                    "attendance_date, status"
-                )
-                .eq(
-                    "student_id",
-                    studentDatabaseId
-                );
-
-
-        if (error) {
-
-            console.error(
-                "Attendance loading error:",
-                error
-            );
-
-            return;
-        }
-
-
-        // ==========================================
-        // COUNTS
-        // ==========================================
-
-        let presentDays = 0;
-        let absentDays = 0;
-        let leaveDays = 0;
-        let lateDays = 0;
-
-
-        (attendanceRecords || [])
-            .forEach(function (record) {
-
-                const status =
-                    String(
-                        record.status || ""
-                    )
-                    .trim()
-                    .toLowerCase();
-
-
-                if (status === "present") {
-
-                    presentDays++;
-
-                }
-                else if (status === "absent") {
-
-                    absentDays++;
-
-                }
-                else if (status === "leave") {
-
-                    leaveDays++;
-
-                }
-                else if (status === "late") {
-
-                    lateDays++;
-
-                }
-
-            });
-
-
-        // ==========================================
-        // CALCULATE
-        // ==========================================
-
-        const attendedDays =
-            presentDays +
-            lateDays;
-
-
-        const totalDays =
-            attendedDays +
-            absentDays +
-            leaveDays;
-
-
-        const percentage =
-            totalDays > 0
-                ? Math.round(
-                    (
-                        attendedDays /
-                        totalDays
-                    ) * 100
-                )
-                : 0;
-
-
-        // ==========================================
-        // DONUT
-        // ==========================================
-
-        const donut =
-            document.getElementById(
-                "studentAttendanceDonut"
-            );
-
-
-        if (donut) {
-
-            if (totalDays === 0) {
-
-                donut.style.background =
-                    "#edf2f7";
-
-            }
-            else {
-
-                const green =
-                    (
-                        attendedDays /
-                        totalDays
-                    ) * 360;
-
-
-                const red =
-                    (
-                        absentDays /
-                        totalDays
-                    ) * 360;
-
-
-                const greenEnd =
-                    green;
-
-
-                const redEnd =
-                    green + red;
-
-
-                donut.style.background =
-                    `conic-gradient(
-                        #16a34a 0deg ${greenEnd}deg,
-                        #ef4444 ${greenEnd}deg ${redEnd}deg,
-                        #f59e0b ${redEnd}deg 360deg
-                    )`;
-
-            }
-
-        }
-
-
-        // ==========================================
-        // PERCENTAGE
-        // ==========================================
-
-        const percentageElement =
-            document.getElementById(
-                "studentAttendancePercentage"
-            );
-
-
-        if (percentageElement) {
-
-            percentageElement.textContent =
-                percentage + "%";
-
-        }
-
-
-        // ==========================================
-        // PRESENT
-        // ==========================================
-
-        const presentElement =
-            document.getElementById(
-                "chartPresentDays"
-            );
-
-
-        if (presentElement) {
-
-            presentElement.textContent =
-                attendedDays +
-                (
-                    attendedDays === 1
-                        ? " Day"
-                        : " Days"
-                );
-
-        }
-
-
-        // ==========================================
-        // ABSENT
-        // ==========================================
-
-        const absentElement =
-            document.getElementById(
-                "chartAbsentDays"
-            );
-
-
-        if (absentElement) {
-
-            absentElement.textContent =
-                absentDays +
-                (
-                    absentDays === 1
-                        ? " Day"
-                        : " Days"
-                );
-
-        }
-
-
-        // ==========================================
-        // LEAVE
-        // ==========================================
-
-        const leaveElement =
-            document.getElementById(
-                "chartLeaveDays"
-            );
-
-
-        if (leaveElement) {
-
-            leaveElement.textContent =
-                leaveDays +
-                (
-                    leaveDays === 1
-                        ? " Day"
-                        : " Days"
-                );
-
-        }
-
-
-        // ==========================================
-        // STATUS
-        // ==========================================
-
-        const statusElement =
-            document.getElementById(
-                "attendanceChartStatus"
-            );
-
-
-        let statusText =
-            "No Attendance Data";
-
-
-        if (totalDays > 0) {
-
-            if (percentage >= 90) {
-
-                statusText =
-                    "Excellent";
-
-            }
-            else if (percentage >= 75) {
-
-                statusText =
-                    "Good";
-
-            }
-            else if (percentage >= 60) {
-
-                statusText =
-                    "Needs Improvement";
-
-            }
-            else {
-
-                statusText =
-                    "Low Attendance";
-
-            }
-
-        }
-
-
-        if (statusElement) {
-
-            statusElement.textContent =
-                statusText;
-
-        }
-
-
-        console.log(
-            "Real student attendance loaded:",
-            {
-                present: presentDays,
-                absent: absentDays,
-                leave: leaveDays,
-                late: lateDays,
-                percentage: percentage
-            }
-        );
-
-    }
-    catch (err) {
-
-        console.error(
-            "Student attendance chart error:",
-            err
-        );
-
-    }
-
-}
-setTimeout(
-    function () {
-
-        if (
-            typeof loadRealStudentFeeChart ===
-            "function"
-        ) {
-
-            loadRealStudentFeeChart();
-
-        }
-
-    },
-    1000
-);
-// ==========================================
-// LOAD REAL ATTENDANCE
-// ==========================================
-
-loadRealStudentAttendanceChart();
-    // ==========================================
-    // FEE
-    // ==========================================
-
-    const totalFee =
-        0;
-
-    const paidFee =
-        0;
-
-    const remainingFee =
-        Math.max(
-            totalFee -
-            paidFee,
-            0
-        );
-
-
-    const feePercentage =
-        totalFee > 0
-            ? Math.round(
-                (
-                    paidFee /
-                    totalFee
-                ) * 100
-            )
-            : 0;
-
-
-    const feeDonut =
-        document.getElementById(
-            "studentFeeDonut"
-        );
-
-    if (feeDonut) {
-
-        const paidDegrees =
-            feePercentage * 3.6;
-
-        feeDonut.style.background =
-            `conic-gradient(
-                #f59e0b 0deg ${paidDegrees}deg,
-                #edf2f7 ${paidDegrees}deg 360deg
-            )`;
-    }
-
-
-    const feePercentageElement =
-        document.getElementById(
-            "feeChartPercentage"
-        );
-
-    if (feePercentageElement) {
-
-        feePercentageElement.textContent =
-            feePercentage + "%";
-    }
-
-
-    const totalFeeElement =
-        document.getElementById(
-            "chartTotalFee"
-        );
-
-    if (totalFeeElement) {
-
-        totalFeeElement.textContent =
-            "Rs. " +
-            totalFee.toLocaleString();
-    }
-
-
-    const paidFeeElement =
-        document.getElementById(
-            "chartPaidFee"
-        );
-
-    if (paidFeeElement) {
-
-        paidFeeElement.textContent =
-            "Rs. " +
-            paidFee.toLocaleString();
-    }
-
-
-    const remainingFeeElement =
-        document.getElementById(
-            "chartRemainingFee"
-        );
-
-    if (remainingFeeElement) {
-
-        remainingFeeElement.textContent =
-            "Rs. " +
-            remainingFee.toLocaleString();
-    }
-
-
-    const feeProgress =
-        document.getElementById(
-            "feeChartProgress"
-        );
-
-    if (feeProgress) {
-
-        feeProgress.style.width =
-            feePercentage + "%";
-    }
-
-}
 // =========================================================
 // REAL STUDENT FEE CHART
 // SUPABASE
@@ -35809,15 +35169,6 @@ document.addEventListener(
 document.addEventListener(
     "DOMContentLoaded",
     function () {
-
-        if (
-            typeof updateStudentCharts ===
-            "function"
-        ) {
-
-            updateStudentCharts();
-
-        }
 
 
         setTimeout(
@@ -38132,7 +37483,7 @@ window.showAdminModuleDirect = function (module) {
     // SHOW SELECTED MODULE
     // -----------------------------------------
 
-   arget.style.setProperty(
+    target.style.setProperty(
     "display",
     "block",
     "important"
@@ -38331,4 +37682,9 @@ target.style.setProperty(
 
     }
 
+
+    
 };
+    }
+}
+}

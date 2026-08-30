@@ -2785,6 +2785,17 @@ Student Dashboard
         </div>
 
     </div>
+    <!-- Notice Board -->
+<div class="notice-board" id="noticeBoard">
+
+    <div class="notice-icon">📢</div>
+
+    <div class="notice-content">
+        <h3>Latest Notice</h3>
+        <p id="latestNotice">Loading notices...</p>
+    </div>
+
+</div>
 <!-- Dashboard Cards -->
 
 
@@ -2807,7 +2818,7 @@ Student Dashboard
 
 <div class="card">
 <h3>💰 Fee Status</h3>
-<p id="feeStatus">Pending</p>
+<p id="feeStatus">-</p>
 </div>
 
 </div>
@@ -2851,7 +2862,7 @@ Student Dashboard
                 <div class="academic-label">
                     <span>Computer Science</span>
                     <strong id="computerSciencePercentage">
-                        92%
+                        0%
                     </strong>
                 </div>
 
@@ -2873,7 +2884,7 @@ Student Dashboard
                 <div class="academic-label">
                     <span>Mathematics</span>
                     <strong id="mathematicsPercentage">
-                        87%
+                        0%
                     </strong>
                 </div>
 
@@ -2895,7 +2906,7 @@ Student Dashboard
                 <div class="academic-label">
                     <span>English</span>
                     <strong id="englishPercentage">
-                        88%
+                        0%
                     </strong>
                 </div>
 
@@ -2917,7 +2928,7 @@ Student Dashboard
                 <div class="academic-label">
                     <span>Physics</span>
                     <strong id="physicsPercentage">
-                        90%
+                        0%
                     </strong>
                 </div>
 
@@ -2939,7 +2950,7 @@ Student Dashboard
                 <span>Overall Performance</span>
 
                 <strong id="overallPerformanceChart">
-                    89%
+                    0%
                 </strong>
 
             </div>
@@ -2970,7 +2981,7 @@ Student Dashboard
             <span
                 class="student-chart-badge attendance-badge"
                 id="attendanceChartStatus">
-                Good
+                
             </span>
 
         </div>
@@ -2989,7 +3000,7 @@ Student Dashboard
 
                     <strong
                         id="studentAttendancePercentage">
-                        93%
+                        0%
                     </strong>
 
                     <span>Attendance</span>
@@ -3012,7 +3023,7 @@ Student Dashboard
                     <div>
                         <strong>Present</strong>
                         <span id="chartPresentDays">
-                            28 Days
+                            0 Days
                         </span>
                     </div>
 
@@ -3028,7 +3039,7 @@ Student Dashboard
                     <div>
                         <strong>Absent</strong>
                         <span id="chartAbsentDays">
-                            2 Days
+                            0 Days
                         </span>
                     </div>
 
@@ -3044,7 +3055,7 @@ Student Dashboard
                     <div>
                         <strong>Leave</strong>
                         <span id="chartLeaveDays">
-                            1 Day
+                            0 Day
                         </span>
                     </div>
 
@@ -3117,7 +3128,7 @@ Student Dashboard
                     </span>
 
                     <strong id="chartTotalFee">
-                        Rs. 100,000
+                        Rs. 0
                     </strong>
 
                 </div>
@@ -3130,7 +3141,7 @@ Student Dashboard
                     </span>
 
                     <strong id="chartPaidFee">
-                        Rs. 70,000
+                        Rs. 0
                     </strong>
 
                 </div>
@@ -3143,7 +3154,7 @@ Student Dashboard
                     </span>
 
                     <strong id="chartRemainingFee">
-                        Rs. 30,000
+                        Rs. 0
                     </strong>
 
                 </div>
@@ -3682,22 +3693,22 @@ Fee Status Section
 
 <div class="fee-box">
 <h3>Total Fee</h3>
-<p id="totalFee">Rs. 50,000</p>
+<p id="totalFee">Rs. 0</p>
 </div>
 
 <div class="fee-box">
 <h3>Paid Amount</h3>
-<p id="paidFee">Rs. 30,000</p>
+<p id="paidFee">Rs. 0</p>
 </div>
 
 <div class="fee-box">
 <h3>Remaining</h3>
-<p id="remainingFee">Rs. 20,000</p>
+<p id="remainingFee">Rs. 0</p>
 </div>
 
 <div class="fee-box">
 <h3>Status</h3>
-<p id="feeStatus">Pending</p>
+<p id="feeStatus">-</p>
 </div>
 
 </div>
@@ -3706,12 +3717,12 @@ Fee Status Section
 
 <p>
 <strong>Due Date:</strong>
-<span id="feeDueDate">15 September 2026</span>
+<span id="feeDueDate">-</span>
 </p>
 
 <p>
 <strong>Payment Method:</strong>
-<span id="paymentMethod">Not Paid</span>
+<span id="paymentMethod">-</span>
 </p>
 
 </div>
@@ -3721,24 +3732,188 @@ Fee Status Section
 </div>
 
 <!-- ==========================
-Assignments Section
-========================== -->
+     PROFESSIONAL ASSIGNMENTS
+     ========================== -->
 
 <div id="assignmentsSection" style="display:none;">
-<div class="profile-card">
 
-<h2>📚 Assignments</h2>
+    <div class="student-assignments-page">
 
-<hr>
-<div
-    id="studentAssignments"
-    class="assignment-list"
->
+        <!-- HEADER -->
+        <div class="student-assignment-header">
+
+            <div class="student-assignment-header-left">
+
+                <div class="student-assignment-header-icon">
+                    📚
+                </div>
+
+                <div>
+                    <h2>My Assignments</h2>
+
+                    <p>
+                        View, manage and submit your assignments
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="student-assignment-total">
+
+                <strong id="studentAssignmentTotal">
+                    0
+                </strong>
+
+                <span>
+                    Assignments
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- STATISTICS -->
+        <div class="student-assignment-stats">
+
+            <div class="student-assignment-stat">
+
+                <div class="student-assignment-stat-icon">
+                    📄
+                </div>
+
+                <div>
+                    <strong id="studentAssignmentTotalStat">
+                        0
+                    </strong>
+
+                    <span>
+                        Total
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="student-assignment-stat">
+
+                <div class="student-assignment-stat-icon">
+                    ⏳
+                </div>
+
+                <div>
+                    <strong id="studentAssignmentPending">
+                        0
+                    </strong>
+
+                    <span>
+                        Pending
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="student-assignment-stat">
+
+                <div class="student-assignment-stat-icon">
+                    ✓
+                </div>
+
+                <div>
+                    <strong id="studentAssignmentSubmitted">
+                        0
+                    </strong>
+
+                    <span>
+                        Submitted
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="student-assignment-stat">
+
+                <div class="student-assignment-stat-icon">
+                    !
+                </div>
+
+                <div>
+                    <strong id="studentAssignmentOverdue">
+                        0
+                    </strong>
+
+                    <span>
+                        Overdue
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SEARCH / FILTER -->
+        <div class="student-assignment-toolbar">
+
+            <div class="student-assignment-search">
+
+                <span>
+                    🔍
+                </span>
+
+                <input
+                    type="text"
+                    id="studentAssignmentSearch"
+                    placeholder="Search assignments..."
+                >
+
+            </div>
+
+
+            <select id="studentAssignmentSubjectFilter">
+
+                <option value="all">
+                    All Subjects
+                </option>
+
+            </select>
+
+
+            <select id="studentAssignmentStatusFilter">
+
+                <option value="all">
+                    All Status
+                </option>
+
+                <option value="pending">
+                    Pending
+                </option>
+
+                <option value="completed">
+                    Submitted
+                </option>
+
+                <option value="overdue">
+                    Overdue
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- ASSIGNMENT CARDS -->
+        <div
+            id="studentAssignments"
+            class="student-assignment-grid"
+        >
+        </div>
+
+    </div>
+
 </div>
-</div>
-
-</div>
-
 <!-- ==========================
 Settings Section
 ========================== -->
