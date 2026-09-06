@@ -27187,19 +27187,71 @@ if (loginContainer) {
 
 }
 
-            /* Show teacher dashboard */
+          /* Hide Student Dashboard */
+const studentDashboard =
+    document.getElementById(
+        "studentDashboard"
+    );
 
-            const teacherDashboard =
-                document.getElementById(
-                    "teacherDashboard"
-                );
+if (studentDashboard) {
+    studentDashboard.style.setProperty(
+        "display",
+        "none",
+        "important"
+    );
 
-            if (teacherDashboard) {
+    studentDashboard.style.setProperty(
+        "visibility",
+        "hidden",
+        "important"
+    );
 
-                teacherDashboard.style.display =
-                    "flex";
+    studentDashboard.style.setProperty(
+        "opacity",
+        "0",
+        "important"
+    );
+}
 
-            }
+/* Hide Admin Dashboard */
+const adminDashboard =
+    document.getElementById(
+        "adminDashboard"
+    );
+
+if (adminDashboard) {
+    adminDashboard.style.setProperty(
+        "display",
+        "none",
+        "important"
+    );
+}
+
+/* Show Teacher Dashboard */
+const teacherDashboard =
+    document.getElementById(
+        "teacherDashboard"
+    );
+
+if (teacherDashboard) {
+    teacherDashboard.style.setProperty(
+        "display",
+        "flex",
+        "important"
+    );
+
+    teacherDashboard.style.setProperty(
+        "visibility",
+        "visible",
+        "important"
+    );
+
+    teacherDashboard.style.setProperty(
+        "opacity",
+        "1",
+        "important"
+    );
+}
 
 
             /* Load teacher information */
