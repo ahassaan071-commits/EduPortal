@@ -15,20 +15,6 @@ const supabaseClient =
     );
 
 console.log("EduPortal Supabase connected ✅");
-// =====================================================
-// GLOBAL SAFE HTML HELPER
-// =====================================================
-
-window.escapeHtml = function (value) {
-
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-};
 // ===============================
 // EduPortal Student Portal
 // ===============================
@@ -452,22 +438,26 @@ else if (selectedRole === "teacher") {
 
         setTimeout(function () {
 
-            const login =
-                document.querySelector(".container");
+       const login =
+    document.querySelector(".container");
 
-            if (login) {
-                login.style.display = "none";
-            }
+if (login) {
+    login.classList.add("session-hidden");
+    login.style.display = "none";
+}
 
             const studentDashboard =
                 document.getElementById(
                     "studentDashboard"
                 );
 
-            if (studentDashboard) {
-                studentDashboard.style.display =
-                    "block";
-            }
+         if (studentDashboard) {
+    studentDashboard.style.setProperty(
+        "display",
+        "none",
+        "important"
+    );
+}
 
             const adminDashboard =
                 document.getElementById(
@@ -475,34 +465,66 @@ else if (selectedRole === "teacher") {
                 );
 
             if (adminDashboard) {
+    adminDashboard.style.setProperty(
+        "display",
+        "block",
+        "important"
+    );
 
-                adminDashboard.style.display =
-                    "block";
+    adminDashboard.style.setProperty(
+        "visibility",
+        "visible",
+        "important"
+    );
 
-                adminDashboard.style.visibility =
-                    "visible";
+    adminDashboard.style.setProperty(
+        "opacity",
+        "1",
+        "important"
+    );
 
-                adminDashboard.style.opacity =
-                    "1";
+    adminDashboard.style.setProperty(
+        "position",
+        "fixed",
+        "important"
+    );
 
-                adminDashboard.style.position =
-                    "fixed";
+    adminDashboard.style.setProperty(
+        "top",
+        "0",
+        "important"
+    );
 
-                adminDashboard.style.top = "0";
-                adminDashboard.style.left = "0";
+    adminDashboard.style.setProperty(
+        "left",
+        "0",
+        "important"
+    );
 
-                adminDashboard.style.width =
-                    "100vw";
+    adminDashboard.style.setProperty(
+        "width",
+        "100vw",
+        "important"
+    );
 
-                adminDashboard.style.height =
-                    "100vh";
+    adminDashboard.style.setProperty(
+        "height",
+        "100vh",
+        "important"
+    );
 
-                adminDashboard.style.zIndex =
-                    "999999";
+    adminDashboard.style.setProperty(
+        "z-index",
+        "999999",
+        "important"
+    );
 
-                adminDashboard.style.overflow =
-                    "auto";
-            }
+    adminDashboard.style.setProperty(
+        "overflow",
+        "auto",
+        "important"
+    );
+}
 
             const adminName =
                 document.getElementById(
@@ -522,12 +544,12 @@ else if (selectedRole === "teacher") {
                     " 👋";
             }
 
-if (
-    typeof updateProfessionalAdminDashboard ===
-    "function"
-) {
-    updateProfessionalAdminDashboard();
-}
+            if (
+                typeof syncFinalAdminDashboard ===
+                "function"
+            ) {
+                syncFinalAdminDashboard();
+            }
 
         }, 500);
 
@@ -956,23 +978,32 @@ if (selectedRole === "student") {
         }
 
 
-        // Show Student
-        const studentDashboard =
-            document.getElementById(
-                "studentDashboard"
-            );
+  // Show Student
+const studentDashboard =
+    document.getElementById(
+        "studentDashboard"
+    );
 
-        if (studentDashboard) {
+if (studentDashboard) {
 
-            studentDashboard.style.display =
-                "block";
+    studentDashboard.style.setProperty(
+        "display",
+        "block",
+        "important"
+    );
 
-            studentDashboard.style.visibility =
-                "visible";
+    studentDashboard.style.setProperty(
+        "visibility",
+        "visible",
+        "important"
+    );
 
-            studentDashboard.style.opacity =
-                "1";
-        }
+    studentDashboard.style.setProperty(
+        "opacity",
+        "1",
+        "important"
+    );
+}
 
 
         // ==========================================
@@ -1310,15 +1341,14 @@ loginContainer.style.display = "none";
 
 // Keep parent visible
 const studentDashboard =
-    document.getElementById(
-        "studentDashboard"
-    );
+document.getElementById("studentDashboard");
 
 if (studentDashboard) {
-
-    studentDashboard.style.display =
-        "none";
-
+    studentDashboard.style.setProperty(
+        "display",
+        "none",
+        "important"
+    );
 }
 
 // Show Admin Dashboard
@@ -2233,7 +2263,79 @@ async function updateAnalytics() {
 
     // =====================================================
     // ACADEMIC CHART SUBJECT ELEMENTS
-    // =============
+    // =====================================================
+
+    const chartSubjects = [
+
+        {
+            names: [
+                "Computer Science",
+                "Computer science",
+                "computer science"
+            ],
+
+            percentageId:
+                "computerSciencePercentage",
+
+            barId:
+                "computerScienceBar"
+        },
+
+        {
+            names: [
+                "Mathematics",
+                "Math",
+                "math"
+            ],
+
+            percentageId:
+                "mathematicsPercentage",
+
+            barId:
+                "mathematicsBar"
+        },
+
+        {
+            names: [
+                "English",
+                "english"
+            ],
+
+            percentageId:
+                "englishPercentage",
+
+            barId:
+                "englishBar"
+        },
+
+        {
+    names: [
+        "Physics",
+        "physics"
+    ],
+
+    percentageId:
+        "physicsPercentage",
+
+    barId:
+        "physicsBar"
+},
+
+{
+    names: [
+        "Chemistry",
+        "chemistry"
+    ],
+
+    percentageId:
+        "chemistryPercentage",
+
+    barId:
+        "chemistryBar"
+}
+
+    ];
+
 
     // =====================================================
     // RESET CHART SUBJECTS
@@ -3231,7 +3333,7 @@ localStorage.setItem(
 "adminAccount",
 JSON.stringify(newAccount)
 );
-
+localStorage.setItem("adminSessionStart", String(Date.now()));
 createLoginMessage.style.color = "green";
 
 createLoginMessage.textContent =
@@ -3268,6 +3370,7 @@ createLoginMessage.textContent = "";
 });
 
 }
+
 
 // ==========================================
 // ADMIN ADD STUDENT - OPEN / CLOSE
@@ -3318,11 +3421,7 @@ modal.style.display = "none";
 
 
 // Close Cancel
-if (
-    event.target.closest(
-        "#cancelAdminAddStudentModal"
-    )
-) {
+if (event.target.closest("#cancelAdminAddStudent")) {
 
 const modal =
 document.getElementById("adminAddStudentModal");
@@ -3334,10 +3433,9 @@ modal.style.display = "none";
 }
 
 });
-// =========================================================
-// ADMIN — ADD STUDENT TO SUPABASE
-// REAL DATABASE INSERT
-// =========================================================
+// ==========================================
+// ADMIN ADD STUDENT - CENTRAL ACCOUNT SYSTEM
+// ==========================================
 
 document.addEventListener(
     "click",
@@ -3353,203 +3451,552 @@ document.addEventListener(
         }
 
 
-        event.preventDefault();
+        // ==========================================
+        // GET FORM VALUES
+        // ==========================================
+
+        const name =
+            document
+                .getElementById(
+                    "adminNewStudentName"
+                )
+                .value
+                .trim();
+
+        const fatherName =
+            document
+                .getElementById(
+                    "adminNewStudentFather"
+                )
+                .value
+                .trim();
+
+        const studentId =
+            document
+                .getElementById(
+                    "adminNewStudentId"
+                )
+                .value
+                .trim();
+
+        const studentClass =
+            document
+                .getElementById(
+                    "adminNewStudentClass"
+                )
+                .value;
+
+        const section =
+            document
+                .getElementById(
+                    "adminNewStudentSection"
+                )
+                .value;
+
+        const rollNumber =
+            document
+                .getElementById(
+                    "adminNewStudentRoll"
+                )
+                .value
+                .trim();
+
+        const dob =
+            document
+                .getElementById(
+                    "adminNewStudentDOB"
+                )
+                .value;
+
+        const email =
+            document
+                .getElementById(
+                    "adminNewStudentEmail"
+                )
+                .value
+                .trim();
+
+        const username =
+            document
+                .getElementById(
+                    "adminNewStudentUsername"
+                )
+                .value
+                .trim();
+
+        const password =
+            document
+                .getElementById(
+                    "adminNewStudentPassword"
+                )
+                .value
+                .trim();
+
+        const mobile =
+            document
+                .getElementById(
+                    "adminNewStudentMobile"
+                )
+                .value
+                .trim();
+
+        const status =
+            "Active";
 
 
-        // Prevent double click
+        // ==========================================
+        // VALIDATION
+        // ==========================================
 
         if (
-            saveButton.dataset.saving === "true"
+            !name ||
+            !fatherName ||
+            !studentId ||
+            !studentClass ||
+            !section ||
+            !rollNumber ||
+            !username ||
+            !password
         ) {
+
+            alert(
+                "Please fill all required fields. ⚠️"
+            );
+
             return;
         }
 
 
-        saveButton.dataset.saving = "true";
+        // ==========================================
+        // PASSWORD VALIDATION
+        // ==========================================
 
-        const originalText =
-            saveButton.innerHTML;
+        if (
+            !/^[0-9]{6,8}$/.test(
+                password
+            )
+        ) {
 
-        saveButton.innerHTML =
-            "⏳ Saving...";
+            alert(
+                "Password must contain 6 to 8 digits only."
+            );
 
+            return;
+        }
+
+
+        // ==========================================
+        // GET LOCAL STUDENTS
+        // ==========================================
+
+        let adminStudents = [];
 
         try {
 
-            if (
-                typeof supabaseClient ===
-                "undefined" ||
-                !supabaseClient
-            ) {
-
-                throw new Error(
-                    "Supabase client is not available."
-                );
-
-            }
-
-
-            // =================================================
-            // GET FORM VALUES
-            // =================================================
-
-            const name =
-                document.getElementById(
-                    "adminNewStudentName"
-                )?.value.trim();
-
-
-            const fatherName =
-                document.getElementById(
-                    "adminNewStudentFather"
-                )?.value.trim();
-
-
-            const studentClass =
-                document.getElementById(
-                    "adminNewStudentClass"
-                )?.value;
-
-
-            const section =
-                document.getElementById(
-                    "adminNewStudentSection"
-                )?.value;
-
-
-            const rollNo =
-                document.getElementById(
-                    "adminNewStudentRoll"
-                )?.value.trim();
-
-
-            const dob =
-                document.getElementById(
-                    "adminNewStudentDOB"
-                )?.value.trim();
-
-
-            const email =
-                document.getElementById(
-                    "adminNewStudentEmail"
-                )?.value.trim();
-
-
-            const mobile =
-                document.getElementById(
-                    "adminNewStudentMobile"
-                )?.value.trim();
-
-
-            const username =
-                document.getElementById(
-                    "adminNewStudentUsername"
-                )?.value.trim();
-
-
-            const password =
-                document.getElementById(
-                    "adminNewStudentPassword"
-                )?.value;
-
-
-            // =================================================
-            // VALIDATION
-            // =================================================
-
-            if (!name) {
-
-                alert(
-                    "Please enter student name."
-                );
-
-                return;
-            }
-
-
-            if (!fatherName) {
-
-                alert(
-                    "Please enter father name."
-                );
-
-                return;
-            }
-
-
-            if (!studentClass) {
-
-                alert(
-                    "Please select class."
-                );
-
-                return;
-            }
-
-
-            if (!section) {
-
-                alert(
-                    "Please select section."
-                );
-
-                return;
-            }
-
-
-            if (!rollNo) {
-
-                alert(
-                    "Please enter roll number."
-                );
-
-                return;
-            }
-
-
-            if (!dob) {
-
-                alert(
-                    "Please enter date of birth."
-                );
-
-                return;
-            }
-
-
-            // =================================================
-            // GENERATE STUDENT ID
-            // =================================================
-
-            const studentId =
-                "ST-" +
-                Date.now()
-                .toString()
-                .slice(-8);
-
-
-            const finalUsername =
-                username ||
-                (
-                    name
-                        .toLowerCase()
-                        .replace(
-                            /[^a-z0-9]+/g,
-                            ""
-                        )
-                        .slice(0, 12)
-                    +
-                    Math.floor(
-                        1000 +
-                        Math.random() *
-                        9000
+            adminStudents =
+                JSON.parse(
+                    localStorage.getItem(
+                        "adminStudents"
                     )
+                ) || [];
+
+        } catch (error) {
+
+            adminStudents = [];
+        }
+
+
+        // ==========================================
+        // DUPLICATE STUDENT ID
+        // ==========================================
+
+        const duplicateStudent =
+            adminStudents.find(
+                function (student) {
+
+                    return (
+                        student.studentId &&
+                        String(
+                            student.studentId
+                        )
+                        .toLowerCase() ===
+                        studentId
+                            .toLowerCase()
+                    );
+
+                }
+            );
+
+
+        if (duplicateStudent) {
+
+            alert(
+                "This Student ID already exists. ⚠️"
+            );
+
+            return;
+        }
+
+
+        // ==========================================
+        // DUPLICATE USERNAME
+        // ==========================================
+
+        const duplicateUsername =
+            adminStudents.find(
+                function (student) {
+
+                    return (
+                        student.username &&
+                        String(
+                            student.username
+                        )
+                        .toLowerCase() ===
+                        username
+                            .toLowerCase()
+                    );
+
+                }
+            );
+
+
+        if (duplicateUsername) {
+
+            alert(
+                "This Username already exists. ⚠️"
+            );
+
+            return;
+        }
+
+
+        // ==========================================
+        // DATABASE ID
+        // ==========================================
+
+        const databaseId =
+            Date.now();
+
+
+        // ==========================================
+        // CREATE STUDENT OBJECT
+        // ==========================================
+
+        const studentRecord = {
+
+            id:
+                databaseId,
+
+            student_id:
+                studentId,
+
+            name:
+                name,
+
+            father_name:
+                fatherName,
+
+            student_class:
+                studentClass,
+
+            section:
+                section,
+
+            roll_number:
+                rollNumber,
+
+            date_of_birth:
+                dob || null,
+
+            email:
+                email || null,
+
+            username:
+                username,
+
+            password:
+                password,
+
+            mobile:
+                mobile || null,
+
+            status:
+                status
+
+        };
+
+
+        // ==========================================
+        // SAVE TO SUPABASE
+        // ==========================================
+
+        let savedStudent =
+            null;
+
+
+        if (
+            typeof supabaseClient !==
+            "undefined"
+        ) {
+
+            try {
+
+                const result =
+                    await supabaseClient
+                        .from("students")
+                        .insert([
+                            studentRecord
+                        ])
+                        .select()
+                        .single();
+
+
+                if (result.error) {
+
+                    console.error(
+                        "Student Supabase Error:",
+                        result.error
+                    );
+
+                    alert(
+                        "Student could not be saved to database.\n\n" +
+                        result.error.message
+                    );
+
+                    return;
+                }
+
+
+                savedStudent =
+                    result.data;
+
+            } catch (error) {
+
+                console.error(
+                    "Student Database Error:",
+                    error
                 );
 
+                alert(
+                    "Unable to connect to Student Database."
+                );
 
-            // =================================================
-            // INSERT INTO SUPABASE
-            // =================================================
+                return;
+            }
+
+        } else {
+
+            alert(
+                "Supabase connection is missing."
+            );
+
+            return;
+        }
+
+
+        // ==========================================
+        // CREATE LOCAL USER
+        // ==========================================
+
+        const newStudent = {
+
+            id:
+                savedStudent.id,
+
+            studentId:
+                savedStudent.student_id,
+
+            fullName:
+                savedStudent.name,
+
+            name:
+                savedStudent.name,
+
+            fatherName:
+                savedStudent.father_name,
+
+            studentClass:
+                savedStudent.student_class,
+
+            section:
+                savedStudent.section,
+
+            rollNumber:
+                savedStudent.roll_number,
+
+            dob:
+                savedStudent.date_of_birth ||
+                "",
+
+            email:
+                savedStudent.email ||
+                "",
+
+            username:
+                savedStudent.username,
+
+            password:
+                savedStudent.password,
+
+            mobile:
+                savedStudent.mobile ||
+                "",
+
+            status:
+                savedStudent.status ||
+                "Active",
+
+            createdAt:
+                savedStudent.created_at ||
+                new Date().toISOString()
+
+        };
+
+
+        // ==========================================
+        // ADD TO LOCAL STUDENTS
+        // ==========================================
+
+        adminStudents.push(
+            newStudent
+        );
+
+
+        localStorage.setItem(
+            "adminStudents",
+            JSON.stringify(
+                adminStudents
+            )
+        );
+
+
+        // ==========================================
+        // REFRESH ADMIN STUDENTS
+        // ==========================================
+
+        if (
+            typeof renderAdminStudents ===
+            "function"
+        ) {
+
+            renderAdminStudents();
+
+        }
+
+
+        // ==========================================
+        // REFRESH USER MANAGEMENT
+        // ==========================================
+
+        if (
+            typeof renderUserManagementStudents ===
+            "function"
+        ) {
+
+            await renderUserManagementStudents();
+
+        }
+
+
+        // ==========================================
+        // UPDATE DASHBOARD
+        // ==========================================
+
+        if (
+            typeof updateAdminStudentCount ===
+            "function"
+        ) {
+
+            updateAdminStudentCount();
+
+        }
+
+
+        // ==========================================
+        // CLOSE MODAL
+        // ==========================================
+
+        const modal =
+            document.getElementById(
+                "adminAddStudentModal"
+            );
+
+
+        if (modal) {
+
+            modal.style.display =
+                "none";
+
+        }
+
+
+        // ==========================================
+        // CLEAR FORM
+        // ==========================================
+
+        if (
+            typeof clearAdminStudentForm ===
+            "function"
+        ) {
+
+            clearAdminStudentForm();
+
+        }
+
+
+        // ==========================================
+        // SUCCESS
+        // ==========================================
+
+        alert(
+            "Student account created successfully! ✅"
+        );
+
+    }
+);
+
+// ==========================================
+// DISPLAY ADMIN STUDENTS
+// SUPABASE + LOCAL STORAGE FALLBACK
+// ==========================================
+
+async function renderAdminStudents() {
+
+    const tableBody =
+        document.getElementById(
+            "adminStudentsTableBody"
+        );
+
+    if (!tableBody) {
+        return;
+    }
+
+    // ==========================================
+    // LOADING
+    // ==========================================
+
+    tableBody.innerHTML = `
+        <tr>
+            <td colspan="11" style="text-align:center;">
+                Loading students...
+            </td>
+        </tr>
+    `;
+
+
+    let students = [];
+
+
+    // ==========================================
+    // 1. TRY SUPABASE
+    // ==========================================
+
+    try {
+
+        if (
+            typeof supabaseClient !==
+            "undefined"
+        ) {
 
             const {
                 data,
@@ -3557,626 +4004,266 @@ document.addEventListener(
             } =
                 await supabaseClient
                     .from("students")
-                    .insert([
+                    .select("*")
+                    .order(
+                        "created_at",
                         {
-
-                            student_id:
-                                studentId,
-
-                            name:
-                                name,
-
-                            father_name:
-                                fatherName,
-
-                           student_class:
-                                studentClass,
-
-                            section:
-                                section,
-
-                            roll_no:
-                                rollNo,
-
-                            date_of_birth:
-                                dob,
-
-                            email:
-                                email || null,
-
-                            mobile:
-                                mobile || null,
-
-                            username:
-                                finalUsername,
-
-                            password:
-                                password || null
-
+                            ascending: false
                         }
-                    ])
-                    .select()
-                    .single();
+                    );
 
-
-            if (error) {
-
-                console.error(
-                    "Student INSERT error:",
-                    error
-                );
-
-                throw error;
-            }
-
-
-            // =================================================
-            // SUCCESS
-            // =================================================
-
-            console.log(
-                "Student successfully added:",
-                data
-            );
-
-
-            alert(
-                "✅ Student added successfully."
-            );
-
-
-            // Close modal
-
-            const modal =
-                document.getElementById(
-                    "adminAddStudentModal"
-                );
-
-
-            if (modal) {
-
-                modal.style.display =
-                    "none";
-
-            }
-
-
-            // Clear form
-
-            [
-                "adminNewStudentName",
-                "adminNewStudentFather",
-                "adminNewStudentClass",
-                "adminNewStudentSection",
-                "adminNewStudentRoll",
-                "adminNewStudentDOB",
-                "adminNewStudentEmail",
-                "adminNewStudentUsername",
-                "adminNewStudentPassword",
-                "adminNewStudentMobile"
-            ]
-            .forEach(
-                function (id) {
-
-                    const element =
-                        document.getElementById(
-                            id
-                        );
-
-                    if (!element) {
-                        return;
-                    }
-
-
-                    if (
-                        element.tagName ===
-                        "SELECT"
-                    ) {
-
-                        element.value = "";
-
-                    } else {
-
-                        element.value = "";
-
-                    }
-
-                }
-            );
-
-
-            // Refresh Admin Students
 
             if (
-                typeof renderAdminStudents ===
-                "function"
+                !error &&
+                Array.isArray(data) &&
+                data.length > 0
             ) {
 
-                await renderAdminStudents();
+                students = data;
 
             }
 
-
-            // Refresh dashboard analytics
-
-            if (
-                typeof updateProfessionalAdminDashboard ===
-                "function"
-            ) {
-
-                await updateProfessionalAdminDashboard();
-
-            }
-
-
-        } catch (error) {
-
-            console.error(
-                "Admin student save error:",
-                error
-            );
-
-
-            alert(
-                "❌ Student could not be saved.\n\n" +
-                (
-                    error.message ||
-                    "Database error."
-                )
-            );
-
-
-        } finally {
-
-            saveButton.dataset.saving =
-                "false";
-
-            saveButton.innerHTML =
-                originalText;
-
         }
-
-    }
-);
-// =========================================================
-// ADMIN STUDENTS
-// REAL SUPABASE DATA + PROFESSIONAL DASHBOARD
-// =========================================================
-
-window.adminStudentsData = [];
-
-async function renderAdminStudents() {
-
-    const tableBody =
-        document.getElementById("adminStudentsTableBody");
-
-    const entriesText =
-        document.getElementById("adminStudentsEntriesText");
-
-    if (!tableBody) {
-        return;
-    }
-
-    tableBody.innerHTML = `
-        <tr>
-            <td colspan="11">
-                <div class="admin-empty-state">
-                    <h3>⏳ Loading Students...</h3>
-                    <p>Fetching real student records.</p>
-                </div>
-            </td>
-        </tr>
-    `;
-
-    try {
-
-        if (
-            typeof supabaseClient === "undefined" ||
-            !supabaseClient
-        ) {
-            throw new Error(
-                "Supabase client is not available."
-            );
-        }
-
-        const {
-            data: students,
-            error
-        } = await supabaseClient
-            .from("students")
-            .select("*")
-            .order("created_at", {
-                ascending: false
-            });
-
-        if (error) {
-            throw error;
-        }
-
-        const studentList =
-            Array.isArray(students)
-                ? students
-                : [];
-
-        // Keep real Supabase data available for search/filter
-        window.adminStudentsData = studentList;
-
-        // =================================================
-        // STATISTICS
-        // =================================================
-
-        const totalCount =
-            document.getElementById(
-                "adminStudentsTotalCount"
-            );
-
-        const activeCount =
-            document.getElementById(
-                "adminStudentsActiveCount"
-            );
-
-        const inactiveCount =
-            document.getElementById(
-                "adminStudentsInactiveCount"
-            );
-
-        const classCount =
-            document.getElementById(
-                "adminStudentsClassCount"
-            );
-
-        const activeStudents =
-            studentList.filter(function (student) {
-
-                const status =
-                    String(
-                        student.status ??
-                        "Active"
-                    ).toLowerCase();
-
-                return (
-                    status === "active" ||
-                    status === "1" ||
-                    status === "true"
-                );
-
-            });
-
-        const inactiveStudents =
-            studentList.filter(function (student) {
-
-                const status =
-                    String(
-                        student.status ??
-                        "Active"
-                    ).toLowerCase();
-
-                return (
-                    status === "inactive" ||
-                    status === "0" ||
-                    status === "false"
-                );
-
-            });
-
-        const uniqueClasses =
-            new Set(
-                studentList
-                    .map(function (student) {
-
-                        return String(
-                            student.class ??
-                            student.class_name ??
-                            ""
-                        ).trim();
-
-                    })
-                    .filter(Boolean)
-            );
-
-        if (totalCount) {
-            totalCount.textContent =
-                studentList.length;
-        }
-
-        if (activeCount) {
-            activeCount.textContent =
-                activeStudents.length;
-        }
-
-        if (inactiveCount) {
-            inactiveCount.textContent =
-                inactiveStudents.length;
-        }
-
-        if (classCount) {
-            classCount.textContent =
-                uniqueClasses.size;
-        }
-
-        // =================================================
-        // EMPTY STATE
-        // =================================================
-
-        if (studentList.length === 0) {
-
-            tableBody.innerHTML = `
-                <tr>
-                    <td colspan="11">
-                        <div class="admin-empty-state">
-                            <h3>👨‍🎓 No Student Records</h3>
-                            <p>
-                                No students are currently
-                                available in the database.
-                            </p>
-                        </div>
-                    </td>
-                </tr>
-            `;
-
-            if (entriesText) {
-                entriesText.textContent =
-                    "Showing 0 students";
-            }
-
-            return;
-        }
-
-        // =================================================
-        // RENDER STUDENTS
-        // =================================================
-
-        tableBody.innerHTML =
-            studentList.map(
-                function (student, index) {
-
-                    const databaseId =
-                        student.id ?? "";
-
-                    const studentId =
-                        student.student_id ??
-                        student.studentId ??
-                        student.id ??
-                        "—";
-
-                    const name =
-                        student.name ??
-                        student.full_name ??
-                        student.fullName ??
-                        "—";
-
-                    const father =
-                        student.father_name ??
-                        student.fatherName ??
-                        "—";
-
-                    const studentClass =
-                        student.class ??
-                        student.class_name ??
-                        student.studentClass ??
-                        "—";
-
-                    const section =
-                        student.section ??
-                        "—";
-
-                    const rollNo =
-                        student.roll_no ??
-                        student.roll_number ??
-                        student.rollNumber ??
-                        "—";
-
-                    const email =
-                        student.email ??
-                        "—";
-
-                    const mobile =
-                        student.mobile ??
-                        student.phone ??
-                        student.mobile_number ??
-                        "—";
-
-                    const status =
-                        student.status ??
-                        "Active";
-
-                    const statusText =
-                        String(status);
-
-                    const statusLower =
-                        statusText.toLowerCase();
-
-                    const statusClass =
-                        (
-                            statusLower === "active" ||
-                            statusLower === "1" ||
-                            statusLower === "true"
-                        )
-                            ? "active"
-                            : "inactive";
-
-                    return `
-                        <tr>
-
-                            <td>
-                                ${index + 1}
-                            </td>
-
-                            <td>
-                                <div class="students-table-student">
-
-                                    <div class="students-table-avatar">
-                                        ${escapeHtml(
-                                            String(
-                                                name
-                                            )
-                                                .charAt(0)
-                                                .toUpperCase()
-                                        )}
-                                    </div>
-
-                                    <div>
-                                        <strong>
-                                            ${escapeHtml(
-                                                String(name)
-                                            )}
-                                        </strong>
-
-                                        <small>
-                                            Student
-                                        </small>
-                                    </div>
-
-                                </div>
-                            </td>
-
-                            <td>
-                                <span class="students-id-badge">
-                                    ${escapeHtml(
-                                        String(studentId)
-                                    )}
-                                </span>
-                            </td>
-
-                            <td>
-                                ${escapeHtml(
-                                    String(father)
-                                )}
-                            </td>
-
-                            <td>
-                                ${escapeHtml(
-                                    String(studentClass)
-                                )}
-                            </td>
-
-                            <td>
-                                <span class="students-section-badge">
-                                    ${escapeHtml(
-                                        String(section)
-                                    )}
-                                </span>
-                            </td>
-
-                            <td>
-                                ${escapeHtml(
-                                    String(rollNo)
-                                )}
-                            </td>
-
-                            <td>
-                                ${escapeHtml(
-                                    String(email)
-                                )}
-                            </td>
-
-                            <td>
-                                ${escapeHtml(
-                                    String(mobile)
-                                )}
-                            </td>
-
-                            <td>
-                                <span
-                                    class="students-status-badge ${statusClass}"
-                                >
-                                    <span></span>
-                                    ${escapeHtml(
-                                        statusText
-                                    )}
-                                </span>
-                            </td>
-
-                            <td>
-
-                                <div class="admin-table-actions">
-
-                                    <button
-                                        type="button"
-                                        class="admin-view-student-btn"
-                                        data-student-id="${escapeHtml(
-                                            String(databaseId)
-                                        )}"
-                                        title="View Student"
-                                    >
-                                        👁️
-                                    </button>
-<button
-    type="button"
-    class="admin-edit-student-btn"
-    data-student-id="${escapeHtml(
-        String(databaseId)
-    )}"
-    title="Edit Student"
->
-    ✏️
-</button>
-
-<button
-    type="button"
-    class="admin-delete-student-btn"
-    data-student-id="${escapeHtml(
-        String(databaseId)
-    )}"
-    title="Delete Student"
->
-    🗑️
-</button>
-
-                                </div>
-
-                            </td>
-
-                        </tr>
-                    `;
-                }
-            ).join("");
-
-        if (entriesText) {
-            entriesText.textContent =
-                `Showing ${studentList.length} students`;
-        }
-
-        console.log(
-            "Admin Students loaded from Supabase:",
-            studentList.length
-        );
 
     } catch (error) {
 
         console.error(
-            "Admin Students Supabase Error:",
+            "Supabase Students Load Error:",
             error
         );
 
+    }
+
+
+    // ==========================================
+    // 2. LOCAL STORAGE FALLBACK
+    // ==========================================
+
+    if (
+        !students ||
+        students.length === 0
+    ) {
+
+        try {
+
+            const localData =
+                JSON.parse(
+                    localStorage.getItem(
+                        "adminStudents"
+                    )
+                ) || [];
+
+
+            if (
+                Array.isArray(localData)
+            ) {
+
+                students =
+                    localData.map(
+                        function(student) {
+
+                            return {
+
+                                id:
+                                    student.id,
+
+                                student_id:
+                                    student.student_id ||
+                                    student.studentId ||
+                                    "",
+
+                                name:
+                                    student.name ||
+                                    student.fullName ||
+                                    "",
+
+                                father_name:
+                                    student.father_name ||
+                                    student.fatherName ||
+                                    "",
+
+                                student_class:
+                                    student.student_class ||
+                                    student.studentClass ||
+                                    "",
+
+                                section:
+                                    student.section ||
+                                    "",
+
+                                roll_number:
+                                    student.roll_number ||
+                                    student.rollNumber ||
+                                    "",
+
+                                date_of_birth:
+                                    student.date_of_birth ||
+                                    student.dob ||
+                                    "",
+
+                                email:
+                                    student.email ||
+                                    "",
+
+                                mobile:
+                                    student.mobile ||
+                                    "",
+
+                                username:
+                                    student.username ||
+                                    "",
+
+                                password:
+                                    student.password ||
+                                    "",
+
+                                status:
+                                    student.status ||
+                                    "Active"
+
+                            };
+
+                        }
+                    );
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Local Students Load Error:",
+                error
+            );
+
+            students = [];
+
+        }
+
+    }
+
+
+    // ==========================================
+    // 3. NO STUDENTS
+    // ==========================================
+
+    if (
+        !students ||
+        students.length === 0
+    ) {
+
         tableBody.innerHTML = `
             <tr>
-                <td colspan="11">
-
-                    <div class="admin-empty-state">
-
-                        <h3>
-                            ⚠️ Unable to Load Students
-                        </h3>
-
-                        <p>
-                            ${escapeHtml(
-                                error.message ||
-                                "Database error occurred."
-                            )}
-                        </p>
-
-                    </div>
-
+                <td
+                    colspan="11"
+                    style="text-align:center;"
+                >
+                    No students found.
                 </td>
             </tr>
         `;
 
-        if (entriesText) {
-            entriesText.textContent =
-                "Unable to load students";
-        }
+        return;
     }
+
+
+    // ==========================================
+    // 4. DISPLAY STUDENTS
+    // ==========================================
+
+    tableBody.innerHTML = "";
+
+
+    students.forEach(
+        function(student, index) {
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${index + 1}
+                </td>
+
+                <td>
+                    ${student.student_id || ""}
+                </td>
+
+                <td>
+                    ${student.name || ""}
+                </td>
+
+                <td>
+                    ${student.father_name || ""}
+                </td>
+
+                <td>
+                    ${student.student_class || ""}
+                </td>
+
+                <td>
+                    ${student.section || ""}
+                </td>
+
+                <td>
+                    ${student.roll_number || ""}
+                </td>
+
+                <td>
+                    ${student.date_of_birth || ""}
+                </td>
+
+                <td>
+                    ${student.email || ""}
+                </td>
+
+                <td>
+                    ${student.mobile || ""}
+                </td>
+
+                <td>
+
+                    <button
+                        type="button"
+                        class="admin-table-edit-btn"
+                        data-student-id="${student.id}"
+                        title="Edit Student"
+                    >
+                        ✏️ Edit
+                    </button>
+
+                </td>
+
+            `;
+
+
+            tableBody.appendChild(
+                row
+            );
+
+        }
+    );
+
+
+    // ==========================================
+    // 5. UPDATE DASHBOARD COUNT
+    // ==========================================
+
+    const countElement =
+        document.getElementById(
+            "adminTotalStudents"
+        );
+
+    if (countElement) {
+
+        countElement.textContent =
+            students.length;
+
+    }
+
 }
 // ==========================================
 // UPDATE TOTAL STUDENTS
@@ -4545,733 +4632,232 @@ behavior: "instant"
 });
 
 });
-// =========================================================
-// ADMIN STUDENTS - SEARCH & FILTERS
-// REAL SUPABASE DATA
-// =========================================================
+// ==========================================
+// ADMIN STUDENT SEARCH & CLASS FILTER
+// ==========================================
 
 function filterAdminStudents() {
 
-    const searchInput =
-        document.getElementById("adminStudentSearch");
+const searchInput =
+document.getElementById("adminStudentSearch");
 
-    const classFilter =
-        document.getElementById("adminStudentClassFilter");
+const classFilter =
+document.getElementById("adminStudentClassFilter");
 
-    const sectionFilter =
-        document.getElementById("adminStudentSectionFilter");
+const tableBody =
+document.getElementById("adminStudentsTableBody");
 
-    const statusFilter =
-        document.getElementById("adminStudentStatusFilter");
 
-    const tableBody =
-        document.getElementById("adminStudentsTableBody");
-
-    const entriesText =
-        document.getElementById("adminStudentsEntriesText");
-
-    if (!tableBody) {
-        return;
-    }
-
-    const students =
-        Array.isArray(window.adminStudentsData)
-            ? window.adminStudentsData
-            : [];
-
-    const searchText =
-        searchInput
-            ? searchInput.value
-                .trim()
-                .toLowerCase()
-            : "";
-
-    const selectedClass =
-        classFilter
-            ? classFilter.value
-            : "all";
-
-    const selectedSection =
-        sectionFilter
-            ? sectionFilter.value
-            : "all";
-
-    const selectedStatus =
-        statusFilter
-            ? statusFilter.value
-            : "all";
-
-
-    // =====================================================
-    // FILTER
-    // =====================================================
-
-    const filteredStudents =
-        students.filter(function (student) {
-
-            const studentId =
-                String(
-                    student.student_id ??
-                    student.studentId ??
-                    student.id ??
-                    ""
-                ).toLowerCase();
-
-            const name =
-                String(
-                    student.name ??
-                    student.full_name ??
-                    student.fullName ??
-                    ""
-                ).toLowerCase();
-
-            const studentClass =
-                String(
-                    student.class ??
-                    student.class_name ??
-                    student.studentClass ??
-                    ""
-                );
-
-            const section =
-                String(
-                    student.section ??
-                    ""
-                );
-
-            const email =
-                String(
-                    student.email ??
-                    ""
-                ).toLowerCase();
-
-            const mobile =
-                String(
-                    student.mobile ??
-                    student.phone ??
-                    student.mobile_number ??
-                    ""
-                ).toLowerCase();
-
-            const status =
-                String(
-                    student.status ??
-                    "Active"
-                );
-
-
-            // SEARCH
-            const matchesSearch =
-                !searchText ||
-                studentId.includes(searchText) ||
-                name.includes(searchText) ||
-                studentClass.toLowerCase()
-                    .includes(searchText) ||
-                email.includes(searchText) ||
-                mobile.includes(searchText);
-
-
-            // CLASS
-            const matchesClass =
-                selectedClass === "all" ||
-                studentClass === selectedClass;
-
-
-            // SECTION
-            const matchesSection =
-                selectedSection === "all" ||
-                section === selectedSection;
-
-
-            // STATUS
-            const matchesStatus =
-                selectedStatus === "all" ||
-                status.toLowerCase() ===
-                    selectedStatus.toLowerCase();
-
-
-            return (
-                matchesSearch &&
-                matchesClass &&
-                matchesSection &&
-                matchesStatus
-            );
-
-        });
-
-
-    // =====================================================
-    // EMPTY RESULT
-    // =====================================================
-
-    if (filteredStudents.length === 0) {
-
-        tableBody.innerHTML = `
-            <tr>
-                <td colspan="11">
-
-                    <div class="admin-empty-state">
-
-                        <h3>
-                            🔍 No Students Found
-                        </h3>
-
-                        <p>
-                            No student records match
-                            the selected filters.
-                        </p>
-
-                    </div>
-
-                </td>
-            </tr>
-        `;
-
-        if (entriesText) {
-            entriesText.textContent =
-                "Showing 0 students";
-        }
-
-        return;
-    }
-
-
-    // =====================================================
-    // RENDER FILTERED STUDENTS
-    // =====================================================
-
-    tableBody.innerHTML =
-        filteredStudents.map(
-            function (student, index) {
-
-                const databaseId =
-                    student.id ?? "";
-
-                const studentId =
-                    student.student_id ??
-                    student.studentId ??
-                    student.id ??
-                    "—";
-
-                const name =
-                    student.name ??
-                    student.full_name ??
-                    student.fullName ??
-                    "—";
-
-                const father =
-                    student.father_name ??
-                    student.fatherName ??
-                    "—";
-
-                const studentClass =
-                    student.class ??
-                    student.class_name ??
-                    student.studentClass ??
-                    "—";
-
-                const section =
-                    student.section ??
-                    "—";
-
-                const rollNo =
-                    student.roll_no ??
-                    student.roll_number ??
-                    student.rollNumber ??
-                    "—";
-
-                const email =
-                    student.email ??
-                    "—";
-
-                const mobile =
-                    student.mobile ??
-                    student.phone ??
-                    student.mobile_number ??
-                    "—";
-
-                const status =
-                    student.status ??
-                    "Active";
-
-                const statusText =
-                    String(status);
-
-                const statusLower =
-                    statusText.toLowerCase();
-
-                const statusClass =
-                    (
-                        statusLower === "active" ||
-                        statusLower === "1" ||
-                        statusLower === "true"
-                    )
-                        ? "active"
-                        : "inactive";
-
-
-                return `
-                    <tr>
-
-                        <td>
-                            ${index + 1}
-                        </td>
-
-                        <td>
-                            <div class="students-table-student">
-
-                                <div class="students-table-avatar">
-                                    ${escapeHtml(
-                                        String(name)
-                                            .charAt(0)
-                                            .toUpperCase()
-                                    )}
-                                </div>
-
-                                <div>
-                                    <strong>
-                                        ${escapeHtml(
-                                            String(name)
-                                        )}
-                                    </strong>
-
-                                    <small>
-                                        Student
-                                    </small>
-                                </div>
-
-                            </div>
-                        </td>
-
-                        <td>
-                            <span class="students-id-badge">
-                                ${escapeHtml(
-                                    String(studentId)
-                                )}
-                            </span>
-                        </td>
-
-                        <td>
-                            ${escapeHtml(
-                                String(father)
-                            )}
-                        </td>
-
-                        <td>
-                            ${escapeHtml(
-                                String(studentClass)
-                            )}
-                        </td>
-
-                        <td>
-                            <span class="students-section-badge">
-                                ${escapeHtml(
-                                    String(section)
-                                )}
-                            </span>
-                        </td>
-
-                        <td>
-                            ${escapeHtml(
-                                String(rollNo)
-                            )}
-                        </td>
-
-                        <td>
-                            ${escapeHtml(
-                                String(email)
-                            )}
-                        </td>
-
-                        <td>
-                            ${escapeHtml(
-                                String(mobile)
-                            )}
-                        </td>
-
-                        <td>
-                            <span
-                                class="students-status-badge ${statusClass}"
-                            >
-                                <span></span>
-                                ${escapeHtml(
-                                    statusText
-                                )}
-                            </span>
-                        </td>
-
-                        <td>
-
-                            <div class="admin-table-actions">
-
-                                <button
-                                    type="button"
-                                    class="admin-view-student-btn"
-                                    data-student-id="${escapeHtml(
-                                        String(databaseId)
-                                    )}"
-                                    title="View Student"
-                                >
-                                    👁️
-                                </button>
-
-                                <button
-                                    type="button"
-                                    class="admin-edit-student-btn"
-                                    data-student-id="${escapeHtml(
-                                        String(databaseId)
-                                    )}"
-                                    title="Edit Student"
-                                >
-                                    ✏️
-                                </button>
-
-                            </div>
-
-                        </td>
-
-                    </tr>
-                `;
-            }
-        ).join("");
-
-
-    // =====================================================
-    // RECORD COUNT
-    // =====================================================
-
-    if (entriesText) {
-
-        entriesText.textContent =
-            `Showing ${filteredStudents.length} of ${students.length} students`;
-
-    }
+if (!tableBody) {
+return;
 }
-// =========================================================
-// ADMIN STUDENTS - FILTER EVENTS
-// =========================================================
 
-// SEARCH
+
+const searchText =
+searchInput
+? searchInput.value.trim().toLowerCase()
+: "";
+
+
+const selectedClass =
+classFilter
+? classFilter.value
+: "all";
+
+
+const adminStudents =
+JSON.parse(
+localStorage.getItem("adminStudents")
+) || [];
+
+
+const filteredStudents =
+adminStudents.filter(function (student) {
+
+const matchesSearch =
+
+student.fullName
+.toLowerCase()
+.includes(searchText)
+
+||
+
+student.studentId
+.toLowerCase()
+.includes(searchText)
+
+||
+
+student.studentClass
+.toLowerCase()
+.includes(searchText);
+
+
+const matchesClass =
+
+selectedClass === "all"
+
+||
+
+student.studentClass === selectedClass;
+
+
+return matchesSearch && matchesClass;
+
+});
+
+
+tableBody.innerHTML = "";
+
+
+if (filteredStudents.length === 0) {
+
+tableBody.innerHTML = `
+<tr>
+<td colspan="9">
+No matching student records found.
+</td>
+</tr>
+`;
+
+return;
+}
+
+
+filteredStudents.forEach(function (student, index) {
+
+const row =
+document.createElement("tr");
+
+
+row.innerHTML = `
+
+<td>${index + 1}</td>
+
+<td>${student.studentId}</td>
+
+<td>${student.fullName}</td>
+
+<td>${student.studentClass}</td>
+
+<td>${student.section}</td>
+
+<td>${student.rollNumber}</td>
+
+<td>${student.status}</td>
+
+<td>
+    <button
+        type="button"
+        class="admin-table-edit-btn"
+        data-student-id="${student.id}"
+        title="Edit Student"
+    >
+        ✏️ Edit
+    </button>
+</td>
+
+`;
+
+
+tableBody.appendChild(row);
+
+});
+
+}
+// ==========================================
+// SEARCH EVENT
+// ==========================================
+
 const adminStudentSearch =
-    document.getElementById(
-        "adminStudentSearch"
-    );
+document.getElementById("adminStudentSearch");
+
 
 if (adminStudentSearch) {
 
-    adminStudentSearch.addEventListener(
-        "input",
-        filterAdminStudents
-    );
+adminStudentSearch.addEventListener(
+"input",
+filterAdminStudents
+);
 
 }
 
 
-// CLASS FILTER
+// ==========================================
+// CLASS FILTER EVENT
+// ==========================================
+
 const adminStudentClassFilter =
-    document.getElementById(
-        "adminStudentClassFilter"
-    );
+document.getElementById(
+"adminStudentClassFilter"
+);
+
 
 if (adminStudentClassFilter) {
 
-    adminStudentClassFilter.addEventListener(
-        "change",
-        filterAdminStudents
-    );
-
-}
-
-
-// SECTION FILTER
-const adminStudentSectionFilter =
-    document.getElementById(
-        "adminStudentSectionFilter"
-    );
-
-if (adminStudentSectionFilter) {
-
-    adminStudentSectionFilter.addEventListener(
-        "change",
-        filterAdminStudents
-    );
-
-}
-
-
-// STATUS FILTER
-const adminStudentStatusFilter =
-    document.getElementById(
-        "adminStudentStatusFilter"
-    );
-
-if (adminStudentStatusFilter) {
-
-    adminStudentStatusFilter.addEventListener(
-        "change",
-        filterAdminStudents
-    );
-
-}
-
-
-// RESET FILTERS
-const adminStudentResetFilters =
-    document.getElementById(
-        "adminStudentResetFilters"
-    );
-
-if (adminStudentResetFilters) {
-
-    adminStudentResetFilters.addEventListener(
-        "click",
-        function () {
-
-            // Clear search
-            if (adminStudentSearch) {
-                adminStudentSearch.value = "";
-            }
-
-            // Reset class
-            if (adminStudentClassFilter) {
-                adminStudentClassFilter.value = "all";
-            }
-
-            // Reset section
-            if (adminStudentSectionFilter) {
-                adminStudentSectionFilter.value = "all";
-            }
-
-            // Reset status
-            if (adminStudentStatusFilter) {
-                adminStudentStatusFilter.value = "all";
-            }
-
-            // Render all students again
-            filterAdminStudents();
-
-        }
-    );
+adminStudentClassFilter.addEventListener(
+"change",
+filterAdminStudents
+);
 
 }
 // ==========================================
 // ADMIN VIEW STUDENT MODAL
 // ==========================================
 
-async function openAdminViewStudent(studentId) {
+function openAdminViewStudent(studentId) {
 
-    try {
+const adminStudents =
+JSON.parse(localStorage.getItem("adminStudents")) || [];
 
-        if (
-            typeof supabaseClient === "undefined" ||
-            !supabaseClient
-        ) {
-            alert("Supabase connection is not available.");
-            return;
-        }
+const student =
+adminStudents.find(function (item) {
+return Number(item.id) === Number(studentId);
+});
 
-        const {
-            data: student,
-            error
-        } = await supabaseClient
-            .from("students")
-            .select("*")
-            .eq("id", studentId)
-            .single();
-
-        if (error) {
-            throw error;
-        }
-
-        if (!student) {
-            alert("Student record not found.");
-            return;
-        }
+if (!student) {
+alert("Student record not found.");
+return;
+}
 
 
-        const studentName =
-            student.name ??
-            student.full_name ??
-            "—";
+document.getElementById("viewStudentName").textContent =
+student.fullName || "—";
 
-        const studentStatus =
-            student.status ??
-            "Active";
+document.getElementById("viewStudentStatus").textContent =
+student.status || "—";
 
-        const studentIdValue =
-            student.student_id ??
-            student.studentId ??
-            student.id ??
-            "—";
+document.getElementById("viewStudentId").textContent =
+student.studentId || "—";
 
-        const fatherName =
-            student.father_name ??
-            student.fatherName ??
-            "—";
+document.getElementById("viewStudentFather").textContent =
+student.fatherName || "—";
 
-        const studentClass =
-            student.class ??
-            student.class_name ??
-            "—";
+document.getElementById("viewStudentClass").textContent =
+student.studentClass || "—";
 
-        const section =
-            student.section ??
-            "—";
+document.getElementById("viewStudentSection").textContent =
+student.section || "—";
 
-        const rollNumber =
-            student.roll_no ??
-            student.roll_number ??
-            "—";
+document.getElementById("viewStudentRoll").textContent =
+student.rollNumber || "—";
 
-        const dob =
-            student.date_of_birth ??
-            student.dob ??
-            "—";
+document.getElementById("viewStudentDOB").textContent =
+student.dob || "—";
 
-        const email =
-            student.email ??
-            "—";
+document.getElementById("viewStudentEmail").textContent =
+student.email || "—";
 
-        const mobile =
-            student.mobile ??
-            student.phone ??
-            student.mobile_number ??
-            "—";
+document.getElementById("viewStudentMobile").textContent =
+student.mobile || "—";
 
 
-        // =================================================
-        // FILL VIEW MODAL
-        // =================================================
+const modal =
+document.getElementById("adminViewStudentModal");
 
-        const nameElement =
-            document.getElementById(
-                "viewStudentName"
-            );
-
-        const statusElement =
-            document.getElementById(
-                "viewStudentStatus"
-            );
-
-        const idElement =
-            document.getElementById(
-                "viewStudentId"
-            );
-
-        const fatherElement =
-            document.getElementById(
-                "viewStudentFather"
-            );
-
-        const classElement =
-            document.getElementById(
-                "viewStudentClass"
-            );
-
-        const sectionElement =
-            document.getElementById(
-                "viewStudentSection"
-            );
-
-        const rollElement =
-            document.getElementById(
-                "viewStudentRoll"
-            );
-
-        const dobElement =
-            document.getElementById(
-                "viewStudentDOB"
-            );
-
-        const emailElement =
-            document.getElementById(
-                "viewStudentEmail"
-            );
-
-        const mobileElement =
-            document.getElementById(
-                "viewStudentMobile"
-            );
-
-
-        if (nameElement) {
-            nameElement.textContent =
-                studentName;
-        }
-
-        if (statusElement) {
-            statusElement.textContent =
-                studentStatus;
-        }
-
-        if (idElement) {
-            idElement.textContent =
-                studentIdValue;
-        }
-
-        if (fatherElement) {
-            fatherElement.textContent =
-                fatherName;
-        }
-
-        if (classElement) {
-            classElement.textContent =
-                studentClass;
-        }
-
-        if (sectionElement) {
-            sectionElement.textContent =
-                section;
-        }
-
-        if (rollElement) {
-            rollElement.textContent =
-                rollNumber;
-        }
-
-        if (dobElement) {
-            dobElement.textContent =
-                dob;
-        }
-
-        if (emailElement) {
-            emailElement.textContent =
-                email;
-        }
-
-        if (mobileElement) {
-            mobileElement.textContent =
-                mobile;
-        }
-
-
-        // =================================================
-        // OPEN MODAL
-        // =================================================
-
-        const modal =
-            document.getElementById(
-                "adminViewStudentModal"
-            );
-
-        if (modal) {
-            modal.style.display = "flex";
-        }
-
-
-    } catch (error) {
-
-        console.error(
-            "View Student Error:",
-            error
-        );
-
-        alert(
-            error.message ||
-            "Unable to load student record."
-        );
-
-    }
+if (modal) {
+modal.style.display = "flex";
+}
 }
 
 
@@ -5296,345 +4882,129 @@ modal.style.display = "none";
 }
 
 });
-
 // ==========================================
-// DELETE STUDENT - SUPABASE
+// OPEN EDIT STUDENT - SUPABASE
 // ==========================================
 
-document.addEventListener("click", async function (event) {
+async function openAdminEditStudent(studentId) {
 
-    const deleteButton =
-        event.target.closest(".admin-delete-student-btn");
-
-    if (!deleteButton) {
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+        alert("Supabase connection is missing.");
         return;
     }
 
-    const studentId =
-        deleteButton.dataset.studentId;
-
-    if (!studentId) {
-        alert("Student ID is missing.");
-        return;
-    }
-
-    const confirmed =
-        confirm(
-            "Are you sure you want to delete this student?\n\nThis action cannot be undone."
-        );
-
-    if (!confirmed) {
-        return;
-    }
-
-    try {
-
-        const {
-            error
-        } = await supabaseClient
+    const {
+        data: student,
+        error
+    } =
+        await supabaseClient
             .from("students")
-            .delete()
-            .eq("id", studentId);
+            .select("*")
+            .eq("id", studentId)
+            .maybeSingle();
 
-        if (error) {
-
-            console.error(
-                "Supabase Student Delete Error:",
-                error
-            );
-
-            alert(
-                "Student could not be deleted.\n\n" +
-                error.message
-            );
-
-            return;
-        }
-
-        alert(
-            "Student deleted successfully ✅"
-        );
-
-        // Refresh Students table
-        if (
-            typeof renderAdminStudents ===
-            "function"
-        ) {
-            await renderAdminStudents();
-        }
-
-        // Refresh old student count if available
-        if (
-            typeof updateAdminStudentCount ===
-            "function"
-        ) {
-            await updateAdminStudentCount();
-        }
-
-        // Refresh User Management students
-        if (
-            typeof renderUserManagementStudents ===
-            "function"
-        ) {
-            await renderUserManagementStudents();
-        }
-
-    } catch (error) {
+    if (error) {
 
         console.error(
-            "Delete Student Error:",
+            "Supabase Student Load Error:",
             error
         );
 
         alert(
-            "Something went wrong while deleting the student."
+            "Unable to load student.\n\n" +
+            error.message
         );
+
+        return;
     }
 
-});
-// ==========================================
-// ADMIN USER MANAGEMENT - ADD STUDENT
-// SUPABASE
-// ==========================================
+    if (!student) {
 
-document.addEventListener(
-    "submit",
-    async function (event) {
+        alert(
+            "Student record not found."
+        );
 
-        if (
-            event.target.id !==
-            "adminAddStudentForm"
-        ) {
-            return;
-        }
-
-        event.preventDefault();
-
-        const saveButton =
-            document.getElementById(
-                "saveAdminAddStudentBtn"
-            );
-
-        const studentId =
-            document.getElementById(
-                "adminStudentId"
-            )?.value.trim();
-
-        const rollNo =
-            document.getElementById(
-                "adminStudentRollNo"
-            )?.value.trim();
-
-        const name =
-            document.getElementById(
-                "adminStudentName"
-            )?.value.trim();
-
-        const studentClass =
-            document.getElementById(
-                "adminStudentClass"
-            )?.value.trim();
-
-        const username =
-            document.getElementById(
-                "adminStudentUsername"
-            )?.value.trim();
-
-        const password =
-            document.getElementById(
-                "adminStudentPassword"
-            )?.value;
-
-        const status =
-            document.getElementById(
-                "adminStudentStatus"
-            )?.value || "Active";
-
-
-        // ==========================================
-        // VALIDATION
-        // ==========================================
-
-        if (!studentId) {
-            alert("Student ID is missing.");
-            return;
-        }
-
-        if (!rollNo) {
-            alert("Please enter Roll No.");
-            return;
-        }
-
-        if (!name) {
-            alert("Please enter student name.");
-            return;
-        }
-
-        if (!studentClass) {
-            alert("Please enter class.");
-            return;
-        }
-
-        if (!username) {
-            alert("Username could not be generated.");
-            return;
-        }
-
-        if (!/^\d{8}$/.test(password)) {
-            alert(
-                "Password must be exactly 8 digits."
-            );
-            return;
-        }
-
-
-        // ==========================================
-        // PREVENT DOUBLE CLICK
-        // ==========================================
-
-        if (saveButton) {
-            if (
-                saveButton.dataset.saving ===
-                "true"
-            ) {
-                return;
-            }
-
-            saveButton.dataset.saving =
-                "true";
-
-            saveButton.disabled = true;
-
-            saveButton.innerHTML =
-                "⏳ Saving...";
-        }
-
-
-        try {
-
-            // ==========================================
-            // INSERT INTO SUPABASE
-            // ==========================================
-
-            const {
-                data,
-                error
-            } =
-                await supabaseClient
-                    .from("students")
-                    .insert([
-                        {
-                            student_id:
-                                studentId,
-
-                            name:
-                                name,
-
-                            class:
-                                studentClass,
-
-                            roll_no:
-                                rollNo,
-
-                            username:
-                                username,
-
-                            password:
-                                password,
-
-                            status:
-                                status
-                        }
-                    ])
-                    .select()
-                    .single();
-
-
-            if (error) {
-
-                console.error(
-                    "Student INSERT Error:",
-                    error
-                );
-
-                throw error;
-            }
-
-
-            // ==========================================
-            // SUCCESS
-            // ==========================================
-
-            alert(
-                "✅ Student added successfully."
-            );
-
-
-            const modal =
-                document.getElementById(
-                    "adminAddStudentModal"
-                );
-
-            if (modal) {
-                modal.style.display =
-                    "none";
-            }
-
-
-            // ==========================================
-            // RESET FORM
-            // ==========================================
-
-            document
-                .getElementById(
-                    "adminAddStudentForm"
-                )
-                ?.reset();
-
-
-            // ==========================================
-            // REFRESH USER MANAGEMENT TABLE
-            // ==========================================
-
-            if (
-                typeof renderUserManagementStudents ===
-                "function"
-            ) {
-                await renderUserManagementStudents();
-            }
-
-        } catch (error) {
-
-            console.error(
-                "Admin Add Student Error:",
-                error
-            );
-
-            alert(
-                "❌ Student could not be saved.\n\n" +
-                (
-                    error.message ||
-                    "Unknown error"
-                )
-            );
-
-        } finally {
-
-            if (saveButton) {
-
-                saveButton.dataset.saving =
-                    "false";
-
-                saveButton.disabled =
-                    false;
-
-                saveButton.innerHTML =
-                    "➕ Add Student";
-            }
-        }
-
+        return;
     }
-);
+
+
+    // ==========================================
+    // FILL EDIT FORM
+    // ==========================================
+
+    document.getElementById(
+        "editStudentName"
+    ).value =
+        student.name || "";
+
+    document.getElementById(
+        "editStudentFather"
+    ).value =
+        student.father_name || "";
+
+    document.getElementById(
+        "editStudentId"
+    ).value =
+        student.student_id || "";
+
+    document.getElementById(
+        "editStudentClass"
+    ).value =
+        student.student_class || "";
+
+    document.getElementById(
+        "editStudentSection"
+    ).value =
+        student.section || "";
+
+    document.getElementById(
+        "editStudentRoll"
+    ).value =
+        student.roll_number || "";
+
+    document.getElementById(
+        "editStudentDOB"
+    ).value =
+        student.date_of_birth || "";
+
+    document.getElementById(
+        "editStudentEmail"
+    ).value =
+        student.email || "";
+
+    document.getElementById(
+        "editStudentMobile"
+    ).value =
+        student.mobile || "";
+
+    document.getElementById(
+        "editStudentStatus"
+    ).value =
+        student.status || "Active";
+
+
+    // ==========================================
+    // STORE DATABASE ID IN MODAL
+    // ==========================================
+
+    const modal =
+        document.getElementById(
+            "adminEditStudentModal"
+        );
+
+    if (modal) {
+
+        modal.dataset.studentId =
+            student.id;
+
+        modal.style.display =
+            "flex";
+    }
+
+}
 // ==========================================
 // SAVE EDITED STUDENT - SUPABASE
 // ==========================================
@@ -5800,14 +5170,14 @@ document.addEventListener(
                     student_id:
                         studentIdValue,
 
-                   student_class:
-    studentClass,
+                    student_class:
+                        studentClass,
 
                     section:
                         section,
 
-                   roll_no:
-    rollNo,
+                    roll_number:
+                        rollNumber,
 
                     date_of_birth:
                         dob || null,
@@ -5979,7 +5349,7 @@ async function generateAdminStudentId() {
     );
 }
 // ==========================================
-// GENERATE STUDENT ID + USERNAME WHEN MODAL OPENS
+// GENERATE STUDENT ID WHEN ADD MODAL OPENS
 // ==========================================
 
 document.addEventListener(
@@ -5996,12 +5366,7 @@ document.addEventListener(
 
         const studentIdField =
             document.getElementById(
-                "adminStudentId"
-            );
-
-        const usernameField =
-            document.getElementById(
-                "adminStudentUsername"
+                "adminNewStudentId"
             );
 
         if (!studentIdField) {
@@ -6016,18 +5381,6 @@ document.addEventListener(
 
         studentIdField.value =
             newStudentId;
-
-        // Automatically generate username
-        if (usernameField) {
-
-            const idNumber =
-                newStudentId
-                    .replace(/\D/g, "");
-
-            usernameField.value =
-                "student" + idNumber;
-
-        }
 
     }
 );
@@ -6953,7 +6306,7 @@ renderResultsTable();
 
 // ==========================================
 // USER MANAGEMENT - STUDENTS + TEACHERS
-// SUPABASE DATA
+// ADMIN CENTRAL USER MANAGEMENT
 // ==========================================
 
 async function renderUserManagementStudents() {
@@ -6967,497 +6320,466 @@ async function renderUserManagementStudents() {
         return;
     }
 
+
     // ==========================================
-    // LOADING
+    // GET LOCAL STUDENTS
     // ==========================================
 
-    tableBody.innerHTML = `
-        <tr>
-            <td
-                colspan="9"
-                style="
-                    text-align:center;
-                    padding:40px;
-                    color:#64748b;
-                "
-            >
-                ⏳ Loading users...
-            </td>
-        </tr>
-    `;
+    let students = [];
 
     try {
 
-        // ==========================================
-        // GET STUDENTS FROM SUPABASE
-        // ==========================================
-
-        const {
-            data: students,
-            error: studentsError
-        } = await supabaseClient
-            .from("students")
-            .select("*")
-            .order("created_at", {
-                ascending: false
-            });
-
-        if (studentsError) {
-
-            console.error(
-                "User Management Students Error:",
-                studentsError
-            );
-
-            throw studentsError;
-        }
-
-
-        // ==========================================
-        // GET TEACHERS FROM SUPABASE
-        // ==========================================
-
-        const {
-            data: teachers,
-            error: teachersError
-        } = await supabaseClient
-            .from("teachers")
-            .select("*")
-            .order("created_at", {
-                ascending: false
-            });
-
-        if (teachersError) {
-
-            console.error(
-                "User Management Teachers Error:",
-                teachersError
-            );
-
-            throw teachersError;
-        }
-
-
-        // ==========================================
-        // COMBINE USERS
-        // ==========================================
-
-        const users = [];
-
-
-        // ==========================================
-        // STUDENTS
-        // ==========================================
-
-        (students || []).forEach(function (student) {
-
-            users.push({
-
-                type: "student",
-
-                role: "Student",
-
-                roleIcon: "🎓",
-
-                id:
-                    student.student_id ||
-                    student.studentId ||
-                    student.id ||
-                    "—",
-
-                recordId:
-                    student.id,
-
-                name:
-                    student.name ||
-                    student.fullName ||
-                    "—",
-
-                classSubject:
-                    student.class
-                        ? "Class " +
-                          student.class
-                        : "—",
-
-                username:
-                    student.username ||
-                    "—",
-
-                password:
-                    student.password ||
-                    "",
-
-                status:
-                    student.status ||
-                    "Active"
-
-            });
-
-        });
-
-
-        // ==========================================
-        // TEACHERS
-        // ==========================================
-
-        (teachers || []).forEach(function (teacher) {
-
-            users.push({
-
-                type: "teacher",
-
-                role: "Teacher",
-
-                roleIcon: "👨‍🏫",
-
-                id:
-                    teacher.teacher_id ||
-                    teacher.teacherId ||
-                    teacher.id ||
-                    "—",
-
-                recordId:
-                    teacher.id,
-
-                name:
-                    teacher.name ||
-                    teacher.fullName ||
-                    "—",
-
-                classSubject:
-                    teacher.subject ||
-                    "—",
-
-                username:
-                    teacher.username ||
-                    "—",
-
-                password:
-                    teacher.password ||
-                    "",
-
-                status:
-                    teacher.status ||
-                    "Active"
-
-            });
-
-        });
-
-
-        // ==========================================
-        // NO USERS
-        // ==========================================
-
-        if (users.length === 0) {
-
-            tableBody.innerHTML = `
-                <tr>
-                    <td
-                        colspan="9"
-                        style="
-                            text-align:center;
-                            padding:40px;
-                            color:#64748b;
-                        "
-                    >
-                        👥 No Student or Teacher
-                        accounts found.
-                    </td>
-                </tr>
-            `;
-
-            return;
-        }
-
-
-        // ==========================================
-        // CLEAR TABLE
-        // ==========================================
-
-        tableBody.innerHTML = "";
-
-
-        // ==========================================
-        // RENDER USERS
-        // ==========================================
-
-        users.forEach(function (user, index) {
-
-            const row =
-                document.createElement("tr");
-
-
-            const roleClass =
-                user.type === "teacher"
-                    ? "teacher"
-                    : "student";
-
-
-            const passwordDisplay =
-                user.password
-                    ? "••••••••"
-                    : "Not Set";
-
-
-            row.innerHTML = `
-
-                <!-- NUMBER -->
-
-                <td>
-                    ${index + 1}
-                </td>
-
-
-                <!-- ROLE -->
-
-                <td>
-
-                    <span
-                        class="
-                            user-role-badge
-                            ${roleClass}
-                        "
-                    >
-
-                        ${user.roleIcon}
-
-                        ${user.role}
-
-                    </span>
-
-                </td>
-
-
-                <!-- ID -->
-
-                <td>
-
-                    <strong
-                        class="student-id-text"
-                    >
-
-                        ${user.id}
-
-                    </strong>
-
-                </td>
-
-
-                <!-- NAME -->
-
-                <td>
-
-                    <strong>
-
-                        ${user.name}
-
-                    </strong>
-
-                </td>
-
-
-                <!-- CLASS / SUBJECT -->
-
-                <td>
-
-                    ${user.classSubject}
-
-                </td>
-
-
-                <!-- USERNAME -->
-
-                <td>
-
-                    <strong>
-
-                        ${user.username}
-
-                    </strong>
-
-                </td>
-
-
-                <!-- PASSWORD -->
-
-                <td>
-
-                    <div
-                        class="student-password-cell"
-                    >
-
-                        <span
-                            id="userPassword-${index}"
-                            class="student-password-text"
-                        >
-
-                            ${passwordDisplay}
-
-                        </span>
-
-
-                        ${
-                            user.password
-                                ? `
-
-                                    <button
-                                        type="button"
-                                        class="user-password-toggle"
-                                        onclick="
-                                            toggleUserManagementPassword(
-                                                ${index},
-                                                this
-                                            )
-                                        "
-                                        title="Show Password"
-                                    >
-                                        👁️
-                                    </button>
-
-                                `
-                                : ""
-                        }
-
-                    </div>
-
-                </td>
-
-
-                <!-- STATUS -->
-
-                <td>
-
-                    <button
-                        type="button"
-                        class="
-                            user-status-btn
-                            ${
-                                String(
-                                    user.status
-                                ).toLowerCase() ===
-                                "active"
-                                    ? "active"
-                                    : "disabled"
-                            }
-                        "
-                        onclick="
-                            toggleUserManagementStatus(
-                                ${index}
-                            )
-                        "
-                    >
-
-                        ${user.status}
-
-                    </button>
-
-                </td>
-
-
-                <!-- ACTIONS -->
-
-                <td>
-
-                    <div
-                        class="user-management-actions-cell"
-                        style="
-                            display:flex;
-                            gap:8px;
-                            align-items:center;
-                            justify-content:center;
-                        "
-                    >
-
-                        <!-- EDIT -->
-
-                        <button
-                            type="button"
-                            class="user-edit-btn"
-                            data-action="edit"
-                            data-user-type="${user.type}"
-                            data-user-id="${user.recordId}"
-                            data-student-id="${user.recordId}"
-                            title="Edit User"
-                            style="
-                                border:none;
-                                background:#2563eb;
-                                color:white;
-                                width:38px;
-                                height:38px;
-                                border-radius:10px;
-                                cursor:pointer;
-                                font-size:17px;
-                            "
-                        >
-
-                            ✏️
-
-                        </button>
-
-
-                        <!-- DELETE -->
-
-                        <button
-                            type="button"
-                            class="user-delete-btn"
-                            data-action="delete"
-                            data-user-type="${user.type}"
-                            data-student-id="${user.recordId}"
-                            title="Delete User"
-                            style="
-                                border:none;
-                                background:#fee2e2;
-                                color:#dc2626;
-                                width:38px;
-                                height:38px;
-                                border-radius:10px;
-                                cursor:pointer;
-                                font-size:17px;
-                            "
-                        >
-
-                            🗑️
-
-                        </button>
-
-                    </div>
-
-                </td>
-
-            `;
-
-
-            tableBody.appendChild(row);
-
-        });
-
+        students =
+            JSON.parse(
+                localStorage.getItem(
+                    "adminStudents"
+                )
+            ) || [];
 
     } catch (error) {
 
         console.error(
-            "User Management Load Error:",
+            "Student data error:",
             error
         );
 
+        students = [];
+    }
+
+
+    // ==========================================
+    // GET LOCAL TEACHERS
+    // ==========================================
+
+    let teachers = [];
+
+    try {
+
+        teachers =
+            JSON.parse(
+                localStorage.getItem(
+                    "adminTeachers"
+                )
+            ) || [];
+
+    } catch (error) {
+
+        console.error(
+            "Teacher data error:",
+            error
+        );
+
+        teachers = [];
+    }
+
+
+    // ==========================================
+    // COMBINE USERS
+    // ==========================================
+
+    const users = [];
+
+
+    // ==========================================
+    // STUDENTS
+    // ==========================================
+
+    students.forEach(function (student) {
+
+        users.push({
+
+            type: "student",
+
+            role: "Student",
+
+            roleIcon: "🎓",
+
+            id:
+                student.studentId ||
+                student.student_id ||
+                student.id ||
+                "—",
+
+            recordId:
+                student.id,
+
+            name:
+                student.fullName ||
+                student.name ||
+                "—",
+
+            classSubject:
+                student.studentClass
+                    ? "Class " +
+                      student.studentClass
+                    :
+                    (
+                        student.student_class
+                            ? "Class " +
+                              student.student_class
+                            : "—"
+                    ),
+
+            username:
+                student.username ||
+                "—",
+
+            password:
+                student.password ||
+                "",
+
+            status:
+                student.status ||
+                "Active"
+
+        });
+
+    });
+
+
+    // ==========================================
+    // TEACHERS
+    // ==========================================
+
+    teachers.forEach(function (teacher) {
+
+        users.push({
+
+            type: "teacher",
+
+            role: "Teacher",
+
+            roleIcon: "👨‍🏫",
+
+            id:
+                teacher.teacherId ||
+                teacher.teacher_id ||
+                teacher.id ||
+                "—",
+
+            recordId:
+                teacher.id,
+
+            name:
+                teacher.fullName ||
+                teacher.name ||
+                "—",
+
+            classSubject:
+
+                teacher.subject
+                    ? teacher.subject
+                    : "—",
+
+            username:
+                teacher.username ||
+                "—",
+
+            password:
+                teacher.password ||
+                "",
+
+            status:
+                teacher.status ||
+                "Active"
+
+        });
+
+    });
+
+
+    // ==========================================
+    // NO USERS
+    // ==========================================
+
+    if (users.length === 0) {
+
         tableBody.innerHTML = `
+
             <tr>
+
                 <td
                     colspan="9"
                     style="
                         text-align:center;
                         padding:40px;
-                        color:#dc2626;
+                        color:#64748b;
                     "
                 >
-                    ❌ Unable to load users.
-                    <br><br>
-                    ${error.message || "Unknown error"}
+
+                    👥 No Student or Teacher
+                    accounts found.
+
                 </td>
+
             </tr>
+
         `;
 
+        return;
     }
+
+
+    // ==========================================
+    // CLEAR TABLE
+    // ==========================================
+
+    tableBody.innerHTML = "";
+
+
+    // ==========================================
+    // RENDER USERS
+    // ==========================================
+
+    users.forEach(function (user, index) {
+
+        const row =
+            document.createElement("tr");
+
+
+        const roleClass =
+            user.type === "teacher"
+                ? "teacher"
+                : "student";
+
+
+        const passwordDisplay =
+            user.password
+                ? "••••••••"
+                : "Not Set";
+
+
+        row.innerHTML = `
+
+            <!-- NUMBER -->
+
+            <td>
+                ${index + 1}
+            </td>
+
+
+            <!-- ROLE -->
+
+            <td>
+
+                <span
+                    class="
+                        user-role-badge
+                        ${roleClass}
+                    "
+                >
+
+                    ${user.roleIcon}
+
+                    ${user.role}
+
+                </span>
+
+            </td>
+
+
+            <!-- ID -->
+
+            <td>
+
+                <strong
+                    class="student-id-text"
+                >
+
+                    ${user.id}
+
+                </strong>
+
+            </td>
+
+
+            <!-- NAME -->
+
+            <td>
+
+                <strong>
+
+                    ${user.name}
+
+                </strong>
+
+            </td>
+
+
+            <!-- CLASS / SUBJECT -->
+
+            <td>
+
+                ${user.classSubject}
+
+            </td>
+
+
+            <!-- USERNAME -->
+
+            <td>
+
+                <strong>
+
+                    ${user.username}
+
+                </strong>
+
+            </td>
+
+
+            <!-- PASSWORD -->
+
+            <td>
+
+                <div
+                    class="student-password-cell"
+                >
+
+                    <span
+                        id="userPassword-${index}"
+                        class="student-password-text"
+                    >
+
+                        ${passwordDisplay}
+
+                    </span>
+
+
+                    ${
+                        user.password
+                            ? `
+
+                                <button
+                                    type="button"
+                                    class="user-password-toggle"
+                                    onclick="
+                                        toggleUserManagementPassword(
+                                            ${index},
+                                            this
+                                        )
+                                    "
+                                    title="Show Password"
+                                >
+                                    👁️
+                                </button>
+
+                            `
+                            : ""
+                    }
+
+                </div>
+
+            </td>
+
+
+            <!-- STATUS -->
+
+            <td>
+
+                <button
+                    type="button"
+                    class="
+                        user-status-btn
+                        ${
+                            String(
+                                user.status
+                            ).toLowerCase() ===
+                            "active"
+                                ? "active"
+                                : "disabled"
+                        }
+                    "
+                    onclick="
+                        toggleUserManagementStatus(
+                            ${index}
+                        )
+                    "
+                >
+
+                    ${user.status}
+
+                </button>
+
+            </td>
+
+
+            <!-- ACTIONS -->
+
+            <td>
+
+                <div
+                    class="user-management-actions-cell"
+                    style="
+                        display:flex;
+                        gap:8px;
+                        align-items:center;
+                        justify-content:center;
+                    "
+                >
+
+                    <!-- EDIT -->
+
+                    <button
+                        type="button"
+                        class="user-edit-btn"
+                        data-action="edit"
+                        data-user-type="${user.type}"
+                        data-user-id="${user.recordId}"
+                        data-student-id="${user.recordId}"
+                        title="Edit User"
+                        style="
+                            border:none;
+                            background:#2563eb;
+                            color:white;
+                            width:38px;
+                            height:38px;
+                            border-radius:10px;
+                            cursor:pointer;
+                            font-size:17px;
+                        "
+                    >
+
+                        ✏️
+
+                    </button>
+
+
+                    <!-- DELETE -->
+
+                    <button
+                        type="button"
+                        class="user-delete-btn"
+                        data-action="delete"
+                        data-user-type="${user.type}"
+                        data-student-id="${user.recordId}"
+                        title="Delete User"
+                        style="
+                            border:none;
+                            background:#fee2e2;
+                            color:#dc2626;
+                            width:38px;
+                            height:38px;
+                            border-radius:10px;
+                            cursor:pointer;
+                            font-size:17px;
+                        "
+                    >
+
+                        🗑️
+
+                    </button>
+
+                </div>
+
+            </td>
+
+        `;
+
+
+        tableBody.appendChild(row);
+
+    });
 
 }
 // ==========================================
@@ -7857,9 +7179,8 @@ openAdminViewStudent(studentId);
 return;
 }
 
-// ==========================================
-// EDIT USER MANAGEMENT - SUPABASE
-// ==========================================
+
+// EDIT USER MANAGEMENT
 
 if (action === "edit") {
 
@@ -7867,170 +7188,79 @@ if (action === "edit") {
         actionButton.dataset.userType;
 
     const userId =
-        actionButton.dataset.userId;
+        Number(actionButton.dataset.studentId);
 
-    if (!userType || !userId) {
+    let users = [];
 
-        alert("User information is missing.");
+    if (userType === "student") {
 
-        return;
+        users =
+            JSON.parse(
+                localStorage.getItem("adminStudents")
+            ) || [];
+
+    } else {
+
+        users =
+            JSON.parse(
+                localStorage.getItem("adminTeachers")
+            ) || [];
+
     }
 
+    const user =
+        users.find(function(item) {
 
-    // ==========================================
-    // SELECT TABLE
-    // ==========================================
+            return Number(item.id) === userId;
 
-    const tableName =
-        userType === "student"
-            ? "students"
-            : "teachers";
-
-
-    // ==========================================
-    // GET USER FROM SUPABASE
-    // ==========================================
-
-    const {
-        data: user,
-        error
-    } =
-        await supabaseClient
-            .from(tableName)
-            .select("*")
-            .eq("id", userId)
-            .maybeSingle();
-
-
-    if (error) {
-
-        console.error(
-            "User Management Edit Load Error:",
-            error
-        );
-
-        alert(
-            "Unable to load user.\n\n" +
-            error.message
-        );
-
-        return;
-    }
-
+        });
 
     if (!user) {
 
-        alert(
-            "User record not found."
-        );
+        alert("User not found.");
 
         return;
+
     }
 
+    document.getElementById("editUserType").value =
+        userType === "student"
+            ? "Student"
+            : "Teacher";
 
-    // ==========================================
-    // GET MODAL
-    // ==========================================
+    document.getElementById("editUserName").value =
+        userType === "student"
+            ? (user.fullName || "")
+            : (user.name || "");
+
+    document.getElementById("editUserUsername").value =
+        user.username || "";
+
+    document.getElementById("editUserStatus").value =
+        user.status || "Active";
 
     const modal =
         document.getElementById(
             "editUserManagementModal"
         );
 
-    const typeField =
-        document.getElementById(
-            "editUserType"
-        );
+    if (modal) {
 
-    const nameField =
-        document.getElementById(
-            "editUserName"
-        );
-
-    const usernameField =
-        document.getElementById(
-            "editUserUsername"
-        );
-
-    const statusField =
-        document.getElementById(
-            "editUserStatus"
-        );
-
-
-    if (!modal) {
-
-        alert(
-            "Edit User modal not found."
-        );
-
-        return;
-    }
-
-
-    // ==========================================
-    // FILL MODAL
-    // ==========================================
-
-    if (typeField) {
-
-        typeField.value =
-            userType === "student"
-                ? "Student"
-                : "Teacher";
+        modal.style.display = "flex";
 
     }
-
-
-    if (nameField) {
-
-        nameField.value =
-            user.name ||
-            user.full_name ||
-            "";
-
-    }
-
-
-    if (usernameField) {
-
-        usernameField.value =
-            user.username ||
-            "";
-
-    }
-
-
-    if (statusField) {
-
-        statusField.value =
-            user.status ||
-            "Active";
-
-    }
-
-
-    // ==========================================
-    // STORE DATABASE ID
-    // ==========================================
-
-    modal.dataset.userId =
-        String(user.id);
-
-    modal.dataset.userType =
-        userType;
-
-
-    // ==========================================
-    // OPEN MODAL
-    // ==========================================
-
-    modal.style.display =
-        "flex";
-
 
     return;
 }
+
+// DISABLE / ENABLE
+if (action === "status") {
+
+toggleStudentStatus(studentId);
+
+return;
+}
+
 // ==========================================
 // DELETE USER - SUPABASE + LOCAL STORAGE
 // ==========================================
@@ -8419,171 +7649,124 @@ document.getElementById(
 
 });
 // ==========================================
-// RENDER ADMIN ASSIGNMENTS - SUPABASE
+// RENDER ADMIN ASSIGNMENTS
 // ==========================================
 
-async function renderAdminAssignments() {
+function renderAdminAssignments() {
 
-    const assignmentsList =
-        document.getElementById("adminAssignmentsList");
+const assignmentsList =
+document.getElementById("adminAssignmentsList");
 
-    if (!assignmentsList) {
-        return;
-    }
+if (!assignmentsList) {
+return;
+}
 
-    assignmentsList.innerHTML = `
-        <div class="admin-empty-state">
-            <h3>⏳ Loading Assignments...</h3>
-            <p>Fetching real assignment records.</p>
-        </div>
-    `;
+const assignments =
+JSON.parse(
+localStorage.getItem("adminAssignments")
+) || [];
 
-    if (typeof supabaseClient === "undefined") {
-        assignmentsList.innerHTML = `
-            <div class="admin-empty-state">
-                <h3>⚠️ Supabase Connection Missing</h3>
-            </div>
-        `;
-        return;
-    }
 
-    const { data: assignments, error } =
-        await supabaseClient
-            .from("assignments")
-            .select("*")
-            .order("created_at", { ascending: false });
+// No assignments
+if (assignments.length === 0) {
 
-    if (error) {
-        console.error("Admin Assignments Error:", error);
-        assignmentsList.innerHTML = `
-            <div class="admin-empty-state">
-                <h3>❌ Unable to Load Assignments</h3>
-                <p>${escapeHtml(error.message || "Database error.")}</p>
-            </div>
-        `;
-        return;
-    }
+assignmentsList.innerHTML = `
+<div class="admin-empty-state">
 
-    const list = assignments || [];
+<h3>📚 No Assignments Yet</h3>
 
-    // No assignments
-    if (list.length === 0) {
-        assignmentsList.innerHTML = `
-            <div class="admin-empty-state">
-                <h3>📚 No Assignments Yet</h3>
-                <p>Assignments created by teachers will appear here.</p>
-            </div>
-        `;
-        return;
-    }
+<p>
+Click <strong>Add Assignment</strong>
+to create a new assignment.
+</p>
 
-    // Render assignments
-    assignmentsList.innerHTML = list.map(function (assignment) {
+</div>
+`;
 
-        return `
-            <div class="admin-assignment-card">
-
-                <div class="admin-assignment-card-header">
-
-                    <div>
-                        <h3>📚 ${escapeHtml(assignment.title || "Untitled")}</h3>
-                        <p><strong>Subject:</strong> ${escapeHtml(assignment.subject || "—")}</p>
-                    </div>
-
-                    <span class="admin-assignment-status">
-                        ${escapeHtml(assignment.status || "Pending")}
-                    </span>
-
-                </div>
-
-                <div class="admin-assignment-details">
-
-                    <p><strong>Teacher:</strong> ${escapeHtml(assignment.teacher_name || "—")}</p>
-
-                    <p><strong>Class:</strong> ${escapeHtml(assignment.class_name || "—")}</p>
-
-                    <p><strong>Due Date:</strong> ${escapeHtml(assignment.due_date || "—")}</p>
-
-                    <p><strong>Total Marks:</strong> ${escapeHtml(String(assignment.marks ?? "—"))}</p>
-
-                </div>
-
-                <div class="admin-assignment-description">
-                    <strong>Description:</strong>
-                    <p>${escapeHtml(assignment.description || "No description provided.")}</p>
-                </div>
-
-                <div class="admin-assignment-actions">
-
-                    <button
-                        type="button"
-                        class="admin-view-assignment"
-                        data-id="${assignment.id}">
-                        👁️ View Submissions
-                    </button>
-
-                    <button
-                        type="button"
-                        class="admin-delete-assignment-supabase"
-                        data-id="${assignment.id}">
-                        🗑️ Delete
-                    </button>
-
-                </div>
-
-            </div>
-        `;
-
-    }).join("");
-
+return;
 }
 
 
-// ==========================================
-// DELETE ASSIGNMENT (ADMIN) - SUPABASE
-// ==========================================
+// Render assignments
+assignmentsList.innerHTML = assignments.map(function (assignment) {
 
-document.addEventListener("click", async function (event) {
+return `
+<div class="admin-assignment-card">
 
-    const deleteButton =
-        event.target.closest(".admin-delete-assignment-supabase");
+<div class="admin-assignment-card-header">
 
-    if (!deleteButton) {
-        return;
-    }
+<div>
 
-    const assignmentId = deleteButton.dataset.id;
+<h3>
+📚 ${assignment.title}
+</h3>
 
-    const confirmDelete = confirm(
-        "Are you sure you want to delete this assignment?\n\nThis will also remove related submissions."
-    );
+<p>
+<strong>Subject:</strong>
+${assignment.subject}
+</p>
 
-    if (!confirmDelete) {
-        return;
-    }
+</div>
 
-    // Delete submissions first (if any)
-    await supabaseClient
-        .from("assignment_submissions")
-        .delete()
-        .eq("assignment_id", Number(assignmentId));
+<span class="admin-assignment-status">
+${assignment.status}
+</span>
 
-    const { error } =
-        await supabaseClient
-            .from("assignments")
-            .delete()
-            .eq("id", Number(assignmentId));
+</div>
 
-    if (error) {
-        alert("Unable to delete assignment.\n\n" + error.message);
-        return;
-    }
 
-    alert("Assignment deleted successfully! ✅");
+<div class="admin-assignment-details">
 
-    await renderAdminAssignments();
+<p>
+<strong>Teacher:</strong>
+${assignment.teacher}
+</p>
 
-});
+<p>
+<strong>Class:</strong>
+${assignment.className}
+</p>
+
+<p>
+<strong>Due Date:</strong>
+${assignment.dueDate}
+</p>
+
+</div>
+
+
+<div class="admin-assignment-description">
+
+<strong>Description:</strong>
+
+<p>
+${assignment.description}
+</p>
+
+</div>
+<div class="admin-assignment-actions">
+
+<button
+type="button"
+class="admin-edit-assignment"
+data-id="${assignment.id}">
+✏️ Edit
+</button>
+
+<button
+type="button"
+class="admin-delete-assignment"
+data-id="${assignment.id}">
+🗑️ Delete
+</button>
+
+</div>
+</div>
+`;
+
+}).join("");
+
+}
 // ==========================================
 // LOAD ADMIN ASSIGNMENTS
 // ==========================================
@@ -8762,7 +7945,53 @@ modal.style.display = "flex";
 }
 
 });
+// ==========================================
+// ADMIN TEACHERS NAVIGATION
+// ==========================================
 
+document.addEventListener("click", function (event) {
+
+const teachersMenu =
+event.target.closest("#adminTeachersMenu");
+
+if (!teachersMenu) {
+return;
+}
+
+// Hide all Admin sections
+const adminSections = [
+"adminHomeSection",
+"adminStudentsSection",
+"adminTeachersSection",
+"adminAttendanceSection",
+"adminResultsSection",
+"adminFeesSection",
+"adminAssignmentsSection",
+"adminNoticesSection",
+"adminUsersStudentsSection",
+"adminSettingsSection"
+];
+
+adminSections.forEach(function (sectionId) {
+
+const section =
+document.getElementById(sectionId);
+
+if (section) {
+section.style.display = "none";
+}
+
+});
+
+// Show Teachers
+const teachersSection =
+document.getElementById("adminTeachersSection");
+
+if (teachersSection) {
+teachersSection.style.display = "block";
+}
+
+});
 // ==========================================
 // ADMIN TEACHER MODAL OPEN / CLOSE
 // ==========================================
@@ -9434,509 +8663,122 @@ document.addEventListener(
 
     }
 );
-// =========================================================
-// ADMIN TEACHERS
-// REAL SUPABASE DATA
-// =========================================================
+// ==========================================
+// RENDER ADMIN TEACHERS
+// ==========================================
 
-async function renderAdminTeachers() {
+function renderAdminTeachers() {
 
-    const teachersList =
-        document.getElementById(
-            "adminTeachersList"
-        );
+const teachers =
+JSON.parse(localStorage.getItem("adminTeachers")) || [];
 
-    if (!teachersList) {
-        return;
-    }
+const teachersList =
+document.getElementById("adminTeachersList");
 
+if (!teachersList) {
+return;
+}
 
-    // =====================================================
-    // LOADING
-    // =====================================================
 
-    teachersList.innerHTML = `
+// No teachers
+if (teachers.length === 0) {
 
-        <div class="admin-empty-state">
+teachersList.innerHTML = `
+<div class="admin-empty-state">
+<h3>👨‍🏫 No Teachers Yet</h3>
+<p>
+Click <strong>Add Teacher</strong>
+to add a new teacher.
+</p>
+</div>
+`;
 
-            <h3>⏳ Loading Teachers...</h3>
+return;
+}
 
-            <p>
-                Fetching real teacher records
-                from the database.
-            </p>
 
-        </div>
+// Teachers exist
+teachersList.innerHTML = "";
 
-    `;
 
+teachers.forEach(function (teacher, index) {
 
-    try {
+const teacherCard =
+document.createElement("div");
 
-        // =================================================
-        // CHECK SUPABASE
-        // =================================================
+teacherCard.className =
+"admin-teacher-card";
 
-        if (
-            typeof supabaseClient ===
-            "undefined" ||
-            !supabaseClient
-        ) {
 
-            throw new Error(
-                "Supabase client is not available."
-            );
+teacherCard.innerHTML = `
 
-        }
+<div class="admin-teacher-info">
 
+<div class="admin-teacher-avatar">
+👨‍🏫
+</div>
 
-        // =================================================
-        // GET REAL TEACHERS
-        // =================================================
+<div>
 
-        const {
-            data: teachers,
-            error
-        } =
-            await supabaseClient
-                .from("teachers")
-                .select(`
-                    id,
-                    teacher_id,
-                    name,
-                    email,
-                    phone,
-                    subject,
-                    teacher_class,
-                    qualification,
-                    joining_date,
-                    status
-                `)
-                .order(
-                    "id",
-                    {
-                        ascending: false
-                    }
-                );
+<h3>
+${teacher.name}
+</h3>
 
+<p>
+<strong>Subject:</strong>
+${teacher.subject}
+</p>
 
-        if (error) {
-            throw error;
-        }
+<p>
+<strong>Class:</strong>
+${teacher.teacherClass}
+</p>
 
+<p>
+<strong>Email:</strong>
+${teacher.email}
+</p>
 
-        const teacherList =
-            Array.isArray(teachers)
-                ? teachers
-                : [];
+<p>
+<strong>Phone:</strong>
+${teacher.phone}
+</p>
 
+<p>
+<strong>Qualification:</strong>
+${teacher.qualification}
+</p>
 
-        // =================================================
-        // EMPTY STATE
-        // =================================================
+<p>
+<strong>Joining Date:</strong>
+${teacher.joiningDate}
+</p>
 
-        if (
-            teacherList.length === 0
-        ) {
+</div>
 
-            teachersList.innerHTML = `
+</div>
 
-                <div class="admin-empty-state">
 
-                    <h3>
-                        👨‍🏫 No Teachers Yet
-                    </h3>
+<div class="admin-teacher-status">
+${teacher.status}
+</div>
 
-                    <p>
-                        No teacher records are currently
-                        available in the database.
-                    </p>
+<div class="admin-teacher-actions">
 
-                </div>
+<button
+type="button"
+onclick="deleteAdminTeacher(${teacher.id})">
+🗑️ Delete
+</button>
 
-            `;
+</div>
 
-            return;
-        }
+`;
 
 
-        // =================================================
-        // RENDER TEACHERS
-        // =================================================
+teachersList.appendChild(teacherCard);
 
-        teachersList.innerHTML =
-            teacherList.map(
-                function (teacher) {
-
-                    const teacherId =
-                        teacher.teacher_id ??
-                        teacher.id ??
-                        "—";
-
-
-                    const name =
-                        teacher.name ??
-                        "—";
-
-
-                    const email =
-                        teacher.email ??
-                        "—";
-
-
-                    const phone =
-                        teacher.phone ??
-                        "—";
-
-
-                    const subject =
-                        teacher.subject ??
-                        "—";
-
-
-                    const teacherClass =
-                        teacher.teacher_class ??
-                        "—";
-
-
-                    const qualification =
-                        teacher.qualification ??
-                        "—";
-
-
-                    const joiningDate =
-                        teacher.joining_date ??
-                        "—";
-
-
-                    const status =
-                        teacher.status ??
-                        "Active";
-
-
-                    const statusClass =
-                        String(status)
-                            .toLowerCase()
-                            .replace(
-                                /\s+/g,
-                                "-"
-                            );
-
-
-                    return `
-
-                        <div
-                            class="admin-teacher-card"
-                            data-teacher-id="${escapeHtml(
-                                String(
-                                    teacher.id ??
-                                    teacherId
-                                )
-                            )}"
-                        >
-
-                            <!-- TEACHER INFO -->
-
-                            <div class="admin-teacher-info">
-
-                                <div class="admin-teacher-avatar">
-                                    👨‍🏫
-                                </div>
-
-
-                                <div>
-
-                                    <h3>
-                                        ${escapeHtml(
-                                            String(name)
-                                        )}
-                                    </h3>
-
-
-                                    <p>
-                                        <strong>
-                                            Teacher ID:
-                                        </strong>
-
-                                        ${escapeHtml(
-                                            String(
-                                                teacherId
-                                            )
-                                        )}
-                                    </p>
-
-
-                                    <p>
-                                        <strong>
-                                            Subject:
-                                        </strong>
-
-                                        ${escapeHtml(
-                                            String(
-                                                subject
-                                            )
-                                        )}
-                                    </p>
-
-
-                                    <p>
-                                        <strong>
-                                            Class:
-                                        </strong>
-
-                                        ${escapeHtml(
-                                            String(
-                                                teacherClass
-                                            )
-                                        )}
-                                    </p>
-
-
-                                    <p>
-                                        <strong>
-                                            Email:
-                                        </strong>
-
-                                        ${escapeHtml(
-                                            String(
-                                                email
-                                            )
-                                        )}
-                                    </p>
-
-
-                                    <p>
-                                        <strong>
-                                            Phone:
-                                        </strong>
-
-                                        ${escapeHtml(
-                                            String(
-                                                phone
-                                            )
-                                        )}
-                                    </p>
-
-
-                                    <p>
-                                        <strong>
-                                            Qualification:
-                                        </strong>
-
-                                        ${escapeHtml(
-                                            String(
-                                                qualification
-                                            )
-                                        )}
-                                    </p>
-
-
-                                    <p>
-                                        <strong>
-                                            Joining Date:
-                                        </strong>
-
-                                        ${escapeHtml(
-                                            String(
-                                                joiningDate
-                                            )
-                                        )}
-                                    </p>
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- STATUS -->
-
-                            <div
-                                class="admin-teacher-status"
-                            >
-
-                                ${escapeHtml(
-                                    String(status)
-                                )}
-
-                            </div>
-
-
-                            <!-- ACTIONS -->
-
-                            <div
-                                class="admin-teacher-actions"
-                            >
-
-                                <button
-                                    type="button"
-                                    class="admin-teacher-delete-btn"
-                                    data-teacher-id="${escapeHtml(
-                                        String(
-                                            teacher.id ??
-                                            teacherId
-                                        )
-                                    )}"
-                                >
-                                    🗑️ Delete
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                    `;
-
-                }
-            ).join("");
-
-
-        // =================================================
-        // DELETE BUTTONS
-        // =================================================
-
-        teachersList
-            .querySelectorAll(
-                ".admin-teacher-delete-btn"
-            )
-            .forEach(
-                function (button) {
-
-                    button.addEventListener(
-                        "click",
-                        async function () {
-
-                            const teacherId =
-                                button.dataset
-                                    .teacherId;
-
-
-                            if (!teacherId) {
-                                return;
-                            }
-
-
-                            const confirmed =
-                                confirm(
-                                    "Are you sure you want to delete this teacher?"
-                                );
-
-
-                            if (!confirmed) {
-                                return;
-                            }
-
-
-                            try {
-
-                                const {
-                                    error:
-                                        deleteError
-                                } =
-                                    await supabaseClient
-                                        .from("teachers")
-                                        .delete()
-                                        .eq(
-                                            "id",
-                                            teacherId
-                                        );
-
-
-                                if (
-                                    deleteError
-                                ) {
-
-                                    throw deleteError;
-
-                                }
-
-
-                                alert(
-                                    "✅ Teacher deleted successfully."
-                                );
-
-
-                                // Reload teachers
-
-                                await renderAdminTeachers();
-
-
-                                // Update dashboard
-
-                                if (
-                                    typeof updateProfessionalAdminDashboard ===
-                                    "function"
-                                ) {
-
-                                    await updateProfessionalAdminDashboard();
-
-                                }
-
-
-                            } catch (
-                                deleteError
-                            ) {
-
-                                console.error(
-                                    "Teacher delete error:",
-                                    deleteError
-                                );
-
-
-                                alert(
-                                    "❌ Teacher could not be deleted.\n\n" +
-                                    (
-                                        deleteError.message ||
-                                        "Database error."
-                                    )
-                                );
-
-                            }
-
-                        }
-                    );
-
-                }
-            );
-
-
-        // =================================================
-        // LOG
-        // =================================================
-
-        console.log(
-            "Admin Teachers loaded from Supabase:",
-            teacherList.length
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Admin Teachers Supabase Error:",
-            error
-        );
-
-
-        teachersList.innerHTML = `
-
-            <div class="admin-empty-state">
-
-                <h3>
-                    ⚠️ Unable to Load Teachers
-                </h3>
-
-                <p>
-                    ${escapeHtml(
-                        error.message ||
-                        "Database error occurred."
-                    )}
-                </p>
-
-            </div>
-
-        `;
-
-    }
+});
 
 }
 // ==========================================
@@ -11028,10 +9870,10 @@ renderAttendanceTable();
 updateAttendanceStatistics();
 
 }
-// =========================================================
-// EDUPORTAL ATTENDANCE
-// REAL SUPABASE SYNC
-// =========================================================
+// ==========================================
+// ATTENDANCE TABLE RENDER
+// SUPABASE STUDENTS - FINAL SYNC
+// ==========================================
 
 async function renderAttendanceTable() {
 
@@ -11040,584 +9882,498 @@ async function renderAttendanceTable() {
             "attendanceTableBody"
         );
 
+    if (!tableBody) {
+        return;
+    }
+
+    // ==========================================
+    // LOADING
+    // ==========================================
+
+    tableBody.innerHTML = `
+        <tr>
+            <td colspan="8"
+                style="text-align:center;padding:35px;">
+                Loading attendance...
+            </td>
+        </tr>
+    `;
+
+
+    // ==========================================
+    // GET STUDENTS FROM SUPABASE
+    // ==========================================
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+
+        console.error(
+            "Supabase connection missing."
+        );
+
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="8"
+                    style="text-align:center;padding:35px;">
+                    Supabase connection missing.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    const {
+        data: studentsData,
+        error: studentsError
+    } =
+        await supabaseClient
+            .from("students")
+            .select("*")
+            .order("created_at", {
+                ascending: false
+            });
+
+
+    // ==========================================
+    // SUPABASE ERROR
+    // ==========================================
+
+    if (studentsError) {
+
+        console.error(
+            "ATTENDANCE STUDENTS LOAD ERROR:",
+            studentsError
+        );
+
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="8"
+                    style="text-align:center;padding:35px;">
+                    Unable to load students.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    // ==========================================
+    // CONVERT SUPABASE DATA
+    // TO EXISTING ATTENDANCE FORMAT
+    // ==========================================
+
+    const students =
+        (studentsData || []).map(
+            function(student) {
+
+                return {
+
+                    id:
+                        student.id,
+
+                    studentId:
+                        student.student_id,
+
+                    fullName:
+                        student.name,
+
+                    name:
+                        student.name,
+
+                    fatherName:
+                        student.father_name,
+
+                    studentClass:
+                        student.student_class,
+
+                    section:
+                        student.section,
+
+                    rollNumber:
+                        student.roll_number,
+
+                    dob:
+                        student.date_of_birth || "",
+
+                    username:
+                        student.username,
+
+                    password:
+                        student.password,
+
+                    mobile:
+                        student.mobile || "",
+
+                    status:
+                        student.status || "Active",
+
+                    createdAt:
+                        student.created_at
+
+                };
+
+            }
+        );
+
+
+    // ==========================================
+    // IMPORTANT:
+    // SYNC LOCAL STORAGE WITH SUPABASE
+    // ==========================================
+
+    localStorage.setItem(
+        "adminStudents",
+        JSON.stringify(students)
+    );
+
+
+    // ==========================================
+    // GET ATTENDANCE RECORDS
+    // ==========================================
+
+    const records =
+        JSON.parse(
+            localStorage.getItem(
+                "eduPortalAttendance"
+            )
+        ) || [];
+
+
+    // ==========================================
+    // GET FILTERS
+    // ==========================================
+
+    const classFilter =
+        document.getElementById(
+            "attendanceClassFilter"
+        );
+
+    const sectionFilter =
+        document.getElementById(
+            "attendanceSectionFilter"
+        );
+
+    const dateFilter =
+        document.getElementById(
+            "attendanceDateFilter"
+        );
+
+
+    const selectedClass =
+        classFilter &&
+        classFilter.value
+            ? classFilter.value
+            : "all";
+
+
+    const selectedSection =
+        sectionFilter &&
+        sectionFilter.value
+            ? sectionFilter.value
+            : "all";
+
+
+    const selectedDate =
+        dateFilter &&
+        dateFilter.value
+            ? dateFilter.value
+            : getTodayDate();
+
+
+    // ==========================================
+    // FILTER STUDENTS
+    // ==========================================
+
+    const filteredStudents =
+        students.filter(
+            function(student) {
+
+                const studentClass =
+                    String(
+                        student.studentClass || ""
+                    ).trim();
+
+
+                const studentSection =
+                    String(
+                        student.section || ""
+                    ).trim();
+
+
+                const classMatch =
+                    selectedClass === "all" ||
+                    studentClass ===
+                        String(selectedClass);
+
+
+                const sectionMatch =
+                    selectedSection === "all" ||
+                    studentSection ===
+                        String(selectedSection);
+
+
+                const searchInput =
+                    document.getElementById(
+                        "adminAttendanceSearch"
+                    );
+
+
+                const searchValue =
+                    searchInput
+                        ? searchInput.value
+                            .trim()
+                            .toLowerCase()
+                        : "";
+
+
+                const studentName =
+                    String(
+                        student.fullName ||
+                        student.name ||
+                        ""
+                    ).toLowerCase();
+
+
+                const studentRoll =
+                    String(
+                        student.rollNumber ||
+                        ""
+                    ).toLowerCase();
+
+
+                const studentId =
+                    String(
+                        student.studentId ||
+                        ""
+                    ).toLowerCase();
+
+
+                const searchMatch =
+                    searchValue === "" ||
+                    studentName.includes(
+                        searchValue
+                    ) ||
+                    studentRoll.includes(
+                        searchValue
+                    ) ||
+                    studentId.includes(
+                        searchValue
+                    );
+
+
+                return (
+                    classMatch &&
+                    sectionMatch &&
+                    searchMatch
+                );
+
+            }
+        );
+
+
+    // ==========================================
+    // CLEAR TABLE
+    // ==========================================
+
+    tableBody.innerHTML = "";
+
+
+    // ==========================================
+    // NO STUDENTS
+    // ==========================================
+
+    if (
+        filteredStudents.length === 0
+    ) {
+
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="8"
+                    style="text-align:center;padding:40px;">
+                    No students found.
+                </td>
+            </tr>
+        `;
+
+        const entriesText =
+            document.getElementById(
+                "attendanceEntriesText"
+            );
+
+        if (entriesText) {
+
+            entriesText.textContent =
+                "Showing 0 entries";
+
+        }
+
+        updateAttendanceStatistics();
+
+        return;
+    }
+
+
+    // ==========================================
+    // RENDER STUDENTS
+    // ==========================================
+
+    filteredStudents.forEach(
+        function(student, index) {
+
+            const attendanceRecord =
+                records.find(
+                    function(record) {
+
+                        return (
+                            String(
+                                record.studentId
+                            ) ===
+                            String(
+                                student.id
+                            ) &&
+                            record.date ===
+                                selectedDate
+                        );
+
+                    }
+                );
+
+
+            const row =
+                document.createElement("tr");
+
+
+            row.innerHTML = `
+
+                <td>
+                    <input
+                        type="checkbox"
+                        class="attendance-row-checkbox"
+                        data-student-id="${student.id}"
+                    >
+                </td>
+
+
+                <td>
+                    ${index + 1}
+                </td>
+
+
+                <td>
+                    ${student.rollNumber || "—"}
+                </td>
+
+
+                <td>
+                    <strong>
+                        ${
+                            student.fullName ||
+                            student.name ||
+                            "—"
+                        }
+                    </strong>
+                </td>
+
+
+                <td>
+                    ${
+                        student.studentClass ||
+                        "—"
+                    }
+                </td>
+
+
+                <td>
+                    ${
+                        student.section ||
+                        "—"
+                    }
+                </td>
+
+
+                <td>
+
+                    ${
+                        attendanceRecord &&
+                        attendanceRecord.status
+                            ? `
+                                <span
+                                    class="attendance-status-badge
+                                    ${attendanceRecord.status.toLowerCase()}">
+                                    ${attendanceRecord.status}
+                                </span>
+                              `
+                            : `
+                                <span
+                                    class="attendance-status-badge pending">
+                                    — Not Marked
+                                </span>
+                              `
+                    }
+
+                </td>
+
+
+                <td>
+
+                    ${
+                        attendanceRecord &&
+                        attendanceRecord.checkIn
+                            ? attendanceRecord.checkIn
+                            : "-"
+                    }
+
+                </td>
+
+
+                <td>
+
+                    ${
+                        attendanceRecord &&
+                        attendanceRecord.checkOut
+                            ? attendanceRecord.checkOut
+                            : "-"
+                    }
+
+                </td>
+
+            `;
+
+
+            tableBody.appendChild(row);
+
+        }
+    );
+
+
+    // ==========================================
+    // UPDATE ENTRY COUNT
+    // ==========================================
+
     const entriesText =
         document.getElementById(
             "attendanceEntriesText"
         );
 
 
-    if (!tableBody) {
-        return;
+    if (entriesText) {
+
+        entriesText.textContent =
+            `Showing ${filteredStudents.length} entries`;
+
     }
 
 
-    // =====================================================
-    // LOADING
-    // =====================================================
-
-    tableBody.innerHTML = `
-        <tr>
-            <td colspan="9"
-                style="text-align:center;padding:40px;">
-                ⏳ Loading attendance...
-            </td>
-        </tr>
-    `;
-
-
-    try {
-
-        // =================================================
-        // SUPABASE CHECK
-        // =================================================
-
-        if (
-            typeof supabaseClient === "undefined" ||
-            !supabaseClient
-        ) {
-
-            throw new Error(
-                "Supabase connection is not available."
-            );
-
-        }
-
-
-        // =================================================
-        // DATE
-        // =================================================
-
-        const dateFilter =
-            document.getElementById(
-                "attendanceDateFilter"
-            );
-
-
-        const selectedDate =
-            dateFilter?.value ||
-            getTodayDate();
-
-
-        if (
-            dateFilter &&
-            !dateFilter.value
-        ) {
-
-            dateFilter.value =
-                selectedDate;
-
-        }
-
-
-        // =================================================
-        // FILTER VALUES
-        // =================================================
-
-        const classFilter =
-            document.getElementById(
-                "attendanceClassFilter"
-            );
-
-
-        const sectionFilter =
-            document.getElementById(
-                "attendanceSectionFilter"
-            );
-
-
-        const searchInput =
-            document.getElementById(
-                "adminAttendanceSearch"
-            );
-
-
-        const selectedClass =
-            classFilter?.value || "all";
-
-
-        const selectedSection =
-            sectionFilter?.value || "all";
-
-
-        const searchValue =
-            searchInput?.value
-                ?.trim()
-                .toLowerCase() || "";
-
-
-        // =================================================
-        // GET STUDENTS
-        // =================================================
-
-        const {
-            data: students,
-            error: studentsError
-        } =
-            await supabaseClient
-                .from("students")
-                .select("*")
-                .order(
-                    "created_at",
-                    {
-                        ascending: false
-                    }
-                );
-
-
-        if (studentsError) {
-            throw studentsError;
-        }
-
-
-        const studentList =
-            Array.isArray(students)
-                ? students
-                : [];
-
-
-        // =================================================
-        // GET ATTENDANCE FROM SUPABASE
-        // =================================================
-
-        const {
-            data: attendanceData,
-            error: attendanceError
-        } =
-            await supabaseClient
-                .from("attendance")
-                .select("*")
-                .eq(
-                    "attendance_date",
-                    selectedDate
-                );
-
-
-        if (attendanceError) {
-            throw attendanceError;
-        }
-
-
-        const attendanceList =
-            Array.isArray(attendanceData)
-                ? attendanceData
-                : [];
-
-
-        // =================================================
-        // FILTER STUDENTS
-        // =================================================
-
-        const filteredStudents =
-            studentList.filter(
-                function (student) {
-
-                    const studentClass =
-                        String(
-                            student.student_class ??
-                            student.class ??
-                            ""
-                        ).trim();
-
-
-                    const studentSection =
-                        String(
-                            student.section ??
-                            ""
-                        ).trim();
-
-
-                    const studentName =
-                        String(
-                            student.name ??
-                            ""
-                        )
-                        .toLowerCase();
-
-
-                    const studentId =
-                        String(
-                            student.student_id ??
-                            ""
-                        )
-                        .toLowerCase();
-
-
-                    const rollNumber =
-                        String(
-                            student.roll_number ??
-                            student.roll_no ??
-                            ""
-                        )
-                        .toLowerCase();
-
-
-                    const classMatch =
-                        selectedClass === "all" ||
-                        studentClass ===
-                            String(
-                                selectedClass
-                            );
-
-
-                    const sectionMatch =
-                        selectedSection === "all" ||
-                        studentSection ===
-                            String(
-                                selectedSection
-                            );
-
-
-                    const searchMatch =
-                        searchValue === "" ||
-                        studentName.includes(
-                            searchValue
-                        ) ||
-                        studentId.includes(
-                            searchValue
-                        ) ||
-                        rollNumber.includes(
-                            searchValue
-                        );
-
-
-                    return (
-                        classMatch &&
-                        sectionMatch &&
-                        searchMatch
-                    );
-
-                }
-            );
-
-
-        // =================================================
-        // EMPTY
-        // =================================================
-
-        if (
-            filteredStudents.length === 0
-        ) {
-
-            tableBody.innerHTML = `
-                <tr>
-                    <td colspan="9"
-                        style="text-align:center;padding:40px;">
-
-                        <div class="attendance-empty-state">
-
-                            <div>📅</div>
-
-                            <h3>
-                                No Students Found
-                            </h3>
-
-                            <p>
-                                No students match the
-                                selected filters.
-                            </p>
-
-                        </div>
-
-                    </td>
-                </tr>
-            `;
-
-
-            if (entriesText) {
-
-                entriesText.textContent =
-                    "Showing 0 entries";
-
-            }
-
-
-            updateAttendanceStatistics();
-
-            return;
-        }
-
-
-        // =================================================
-        // RENDER
-        // =================================================
-
-        tableBody.innerHTML = "";
-
-
-        filteredStudents.forEach(
-            function (student, index) {
-
-                const studentDatabaseId =
-                    student.id;
-
-
-                const studentId =
-                    student.student_id ??
-                    studentDatabaseId;
-
-
-                // -----------------------------------------
-                // FIND SUPABASE ATTENDANCE
-                // -----------------------------------------
-
-                const attendanceRecord =
-                    attendanceList.find(
-                        function (record) {
-
-                            return String(
-                                record.student_id
-                            ) ===
-                            String(
-                                studentDatabaseId
-                            );
-
-                        }
-                    );
-
-
-                const status =
-                    attendanceRecord?.status ||
-                    "";
-
-
-              const checkIn =
-    attendanceRecord?.check_in_time
-        ? new Date(
-            attendanceRecord.check_in_time
-        ).toLocaleTimeString(
-            [],
-            {
-                hour: "2-digit",
-                minute: "2-digit"
-            }
-        )
-        : "-";
-
-const checkOut =
-    attendanceRecord?.check_out_time
-        ? new Date(
-            attendanceRecord.check_out_time
-        ).toLocaleTimeString(
-            [],
-            {
-                hour: "2-digit",
-                minute: "2-digit"
-            }
-        )
-        : "-";
-
-
-                const statusHtml =
-                    status
-                    ? `
-                        <span
-                            class="attendance-status-badge
-                            ${String(
-                                status
-                            ).toLowerCase()}">
-
-                            ${escapeHtml(
-                                String(status)
-                            )}
-
-                        </span>
-                    `
-                    : `
-                        <span
-                            class="attendance-status-badge pending">
-
-                            — Not Marked
-
-                        </span>
-                    `;
-
-
-                // -----------------------------------------
-                // ROW
-                // -----------------------------------------
-
-                const row =
-                    document.createElement(
-                        "tr"
-                    );
-
-
-                row.innerHTML = `
-
-                    <td>
-
-                        <input
-                            type="checkbox"
-                            class="attendance-row-checkbox"
-                            data-student-id="${escapeHtml(
-                                String(
-                                    studentDatabaseId
-                                )
-                            )}"
-                        >
-
-                    </td>
-
-
-                    <td>
-                        ${index + 1}
-                    </td>
-
-
-                    <td>
-                        ${escapeHtml(
-                            String(
-                                student.roll_number ??
-                                student.roll_no ??
-                                "—"
-                            )
-                        )}
-                    </td>
-
-
-                    <td>
-
-                        <strong>
-                            ${escapeHtml(
-                                String(
-                                    student.name ??
-                                    "—"
-                                )
-                            )}
-                        </strong>
-
-                    </td>
-
-
-                    <td>
-                        ${escapeHtml(
-                            String(
-                                student.student_class ??
-                                student.class ??
-                                "—"
-                            )
-                        )}
-                    </td>
-
-
-                    <td>
-                        ${escapeHtml(
-                            String(
-                                student.section ??
-                                "—"
-                            )
-                        )}
-                    </td>
-
-
-                    <td>
-                        ${statusHtml}
-                    </td>
-
-
-                    <td>
-                        ${escapeHtml(
-                            String(checkIn)
-                        )}
-                    </td>
-
-
-                    <td>
-                        ${escapeHtml(
-                            String(checkOut)
-                        )}
-                    </td>
-
-                `;
-
-
-                tableBody.appendChild(
-                    row
-                );
-
-            }
-        );
-
-
-        // =================================================
-        // FOOTER
-        // =================================================
-
-        if (entriesText) {
-
-            entriesText.textContent =
-                `Showing ${
-                    filteredStudents.length
-                } entries`;
-
-        }
-
-
-        // =================================================
-        // UPDATE STATISTICS
-        // =================================================
-
-        updateAttendanceStatistics();
-
- renderAdminAttendanceTeachersList();
-        console.log(
-            "Attendance loaded from Supabase:",
-            {
-                date:
-                    selectedDate,
-
-                students:
-                    filteredStudents.length,
-
-                attendance:
-                    attendanceList.length
-            }
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Attendance Supabase Error:",
-            error
-        );
-
-
-        tableBody.innerHTML = `
-            <tr>
-                <td colspan="9"
-                    style="text-align:center;padding:40px;">
-
-                    <div class="attendance-empty-state">
-
-                        <div>⚠️</div>
-
-                        <h3>
-                            Unable to Load Attendance
-                        </h3>
-
-                        <p>
-                            ${escapeHtml(
-                                error.message ||
-                                "Database error occurred."
-                            )}
-                        </p>
-
-                    </div>
-
-                </td>
-            </tr>
-        `;
-
-
-        if (entriesText) {
-
-            entriesText.textContent =
-                "Unable to load attendance";
-
-        }
-
-    }
+    // ==========================================
+    // UPDATE STATISTICS
+    // ==========================================
+
+    updateAttendanceStatistics();
 
 }
 
@@ -11658,8 +10414,10 @@ document.addEventListener(
             return;
         }
 
-       const studentId =
-    actionButton.dataset.studentId;
+        const studentId =
+            Number(
+                button.dataset.studentId
+            );
 
         const students =
             getAdminStudentsForAttendance();
@@ -11973,129 +10731,93 @@ JSON.stringify(records)
 
 // ==========================================================
 // UPDATE STUDENT ATTENDANCE UI
-// CHECK-IN + CHECK-OUT
 // ==========================================================
 
 function updateStudentAttendanceUI() {
 
-    const checkInButton =
-        document.getElementById(
-            "studentCheckInBtn"
-        );
+const checkInButton =
+document.getElementById(
+"studentCheckInBtn"
+);
 
-    const checkOutButton =
-        document.getElementById(
-            "studentCheckOutBtn"
-        );
 
-    const message =
-        document.getElementById(
-            "todayAttendanceMessage"
-        );
+const message =
+document.getElementById(
+"todayAttendanceMessage"
+);
 
-    if (
-        !checkInButton ||
-        !checkOutButton ||
-        !message
-    ) {
-        return;
-    }
 
-    const loggedInStudent =
-        JSON.parse(
-            localStorage.getItem(
-                "loggedInStudent"
-            )
-        );
+if (!checkInButton || !message) {
+return;
+}
 
-    if (!loggedInStudent) {
 
-        checkInButton.disabled = true;
-        checkOutButton.disabled = true;
+const loggedInStudent =
+JSON.parse(
+localStorage.getItem(
+"loggedInStudent"
+)
+);
 
-        message.textContent =
-            "Student session not found.";
 
-        return;
-    }
+if (!loggedInStudent) {
 
-    const today =
-        getStudentAttendanceDate();
+checkInButton.disabled = true;
 
-    const records =
-        getStudentAttendanceRecords();
+message.textContent =
+"Student session not found.";
 
-    const todayRecord =
-        records.find(
-            function(record) {
+return;
 
-                return (
-                    String(record.studentId) ===
-                    String(loggedInStudent.id) &&
-                    record.date === today
-                );
+}
 
-            }
-        );
 
-    // ==========================================
-    // CHECKED IN
-    // ==========================================
+const today =
+getStudentAttendanceDate();
 
-    if (todayRecord) {
 
-        checkInButton.disabled = true;
+const records =
+getStudentAttendanceRecords();
 
-        checkInButton.innerHTML =
-            "✓ Attendance Marked";
 
-        // CHECKED OUT
-        if (todayRecord.checkOut) {
+const todayRecord =
+records.find(function(record) {
 
-            checkOutButton.disabled = true;
+return (
+String(record.studentId) ===
+String(loggedInStudent.id) &&
 
-            checkOutButton.innerHTML =
-                "✓ Checked Out";
+record.date === today
+);
 
-            message.textContent =
-                "Check In: " +
-                todayRecord.checkIn +
-                " | Check Out: " +
-                todayRecord.checkOut;
+});
 
-            return;
-        }
 
-        // READY FOR CHECK OUT
-        checkOutButton.disabled = false;
+if (todayRecord) {
 
-        checkOutButton.innerHTML =
-            "🔴 Check Out";
+checkInButton.disabled = true;
 
-        message.textContent =
-            "You checked in today at " +
-            todayRecord.checkIn +
-            ". You can check out now.";
+checkInButton.innerHTML =
+"✓ Attendance Marked";
 
-        return;
-    }
 
-    // ==========================================
-    // NOT CHECKED IN
-    // ==========================================
+message.textContent =
+"You checked in today at " +
+todayRecord.checkIn;
 
-    checkInButton.disabled = false;
+return;
 
-    checkInButton.innerHTML =
-        "🟢 Check In";
+}
 
-    checkOutButton.disabled = true;
 
-    checkOutButton.innerHTML =
-        "🔴 Check Out";
+checkInButton.disabled = false;
 
-    message.textContent =
-        "You have not checked in today.";
+checkInButton.innerHTML =
+"🟢 Check In";
+
+
+message.textContent =
+"You have not checked in today.";
 
 }
 
@@ -12429,14 +11151,7 @@ async function studentCheckIn() {
         );
 
     }
-if (
-    typeof updateDashboardStats ===
-    "function"
-) {
 
-    await updateDashboardStats();
-
-}
 
     // ==========================================
     // SUCCESS
@@ -12581,342 +11296,38 @@ attendancePercentage + "%";
 
 }
 
+
 // ==========================================================
-// STUDENT CHECK-OUT - SUPABASE
-// ==========================================================
-
-async function studentCheckOut() {
-
-    const loggedInStudent =
-        JSON.parse(
-            localStorage.getItem(
-                "loggedInStudent"
-            )
-        );
-
-    if (!loggedInStudent) {
-
-        alert(
-            "Student session not found. Please login again."
-        );
-
-        return;
-    }
-
-    if (
-        typeof supabaseClient ===
-        "undefined"
-    ) {
-
-        alert(
-            "Supabase connection is missing."
-        );
-
-        return;
-    }
-
-    // ==========================================
-    // FIND DATABASE STUDENT
-    // ==========================================
-
-    let dbStudent = null;
-
-    if (loggedInStudent.id) {
-
-        const result =
-            await supabaseClient
-                .from("students")
-                .select(
-                    "id, student_id"
-                )
-                .eq(
-                    "id",
-                    loggedInStudent.id
-                )
-                .maybeSingle();
-
-        if (
-            !result.error &&
-            result.data
-        ) {
-
-            dbStudent =
-                result.data;
-
-        }
-    }
-
-    // ==========================================
-    // TRY STUDENT ID
-    // ==========================================
-
-    if (
-        !dbStudent &&
-        loggedInStudent.studentId
-    ) {
-
-        const result =
-            await supabaseClient
-                .from("students")
-                .select(
-                    "id, student_id"
-                )
-                .eq(
-                    "student_id",
-                    loggedInStudent.studentId
-                )
-                .maybeSingle();
-
-        if (
-            !result.error &&
-            result.data
-        ) {
-
-            dbStudent =
-                result.data;
-
-        }
-    }
-
-    if (!dbStudent) {
-
-        alert(
-            "Student record not found in Supabase."
-        );
-
-        return;
-    }
-
-    // ==========================================
-    // TODAY
-    // ==========================================
-
-    const today =
-        getStudentAttendanceDate();
-
-    // ==========================================
-    // FIND TODAY'S ATTENDANCE
-    // ==========================================
-
-    const {
-        data: attendanceRecord,
-        error: attendanceError
-    } =
-        await supabaseClient
-            .from("attendance")
-            .select(
-                "id, status, check_in_time, check_out_time"
-            )
-            .eq(
-                "student_id",
-                dbStudent.id
-            )
-            .eq(
-                "attendance_date",
-                today
-            )
-            .maybeSingle();
-
-    if (attendanceError) {
-
-        console.error(
-            "CHECK-OUT ATTENDANCE ERROR:",
-            attendanceError
-        );
-
-        alert(
-            "Unable to find today's attendance:\n" +
-            attendanceError.message
-        );
-
-        return;
-    }
-
-    if (!attendanceRecord) {
-
-        alert(
-            "You have not checked in today."
-        );
-
-        return;
-    }
-
-    if (
-        attendanceRecord.check_out_time
-    ) {
-
-        alert(
-            "You have already checked out today. ✅"
-        );
-
-        updateStudentAttendanceUI();
-
-        return;
-    }
-
-    // ==========================================
-    // CURRENT TIME
-    // ==========================================
-
-    const now =
-        new Date();
-
-    const checkOutTime =
-        now.toLocaleTimeString(
-            [],
-            {
-                hour: "2-digit",
-                minute: "2-digit"
-            }
-        );
-
-    // ==========================================
-    // SAVE CHECK-OUT TO SUPABASE
-    // ==========================================
-
-    const {
-        error: updateError
-    } =
-        await supabaseClient
-            .from("attendance")
-            .update({
-                check_out_time:
-                    now.toISOString()
-            })
-            .eq(
-                "id",
-                attendanceRecord.id
-            );
-
-    if (updateError) {
-
-        console.error(
-            "CHECK-OUT UPDATE ERROR:",
-            updateError
-        );
-
-        alert(
-            "Check Out could not be saved:\n" +
-            updateError.message
-        );
-
-        return;
-    }
-
-    // ==========================================
-    // UPDATE LOCAL RECORD
-    // ==========================================
-
-    const records =
-        getStudentAttendanceRecords();
-
-    const recordIndex =
-        records.findIndex(
-            function(record) {
-
-                return (
-                    String(record.studentId) ===
-                    String(loggedInStudent.id) &&
-                    record.date === today
-                );
-
-            }
-        );
-
-    if (recordIndex !== -1) {
-
-        records[recordIndex].checkOut =
-            checkOutTime;
-
-        records[recordIndex].checkOutTimeISO =
-            now.toISOString();
-
-        records[recordIndex].updatedAt =
-            now.toISOString();
-
-        saveStudentAttendanceRecords(
-            records
-        );
-    }
-
-    // ==========================================
-    // UPDATE UI
-    // ==========================================
-
-    updateStudentAttendanceUI();
-
-    updateStudentAttendanceSummary();
-
-    // ==========================================
-    // RELOAD STUDENT DASHBOARD
-    // ==========================================
-
-    if (
-        typeof StudentDashboard !==
-        "undefined" &&
-        typeof StudentDashboard.loadAttendance ===
-        "function"
-    ) {
-
-        await StudentDashboard.loadAttendance(
-            loggedInStudent
-        );
-
-    }
-
-    // ==========================================
-    // SUCCESS
-    // ==========================================
-
-    alert(
-        "Check Out successful! ✅\n\n" +
-        "Check Out: " +
-        checkOutTime
-    );
-
-}
-// ==========================================================
-// ATTACH CHECK-IN + CHECK-OUT BUTTONS
+// ATTACH CHECK-IN BUTTON
 // ==========================================================
 
 document.addEventListener(
-    "DOMContentLoaded",
-    function() {
+"DOMContentLoaded",
+function() {
 
-        const checkInButton =
-            document.getElementById(
-                "studentCheckInBtn"
-            );
-
-        const checkOutButton =
-            document.getElementById(
-                "studentCheckOutBtn"
-            );
-
-        if (checkInButton) {
-
-            checkInButton.addEventListener(
-                "click",
-                studentCheckIn
-            );
-
-        }
-
-        if (checkOutButton) {
-
-            checkOutButton.addEventListener(
-                "click",
-                studentCheckOut
-            );
-
-        }
-
-        updateStudentAttendanceUI();
-
-        updateStudentAttendanceSummary();
-
-    }
+const checkInButton =
+document.getElementById(
+"studentCheckInBtn"
 );
+
+
+if (checkInButton) {
+
+checkInButton.addEventListener(
+"click",
+studentCheckIn
+);
+
+}
+
+
+updateStudentAttendanceUI();
+
+updateStudentAttendanceSummary();
+
+}
+);
+
 // ==========================================
 // ADMIN FEE MANAGEMENT
 // MONTHLY FEE SYSTEM
@@ -14270,68 +12681,7 @@ feeRecords
 
 }
 );
-// ==========================================
-// ADMIN NOTICES NAVIGATION
-// ==========================================
 
-document.addEventListener("click", function (event) {
-
-const noticesMenu =
-event.target.closest("#adminNoticesMenu");
-
-if (!noticesMenu) {
-return;
-}
-
-
-// Hide all Admin sections
-
-const adminSections = [
-
-"adminHomeSection",
-"adminStudentsSection",
-"adminTeachersSection",
-"adminAttendanceSection",
-"adminResultsSection",
-"adminFeesSection",
-"adminAssignmentsSection",
-"adminNoticesSection",
-"adminUsersStudentsSection",
-"adminSettingsSection"
-
-];
-
-
-adminSections.forEach(function (sectionId) {
-
-const section =
-document.getElementById(sectionId);
-
-if (section) {
-
-section.style.display = "none";
-
-}
-
-});
-
-
-// Show Notices
-
-const noticesSection =
-document.getElementById(
-"adminNoticesSection"
-);
-
-
-if (noticesSection) {
-
-noticesSection.style.display =
-"block";
-
-}
-
-});
 // ==========================================
 // ADMIN NOTICES MANAGEMENT
 // ==========================================
@@ -14534,13 +12884,17 @@ async function () {
     }
 
 
-  // ==========================================
-// NOTICE ID
-// ==========================================
+    // ==========================================
+    // NOTICE ID
+    // ==========================================
 
-const noticeId =
-    editingNoticeId ||
-    Date.now();
+    const noticeId =
+        editingNoticeId ||
+        (
+            "NOTICE-" +
+            Date.now()
+        );
+
 
     // ==========================================
     // SAVE TO SUPABASE
@@ -15678,72 +14032,7 @@ loadLatestAdminNotice();
 
 }
 );
-// ==========================================
-// ADMIN SETTINGS NAVIGATION
-// ==========================================
 
-document.addEventListener("click", function (event) {
-
-const settingsMenu =
-event.target.closest("#adminSettingsMenu");
-
-if (!settingsMenu) {
-return;
-}
-
-
-// ==========================================
-// HIDE ALL ADMIN SECTIONS
-// ==========================================
-
-const adminSections = [
-
-"adminHomeSection",
-"adminStudentsSection",
-"adminTeachersSection",
-"adminAttendanceSection",
-"adminResultsSection",
-"adminFeesSection",
-"adminAssignmentsSection",
-"adminNoticesSection",
-"adminUsersStudentsSection",
-"adminSettingsSection"
-
-];
-
-
-adminSections.forEach(function (sectionId) {
-
-const section =
-document.getElementById(sectionId);
-
-if (section) {
-
-section.style.display = "none";
-
-}
-
-});
-
-
-// ==========================================
-// SHOW SETTINGS
-// ==========================================
-
-const settingsSection =
-document.getElementById(
-"adminSettingsSection"
-);
-
-
-if (settingsSection) {
-
-settingsSection.style.display =
-"block";
-
-}
-
-});
 // ==========================================
 // FIX - HIDE TEACHER MODAL ON PAGE LOAD
 // ==========================================
@@ -17606,754 +15895,594 @@ updateAdminDashboardCharts();
 );
 // =========================================================
 // EDUPORTAL ADMIN DASHBOARD
-// FINAL REAL SUPABASE DATA SYNC
+// DATE BASED PROFESSIONAL ANALYTICS
 // =========================================================
 
-async function updateProfessionalAdminDashboard() {
+function updateProfessionalAdminDashboard() {
 
-    try {
+// =========================================
+// SELECTED DASHBOARD DATE
+// =========================================
 
-        if (
-            typeof supabaseClient === "undefined" ||
-            !supabaseClient
-        ) {
-            console.error(
-                "Supabase client is not available."
-            );
-            return;
-        }
+const dateInput =
+document.getElementById(
+"adminDashboardDate"
+);
 
+const todayDate = new Date();
 
-        // =================================================
-        // DATE
-        // =================================================
+const today =
+todayDate.getFullYear() +
+"-" +
+String(
+todayDate.getMonth() + 1
+).padStart(2, "0") +
+"-" +
+String(
+todayDate.getDate()
+).padStart(2, "0");
 
-        const dateInput =
-            document.getElementById(
-                "adminDashboardDate"
-            );
 
-        const today =
-            new Date()
-                .toISOString()
-                .split("T")[0];
+// If no date selected, use today
+if (dateInput && !dateInput.value) {
+dateInput.value = today;
+}
 
-        const selectedDate =
-            dateInput?.value || today;
 
+const selectedDate =
+dateInput && dateInput.value
+? dateInput.value
+: today;
 
-        if (
-            dateInput &&
-            !dateInput.value
-        ) {
-            dateInput.value = today;
-        }
 
+// =========================================
+// HELPER
+// =========================================
 
-        // =================================================
-        // 1. STUDENTS
-        // =================================================
+function recordDate(record) {
 
-        const {
-            count: studentCount,
-            error: studentError
-        } =
-            await supabaseClient
-                .from("students")
-                .select(
-                    "id",
-                    {
-                        count: "exact",
-                        head: true
-                    }
-                );
+if (!record) {
+return "";
+}
 
+if (!record.createdAt) {
+return "";
+}
 
-        if (studentError) {
-            throw studentError;
-        }
+return String(
+record.createdAt
+).split("T")[0];
+}
 
 
-        const totalStudents =
-            Number(studentCount) || 0;
+// =========================================
+// STUDENTS
+// =========================================
 
+const students =
+JSON.parse(
+localStorage.getItem(
+"adminStudents"
+)
+) || [];
 
-        // Top Student Card
 
-        const studentCard =
-            document.getElementById(
-                "analyticsTotalStudents"
-            );
+/*
+IMPORTANT:
 
-        if (studentCard) {
+Only students actually CREATED
+on the selected date are counted.
+*/
 
-            studentCard.textContent =
-                totalStudents;
+const totalStudents =
+students.length;
 
-        }
 
+const studentValue =
+document.getElementById(
+"analyticsTotalStudents"
+);
 
-        // Student Chart
+const studentChartValue =
+document.getElementById(
+"studentsChartValue"
+);
 
-        const studentChart =
-            document.getElementById(
-                "studentsChartValue"
-            );
+const studentProgress =
+document.getElementById(
+"studentsProgressBar"
+);
 
-        if (studentChart) {
+const studentPercent =
+document.getElementById(
+"studentsChartPercent"
+);
 
-            studentChart.textContent =
-                totalStudents;
 
-        }
+if (studentValue) {
 
+studentValue.textContent =
+totalStudents;
+}
 
-        const studentProgress =
-            document.getElementById(
-                "studentsProgressBar"
-            );
 
-        if (studentProgress) {
+if (studentChartValue) {
 
-            studentProgress.style.width =
-                Math.min(
-                    totalStudents,
-                    100
-                ) + "%";
+studentChartValue.textContent =
+totalStudents;
+}
 
-        }
 
+/*
+Visual scale:
+100 records = 100%
+*/
 
-        const studentPercent =
-            document.getElementById(
-                "studentsChartPercent"
-            );
+const studentCapacity =
+Math.min(
+totalStudents,
+100
+);
 
-        if (studentPercent) {
 
-            studentPercent.textContent =
-                totalStudents > 0
-                    ? "100%"
-                    : "0%";
+if (studentProgress) {
 
-        }
+studentProgress.style.width =
+studentCapacity + "%";
+}
 
 
-        // =================================================
-        // 2. TEACHERS
-        // =================================================
+if (studentPercent) {
 
-        const {
-            count: teacherCount,
-            error: teacherError
-        } =
-            await supabaseClient
-                .from("teachers")
-                .select(
-                    "id",
-                    {
-                        count: "exact",
-                        head: true
-                    }
-                );
+studentPercent.textContent =
+studentCapacity + "%";
+}
 
 
-        if (teacherError) {
+// =========================================
+// ATTENDANCE
+// =========================================
 
-            console.warn(
-                "Teacher count failed:",
-                teacherError
-            );
+const attendanceRecords =
+JSON.parse(
+localStorage.getItem(
+"eduPortalAttendance"
+)
+) || [];
 
-        }
 
+/*
+Attendance already has its own
+actual attendance date.
+*/
 
-        const totalTeachers =
-            Number(teacherCount) || 0;
+const selectedAttendanceRecords =
+attendanceRecords.filter(
+function (record) {
 
+return (
+record.date ===
+selectedDate
+);
 
-        const teacherCard =
-            document.getElementById(
-                "analyticsTotalTeachers"
-            );
+}
+);
 
 
-        if (teacherCard) {
+const present =
+selectedAttendanceRecords.filter(
+function (record) {
 
-            teacherCard.textContent =
-                totalTeachers;
+return (
+record.status ===
+"Present"
+);
 
-        }
+}
+).length;
 
 
-        // =================================================
-        // 3. ATTENDANCE
-        // =================================================
+const absent =
+selectedAttendanceRecords.filter(
+function (record) {
 
-        const {
-            data: attendanceRows,
-            error: attendanceError
-        } =
-            await supabaseClient
-                .from("attendance")
-                .select(
-                    "*"
-                )
-                .eq(
-                    "attendance_date",
-                    selectedDate
-                );
+return (
+record.status ===
+"Absent"
+);
 
+}
+).length;
 
-        if (attendanceError) {
 
-            console.warn(
-                "Attendance load failed:",
-                attendanceError
-            );
+/*
+If there is no attendance record
+for selected date => 0%
+*/
 
-        }
+const attendanceTotal =
+present + absent;
 
 
-        const attendance =
-            Array.isArray(
-                attendanceRows
-            )
-                ? attendanceRows
-                : [];
+const attendanceRate =
+attendanceTotal > 0
+? Math.round(
+(present /
+attendanceTotal) * 100
+)
+: 0;
 
 
-        let present = 0;
-        let absent = 0;
+const attendanceValue =
+document.getElementById(
+"analyticsAttendance"
+);
 
+const donutValue =
+document.getElementById(
+"attendanceDonutValue"
+);
 
-        attendance.forEach(
-            function (record) {
+const presentCount =
+document.getElementById(
+"attendancePresentCount"
+);
 
-                const status =
-                    String(
-                        record.status ||
-                        ""
-                    )
-                    .trim()
-                    .toLowerCase();
+const absentCount =
+document.getElementById(
+"attendanceAbsentCount"
+);
 
+const donut =
+document.getElementById(
+"attendanceDonut"
+);
 
-                if (
-                    status === "present"
-                ) {
 
-                    present++;
+if (attendanceValue) {
 
-                }
-                else if (
-                    status === "absent"
-                ) {
+attendanceValue.textContent =
+attendanceRate + "%";
+}
 
-                    absent++;
 
-                }
+if (donutValue) {
 
-            }
-        );
+donutValue.textContent =
+attendanceRate + "%";
+}
 
 
-        const attendanceTotal =
-            present + absent;
+if (presentCount) {
 
+presentCount.textContent =
+present;
+}
 
-        const attendanceRate =
-            attendanceTotal > 0
-                ? Math.round(
-                    (
-                        present /
-                        attendanceTotal
-                    ) * 100
-                )
-                : 0;
 
+if (absentCount) {
 
-        // Top Attendance Card
+absentCount.textContent =
+absent;
+}
 
-        const attendanceCard =
-            document.getElementById(
-                "analyticsAttendance"
-            );
 
+if (donut) {
 
-        if (attendanceCard) {
+const degrees =
+attendanceRate * 3.6;
 
-            attendanceCard.textContent =
-                attendanceRate + "%";
+donut.style.background =
+`conic-gradient(
+#16a34a 0deg,
+#16a34a ${degrees}deg,
+#e2e8f0 ${degrees}deg,
+#e2e8f0 360deg
+)`;
+}
 
-        }
 
+// =========================================
+// RESULTS
+// =========================================
 
-        // Donut
+const results =
+JSON.parse(
+localStorage.getItem(
+"adminResults"
+)
+) || [];
 
-        const donut =
-            document.getElementById(
-                "attendanceDonutValue"
-            );
 
+/*
+Only results CREATED
+on selected date.
+*/
 
-        if (donut) {
+const filteredResults = results;
 
-            donut.textContent =
-                attendanceRate + "%";
 
-        }
+let totalPercentage = 0;
 
+let passed = 0;
 
-        // Present
+let failed = 0;
 
-        const presentElement =
-            document.getElementById(
-                "attendancePresentCount"
-            );
 
+filteredResults.forEach(
+function (result) {
 
-        if (presentElement) {
+const percentage =
+Number(
+result.percentage
+) || 0;
 
-            presentElement.textContent =
-                present;
 
-        }
+totalPercentage +=
+percentage;
 
 
-        // Absent
+if (percentage >= 40) {
 
-        const absentElement =
-            document.getElementById(
-                "attendanceAbsentCount"
-            );
+passed++;
 
+} else {
 
-        if (absentElement) {
+failed++;
 
-            absentElement.textContent =
-                absent;
+}
 
-        }
+}
+);
 
 
-        // =================================================
-        // 4. RESULTS
-        // =================================================
-        // IMPORTANT:
-        // Do NOT request "percentage".
-        // Percentage is calculated here.
+const averageResult =
+filteredResults.length > 0
+? Math.round(
+totalPercentage /
+filteredResults.length
+)
+: 0;
 
-        const {
-            data: resultRows,
-            error: resultError
-        } =
-            await supabaseClient
-                .from("results")
-                .select(
-                    "id, obtained_marks, total_marks"
-                );
 
+const resultsValue =
+document.getElementById(
+"analyticsAverageResult"
+);
 
-        if (resultError) {
+const performanceValue =
+document.getElementById(
+"resultsPerformanceValue"
+);
 
-            console.warn(
-                "Results load failed:",
-                resultError
-            );
+const passedCount =
+document.getElementById(
+"passedCount"
+);
 
-        }
+const failedCount =
+document.getElementById(
+"failedCount"
+);
 
+const passedBar =
+document.getElementById(
+"passedBar"
+);
 
-        const results =
-            Array.isArray(
-                resultRows
-            )
-                ? resultRows
-                : [];
+const failedBar =
+document.getElementById(
+"failedBar"
+);
 
 
-        let percentageTotal = 0;
-        let passed = 0;
-        let failed = 0;
+if (resultsValue) {
 
+resultsValue.textContent =
+averageResult + "%";
+}
 
-        results.forEach(
-            function (result) {
 
-                const obtained =
-                    Number(
-                        result.obtained_marks
-                    ) || 0;
+if (performanceValue) {
 
+performanceValue.textContent =
+averageResult + "%";
+}
 
-                const total =
-                    Number(
-                        result.total_marks
-                    ) || 0;
 
+if (passedCount) {
 
-                const percentage =
-                    total > 0
-                        ? (
-                            obtained /
-                            total
-                        ) * 100
-                        : 0;
+passedCount.textContent =
+passed;
+}
 
 
-                percentageTotal +=
-                    percentage;
+if (failedCount) {
 
+failedCount.textContent =
+failed;
+}
 
-                if (
-                    percentage >= 40
-                ) {
 
-                    passed++;
+const totalResults =
+passed + failed;
 
-                }
-                else {
 
-                    failed++;
+if (passedBar) {
 
-                }
+passedBar.style.width =
+totalResults > 0
+? (
+passed /
+totalResults *
+100
+) + "%"
+: "0%";
+}
 
-            }
-        );
 
+if (failedBar) {
 
-        const averageResult =
-            results.length > 0
-                ? Math.round(
-                    percentageTotal /
-                    results.length
-                )
-                : 0;
+failedBar.style.width =
+totalResults > 0
+? (
+failed /
+totalResults *
+100
+) + "%"
+: "0%";
+}
 
 
-        const passPercentage =
-            results.length > 0
-                ? Math.round(
-                    (
-                        passed /
-                        results.length
-                    ) * 100
-                )
-                : 0;
+// =========================================
+// FEES
+// =========================================
 
+const feeRecords =
+JSON.parse(
+localStorage.getItem(
+"adminFeeRecords"
+)
+) || [];
 
-        // Average
 
-        const averageElement =
-            document.getElementById(
-                "analyticsAverageResult"
-            );
+/*
+Only fee records CREATED
+on selected date.
+*/
 
+const filteredFeeRecords = feeRecords;
 
-        if (averageElement) {
 
-            averageElement.textContent =
-                averageResult + "%";
+let totalFees = 0;
 
-        }
+let collectedFees = 0;
 
 
-        const performanceElement =
-            document.getElementById(
-                "resultsPerformanceValue"
-            );
+filteredFeeRecords.forEach(
+function (record) {
 
+const feeAmount =
+Number(
+record.feeAmount
+) || 0;
 
-        if (performanceElement) {
 
-            performanceElement.textContent =
-                averageResult + "%";
+const paidAmount =
+Number(
+record.paidAmount
+) || 0;
 
-        }
 
+totalFees +=
+feeAmount;
 
-        // Passed Bar
 
-        const passedBar =
-            document.getElementById(
-                "passedBar"
-            );
+collectedFees +=
+paidAmount;
 
+}
+);
 
-        if (passedBar) {
 
-            passedBar.style.width =
-                passPercentage + "%";
+const feeRate =
+totalFees > 0
+? Math.round(
+(
+collectedFees /
+totalFees
+) * 100
+)
+: 0;
 
-        }
 
+const totalCollectedElement =
+document.getElementById(
+"analyticsTotalCollected"
+);
 
-        const passedCount =
-            document.getElementById(
-                "passedCount"
-            );
+const feeRateElement =
+document.getElementById(
+"feeCollectionRate"
+);
 
+const feeCollectedElement =
+document.getElementById(
+"feeCollectedAmount"
+);
 
-        if (passedCount) {
+const feeTotalElement =
+document.getElementById(
+"feeTotalAmount"
+);
 
-            passedCount.textContent =
-                passed;
+const feeProgress =
+document.getElementById(
+"feeProgressBar"
+);
 
-        }
 
+if (totalCollectedElement) {
 
-        // Failed
+totalCollectedElement.textContent =
+"Rs. " +
+collectedFees.toLocaleString();
+}
 
-        const failedPercentage =
-            results.length > 0
-                ? Math.round(
-                    (
-                        failed /
-                        results.length
-                    ) * 100
-                )
-                : 0;
 
+if (feeRateElement) {
 
-        const failedBar =
-            document.getElementById(
-                "failedBar"
-            );
+feeRateElement.textContent =
+feeRate + "%";
+}
 
 
-        if (failedBar) {
+if (feeCollectedElement) {
 
-            failedBar.style.width =
-                failedPercentage + "%";
+feeCollectedElement.textContent =
+"Rs. " +
+collectedFees.toLocaleString();
+}
 
-        }
 
+if (feeTotalElement) {
 
-        const failedCount =
-            document.getElementById(
-                "failedCount"
-            );
+feeTotalElement.textContent =
+"Rs. " +
+totalFees.toLocaleString();
+}
 
 
-        if (failedCount) {
+if (feeProgress) {
 
-            failedCount.textContent =
-                failed;
+feeProgress.style.width =
+feeRate + "%";
+}
 
-        }
 
+// =========================================
+// DISPLAY SELECTED DATE
+// =========================================
 
-        // =================================================
-        // 5. FEES
-        // =================================================
+if (dateInput) {
 
-        const {
-            data: feeRows,
-            error: feeError
-        } =
-            await supabaseClient
-                .from("fee_records")
-                .select(
-                    "fee_amount, paid_amount, remaining_amount, status"
-                );
+const dateObject =
+new Date(
+selectedDate +
+"T00:00:00"
+);
 
 
-        if (feeError) {
-
-            console.warn(
-                "Fee records load failed:",
-                feeError
-            );
-
-        }
-
-
-        const fees =
-            Array.isArray(
-                feeRows
-            )
-                ? feeRows
-                : [];
-
-
-        let totalFees = 0;
-        let collectedFees = 0;
-        let remainingFees = 0;
-
-
-        fees.forEach(
-            function (fee) {
-
-                totalFees +=
-                    Number(
-                        fee.fee_amount
-                    ) || 0;
-
-
-                collectedFees +=
-                    Number(
-                        fee.paid_amount
-                    ) || 0;
-
-
-                remainingFees +=
-                    Number(
-                        fee.remaining_amount
-                    ) || 0;
-
-            }
-        );
-
-
-        const feeRate =
-            totalFees > 0
-                ? Math.round(
-                    (
-                        collectedFees /
-                        totalFees
-                    ) * 100
-                )
-                : 0;
-
-
-        // Top Fee Card
-
-        const collectedTop =
-            document.getElementById(
-                "analyticsTotalCollected"
-            );
-
-
-        if (collectedTop) {
-
-            collectedTop.textContent =
-                "Rs. " +
-                collectedFees.toLocaleString();
-
-        }
-
-
-        // Fee Collected
-
-        const feeCollected =
-            document.getElementById(
-                "feeCollectedAmount"
-            );
-
-
-        if (feeCollected) {
-
-            feeCollected.textContent =
-                "Rs. " +
-                collectedFees.toLocaleString();
-
-        }
-
-
-        // Fee Rate
-
-        const feeRateElement =
-            document.getElementById(
-                "feeCollectionRate"
-            );
-
-
-        if (feeRateElement) {
-
-            feeRateElement.textContent =
-                feeRate + "%";
-
-        }
-
-
-        // Fee Total
-
-        const feeTotal =
-            document.getElementById(
-                "feeTotalAmount"
-            );
-
-
-        if (feeTotal) {
-
-            feeTotal.textContent =
-                "Rs. " +
-                totalFees.toLocaleString();
-
-        }
-
-
-        // Fee Progress
-
-        const feeProgress =
-            document.getElementById(
-                "feeProgressBar"
-            );
-
-
-        if (feeProgress) {
-
-            feeProgress.style.width =
-                feeRate + "%";
-
-        }
-
-
-        // =================================================
-        // FINAL LOG
-        // =================================================
-
-        console.log(
-            "✅ FINAL ADMIN DASHBOARD SYNC",
-            {
-                students:
-                    totalStudents,
-
-                teachers:
-                    totalTeachers,
-
-                attendance:
-                    attendanceRate + "%",
-
-                present:
-                    present,
-
-                absent:
-                    absent,
-
-                results:
-                    results.length,
-
-                average:
-                    averageResult + "%",
-
-                passed:
-                    passed,
-
-                failed:
-                    failed,
-
-                totalFees:
-                    totalFees,
-
-                collectedFees:
-                    collectedFees,
-
-                remainingFees:
-                    remainingFees
-            }
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "❌ Admin Dashboard Sync Error:",
-            error
-        );
-
-    }
+dateInput.title =
+dateObject.toLocaleDateString(
+"en-GB",
+{
+day: "2-digit",
+month: "short",
+year: "numeric"
+}
+);
+}
 
 }
 // =========================================================
@@ -18530,7 +16659,402 @@ updateProfessionalAdminDashboard();
 
 }
 );
+// =========================================================
+// FINAL ADMIN DASHBOARD DATA SYNC
+// =========================================================
 
+function syncFinalAdminDashboard() {
+
+// =========================================
+// STUDENTS
+// =========================================
+
+const students =
+JSON.parse(
+localStorage.getItem("adminStudents")
+) || [];
+
+const studentCount = students.length;
+
+
+// Top card
+const totalStudents =
+document.getElementById(
+"analyticsTotalStudents"
+);
+
+if (totalStudents) {
+totalStudents.textContent =
+studentCount;
+}
+
+
+// Students overview
+const studentsChart =
+document.getElementById(
+"studentsChartValue"
+);
+
+if (studentsChart) {
+studentsChart.textContent =
+studentCount;
+}
+
+
+// =========================================
+// ATTENDANCE
+// =========================================
+
+const attendance =
+JSON.parse(
+localStorage.getItem(
+"eduPortalAttendance"
+)
+) || [];
+
+
+const today =
+new Date()
+.toISOString()
+.split("T")[0];
+
+
+let present = 0;
+let absent = 0;
+
+
+attendance.forEach(function (record) {
+
+const recordDate =
+record.date ||
+record.attendanceDate ||
+"";
+
+
+if (recordDate !== today) {
+return;
+}
+
+
+const status =
+String(
+record.status || ""
+).toLowerCase();
+
+
+if (
+status === "present" ||
+status === "p"
+) {
+present++;
+}
+
+
+if (
+status === "absent" ||
+status === "a"
+) {
+absent++;
+}
+
+});
+
+
+const attendanceRate =
+studentCount > 0
+? Math.round(
+(present / studentCount) * 100
+)
+: 0;
+
+
+const attendanceValue =
+document.getElementById(
+"analyticsAttendance"
+);
+
+if (attendanceValue) {
+attendanceValue.textContent =
+attendanceRate + "%";
+}
+
+
+const donutValue =
+document.getElementById(
+"attendanceDonutValue"
+);
+
+if (donutValue) {
+donutValue.textContent =
+attendanceRate + "%";
+}
+
+
+const presentValue =
+document.getElementById(
+"attendancePresentCount"
+);
+
+if (presentValue) {
+presentValue.textContent =
+present;
+}
+
+
+const absentValue =
+document.getElementById(
+"attendanceAbsentCount"
+);
+
+if (absentValue) {
+absentValue.textContent =
+absent;
+}
+
+
+const donut =
+document.getElementById(
+"attendanceDonut"
+);
+
+if (donut) {
+
+const degree =
+attendanceRate * 3.6;
+
+donut.style.background =
+`conic-gradient(
+#16a34a 0deg,
+#16a34a ${degree}deg,
+#e2e8f0 ${degree}deg,
+#e2e8f0 360deg
+)`;
+}
+
+
+// =========================================
+// RESULTS
+// =========================================
+
+const results =
+JSON.parse(
+localStorage.getItem(
+"adminResults"
+)
+) || [];
+
+
+let totalPercentage = 0;
+let passed = 0;
+let failed = 0;
+
+
+results.forEach(function (result) {
+
+const percentage =
+Number(
+result.percentage
+) || 0;
+
+
+totalPercentage +=
+percentage;
+
+
+if (percentage >= 40) {
+passed++;
+} else {
+failed++;
+}
+
+});
+
+
+const average =
+results.length > 0
+? Math.round(
+totalPercentage /
+results.length
+)
+: 0;
+
+
+const resultValue =
+document.getElementById(
+"analyticsAverageResult"
+);
+
+if (resultValue) {
+resultValue.textContent =
+average + "%";
+}
+
+
+const performanceValue =
+document.getElementById(
+"resultsPerformanceValue"
+);
+
+if (performanceValue) {
+performanceValue.textContent =
+average + "%";
+}
+
+
+const passedValue =
+document.getElementById(
+"passedCount"
+);
+
+if (passedValue) {
+passedValue.textContent =
+passed;
+}
+
+
+const failedValue =
+document.getElementById(
+"failedCount"
+);
+
+if (failedValue) {
+failedValue.textContent =
+failed;
+}
+
+
+// =========================================
+// FEES
+// =========================================
+
+const fees =
+JSON.parse(
+localStorage.getItem(
+"adminFeeRecords"
+)
+) || [];
+
+
+let totalFees = 0;
+let collectedFees = 0;
+
+
+fees.forEach(function (fee) {
+
+const amount =
+Number(
+fee.feeAmount ||
+fee.amount ||
+fee.total ||
+0
+);
+
+
+const paid =
+Number(
+fee.paidAmount ||
+fee.paid ||
+0
+);
+
+
+totalFees += amount;
+collectedFees += paid;
+
+});
+
+
+const feeRate =
+totalFees > 0
+? Math.round(
+(collectedFees /
+totalFees) * 100
+)
+: 0;
+
+
+const totalCollected =
+document.getElementById(
+"analyticsTotalCollected"
+);
+
+if (totalCollected) {
+totalCollected.textContent =
+"Rs. " +
+collectedFees.toLocaleString();
+}
+
+
+const feeRateElement =
+document.getElementById(
+"feeCollectionRate"
+);
+
+if (feeRateElement) {
+feeRateElement.textContent =
+feeRate + "%";
+}
+
+
+const collectedAmount =
+document.getElementById(
+"feeCollectedAmount"
+);
+
+if (collectedAmount) {
+collectedAmount.textContent =
+"Rs. " +
+collectedFees.toLocaleString();
+}
+
+
+const totalFeeElement =
+document.getElementById(
+"feeTotalAmount"
+);
+
+if (totalFeeElement) {
+totalFeeElement.textContent =
+"Rs. " +
+totalFees.toLocaleString();
+}
+
+
+const feeBar =
+document.getElementById(
+"feeProgressBar"
+);
+
+if (feeBar) {
+feeBar.style.width =
+feeRate + "%";
+}
+
+
+// =========================================
+// DATE
+// =========================================
+
+const dateElement =
+document.getElementById(
+"adminDashboardDate"
+);
+
+if (dateElement) {
+
+dateElement.textContent =
+new Date().toLocaleDateString(
+"en-GB",
+{
+day: "2-digit",
+month: "2-digit",
+year: "numeric"
+}
+);
+
+}
+
+}
 
 
 // =========================================================
@@ -18544,12 +17068,7 @@ function () {
 setTimeout(
 function () {
 
-    if (
-        typeof syncFinalAdminDashboard ===
-        "function"
-    ) {
-        syncFinalAdminDashboard();
-    }
+syncFinalAdminDashboard();
 
 },
 300
@@ -18581,12 +17100,7 @@ return;
 setTimeout(
 function () {
 
-    if (
-        typeof syncFinalAdminDashboard ===
-        "function"
-    ) {
-        syncFinalAdminDashboard();
-    }
+syncFinalAdminDashboard();
 
 },
 300
@@ -18699,252 +17213,42 @@ attributeFilter: [
 
 }
 // ==========================================
-// TEACHER SIDEBAR BUTTONS
+// TEACHER SIDEBAR - FINAL CLICK HANDLER (FIXED)
 // ==========================================
 
-document.addEventListener(
-    "click",
-    function(event) {
+document.addEventListener("click", function (event) {
 
-        const dashboard =
-            event.target.closest(
-                "#teacherDashboardMenu"
-            );
+    const menuMap = {
+        teacherDashboardMenu: "teacherDashboard",
+        teacherStudentsMenu: "teacherStudentsSection",
+        teacherAttendanceMenu: "teacherAttendanceSection",
+        teacherAssignmentsMenu: "teacherAssignmentsSection",
+        teacherResultsMenu: "teacherResultsSection",
+        teacherNoticesMenu: "teacherNoticesSection",
+        teacherProfileMenu: "teacherProfileSection",
+        teacherSettingsMenu: "teacherSettingsSection"
+    };
 
-        const students =
-            event.target.closest(
-                "#teacherStudentsMenu"
-            );
-
-        const attendance =
-            event.target.closest(
-                "#teacherAttendanceMenu"
-            );
-
-        const assignments =
-            event.target.closest(
-                "#teacherAssignmentsMenu"
-            );
-
-        const results =
-            event.target.closest(
-                "#teacherResultsMenu"
-            );
-
-        const notices =
-            event.target.closest(
-                "#teacherNoticesMenu"
-            );
-
-        const profile =
-            event.target.closest(
-                "#teacherProfileMenu"
-            );
-const settings =
-    event.target.closest(
+    const menu = event.target.closest(
+        "#teacherDashboardMenu, " +
+        "#teacherStudentsMenu, " +
+        "#teacherAttendanceMenu, " +
+        "#teacherAssignmentsMenu, " +
+        "#teacherResultsMenu, " +
+        "#teacherNoticesMenu, " +
+        "#teacherProfileMenu, " +
         "#teacherSettingsMenu"
     );
 
-        // -------------------------------
-        // DASHBOARD
-        // -------------------------------
+    if (!menu) return;
 
-        if (dashboard) {
+    const sectionId = menuMap[menu.id];
+    if (!sectionId) return;
 
-            openTeacherSection(
-                "teacherDashboard"
-            );
-
-            return;
-
-        }
-
-
-        // -------------------------------
-        // STUDENTS
-        // -------------------------------
-
-        if (students) {
-
-            openTeacherSection(
-                "teacherStudentsSection"
-            );
-
-            setTimeout(
-                function() {
-
-                    if (
-                        typeof renderTeacherMyStudents ===
-                        "function"
-                    ) {
-
-                        renderTeacherMyStudents();
-
-                    }
-
-                },
-                50
-            );
-
-            return;
-
-        }
-
-
-        // -------------------------------
-        // ATTENDANCE
-        // -------------------------------
-
-        if (attendance) {
-
-            openTeacherSection(
-                "teacherAttendanceSection"
-            );
-
-            setTimeout(
-                function() {
-
-                    if (
-                        typeof loadTeacherAttendance ===
-                        "function"
-                    ) {
-
-                        setTeacherAttendanceDate();
-
-                        loadTeacherAttendance();
-
-                    }
-
-                },
-                50
-            );
-
-            return;
-
-        }
-
-
-        // -------------------------------
-        // ASSIGNMENTS
-        // -------------------------------
-
-        if (assignments) {
-
-            openTeacherSection(
-                "teacherAssignmentsSection"
-            );
-
-            setTimeout(
-                function() {
-
-                    if (
-                        typeof loadTeacherAssignments ===
-                        "function"
-                    ) {
-
-                        loadTeacherAssignments();
-
-                    }
-
-                },
-                50
-            );
-
-            return;
-
-        }
-
-
-        // -------------------------------
-        // RESULTS
-        // -------------------------------
-
-        if (results) {
-
-            openTeacherSection(
-                "teacherResultsSection"
-            );
-
-            setTimeout(
-                function() {
-
-                    if (
-                        typeof loadTeacherResults ===
-                        "function"
-                    ) {
-
-                        loadTeacherResults();
-
-                    }
-
-                },
-                50
-            );
-
-            return;
-
-        }
-
-
-        // -------------------------------
-        // NOTICES
-        // -------------------------------
-
-        if (notices) {
-
-            openTeacherSection(
-                "teacherNoticesSection"
-            );
-
-            return;
-
-        }
-
-
-        // -------------------------------
-        // PROFILE
-        // -------------------------------
-
-        if (profile) {
-
-            openTeacherSection(
-                "teacherProfileSection"
-            );
-
-            return;
-        // -------------------------------
-        // SETTINGS
-        // -------------------------------
-
-        if (settings) {
-
-            openTeacherSection(
-                "teacherSettingsSection"
-            );
-
-            setTimeout(
-                function() {
-
-                    if (
-                        typeof loadTeacherSettings ===
-                        "function"
-                    ) {
-
-                        loadTeacherSettings();
-
-                    }
-
-                },
-                50
-            );
-
-            return;
-
-        }
-        }
-
+    if (typeof window.openTeacherPanel === "function") {
+        window.openTeacherPanel(sectionId, menu, event);
     }
-);
+});
 
 
 // ==========================================
@@ -21314,78 +19618,49 @@ function loadSavedTeacherAttendance() {
 
 function loadTeacherMyStudents() {
 
-    const tableBody =
-        document.getElementById(
-            "teacherStudentsTableBody"
-        );
+    const tableBody = document.getElementById("teacherStudentsTableBody");
+    // Agar table nahi mili to grid use karo
+    const grid = document.getElementById("teacherStudentsGrid") || 
+                 document.querySelector(".teacher-students-grid");
 
-    if (!tableBody) {
+    if (!tableBody && !grid) {
+        console.warn("Teacher students container not found");
         return;
     }
 
-
-    // =========================================
     // GET LOGGED-IN TEACHER
-    // =========================================
+    const teacher = JSON.parse(localStorage.getItem("loggedInTeacher")) || {};
 
-    const teacher =
-        JSON.parse(
-            localStorage.getItem(
-                "loggedInTeacher"
-            )
-        ) || {};
+    // GET ALL STUDENTS (local + Supabase fallback)
+    let students = JSON.parse(localStorage.getItem("adminStudents")) || [];
 
+    // Teacher Class (multiple field names support)
+    const teacherClass = String(
+        teacher.teacherClass || 
+        teacher.class || 
+        teacher.assigned_class || 
+        teacher.student_class || 
+        ""
+    ).trim().toLowerCase().replace("class ", "");
 
-    // =========================================
-    // GET ALL STUDENTS
-    // =========================================
-
-    const students =
-        JSON.parse(
-            localStorage.getItem(
-                "adminStudents"
-            )
-        ) || [];
-
-
-    // =========================================
-    // TEACHER CLASS
-    // =========================================
-
-    const teacherClass =
-        String(
-            teacher.teacherClass ||
+    // Filter students
+    const assignedStudents = students.filter(function (student) {
+        const studentClass = String(
+            student.studentClass || 
+            student.student_class || 
+            student.class || 
             ""
-        )
-        .trim()
-        .toLowerCase();
+        ).trim().toLowerCase().replace("class ", "");
 
+        return !teacherClass || studentClass === teacherClass;
+    });
 
-    // =========================================
-    // FILTER TEACHER'S STUDENTS
-    // =========================================
+    // Update total count
+    const totalEl = document.getElementById("teacherStudentsTotal") || 
+                    document.getElementById("teacherTotalStudents");
+    if (totalEl) totalEl.textContent = assignedStudents.length;
 
-    const assignedStudents =
-        students.filter(function(student) {
-
-            const studentClass =
-                String(
-                    student.studentClass ||
-                    ""
-                )
-                .trim()
-                .toLowerCase();
-
-
-            return (
-                !teacherClass ||
-                studentClass === teacherClass ||
-                studentClass ===
-                "class " + teacherClass
-            );
-
-        });
-
+   
 
     // =========================================
     // SHOW CLASS
@@ -23070,14 +21345,6 @@ document.addEventListener(
             ) || {};
 
 
-        const assignments =
-            JSON.parse(
-                localStorage.getItem(
-                    "teacherAssignments"
-                )
-            ) || [];
-
-
         const title =
             document.getElementById(
                 "teacherAssignmentTitle"
@@ -23320,91 +21587,7 @@ if (assignmentError) {
 }
 
 
-// =====================================
-// LOCAL STORAGE SYNC
-// =====================================
 
-const localAssignment = {
-
-    id:
-        savedAssignment.id,
-
-    teacherId:
-        savedAssignment.teacher_id,
-
-    teacherName:
-        savedAssignment.teacher_name,
-
-    title:
-        savedAssignment.title,
-
-    subject:
-        savedAssignment.subject,
-
-    dueDate:
-        savedAssignment.due_date,
-
-    marks:
-        savedAssignment.marks,
-
-    description:
-        savedAssignment.description,
-
-    className:
-        savedAssignment.class_name,
-
-    status:
-        savedAssignment.status,
-
-    createdAt:
-        savedAssignment.created_at
-
-};
-
-
-const existingIndex =
-    assignments.findIndex(
-        function(item) {
-
-            return String(
-                item.id
-            ) === String(
-                savedAssignment.id
-            );
-
-        }
-    );
-
-
-if (existingIndex !== -1) {
-
-    assignments[
-        existingIndex
-    ] = {
-
-        ...assignments[
-            existingIndex
-        ],
-
-        ...localAssignment
-
-    };
-
-} else {
-
-    assignments.push(
-        localAssignment
-    );
-
-}
-
-
-localStorage.setItem(
-    "teacherAssignments",
-    JSON.stringify(
-        assignments
-    )
-);
         // =====================================
         // RESET FORM
         // =====================================
@@ -26248,7 +24431,7 @@ async function loadTeacherAttendance() {
             await supabaseClient
                 .from("teachers")
                 .select(
-                    "id, teacher_id, name, full_name, teacher_class"
+                    "id, teacher_id, name, teacher_class"
                 )
                 .eq(
                     "id",
@@ -26292,7 +24475,7 @@ async function loadTeacherAttendance() {
             await supabaseClient
                 .from("teachers")
                 .select(
-                    "id, teacher_id, name, full_name, teacher_class"
+                    "id, teacher_id, name, teacher_class"
                 )
                 .eq(
                     "teacher_id",
@@ -26326,7 +24509,7 @@ async function loadTeacherAttendance() {
             await supabaseClient
                 .from("teachers")
                 .select(
-                    "id, teacher_id, name, full_name, teacher_class"
+                    "id, teacher_id, name, teacher_class"
                 )
                 .ilike(
                     "username",
@@ -26399,26 +24582,23 @@ async function loadTeacherAttendance() {
         error: studentsError
     } =
         await supabaseClient
-            .from("students")
-            .select(
-                `
-                id,
-                name,
-                full_name,
-                student_name,
-                student_id,
-                student_class,
-                class,
-                section,
-                roll_number
-                `
-            )
-            .order(
-                "created_at",
-                {
-                    ascending: false
-                }
-            );
+      .from("students")
+.select(
+    `
+    id,
+    name,
+    student_id,
+    student_class,
+    section,
+    created_at
+    `
+)
+.order(
+    "created_at",
+    {
+        ascending: false
+    }
+);
 
 
     // =========================================
@@ -27420,7 +25600,7 @@ document.addEventListener(
 );
 
 // =========================================================
-// TEACHER SIDEBAR - DIRECT NAVIGATION FIX
+// TEACHER SIDEBAR - FINAL NAVIGATION (WORKING FIX)
 // =========================================================
 
 window.openTeacherPanel = function (sectionId, menuElement, event) {
@@ -27430,185 +25610,129 @@ window.openTeacherPanel = function (sectionId, menuElement, event) {
         event.stopPropagation();
     }
 
+    const dashboard = document.getElementById("teacherDashboard");
+    if (!dashboard) {
+        console.error("teacherDashboard not found");
+        return;
+    }
 
-    const dashboard =
-        document.getElementById("teacherDashboard");
-
-const dashboardContent =
-    document.querySelector(
-        "#teacherDashboard .main-content"
-    );
-
-if (dashboardContent) {
-    dashboardContent.style.display = "none";
-}
+    // All teacher sections
     const sections = [
         "teacherStudentsSection",
         "teacherAttendanceSection",
         "teacherAssignmentsSection",
         "teacherResultsSection",
-        "teacherNoticesSection"
+        "teacherNoticesSection",
+        "teacherProfileSection",
+        "teacherSettingsSection"
     ];
 
-
-    // Hide dashboard home content
-    if (dashboard) {
-
-        const mainContent =
-            dashboard.querySelector(".main-content");
-
-        if (mainContent) {
-
-            mainContent.style.display =
-                "none";
-
-        }
-
-    }
-
-
-    // Hide all sections
+    // 1. Hide ALL sections first
     sections.forEach(function (id) {
-
-        const section =
-            document.getElementById(id);
-
-        if (section) {
-
-            section.style.display =
-                "none";
-
+        const el = document.getElementById(id);
+        if (el) {
+            el.style.setProperty("display", "none", "important");
+            el.style.setProperty("visibility", "hidden", "important");
+            el.style.setProperty("opacity", "0", "important");
         }
-
     });
 
+    // 2. Remove active from all menus
+    document.querySelectorAll(
+        "#teacherDashboardMenu, #teacherStudentsMenu, #teacherAttendanceMenu, " +
+        "#teacherAssignmentsMenu, #teacherResultsMenu, #teacherNoticesMenu, " +
+        "#teacherProfileMenu, #teacherSettingsMenu"
+    ).forEach(function (item) {
+        item.classList.remove("active");
+    });
 
-    // Show selected section
-    const selected =
-        document.getElementById(sectionId);
+    // 3. DASHBOARD HOME
+    if (sectionId === "teacherDashboard") {
 
+        // Show all non-section elements inside main-content
+        const mainContent = dashboard.querySelector(".main-content");
+        if (mainContent) {
+            Array.from(mainContent.children).forEach(function (child) {
+                if (!sections.includes(child.id)) {
+                    child.style.removeProperty("display");
+                    child.style.removeProperty("visibility");
+                    child.style.removeProperty("opacity");
+                }
+            });
+        }
 
-    if (selected) {
+        if (menuElement) menuElement.classList.add("active");
 
-        selected.style.display =
-            "block";
-        selected.style.overflow =
-            "auto";
+        if (typeof loadTeacherDashboardData === "function") {
+            loadTeacherDashboardData();
+        }
 
-        selected.style.background =
-            "#f8fafc";
-
-        selected.style.zIndex =
-            "999998";
-
+        return;
     }
 
+    // 4. Hide dashboard home content
+    const mainContent = dashboard.querySelector(".main-content");
+    if (mainContent) {
+        Array.from(mainContent.children).forEach(function (child) {
+            if (!sections.includes(child.id)) {
+                child.style.setProperty("display", "none", "important");
+            }
+        });
+    }
+
+    // 5. Show selected section (FORCE)
+    const selected = document.getElementById(sectionId);
+
+    if (!selected) {
+        console.error("Section not found:", sectionId);
+        alert("Section not found: " + sectionId);
+        return;
+    }
+
+    // Force show
+    selected.style.setProperty("display", "block", "important");
+    selected.style.setProperty("visibility", "visible", "important");
+    selected.style.setProperty("opacity", "1", "important");
+    selected.style.setProperty("position", "relative", "important");
+    selected.style.setProperty("z-index", "50", "important");
+    selected.style.setProperty("width", "100%", "important");
+    selected.style.setProperty("min-height", "400px", "important");
 
     // Active menu
-    document
-        .querySelectorAll(
-            "#teacherDashboardMenu, " +
-            "#teacherStudentsMenu, " +
-            "#teacherAttendanceMenu, " +
-            "#teacherAssignmentsMenu, " +
-            "#teacherResultsMenu, " +
-            "#teacherNoticesMenu, " +
-            "#teacherProfileMenu"
-        )
-        .forEach(function (item) {
-
-            item.classList.remove("active");
-
-        });
-
-
     if (menuElement) {
-
         menuElement.classList.add("active");
-
     }
 
+    // 6. Load data
+    setTimeout(function () {
 
-    // Load module data
-    if (
-        sectionId ===
-        "teacherStudentsSection"
-    ) {
-
-        if (
-            typeof loadTeacherMyStudents ===
-            "function"
-        ) {
-
+        if (sectionId === "teacherStudentsSection" && typeof loadTeacherMyStudents === "function") {
             loadTeacherMyStudents();
-
         }
-
-    }
-
-
-    if (
-        sectionId ===
-        "teacherAttendanceSection"
-    ) {
-
-        if (
-            typeof setTeacherAttendanceDate ===
-            "function"
-        ) {
-
-            setTeacherAttendanceDate();
-
+        if (sectionId === "teacherAttendanceSection") {
+            if (typeof setTeacherAttendanceDate === "function") setTeacherAttendanceDate();
+            if (typeof loadTeacherAttendance === "function") loadTeacherAttendance();
         }
-
-
-        if (
-            typeof loadTeacherAttendance ===
-            "function"
-        ) {
-
-            loadTeacherAttendance();
-
-        }
-
-    }
-
-
-    if (
-        sectionId ===
-        "teacherAssignmentsSection"
-    ) {
-
-        if (
-            typeof loadTeacherAssignments ===
-            "function"
-        ) {
-
+        if (sectionId === "teacherAssignmentsSection" && typeof loadTeacherAssignments === "function") {
             loadTeacherAssignments();
-
         }
-
-    }
-
-
-    if (
-        sectionId ===
-        "teacherResultsSection"
-    ) {
-
-        if (
-            typeof loadTeacherResults ===
-            "function"
-        ) {
-
+        if (sectionId === "teacherResultsSection" && typeof loadTeacherResults === "function") {
             loadTeacherResults();
-
+        }
+        if (sectionId === "teacherNoticesSection" && typeof loadTeacherNotices === "function") {
+            loadTeacherNotices();
+        }
+        if (sectionId === "teacherProfileSection" && typeof loadTeacherProfile === "function") {
+            loadTeacherProfile();
+        }
+        if (sectionId === "teacherSettingsSection" && typeof loadTeacherSettings === "function") {
+            loadTeacherSettings();
         }
 
-    }
+    }, 50);
 
+    window.scrollTo(0, 0);
 };
-
 
 // =========================================================
 // RETURN TO TEACHER HOME
@@ -27666,7 +25790,7 @@ window.openTeacherHome = function (
     if (mainContent) {
 
         mainContent.style.display =
-            "block";
+            "none";
 
     }
 
@@ -28057,215 +26181,7 @@ document.addEventListener(
 
     }
 );
-/* =========================================================
-   TEACHER NAVIGATION - FINAL SEPARATE PAGE FIX
-========================================================= */
 
-function openTeacherSection(sectionId) {
-
-    const dashboard =
-        document.getElementById("teacherDashboard");
-
-    if (!dashboard) {
-        return;
-    }
-
-    /* -----------------------------------------
-       DASHBOARD HOME CONTENT
-    ----------------------------------------- */
-
-    const mainContent =
-        dashboard.querySelector(".main-content");
-
-
-    /* -----------------------------------------
-       ALL TEACHER SECTIONS
-    ----------------------------------------- */
-
-    const sections = [
-        "teacherStudentsSection",
-        "teacherAttendanceSection",
-        "teacherAssignmentsSection",
-        "teacherResultsSection",
-        "teacherNoticesSection",
-        "teacherProfileSection"
-    ];
-
-
-    /* -----------------------------------------
-       HIDE ALL MODULES
-    ----------------------------------------- */
-
-    sections.forEach(function(id) {
-
-        const section =
-            document.getElementById(id);
-
-        if (section) {
-
-            section.style.display =
-                "none";
-        }
-
-    });
-
-
-    /* -----------------------------------------
-       DASHBOARD
-    ----------------------------------------- */
-
-    if (sectionId === "teacherDashboard") {
-
-        if (mainContent) {
-
-            mainContent.style.display =
-                "block";
-        }
-
-        return;
-    }
-
-
-    /* -----------------------------------------
-       HIDE DASHBOARD HOME
-    ----------------------------------------- */
-
-    if (mainContent) {
-
-        mainContent.style.display =
-            "none";
-    }
-
-
-    /* -----------------------------------------
-       SHOW ONLY SELECTED MODULE
-    ----------------------------------------- */
-
-    const selected =
-        document.getElementById(sectionId);
-
-    if (selected) {
-
-        selected.style.display =
-            "block";
-
-        selected.style.visibility =
-            "visible";
-
-        selected.style.opacity =
-            "1";
-
-        selected.style.position =
-            "relative";
-
-        selected.style.zIndex =
-            "1";
-    }
-
-
-    /* -----------------------------------------
-       LOAD MODULE DATA
-    ----------------------------------------- */
-
-    if (
-        sectionId ===
-        "teacherStudentsSection"
-    ) {
-
-        if (
-            typeof renderTeacherMyStudents ===
-            "function"
-        ) {
-
-            renderTeacherMyStudents();
-        }
-    }
-
-
-    if (
-        sectionId ===
-        "teacherAttendanceSection"
-    ) {
-
-        if (
-            typeof setTeacherAttendanceDate ===
-            "function"
-        ) {
-
-            setTeacherAttendanceDate();
-        }
-
-
-        if (
-            typeof loadTeacherAttendance ===
-            "function"
-        ) {
-
-            loadTeacherAttendance();
-        }
-    }
-
-
-    if (
-        sectionId ===
-        "teacherAssignmentsSection"
-    ) {
-
-        if (
-            typeof loadTeacherAssignments ===
-            "function"
-        ) {
-
-            loadTeacherAssignments();
-        }
-    }
-
-
-    if (
-        sectionId ===
-        "teacherResultsSection"
-    ) {
-
-        if (
-            typeof loadTeacherResults ===
-            "function"
-        ) {
-
-            loadTeacherResults();
-        }
-    }
-
-
-    if (
-        sectionId ===
-        "teacherNoticesSection"
-    ) {
-
-        if (
-            typeof loadTeacherNotices ===
-            "function"
-        ) {
-
-            loadTeacherNotices();
-        }
-    }
-
-
-    if (
-        sectionId ===
-        "teacherProfileSection"
-    ) {
-
-        if (
-            typeof loadTeacherProfile ===
-            "function"
-        ) {
-
-            loadTeacherProfile();
-        }
-    }
-
-}
 /* =========================================================
    TEACHER SETTINGS - LOAD SETTINGS
 ========================================================= */
@@ -28614,36 +26530,7 @@ document.addEventListener(
 
     }
 );
-/* =========================================================
-   TEACHER SETTINGS NAVIGATION
-========================================================= */
 
-document.addEventListener("click", function (event) {
-
-    const settingsMenu =
-        event.target.closest("#teacherSettingsMenu");
-
-    if (!settingsMenu) {
-        return;
-    }
-
-    event.preventDefault();
-
-    /* Open Settings */
-    openTeacherSection("teacherSettingsSection");
-
-    /* Load saved settings */
-    setTimeout(function () {
-
-        if (
-            typeof loadTeacherSettings === "function"
-        ) {
-            loadTeacherSettings();
-        }
-
-    }, 50);
-
-});
 /* =========================================================
    TEACHER CHANGE PASSWORD
 ========================================================= */
@@ -29012,7 +26899,7 @@ function checkTeacherSession() {
 
 
     const tenMinutes =
-        10 * 60 * 1000;
+        30 * 60 * 1000;
 
 
     const sessionExpired =
@@ -29344,7 +27231,7 @@ if (loginContainer) {
    TEACHER DASHBOARD - LOAD REAL DATA
 ========================================================= */
 
-function loadTeacherDashboardData() {
+async function loadTeacherDashboardData() {
 
     const teacher =
         JSON.parse(
@@ -29445,16 +27332,26 @@ function loadTeacherDashboardData() {
     }
 
 
-    /* =====================================================
-       GET STUDENTS
-    ===================================================== */
+ // ==========================================
+// GET REAL STUDENTS FROM SUPABASE
+// ==========================================
 
-    const students =
-        JSON.parse(
-            localStorage.getItem(
-                "adminStudents"
-            )
-        ) || [];
+const {
+    data: students,
+    error: studentsError
+} = await supabaseClient
+    .from("students")
+    .select("*");
+
+if (studentsError) {
+
+    console.error(
+        "Teacher Dashboard Students Error:",
+        studentsError
+    );
+
+    return;
+}
 
 
     /* =====================================================
@@ -29521,8 +27418,332 @@ function loadTeacherDashboardData() {
             assignedStudents.length;
 
     }
+// =====================================================
+// MY STUDENTS GRAPH - LIVE SUPABASE DATA
+// =====================================================
+
+const chartBars =
+    document.getElementById(
+        "teacherStudentsChartBars"
+    );
+
+const chartLabels =
+    document.getElementById(
+        "teacherStudentsChartLabels"
+    );
+
+const chartPeriod =
+    document.getElementById(
+        "teacherStudentsChartPeriod"
+    );
 
 
+// ==========================================
+// MY STUDENTS GRAPH - DATE FILTER
+// ==========================================
+
+function renderTeacherStudentsChart() {
+
+    if (!chartBars || !chartLabels) {
+        return;
+    }
+
+    chartBars.innerHTML = "";
+    chartLabels.innerHTML = "";
+
+    const selectedPeriod =
+        chartPeriod
+            ? chartPeriod.value
+            : "week";
+
+    const now = new Date();
+
+    const points = [];
+
+
+    // ==========================================
+    // YESTERDAY
+    // ==========================================
+
+    if (selectedPeriod === "yesterday") {
+
+        const yesterday =
+            new Date(now);
+
+        yesterday.setDate(
+            now.getDate() - 1
+        );
+
+        points.push({
+            start: new Date(
+                yesterday.getFullYear(),
+                yesterday.getMonth(),
+                yesterday.getDate()
+            ),
+            end: new Date(
+                yesterday.getFullYear(),
+                yesterday.getMonth(),
+                yesterday.getDate() + 1
+            ),
+            label: "Yesterday"
+        });
+
+    }
+
+
+    // ==========================================
+    // LAST WEEK
+    // ==========================================
+
+    else if (selectedPeriod === "week") {
+
+        for (
+            let i = 6;
+            i >= 0;
+            i--
+        ) {
+
+            const date =
+                new Date(now);
+
+            date.setDate(
+                now.getDate() - i
+            );
+
+            const start =
+                new Date(
+                    date.getFullYear(),
+                    date.getMonth(),
+                    date.getDate()
+                );
+
+            const end =
+                new Date(
+                    date.getFullYear(),
+                    date.getMonth(),
+                    date.getDate() + 1
+                );
+
+            points.push({
+
+                start: start,
+
+                end: end,
+
+                label:
+                    date.toLocaleDateString(
+                        "en-US",
+                        {
+                            weekday: "short"
+                        }
+                    )
+
+            });
+
+        }
+
+    }
+
+
+    // ==========================================
+    // LAST MONTH
+    // ==========================================
+
+    else if (selectedPeriod === "month") {
+
+        for (
+            let i = 3;
+            i >= 0;
+            i--
+        ) {
+
+            const end =
+                new Date(
+                    now.getFullYear(),
+                    now.getMonth() + 1 - i,
+                    1
+                );
+
+            const start =
+                new Date(
+                    end.getFullYear(),
+                    end.getMonth() - 1,
+                    1
+                );
+
+            points.push({
+
+                start: start,
+
+                end: end,
+
+                label:
+                    start.toLocaleString(
+                        "en-US",
+                        {
+                            month: "short"
+                        }
+                    )
+
+            });
+
+        }
+
+    }
+
+
+    // ==========================================
+    // COUNT STUDENTS
+    // ==========================================
+
+    points.forEach(
+        function (point) {
+
+            point.count =
+                assignedStudents.filter(
+                    function (student) {
+
+                        const rawDate =
+                            student.created_at ||
+                            student.createdAt ||
+                            student.admission_date ||
+                            student.admissionDate;
+
+                        if (!rawDate) {
+                            return false;
+                        }
+
+                        const studentDate =
+                            new Date(rawDate);
+
+                        if (
+                            isNaN(
+                                studentDate.getTime()
+                            )
+                        ) {
+                            return false;
+                        }
+
+                        return (
+                            studentDate >=
+                                point.start &&
+                            studentDate <
+                                point.end
+                        );
+
+                    }
+                ).length;
+
+        }
+    );
+
+
+    // ==========================================
+    // MAX VALUE
+    // ==========================================
+
+    const maxCount =
+        Math.max(
+            ...points.map(
+                function (point) {
+                    return point.count;
+                }
+            ),
+            1
+        );
+
+
+    // ==========================================
+    // CREATE GRAPH BARS
+    // ==========================================
+
+    points.forEach(
+        function (point) {
+
+            const bar =
+                document.createElement(
+                    "div"
+                );
+
+            bar.className =
+                "teacher-chart-bar";
+
+
+            const height =
+                point.count > 0
+                    ? Math.max(
+                        (
+                            point.count /
+                            maxCount
+                        ) * 100,
+                        8
+                    )
+                    : 2;
+
+
+            bar.style.height =
+                height + "%";
+
+
+            const value =
+                document.createElement(
+                    "span"
+                );
+
+            value.textContent =
+                point.count;
+
+
+            bar.appendChild(value);
+
+            chartBars.appendChild(bar);
+
+
+            // ==================================
+            // LABEL
+            // ==================================
+
+            const label =
+                document.createElement(
+                    "span"
+                );
+
+            label.textContent =
+                point.label;
+
+            chartLabels.appendChild(
+                label
+            );
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// INITIAL GRAPH
+// ==========================================
+
+renderTeacherStudentsChart();
+
+
+// ==========================================
+// FILTER CHANGE
+// ==========================================
+
+if (chartPeriod) {
+
+    chartPeriod.addEventListener(
+        "change",
+        function () {
+
+            renderTeacherStudentsChart();
+
+        }
+    );
+
+}
     /* =====================================================
        GET ASSIGNMENTS
     ===================================================== */
@@ -29618,100 +27839,131 @@ function loadTeacherDashboardData() {
     }
 
 
-    /* =====================================================
-       TODAY'S ATTENDANCE
-    ===================================================== */
+  // =====================================================
+// TODAY'S ATTENDANCE - LIVE SUPABASE DATA
+// =====================================================
 
-    const attendance =
-        JSON.parse(
-            localStorage.getItem(
-                "teacherAttendance"
-            )
-        ) || {};
+const today =
+    new Date()
+        .toISOString()
+        .split("T")[0];
 
-
-    const today =
-        new Date()
-            .toISOString()
-            .split("T")[0];
+let markedStudents = 0;
+let presentStudents = 0;
 
 
-    const todayAttendance =
-        attendance[today] || {};
+// ==========================================
+// GET TODAY'S ATTENDANCE
+// ==========================================
+
+if (assignedStudents.length > 0) {
+
+    const studentIds =
+        assignedStudents
+            .map(function (student) {
+                return student.id;
+            })
+            .filter(function (id) {
+                return id !== null &&
+                       id !== undefined;
+            });
 
 
-    let markedStudents = 0;
-    let presentStudents = 0;
+    if (studentIds.length > 0) {
 
-
-    assignedStudents.forEach(
-        function(student) {
-
-            const studentId =
-                String(
-                    student.id
+        const {
+            data: attendanceRecords,
+            error: attendanceError
+        } =
+            await supabaseClient
+                .from("attendance")
+                .select(
+                    "student_id, status, attendance_date"
+                )
+                .eq(
+                    "attendance_date",
+                    today
+                )
+                .in(
+                    "student_id",
+                    studentIds
                 );
 
 
-            if (
-                Object.prototype.hasOwnProperty.call(
-                    todayAttendance,
-                    studentId
-                )
-            ) {
+        if (attendanceError) {
 
-                markedStudents++;
-
-
-                if (
-                    todayAttendance[
-                        studentId
-                    ] === "Present"
-                ) {
-
-                    presentStudents++;
-
-                }
-
-            }
-
-        }
-    );
-
-
-    let attendancePercentage = 0;
-
-
-    if (
-        markedStudents > 0
-    ) {
-
-        attendancePercentage =
-            Math.round(
-                (
-                    presentStudents /
-                    markedStudents
-                ) * 100
+            console.error(
+                "Teacher Dashboard Attendance Error:",
+                attendanceError
             );
 
-    }
+        } else {
+
+            const records =
+                attendanceRecords || [];
 
 
-    const attendanceElement =
-        document.getElementById(
-            "teacherAttendanceToday"
-        );
+            markedStudents =
+                records.length;
 
-    if (attendanceElement) {
 
-        attendanceElement.textContent =
-            attendancePercentage +
-            "%";
+            presentStudents =
+                records.filter(
+                    function (record) {
+
+                        return String(
+                            record.status || ""
+                        )
+                        .trim()
+                        .toLowerCase() ===
+                        "present";
+
+                    }
+                ).length;
+
+        }
 
     }
 
 }
 
+
+// ==========================================
+// CALCULATE ATTENDANCE PERCENTAGE
+// ==========================================
+
+let attendancePercentage = 0;
+
+if (markedStudents > 0) {
+
+    attendancePercentage =
+        Math.round(
+            (
+                presentStudents /
+                markedStudents
+            ) * 100
+        );
+
+}
+
+
+// ==========================================
+// UPDATE ATTENDANCE CARD
+// ==========================================
+
+const attendanceElement =
+    document.getElementById(
+        "teacherAttendanceToday"
+    );
+
+if (attendanceElement) {
+
+    attendanceElement.textContent =
+        attendancePercentage + "%";
+
+}
+
+}
 // ==========================================
 // USER MANAGEMENT - EDIT USER
 // ==========================================
@@ -30034,8 +28286,7 @@ document.addEventListener(
 
 
 // ==========================================
-// USER MANAGEMENT - SAVE EDIT
-// SUPABASE
+// SAVE EDITED USER
 // ==========================================
 
 document.addEventListener(
@@ -30047,45 +28298,14 @@ document.addEventListener(
                 "#saveEditUserManagement"
             );
 
+
         if (!saveButton) {
             return;
         }
 
 
         // ==========================================
-        // GET MODAL DATA
-        // ==========================================
-
-        const modal =
-            document.getElementById(
-                "editUserManagementModal"
-            );
-
-        if (!modal) {
-            alert("Edit User modal not found.");
-            return;
-        }
-
-
-        const userType =
-            modal.dataset.userType;
-
-        const userId =
-            modal.dataset.userId;
-
-
-        if (!userType || !userId) {
-
-            alert(
-                "User information is missing."
-            );
-
-            return;
-        }
-
-
-        // ==========================================
-        // GET FORM FIELDS
+        // GET FIELDS
         // ==========================================
 
         const nameField =
@@ -30093,15 +28313,18 @@ document.addEventListener(
                 "editUserName"
             );
 
+
         const usernameField =
             document.getElementById(
                 "editUserUsername"
             );
 
+
         const newPasswordField =
             document.getElementById(
                 "editUserNewPassword"
             );
+
 
         const statusField =
             document.getElementById(
@@ -30126,13 +28349,16 @@ document.addEventListener(
         const newName =
             nameField.value.trim();
 
+
         const newUsername =
             usernameField.value.trim();
+
 
         const newPassword =
             newPasswordField
                 ? newPasswordField.value.trim()
                 : "";
+
 
         const newStatus =
             statusField.value;
@@ -30167,152 +28393,367 @@ document.addEventListener(
 
 
         // ==========================================
-        // TABLE
+        // STORAGE KEY
         // ==========================================
 
-        const tableName =
-            userType === "student"
-                ? "students"
-                : "teachers";
+        const storageKey =
+            editingUserType ===
+            "student"
+                ? "adminStudents"
+                : "adminTeachers";
 
 
-        // ==========================================
-        // SHOW SAVING
-        // ==========================================
-
-        saveButton.disabled = true;
-
-        saveButton.textContent =
-            "Saving...";
+        let users = [];
 
 
         try {
 
-            // ==========================================
-            // UPDATE DATA
-            // ==========================================
-
-            const updateData = {
-
-                name:
-                    newName,
-
-                username:
-                    newUsername,
-
-                status:
-                    newStatus
-
-            };
-
-
-            // Password only when entered
-
-            if (newPassword) {
-
-                updateData.password =
-                    newPassword;
-
-            }
-
-
-            // ==========================================
-            // UPDATE SUPABASE BY DATABASE ID
-            // ==========================================
-
-            const {
-                error
-            } =
-                await supabaseClient
-                    .from(tableName)
-                    .update(updateData)
-                    .eq(
-                        "id",
-                        userId
-                    );
-
-
-            if (error) {
-
-                console.error(
-                    "User Update Error:",
-                    error
-                );
-
-                alert(
-                    "User could not be updated.\n\n" +
-                    error.message
-                );
-
-                return;
-            }
-
-
-            // ==========================================
-            // REFRESH USER MANAGEMENT
-            // ==========================================
-
-            if (
-                typeof renderUserManagementStudents ===
-                "function"
-            ) {
-
-                await renderUserManagementStudents();
-
-            }
-
-
-            // ==========================================
-            // REFRESH STUDENTS PAGE
-            // ==========================================
-
-            if (
-                userType === "student" &&
-                typeof renderAdminStudents ===
-                "function"
-            ) {
-
-                await renderAdminStudents();
-
-            }
-
-
-            // ==========================================
-            // CLOSE MODAL
-            // ==========================================
-
-            closeEditUserManagementModal();
-
-
-            // ==========================================
-            // SUCCESS
-            // ==========================================
-
-            alert(
-                "User updated successfully. ✅"
-            );
-
+            users =
+                JSON.parse(
+                    localStorage.getItem(
+                        storageKey
+                    )
+                ) || [];
 
         } catch (error) {
 
             console.error(
-                "User Update Error:",
+                "User data error:",
                 error
             );
 
-            alert(
-                "Something went wrong while updating the user."
+            users = [];
+        }
+
+
+        // ==========================================
+        // FIND USER
+        // ==========================================
+
+        const userIndex =
+            users.findIndex(
+                function (user) {
+
+                    return Number(
+                        user.id
+                    ) ===
+                    Number(
+                        editingUserId
+                    );
+
+                }
             );
 
 
-        } finally {
+        if (userIndex === -1) {
 
-            saveButton.disabled = false;
+            alert(
+                "User not found."
+            );
 
-            saveButton.textContent =
-                "Save Changes";
+            return;
+        }
+
+
+        const user =
+            users[userIndex];
+
+
+        // ==========================================
+        // UPDATE NAME
+        // ==========================================
+
+        if (
+            editingUserType ===
+            "student"
+        ) {
+
+            user.fullName =
+                newName;
+
+            user.name =
+                newName;
+
+        } else {
+
+            user.name =
+                newName;
+
+            user.fullName =
+                newName;
 
         }
+
+
+        // ==========================================
+        // UPDATE USERNAME
+        // ==========================================
+
+        user.username =
+            newUsername;
+
+
+        // ==========================================
+        // UPDATE STATUS
+        // ==========================================
+
+        user.status =
+            newStatus;
+
+
+        // ==========================================
+        // UPDATE PASSWORD
+        // ==========================================
+
+        if (newPassword) {
+
+            user.password =
+                newPassword;
+
+        }
+
+
+        // ==========================================
+        // SAVE LOCAL STORAGE
+        // ==========================================
+
+        users[userIndex] =
+            user;
+
+
+        localStorage.setItem(
+            storageKey,
+            JSON.stringify(users)
+        );
+
+
+        // ==========================================
+        // SAVE TO SUPABASE
+        // ==========================================
+
+        if (
+            typeof supabaseClient !==
+            "undefined"
+        ) {
+
+            try {
+
+                const tableName =
+                    editingUserType ===
+                    "student"
+                        ? "students"
+                        : "teachers";
+
+
+                const updateData = {
+
+                    name:
+                        newName,
+
+                    username:
+                        newUsername,
+
+                    status:
+                        newStatus
+
+                };
+
+
+                // Password only if changed
+
+                if (newPassword) {
+
+                    updateData.password =
+                        newPassword;
+
+                }
+
+
+                // ==========================================
+                // UPDATE BY USERNAME
+                // ==========================================
+
+                const oldUsername =
+                    user.username;
+
+
+                const result =
+                    await supabaseClient
+                        .from(tableName)
+                        .update(
+                            updateData
+                        )
+                        .eq(
+                            "username",
+                            oldUsername
+                        );
+
+
+                if (result.error) {
+
+                    console.warn(
+                        "Supabase update warning:",
+                        result.error
+                    );
+
+                }
+
+            } catch (error) {
+
+                console.warn(
+                    "Supabase update skipped:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        // ==========================================
+        // UPDATE CURRENT LOGIN SESSION
+        // ==========================================
+
+        if (
+            editingUserType ===
+            "student"
+        ) {
+
+            const loggedStudent =
+                JSON.parse(
+                    localStorage.getItem(
+                        "loggedInStudent"
+                    )
+                );
+
+
+            if (
+                loggedStudent &&
+                Number(
+                    loggedStudent.id
+                ) ===
+                Number(
+                    editingUserId
+                )
+            ) {
+
+                loggedStudent.fullName =
+                    newName;
+
+                loggedStudent.name =
+                    newName;
+
+                loggedStudent.username =
+                    newUsername;
+
+                loggedStudent.status =
+                    newStatus;
+
+
+                if (newPassword) {
+
+                    loggedStudent.password =
+                        newPassword;
+
+                }
+
+
+                localStorage.setItem(
+                    "loggedInStudent",
+                    JSON.stringify(
+                        loggedStudent
+                    )
+                );
+
+            }
+
+        }
+
+
+        if (
+            editingUserType ===
+            "teacher"
+        ) {
+
+            const loggedTeacher =
+                JSON.parse(
+                    localStorage.getItem(
+                        "loggedInTeacher"
+                    )
+                );
+
+
+            if (
+                loggedTeacher &&
+                Number(
+                    loggedTeacher.id
+                ) ===
+                Number(
+                    editingUserId
+                )
+            ) {
+
+                loggedTeacher.name =
+                    newName;
+
+                loggedTeacher.fullName =
+                    newName;
+
+                loggedTeacher.username =
+                    newUsername;
+
+                loggedTeacher.status =
+                    newStatus;
+
+
+                if (newPassword) {
+
+                    loggedTeacher.password =
+                        newPassword;
+
+                }
+
+
+                localStorage.setItem(
+                    "loggedInTeacher",
+                    JSON.stringify(
+                        loggedTeacher
+                    )
+                );
+
+            }
+
+        }
+
+
+        // ==========================================
+        // REFRESH USER MANAGEMENT
+        // ==========================================
+
+        if (
+            typeof renderUserManagementStudents ===
+            "function"
+        ) {
+
+            await renderUserManagementStudents();
+
+        }
+
+
+        // ==========================================
+        // CLOSE MODAL
+        // ==========================================
+
+        closeEditUserManagementModal();
+
+
+        // ==========================================
+        // SUCCESS
+        // ==========================================
+
+        alert(
+            "User updated successfully. ✅"
+        );
 
     }
 );
@@ -30916,64 +29357,63 @@ loadAttendance(student) {
 
 },
 
+/* -------------------------
+   Attendance - SUPABASE
+------------------------- */
+
 async loadAttendance(student) {
 
     if (!student) {
         return;
     }
-
     // ==========================================
-    // SUPABASE CHECK
-    // ==========================================
+// SUPABASE CHECK
+// ==========================================
 
-    if (
-        typeof supabaseClient ===
-        "undefined"
-    ) {
+if (
+    typeof supabaseClient ===
+    "undefined"
+) {
 
-        console.error(
-            "Supabase connection missing."
-        );
+    console.error(
+        "Supabase connection missing."
+    );
 
-        this.setText(
-            "totalClasses",
-            0
-        );
+    this.setText(
+        "presentCount",
+        0
+    );
 
-        this.setText(
-            "presentClasses",
-            0
-        );
+    this.setText(
+        "absentCount",
+        0
+    );
 
-        this.setText(
-            "absentClasses",
-            0
-        );
+    this.setText(
+        "lateCount",
+        0
+    );
 
-        this.setText(
-            "attendancePercentage",
-            "0%"
-        );
+    this.setText(
+        "attendancePercentage",
+        "0%"
+    );
 
-        this.setText(
-            "attendanceProgressText",
-            "0%"
-        );
+    this.setText(
+        "attendanceStatus",
+        "Unable to load attendance"
+    );
 
-        this.setText(
-            "attendanceStatus",
-            "Unable to load attendance"
-        );
-
-        return;
-    }
-
+    return;
+}
     // ==========================================
     // FIND STUDENT IN SUPABASE
     // ==========================================
 
     let dbStudent = null;
 
+
+    // First try database ID
     if (student.id) {
 
         const result =
@@ -30983,23 +29423,15 @@ async loadAttendance(student) {
                 .eq("id", student.id)
                 .maybeSingle();
 
-        if (
-            !result.error &&
-            result.data
-        ) {
-            dbStudent =
-                result.data;
+        if (!result.error && result.data) {
+            dbStudent = result.data;
         }
     }
 
-    // ==========================================
-    // FALLBACK - STUDENT ID
-    // ==========================================
 
-    if (
-        !dbStudent &&
-        student.studentId
-    ) {
+    // If local ID doesn't match,
+    // find student using student_id
+    if (!dbStudent && student.studentId) {
 
         const result =
             await supabaseClient
@@ -31011,17 +29443,14 @@ async loadAttendance(student) {
                 )
                 .maybeSingle();
 
-        if (
-            !result.error &&
-            result.data
-        ) {
-            dbStudent =
-                result.data;
+        if (!result.error && result.data) {
+            dbStudent = result.data;
         }
     }
 
+
     // ==========================================
-    // STUDENT NOT FOUND
+    // NO DATABASE STUDENT
     // ==========================================
 
     if (!dbStudent) {
@@ -31031,27 +29460,22 @@ async loadAttendance(student) {
         );
 
         this.setText(
-            "totalClasses",
+            "presentCount",
             0
         );
 
         this.setText(
-            "presentClasses",
+            "absentCount",
             0
         );
 
         this.setText(
-            "absentClasses",
+            "lateCount",
             0
         );
 
         this.setText(
             "attendancePercentage",
-            "0%"
-        );
-
-        this.setText(
-            "attendanceProgressText",
             "0%"
         );
 
@@ -31063,8 +29487,9 @@ async loadAttendance(student) {
         return;
     }
 
+
     // ==========================================
-    // GET LIVE ATTENDANCE FROM SUPABASE
+    // GET ATTENDANCE FROM SUPABASE
     // ==========================================
 
     const {
@@ -31081,46 +29506,6 @@ async loadAttendance(student) {
                 dbStudent.id
             );
 
-    if (error) {
-
-        console.error(
-            "Student Attendance Error:",
-            error
-        );
-
-        this.setText(
-            "totalClasses",
-            0
-        );
-
-        this.setText(
-            "presentClasses",
-            0
-        );
-
-        this.setText(
-            "absentClasses",
-            0
-        );
-
-        this.setText(
-            "attendancePercentage",
-            "0%"
-        );
-
-        this.setText(
-            "attendanceProgressText",
-            "0%"
-        );
-
-        this.setText(
-            "attendanceStatus",
-            "Unable to load attendance"
-        );
-
-        return;
-    }
-
     // ==========================================
     // COUNT ATTENDANCE
     // ==========================================
@@ -31128,6 +29513,8 @@ async loadAttendance(student) {
     let present = 0;
     let absent = 0;
     let late = 0;
+    let leave = 0;
+
 
     (attendanceRecords || [])
         .forEach(function(record) {
@@ -31137,32 +29524,40 @@ async loadAttendance(student) {
                     record.status || ""
                 ).toLowerCase();
 
-            if (
-                status === "present"
-            ) {
+
+            if (status === "present") {
+
                 present++;
+
             }
-            else if (
-                status === "absent"
-            ) {
+            else if (status === "absent") {
+
                 absent++;
+
             }
-            else if (
-                status === "late"
-            ) {
+            else if (status === "late") {
+
                 late++;
+
+            }
+            else if (status === "leave") {
+
+                leave++;
+
             }
 
         });
 
+
     // ==========================================
-    // TOTAL + PERCENTAGE
+    // ATTENDANCE PERCENTAGE
     // ==========================================
 
     const total =
         present +
         absent +
         late;
+
 
     const percentage =
         total > 0
@@ -31171,41 +29566,39 @@ async loadAttendance(student) {
             )
             : 0;
 
+
     // ==========================================
-    // UPDATE DASHBOARD CARDS
+    // COUNTS
     // ==========================================
 
     this.setText(
-        "totalClasses",
-        total
-    );
-
-    this.setText(
-        "presentClasses",
+        "presentCount",
         present
     );
 
     this.setText(
-        "absentClasses",
+        "absentCount",
         absent
     );
+
+    this.setText(
+        "lateCount",
+        late
+    );
+
+
+    // ==========================================
+    // PERCENTAGE
+    // ==========================================
 
     this.setText(
         "attendancePercentage",
         percentage + "%"
     );
 
-    // ==========================================
-    // UPDATE PROGRESS TEXT
-    // ==========================================
-
-    this.setText(
-        "attendanceProgressText",
-        percentage + "%"
-    );
 
     // ==========================================
-    // UPDATE PROGRESS BAR
+    // PROGRESS BAR
     // ==========================================
 
     const bar =
@@ -31224,277 +29617,272 @@ async loadAttendance(student) {
         );
     }
 
+
     // ==========================================
-    // ATTENDANCE STATUS
+    // STATUS
     // ==========================================
 
     let status =
         "No Attendance Data";
 
+
     if (total > 0) {
 
         if (percentage >= 90) {
 
-            status =
-                "Excellent";
+            status = "Excellent";
 
         }
-        else if (
-            percentage >= 75
-        ) {
+        else if (percentage >= 75) {
 
-            status =
-                "Good";
+            status = "Good";
 
         }
-        else if (
-            percentage >= 60
-        ) {
+        else if (percentage >= 60) {
 
-            status =
-                "Needs Improvement";
+            status = "Needs Improvement";
 
         }
         else {
 
-            status =
-                "Low Attendance";
+            status = "Low Attendance";
 
         }
     }
+
 
     this.setText(
         "attendanceStatus",
         status
     );
+
 },
 
   /* -------------------------
     Subjects - SUPABASE
  ------------------------- */
 
-async loadSubjects(student) {
+ async loadSubjects(student) {
 
-    const container =
-        document.getElementById("studentSubjects");
+     const container =
+         document.getElementById(
+             "studentSubjects"
+         );
 
-    if (!container) {
-        return;
-    }
+     if (!container) {
+         return;
+     }
 
-    container.innerHTML = "";
 
-    if (
-        typeof supabaseClient === "undefined"
-    ) {
-        console.error("Supabase connection missing.");
-        return;
-    }
+     container.innerHTML = "";
 
-    if (!student) {
-        return;
-    }
 
-    // ==========================================
-    // FIND DATABASE STUDENT
-    // ==========================================
+     // ==========================================
+     // SUPABASE CHECK
+     // ==========================================
 
-    let dbStudent = null;
+     if (
+         typeof supabaseClient ===
+         "undefined"
+     ) {
 
-    if (student.id) {
+         console.error(
+             "Supabase connection missing."
+         );
 
-        const result =
-            await supabaseClient
-                .from("students")
-                .select("*")
-                .eq("id", student.id)
-                .maybeSingle();
+         container.innerHTML = `
+             <div class="empty-state">
+                 Unable to load subjects.
+             </div>
+         `;
 
-        if (!result.error && result.data) {
-            dbStudent = result.data;
-        }
-    }
+         return;
+     }
 
-    // ==========================================
-    // FALLBACK - STUDENT ID
-    // ==========================================
 
-    if (
-        !dbStudent &&
-        student.studentId
-    ) {
+     // ==========================================
+     // STUDENT CHECK
+     // ==========================================
 
-        const result =
-            await supabaseClient
-                .from("students")
-                .select("*")
-                .eq(
-                    "student_id",
-                    student.studentId
-                )
-                .maybeSingle();
+     if (!student) {
+         return;
+     }
 
-        if (!result.error && result.data) {
-            dbStudent = result.data;
-        }
-    }
 
-    if (!dbStudent) {
+     // ==========================================
+     // FIND STUDENT
+     // ==========================================
 
-        container.innerHTML = `
-            <div class="empty-state">
-                Student record not found.
-            </div>
-        `;
+     let dbStudent = null;
 
-        return;
-    }
 
-    // ==========================================
-    // GET STUDENT SUBJECTS FROM DATABASE
-    // ==========================================
+     if (student.id) {
 
-    const {
-        data: subjectRows,
-        error: subjectError
-    } = await supabaseClient
-        .from("student_subjects")
-        .select(`
-            subject_id,
-            subjects (
-                id,
-                name,
-                code
-            )
-        `)
-        .eq(
-            "student_id",
-            dbStudent.id
-        );
+         const result =
+             await supabaseClient
+                 .from("students")
+                 .select("*")
+                 .eq(
+                     "id",
+                     student.id
+                 )
+                 .maybeSingle();
 
-    if (subjectError) {
 
-        console.error(
-            "Student Subjects Error:",
-            subjectError
-        );
+         if (
+             !result.error &&
+             result.data
+         ) {
 
-        container.innerHTML = `
-            <div class="empty-state">
-                Unable to load subjects.
-            </div>
-        `;
+             dbStudent =
+                 result.data;
 
-        return;
-    }
+         }
+     }
 
-    // ==========================================
-    // CLEAN SUBJECT LIST
-    // ==========================================
 
-    const subjects = [];
+     // ==========================================
+     // TRY STUDENT ID
+     // ==========================================
 
-    (subjectRows || []).forEach(
-        function(row) {
+     if (
+         !dbStudent &&
+         student.studentId
+     ) {
 
-            const subject =
-                row.subjects;
+         const result =
+             await supabaseClient
+                 .from("students")
+                 .select("*")
+                 .eq(
+                     "student_id",
+                     student.studentId
+                 )
+                 .maybeSingle();
 
-            if (!subject) {
-                return;
-            }
 
-            const alreadyExists =
-                subjects.some(
-                    function(item) {
-                        return String(item.id) ===
-                            String(subject.id);
-                    }
-                );
+         if (
+             !result.error &&
+             result.data
+         ) {
 
-            if (!alreadyExists) {
-                subjects.push(subject);
-            }
+             dbStudent =
+                 result.data;
 
-        }
+         }
+     }
+
+
+ // ==========================================
+// DATABASE STUDENT CHECK
+// ==========================================
+
+if (!dbStudent) {
+
+    console.warn(
+        "Student was not found in Supabase."
     );
 
-    // ==========================================
-    // EMPTY
-    // ==========================================
+    container.innerHTML = `
+        <div class="empty-state">
+            Student record not found.
+        </div>
+    `;
 
-    if (!subjects.length) {
+    return;
+}
 
-        container.innerHTML = `
-            <div class="empty-state">
-                No subjects available.
-            </div>
-        `;
 
-        return;
-    }
+// ==========================================
+// GET SUBJECTS FROM SUPABASE STUDENT
+// ==========================================
 
-    // ==========================================
-    // RENDER ONLY UNIQUE SUBJECTS
-    // ==========================================
+const source =
+    dbStudent;
 
-    subjects.forEach(
-        function(subject) {
+     // ==========================================
+     // EMPTY
+     // ==========================================
 
-            const name =
-                subject.name ||
-                subject.subject_name ||
-                subject.title ||
-                "Subject";
+     if (!subjects.length) {
 
-            const code =
-                subject.code ||
-                "";
+         container.innerHTML = `
+             <div class="empty-state">
+                 No subjects available.
+             </div>
+         `;
 
-            const item =
-                document.createElement("div");
+         return;
+     }
 
-            item.className =
-                "student-data-item";
 
-            item.innerHTML = `
-                <div>
-                    <strong>
-                        ${name}
-                    </strong>
+     // ==========================================
+     // RENDER
+     // ==========================================
 
-                    ${
-                        code
-                            ? `
-                                <small>
-                                    Code: ${code}
-                                </small>
-                              `
-                            : ""
-                    }
-                </div>
-            `;
+     subjects.forEach(
+         function(subject) {
 
-            container.appendChild(item);
+             const name =
+                 typeof subject === "string"
+                     ? subject
+                     : subject.name ||
+                       subject.subject_name ||
+                       "Subject";
 
-        }
-    );
 
-    // ==========================================
-    // UPDATE SUBJECT COUNT
-    // ==========================================
+             const teacher =
+                 typeof subject === "object"
+                     ? (
+                         subject.teacher ||
+                         subject.teacher_name ||
+                         ""
+                     )
+                     : "";
 
-    const countElement =
-        document.getElementById("subjectsCount");
 
-    if (countElement) {
+             const item =
+                 document.createElement(
+                     "div"
+                 );
 
-        countElement.textContent =
-            subjects.length + " Subjects";
 
-    }
+             item.className =
+                 "student-data-item";
 
-},
+
+             item.innerHTML = `
+
+                 <div>
+
+                     <strong>
+                         ${name}
+                     </strong>
+
+                     ${
+                         teacher
+                             ? `
+                                 <small>
+                                     Teacher:
+                                     ${teacher}
+                                 </small>
+                             `
+                             : ""
+                     }
+
+                 </div>
+
+             `;
+
+
+             container.appendChild(
+                 item
+             );
+
+         }
+     );
+
+ },
 
 
 /* -------------------------
@@ -31695,11 +30083,9 @@ validResults.forEach(function(result) {
 
 });
 
-const cleanResults = latestResults;
-
- if (
-    !cleanResults ||
-    cleanResults.length === 0
+if (
+    !latestResults ||
+    latestResults.length === 0
 ) {
 
         container.innerHTML = `
@@ -31731,21 +30117,24 @@ const cleanResults = latestResults;
     // LOAD SUBJECTS
     // ==========================================
 
-    const subjectIds =
-        [
-            ...new Set(
-               cleanResults
-    .map(
-        result =>
-            result.subject_id
-    )
-                    .filter(
-                        id =>
-                            id !== null &&
-                            id !== undefined
-                    )
+const subjectIds =
+    [
+        ...new Set(
+            latestResults.map(
+                function (result) {
+                    return result.subject_id;
+                }
             )
-        ];
+            .filter(
+                function (id) {
+                    return (
+                        id !== null &&
+                        id !== undefined
+                    );
+                }
+            )
+        )
+    ];
 
 
     let subjects = [];
@@ -31782,15 +30171,16 @@ const cleanResults = latestResults;
 
     return;
 }
-        else {
+         else {
 
             subjects =
                 data || [];
 
         }
+
+    }
 // ==========================================
 // REMOVE DUPLICATE SUBJECT NAMES
-// ==========================================
 
 const cleanResults = [];
 const seenSubjectNames = new Set();
@@ -32087,9 +30477,7 @@ this.setText(
         }
     );
 
-}
-}
-};
+}};
  /* -------------------------
    Assignments
 ------------------------- */
@@ -33474,17 +31862,17 @@ const notices =
        Utility
     ------------------------- */
 
-    StudentDashboard.setText = function(id, value) {
+   StudentDashboard.setText = function(id, value) {
 
-        const element =
-            document.getElementById(id);
+    const element =
+        document.getElementById(id);
 
-        if (element) {
-            element.textContent =
-                value;
-        }
+    if (element) {
+        element.textContent =
+            value;
+    }
 
-        };
+};
 // ==========================================
 // STUDENT SUBMIT ASSIGNMENT
 // ==========================================
@@ -34990,6 +33378,680 @@ document.addEventListener(
 
     }
 );
+// =========================================================
+// EDUPORTAL STUDENT DASHBOARD
+// FINAL SIDEBAR NAVIGATION FIX
+// =========================================================
+
+(function () {
+
+    const dashboard =
+        document.getElementById("studentDashboard");
+
+    if (!dashboard) return;
+
+
+    // -----------------------------------------------------
+    // ALL STUDENT SECTIONS
+    // -----------------------------------------------------
+
+    const moduleSections = [
+        "profileSection",
+        "attendanceSection",
+        "subjectsSection",
+        "assignmentsSection",
+        "resultsSection",
+        "feeSection",
+        "settingsSection"
+    ];
+
+
+    // -----------------------------------------------------
+    // DASHBOARD HOME ELEMENTS
+    // -----------------------------------------------------
+
+    const dashboardElements = [
+        "studentIdCardSection",
+        "welcomeBanner",
+        "noticeBoard",
+        "analyticsSection",
+        "quickSection",
+        "notificationPanel"
+    ];
+
+
+    // -----------------------------------------------------
+    // HIDE EVERYTHING
+    // -----------------------------------------------------
+
+    function hideEverything() {
+
+        // Hide modules
+        moduleSections.forEach(function (id) {
+
+            const section =
+                document.getElementById(id);
+
+            if (section) {
+                section.style.display = "none";
+            }
+
+        });
+
+
+        // Hide dashboard elements
+        dashboardElements.forEach(function (id) {
+
+            const element =
+                document.getElementById(id);
+
+            if (element) {
+                element.style.display = "none";
+            }
+
+        });
+
+
+        // Hide dashboard cards
+        const cards =
+            dashboard.querySelector(
+                ".dashboard-cards"
+            );
+
+        if (cards) {
+            cards.style.display = "none";
+        }
+
+    }
+
+
+    // -----------------------------------------------------
+    // SHOW DASHBOARD
+    // -----------------------------------------------------
+
+    function showDashboard() {
+
+        hideEverything();
+
+
+        const idCard =
+            document.getElementById(
+                "studentIdCardSection"
+            );
+
+        const welcome =
+            document.getElementById(
+                "welcomeBanner"
+            );
+
+        const notice =
+            document.getElementById(
+                "noticeBoard"
+            );
+
+        const analytics =
+            document.getElementById(
+                "analyticsSection"
+            );
+
+        const quick =
+            document.getElementById(
+                "quickSection"
+            );
+
+        const notification =
+            document.getElementById(
+                "notificationPanel"
+            );
+
+        const cards =
+            dashboard.querySelector(
+                ".dashboard-cards"
+            );
+
+
+        if (idCard) {
+            idCard.style.display = "flex";
+        }
+
+        if (welcome) {
+            welcome.style.display = "flex";
+        }
+
+        if (notice) {
+            notice.style.display = "block";
+        }
+
+        if (analytics) {
+            analytics.style.display = "grid";
+        }
+
+        if (quick) {
+            quick.style.display = "block";
+        }
+
+        if (notification) {
+            notification.style.display = "block";
+        }
+
+        if (cards) {
+            cards.style.display = "grid";
+        }
+
+
+        // Active Dashboard
+        dashboard
+            .querySelectorAll(".sidebar ul li")
+            .forEach(function (item) {
+
+                item.classList.remove("active");
+
+            });
+
+
+        const dashboardMenu =
+            document.getElementById(
+                "dashboardMenu"
+            );
+
+        if (dashboardMenu) {
+            dashboardMenu.classList.add("active");
+        }
+
+    }
+
+
+    // -----------------------------------------------------
+    // SHOW ONE MODULE
+    // -----------------------------------------------------
+
+    function showModule(sectionId, menuId) {
+
+        hideEverything();
+
+
+        const section =
+            document.getElementById(sectionId);
+
+        if (section) {
+            section.style.display = "block";
+        }
+
+
+        // Remove all active
+        dashboard
+            .querySelectorAll(".sidebar ul li")
+            .forEach(function (item) {
+
+                item.classList.remove("active");
+
+            });
+
+
+        // Active selected menu
+        const menu =
+            document.getElementById(menuId);
+
+        if (menu) {
+            menu.classList.add("active");
+        }
+
+    }
+
+
+    // -----------------------------------------------------
+    // SIDEBAR CLICK
+    // -----------------------------------------------------
+
+    dashboard.addEventListener(
+        "click",
+        function (event) {
+
+            const menu =
+                event.target.closest(
+                    ".sidebar ul li"
+                );
+
+            if (!menu) return;
+
+
+            // Dashboard
+            if (menu.id === "dashboardMenu") {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                showDashboard();
+
+                return;
+            }
+
+
+            // Profile
+            if (menu.id === "profileMenu") {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                showModule(
+                    "profileSection",
+                    "profileMenu"
+                );
+
+                return;
+            }
+
+
+            // Attendance
+            if (menu.id === "attendanceMenu") {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                showModule(
+                    "attendanceSection",
+                    "attendanceMenu"
+                );
+
+                return;
+            }
+
+
+            // Subjects
+            if (menu.id === "subjectsMenu") {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                showModule(
+                    "subjectsSection",
+                    "subjectsMenu"
+                );
+
+                return;
+            }
+
+
+            // Assignments
+            if (menu.id === "assignmentsMenu") {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                showModule(
+                    "assignmentsSection",
+                    "assignmentsMenu"
+                );
+
+                return;
+            }
+
+
+            // Results
+            if (menu.id === "resultsMenu") {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                showModule(
+                    "resultsSection",
+                    "resultsMenu"
+                );
+
+                return;
+            }
+
+
+            // Fee
+            if (menu.id === "feeMenu") {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                showModule(
+                    "feeSection",
+                    "feeMenu"
+                );
+
+                return;
+            }
+
+
+            // Notices
+            if (menu.id === "noticesMenu") {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                showModule(
+                    "noticeBoard",
+                    "noticesMenu"
+                );
+
+                return;
+            }
+
+
+            // Settings
+            if (menu.id === "settingsMenu") {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                showModule(
+                    "settingsSection",
+                    "settingsMenu"
+                );
+
+                return;
+            }
+
+        },
+        true
+    );
+
+
+    // -----------------------------------------------------
+    // INITIAL STATE
+    // -----------------------------------------------------
+
+    showDashboard();
+
+})();
+// =========================================================
+// FINAL FIX - Student ID Card sirf Dashboard par show ho
+// =========================================================
+(function () {
+
+    const dashboardOnlyIds = [
+        "studentIdCardSection",
+        "welcomeBanner",
+        "noticeBoard",
+        "analyticsSection",
+        "quickSection",
+        "notificationPanel"
+    ];
+
+    function toggleDashboardOnlyElements(showThem) {
+
+        dashboardOnlyIds.forEach(function (id) {
+
+            const el = document.getElementById(id);
+
+            if (!el) return;
+
+            if (showThem) {
+
+                const display =
+                    (id === "analyticsSection")
+                        ? "grid"
+                        : (id === "quickSection" || id === "notificationPanel" || id === "noticeBoard")
+                            ? "block"
+                            : "flex";
+
+                el.style.setProperty("display", display, "important");
+
+            } else {
+
+                el.style.setProperty("display", "none", "important");
+
+            }
+
+        });
+
+        const dashboardCards =
+            document.querySelector("#studentDashboard .dashboard-cards");
+
+        if (dashboardCards) {
+
+            dashboardCards.style.setProperty(
+                "display",
+                showThem ? "grid" : "none",
+                "important"
+            );
+
+        }
+
+    }
+
+    document
+        .querySelectorAll("#studentDashboard .sidebar ul li")
+        .forEach(function (menuItem) {
+
+            menuItem.addEventListener("click", function () {
+
+                if (menuItem.id === "dashboardMenu") {
+
+                    toggleDashboardOnlyElements(true);
+
+                } else if (menuItem.id !== "logoutBtn") {
+
+                    toggleDashboardOnlyElements(false);
+
+                }
+
+            });
+
+        });
+
+})();
+// =========================================================
+// FINAL STUDENT SIDEBAR NAVIGATION FIX
+// =========================================================
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const studentDashboard =
+        document.getElementById("studentDashboard");
+
+    if (!studentDashboard) return;
+
+
+    // All student sections
+    const sections = [
+        "profileSection",
+        "attendanceSection",
+        "subjectsSection",
+        "assignmentsSection",
+        "resultsSection",
+        "feeSection",
+        "settingsSection"
+    ];
+
+
+    function hideStudentSections() {
+
+        sections.forEach(function (id) {
+
+            const section =
+                document.getElementById(id);
+
+            if (section) {
+                section.style.display = "none";
+            }
+
+        });
+
+    }
+
+    // PROFILE
+    const profileMenu =
+        document.getElementById("profileMenu");
+
+    if (profileMenu) {
+        profileMenu.onclick = function () {
+
+            openStudentSection(
+                "profileSection",
+                "profileMenu"
+            );
+
+        };
+    }
+
+
+    // ATTENDANCE
+    const attendanceMenu =
+        document.getElementById("attendanceMenu");
+
+    if (attendanceMenu) {
+        attendanceMenu.onclick = function () {
+
+            openStudentSection(
+                "attendanceSection",
+                "attendanceMenu"
+            );
+
+        };
+    }
+
+
+    // SUBJECTS
+    const subjectsMenu =
+        document.getElementById("subjectsMenu");
+
+    if (subjectsMenu) {
+        subjectsMenu.onclick = function () {
+
+            openStudentSection(
+                "subjectsSection",
+                "subjectsMenu"
+            );
+
+        };
+    }
+
+
+    // ASSIGNMENTS
+    const assignmentsMenu =
+        document.getElementById("assignmentsMenu");
+
+    if (assignmentsMenu) {
+        assignmentsMenu.onclick = function () {
+
+            openStudentSection(
+                "assignmentsSection",
+                "assignmentsMenu"
+            );
+
+        };
+    }
+
+
+    // RESULTS
+    const resultsMenu =
+        document.getElementById("resultsMenu");
+
+    if (resultsMenu) {
+        resultsMenu.onclick = function () {
+
+            openStudentSection(
+                "resultsSection",
+                "resultsMenu"
+            );
+
+        };
+    }
+
+
+    // FEE
+    const feeMenu =
+        document.getElementById("feeMenu");
+
+    if (feeMenu) {
+        feeMenu.onclick = function () {
+
+            openStudentSection(
+                "feeSection",
+                "feeMenu"
+            );
+
+        };
+    }
+
+
+    // SETTINGS
+    const settingsMenu =
+        document.getElementById("settingsMenu");
+
+    if (settingsMenu) {
+        settingsMenu.onclick = function () {
+
+            openStudentSection(
+                "settingsSection",
+                "settingsMenu"
+            );
+
+        };
+    }
+
+
+    // DASHBOARD
+    const dashboardMenu =
+        document.getElementById("dashboardMenu");
+
+    if (dashboardMenu) {
+
+        dashboardMenu.onclick = function () {
+
+            hideStudentSections();
+
+            const homeSections = [
+                "studentIdCardSection",
+                "welcomeBanner",
+                "noticeBoard",
+                "analyticsSection",
+                "quickSection",
+                "notificationPanel"
+            ];
+
+            homeSections.forEach(function (id) {
+
+                const element =
+                    document.getElementById(id);
+
+                if (element) {
+
+                    if (id === "analyticsSection") {
+                        element.style.display = "grid";
+                    }
+                    else if (id === "quickSection" ||
+                             id === "notificationPanel") {
+                        element.style.display = "block";
+                    }
+                    else {
+                        element.style.display = "flex";
+                    }
+
+                }
+
+            });
+
+            const dashboardCards =
+                studentDashboard.querySelector(
+                    ".dashboard-cards"
+                );
+
+            if (dashboardCards) {
+                dashboardCards.style.display = "grid";
+            }
+
+            const menus =
+                studentDashboard.querySelectorAll(
+                    ".sidebar ul li"
+                );
+
+            menus.forEach(function (menu) {
+                menu.classList.remove("active");
+            });
+
+            dashboardMenu.classList.add("active");
+
+        };
+
+    }
+
+});
 
 // =========================================================
 // REAL STUDENT FEE CHART
@@ -35440,17 +34502,6 @@ document.addEventListener(
 
 async function loadRealStudentAttendance() {
 
-    // Only run for Student Dashboard
-const studentDashboard =
-    document.getElementById("studentDashboard");
-
-if (
-    !studentDashboard ||
-    studentDashboard.style.display === "none"
-) {
-    return;
-}
-
     const loggedInStudent =
         JSON.parse(
             localStorage.getItem("loggedInStudent")
@@ -35645,22 +34696,178 @@ if (
         }
 
 
-        // =========================================
-        // UPDATE PROGRESS BAR
-        // =========================================
+// =========================================
+// UPDATE ATTENDANCE SUMMARY + DONUT
+// =========================================
 
-        const attendanceBar =
-            document.getElementById(
-                "attendanceBar"
-            );
+const attendanceBar =
+    document.getElementById(
+        "attendanceBar"
+    );
+
+if (attendanceBar) {
+
+    attendanceBar.style.width =
+        attendancePercentage + "%";
+
+}
 
 
-        if (attendanceBar) {
+// =========================================
+// UPDATE ATTENDANCE OVERVIEW
+// =========================================
 
-            attendanceBar.style.width =
-                attendancePercentage + "%";
+const presentDays =
+    document.getElementById(
+        "chartPresentDays"
+    );
 
-        }
+const absentDays =
+    document.getElementById(
+        "chartAbsentDays"
+    );
+
+const leaveDays =
+    document.getElementById(
+        "chartLeaveDays"
+    );
+
+const donut =
+    document.getElementById(
+        "studentAttendanceDonut"
+    );
+
+const donutPercentage =
+    document.getElementById(
+        "studentAttendancePercentage"
+    );
+
+const chartStatus =
+    document.getElementById(
+        "attendanceChartStatus"
+    );
+
+
+// =========================================
+// PRESENT / ABSENT / LEAVE COUNTS
+// =========================================
+
+if (presentDays) {
+
+    presentDays.textContent =
+        presentClasses +
+        (presentClasses === 1
+            ? " Day"
+            : " Days");
+
+}
+
+if (absentDays) {
+
+    absentDays.textContent =
+        absentClasses +
+        (absentClasses === 1
+            ? " Day"
+            : " Days");
+
+}
+
+if (leaveDays) {
+
+    leaveDays.textContent =
+        leaveClasses +
+        (leaveClasses === 1
+            ? " Day"
+            : " Days");
+
+}
+
+
+// =========================================
+// DONUT PERCENTAGE
+// =========================================
+
+if (donutPercentage) {
+
+    donutPercentage.textContent =
+        attendancePercentage + "%";
+
+}
+
+
+// =========================================
+// DONUT CHART
+// =========================================
+
+if (donut && totalClasses > 0) {
+
+    const presentDegree =
+        (presentClasses /
+            totalClasses) * 360;
+
+    const absentDegree =
+        (absentClasses /
+            totalClasses) * 360;
+
+    const leaveDegree =
+        (leaveClasses /
+            totalClasses) * 360;
+
+    const absentStart =
+        presentDegree;
+
+    const leaveStart =
+        presentDegree +
+        absentDegree;
+
+    donut.style.background =
+        "conic-gradient(" +
+        "#16a34a 0deg " +
+        presentDegree + "deg, " +
+
+        "#ef4444 " +
+        presentDegree + "deg " +
+        leaveStart + "deg, " +
+
+        "#f59e0b " +
+        leaveStart + "deg 360deg" +
+        ")";
+
+}
+
+
+// =========================================
+// CHART STATUS
+// =========================================
+
+if (chartStatus) {
+
+    if (attendancePercentage >= 90) {
+
+        chartStatus.textContent =
+            "Excellent";
+
+    }
+    else if (attendancePercentage >= 75) {
+
+        chartStatus.textContent =
+            "Good";
+
+    }
+    else if (attendancePercentage >= 60) {
+
+        chartStatus.textContent =
+            "Average";
+
+    }
+    else {
+
+        chartStatus.textContent =
+            "Needs Improvement";
+
+    }
+
+}
 
 
         // =========================================
@@ -37191,485 +36398,401 @@ function viewStudentResults(studentId) {
 
 }
 
-// ===== AUTO FEE LOADER (SELF-CONTAINED) =====
-
-async function loadFeesAutomatically() {
-
-    const section = document.getElementById("adminFeesSection");
-    if (!section) return;
-
-    let container = document.getElementById("autoFeesContainer");
-    if (!container) {
-        container = document.createElement("div");
-        container.id = "autoFeesContainer";
-        container.style.padding = "20px";
-        section.appendChild(container);
-    }
-
-    container.innerHTML = "<p>Loading fee records...</p>";
-
-    if (typeof supabaseClient === "undefined") {
-        container.innerHTML = "<p>Supabase not connected.</p>";
-        return;
-    }
-
-    const { data, error } =
-        await supabaseClient
-            .from("fees")
-            .select("*")
-            .order("id", { ascending: false });
-
-    if (error) {
-        container.innerHTML = "<p>Error loading fees: " + error.message + "</p>";
-        return;
-    }
-
-    if (!data || data.length === 0) {
-        container.innerHTML = "<p>No fee records found.</p>";
-        return;
-    }
-
-    let html = "<table border='1' cellpadding='8' style='width:100%; border-collapse:collapse;'>";
-    html += "<tr>";
-    Object.keys(data[0]).forEach(function (key) {
-        html += "<th>" + key + "</th>";
-    });
-    html += "</tr>";
-
-    data.forEach(function (row) {
-        html += "<tr>";
-        Object.values(row).forEach(function (value) {
-            html += "<td>" + (value ?? "") + "</td>";
-        });
-        html += "</tr>";
-    });
-
-    html += "</table>";
-
-    container.innerHTML = html;
-}
-
-// Hook into the fees menu click
-const adminFeesMenuAuto = document.getElementById("adminFeesMenu");
-if (adminFeesMenuAuto) {
-    adminFeesMenuAuto.addEventListener("click", function () {
-        setTimeout(loadFeesAutomatically, 200);
-    });
-}
-
 // =========================================================
-// ADMIN SIDEBAR NAVIGATION
+// EDU PORTAL - FINAL ADMIN MODULE NAVIGATION
 // =========================================================
 
-async function openAdminSection(menuId) {
+window.showAdminModuleDirect = function (module) {
 
-    const sections = {
+    const moduleMap = {
 
-        adminDashboardMenu: "adminHomeSection",
-        adminStudentsMenu: "adminStudentsSection",
-        adminTeachersMenu: "adminTeachersSection",
-        adminAttendanceMenu: "adminAttendanceSection",
-        adminResultsMenu: "adminResultsSection",
-        adminFeesMenu: "adminFeesSection",
-        adminAssignmentsMenu: "adminAssignmentsSection",
-        adminNoticesMenu: "adminNoticesSection",
-        adminUsersMenu: "adminUsersStudentsSection",
-        adminSettingsMenu: "adminSettingsSection"
+        dashboard: "adminHomeSection",
+        students: "adminStudentsSection",
+        teachers: "adminTeachersSection",
+        attendance: "adminAttendanceSection",
+        results: "adminResultsSection",
+        fees: "adminFeesSection",
+        assignments: "adminAssignmentsSection",
+        notices: "adminNoticesSection",
+        users: "adminUsersStudentsSection",
+        settings: "adminSettingsSection"
 
     };
 
-
-    const titles = {
-
-        adminDashboardMenu: "Dashboard",
-        adminStudentsMenu: "Students",
-        adminTeachersMenu: "Teachers",
-        adminAttendanceMenu: "Attendance",
-        adminResultsMenu: "Results",
-        adminFeesMenu: "Fee Management",
-        adminAssignmentsMenu: "Assignments",
-        adminNoticesMenu: "Notices",
-        adminUsersMenu: "User Management",
-        adminSettingsMenu: "Settings"
-
-    };
-
-
-    const targetId = sections[menuId];
+    const targetId =
+        moduleMap[module];
 
     if (!targetId) {
         console.error(
-            "Admin menu not found:",
-            menuId
+            "Unknown Admin Module:",
+            module
         );
         return;
     }
 
+    const sections = Object.values(
+        moduleMap
+    );
 
-    // =====================================================
-    // HIDE ALL ADMIN SECTIONS
-    // =====================================================
+    // Hide all modules
+    sections.forEach(
+        function (sectionId) {
 
-    Object.values(sections).forEach(function(sectionId) {
+            const section =
+                document.getElementById(
+                    sectionId
+                );
 
-        const section =
-            document.getElementById(sectionId);
+            if (section) {
 
-        if (section) {
+                section.style.display =
+                    "none";
 
-            section.style.display = "none";
+                section.style.visibility =
+                    "hidden";
 
-        }
+                section.style.opacity =
+                    "0";
 
-    });
-
-
-    // =====================================================
-    // REMOVE ACTIVE FROM ALL MENU ITEMS
-    // =====================================================
-
-    Object.keys(sections).forEach(function(id) {
-
-        const menu =
-            document.getElementById(id);
-
-        if (menu) {
-
-            menu.classList.remove("active");
+            }
 
         }
+    );
 
-    });
-
-
-    // =====================================================
-    // SHOW SELECTED SECTION
-    // =====================================================
-
+    // Show selected module
     const target =
-        document.getElementById(targetId);
+        document.getElementById(
+            targetId
+        );
 
     if (!target) {
-
         console.error(
             "Admin section not found:",
             targetId
         );
-
         return;
     }
 
+    target.style.display =
+        "block";
 
-    target.style.display = "block";
+    target.style.visibility =
+        "visible";
 
+    target.style.opacity =
+        "1";
 
-    // =====================================================
-    // ACTIVE MENU
-    // =====================================================
+    // Active sidebar item
+    document
+        .querySelectorAll(
+            "#adminDashboard .admin-sidebar li"
+        )
+        .forEach(
+            function (item) {
+
+                item.classList.remove(
+                    "active"
+                );
+
+            }
+        );
 
     const activeMenu =
-        document.getElementById(menuId);
+        document.getElementById(
+            "admin" +
+            module.charAt(0).toUpperCase() +
+            module.slice(1) +
+            "Menu"
+        );
 
     if (activeMenu) {
 
-        activeMenu.classList.add("active");
-
-    }
-
-
-    // =====================================================
-    // PAGE TITLE
-    // =====================================================
-
-    const pageTitle =
-        document.getElementById(
-            "adminPageTitle"
+        activeMenu.classList.add(
+            "active"
         );
 
-    if (pageTitle) {
-
-        pageTitle.textContent =
-            titles[menuId] || "Dashboard";
-
     }
 
+    // Load module data
+    setTimeout(
+        async function () {
 
-    // =====================================================
-    // LOAD REAL DATA
-    // =====================================================
+            try {
 
-    try {
+                if (
+                    module ===
+                    "students" &&
+                    typeof renderAdminStudents ===
+                    "function"
+                ) {
+                    await renderAdminStudents();
+                }
+
+                if (
+                    module ===
+                    "teachers" &&
+                    typeof renderAdminTeachers ===
+                    "function"
+                ) {
+                    await renderAdminTeachers();
+                }
+
+                if (
+                    module ===
+                    "attendance"
+                ) {
+
+                    if (
+                        typeof renderAttendanceTable ===
+                        "function"
+                    ) {
+                        await renderAttendanceTable();
+                    }
+
+                    if (
+                        typeof updateAttendanceStatistics ===
+                        "function"
+                    ) {
+                        await updateAttendanceStatistics();
+                    }
+
+                }
+
+                if (
+                    module ===
+                    "results" &&
+                    typeof renderResultsTable ===
+                    "function"
+                ) {
+                    await renderResultsTable();
+                }
+
+                if (
+                    module ===
+                    "fees"
+                ) {
+
+                    if (
+                        typeof loadFeeStudents ===
+                        "function"
+                    ) {
+                        await loadFeeStudents();
+                    }
+
+                    if (
+                        typeof renderFeeRecords ===
+                        "function"
+                    ) {
+                        await renderFeeRecords();
+                    }
+
+                    if (
+                        typeof updateAdminFeeAnalytics ===
+                        "function"
+                    ) {
+                        await updateAdminFeeAnalytics();
+                    }
+
+                }
+
+                if (
+                    module ===
+                    "assignments" &&
+                    typeof renderAdminAssignments ===
+                    "function"
+                ) {
+                    await renderAdminAssignments();
+                }
+
+                if (
+                    module ===
+                    "notices" &&
+                    typeof renderAdminNotices ===
+                    "function"
+                ) {
+                    await renderAdminNotices();
+                }
+
+                if (
+                    module ===
+                    "users" &&
+                    typeof renderUserManagementStudents ===
+                    "function"
+                ) {
+                    await renderUserManagementStudents();
+                }
+
+                if (
+                    module ===
+                    "settings" &&
+                    typeof loadEmailSettings ===
+                    "function"
+                ) {
+                    await loadEmailSettings();
+                }
+
+            }
+            catch (error) {
+
+                console.error(
+                    "Admin Module Load Error:",
+                    module,
+                    error
+                );
+
+            }
+
+        },
+        0
+    );
+
+};
+// ==========================================
+// ADMINISTRATOR LIVE DATE
+// ==========================================
+
+function updateAdminLiveDate() {
+    const dateElement = document.getElementById("adminLiveDate");
+
+    if (!dateElement) return;
+
+    const now = new Date();
+
+    const options = {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+    };
+
+    dateElement.textContent = now.toLocaleDateString("en-GB", options);
+}
+
+// Run immediately
+updateAdminLiveDate();
+
+// Keep date updated
+setInterval(updateAdminLiveDate, 60000);
+// =========================================================
+// TEACHER HEADER PROFILE DROPDOWN
+// =========================================================
+
+document.addEventListener(
+    "click",
+    function (event) {
+
+        const profileButton =
+            event.target.closest(
+                "#teacherHeaderProfileBtn"
+            );
+
+        const dropdown =
+            document.getElementById(
+                "teacherHeaderDropdown"
+            );
+
+        if (!dropdown) {
+            return;
+        }
+
+/* =========================================================
+   TEACHER HEADER - LIVE DATE
+========================================================= */
+
+function updateTeacherLiveDate() {
+
+    const dateElement =
+        document.getElementById(
+            "teacherLiveDate"
+        );
+
+    if (!dateElement) {
+        return;
+    }
+
+    const now = new Date();
+
+    const formattedDate =
+        now.toLocaleDateString(
+            "en-GB",
+            {
+                weekday: "long",
+                day: "2-digit",
+                month: "long",
+                year: "numeric"
+            }
+        );
+
+    dateElement.textContent =
+        formattedDate;
+}
+
+
+/* Initial date */
+updateTeacherLiveDate();
+
+
+/* Update every minute */
+setInterval(
+    updateTeacherLiveDate,
+    60000
+);
+        // ==========================================
+        // PROFILE ICON CLICK
+        // ==========================================
+
+        if (profileButton) {
+
+            event.preventDefault();
+
+            dropdown.classList.toggle(
+                "open"
+            );
+
+            return;
+        }
+
+
+        // ==========================================
+        // LOGOUT CLICK
+        // ==========================================
+
+        const logoutButton =
+            event.target.closest(
+                "#teacherHeaderLogoutBtn"
+            );
+
+        if (logoutButton) {
+
+            event.preventDefault();
+
+            dropdown.classList.remove(
+                "open"
+            );
+
+            const confirmLogout =
+                confirm(
+                    "Are you sure you want to logout?"
+                );
+
+            if (!confirmLogout) {
+                return;
+            }
+
+            logoutTeacher();
+
+            return;
+        }
+
+
+        // ==========================================
+        // CLICK OUTSIDE
+        // ==========================================
 
         if (
-            menuId === "adminStudentsMenu" &&
-            typeof renderAdminStudents === "function"
+            !event.target.closest(
+                ".teacher-header-profile"
+            )
         ) {
-
-            await renderAdminStudents();
-
-        }
-
-
-        else if (
-            menuId === "adminTeachersMenu" &&
-            typeof renderAdminTeachers === "function"
-        ) {
-
-            await renderAdminTeachers();
-
-        }
-
-
-        else if (
-            menuId === "adminAttendanceMenu" &&
-            typeof renderAttendanceTable === "function"
-        ) {
-
-            await renderAttendanceTable();
-
-        }
-
-
-        else if (
-            menuId === "adminResultsMenu" &&
-            typeof renderResultsTable === "function"
-        ) {
-
-            await renderResultsTable();
-
-        }
-
-
-        else if (
-            menuId === "adminFeesMenu"
-        ) {
-
-            if (
-                typeof loadFeeStudents === "function"
-            ) {
-
-                await loadFeeStudents();
-
-            }
-
-
-            if (
-                typeof renderFeeRecords === "function"
-            ) {
-
-                await renderFeeRecords();
-
-            }
-
-        }
-
-
-        else if (
-            menuId === "adminAssignmentsMenu" &&
-            typeof renderAdminAssignments === "function"
-        ) {
-
-            await renderAdminAssignments();
-
-        }
-
-
-        else if (
-            menuId === "adminNoticesMenu" &&
-            typeof renderAdminNotices === "function"
-        ) {
-
-            await renderAdminNotices();
-
-        }
-
-
-        else if (
-            menuId === "adminUsersMenu" &&
-            typeof renderUserManagementStudents === "function"
-        ) {
-
-            await renderUserManagementStudents();
-
-        }
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Admin section loading error:",
-            error
-        );
-
-    }
-
-}
-document.addEventListener("DOMContentLoaded", function () {
-    const adminMenus = [
-        "adminDashboardMenu",
-        "adminStudentsMenu",
-        "adminTeachersMenu",
-        "adminAttendanceMenu",
-        "adminResultsMenu",
-        "adminFeesMenu",
-        "adminAssignmentsMenu",
-        "adminNoticesMenu",
-        "adminUsersMenu",
-        "adminSettingsMenu"
-    ];
-
-    adminMenus.forEach(function (id) {
-        const el = document.getElementById(id);
-        if (el) {
-            el.onclick = function (event) {
-                event.preventDefault();
-                openAdminSection(id);
-            };
-        }
-    });
-});
-// =========================================================
-// FINAL ADMIN HEADER
-// DATE + ADMINISTRATOR DROPDOWN + LOGOUT
-// =========================================================
-
-document.addEventListener("click", function (event) {
-
-    /* =========================================
-       ADMINISTRATOR BUTTON
-    ========================================= */
-
-    const accountButton =
-        event.target.closest("#adminAccountBtn");
-
-    const dropdown =
-        document.getElementById(
-            "adminAccountDropdown"
-        );
-
-
-    if (accountButton && dropdown) {
-
-        event.stopPropagation();
-
-        dropdown.classList.toggle("open");
-
-        return;
-
-    }
-
-
-    /* =========================================
-       LOGOUT BUTTON
-    ========================================= */
-
-    const logoutButton =
-        event.target.closest(
-            "#adminDropdownLogoutBtn"
-        );
-
-
-    if (logoutButton) {
-
-        event.stopPropagation();
-
-
-        localStorage.removeItem(
-            "isLoggedIn"
-        );
-
-        localStorage.removeItem(
-            "loggedInRole"
-        );
-
-
-        const adminDashboard =
-            document.getElementById(
-                "adminDashboard"
-            );
-
-        if (adminDashboard) {
-
-            adminDashboard.style.display =
-                "none";
-
-        }
-
-
-        const studentDashboard =
-            document.getElementById(
-                "studentDashboard"
-            );
-
-        if (studentDashboard) {
-
-            studentDashboard.style.display =
-                "none";
-
-        }
-
-
-        const loginContainer =
-            document.querySelector(
-                ".container"
-            );
-
-        if (loginContainer) {
-
-            loginContainer.style.display =
-                "flex";
-
-            loginContainer.style.visibility =
-                "visible";
-
-            loginContainer.style.opacity =
-                "1";
-
-        }
-
-
-        const username =
-            document.getElementById(
-                "username"
-            );
-
-        const password =
-            document.getElementById(
-                "password"
-            );
-
-
-        if (username) {
-
-            username.value = "";
-
-        }
-
-
-        if (password) {
-
-            password.value = "";
-
-        }
-
-
-        return;
-
-    }
-
-
-    /* =========================================
-       CLICK OUTSIDE
-    ========================================= */
-
-    if (
-        !event.target.closest(
-            ".admin-account-wrapper"
-        )
-    ) {
-
-        if (dropdown) {
 
             dropdown.classList.remove(
                 "open"
@@ -37678,90 +36801,4 @@ document.addEventListener("click", function (event) {
         }
 
     }
-
-});
-
-
-
-/* =========================================================
-   REAL ADMIN DATE
-========================================================= */
-
-function updateAdminCurrentDate() {
-
-    const dateElement =
-        document.getElementById(
-            "adminCurrentDate"
-        );
-
-
-    if (!dateElement) {
-
-        return;
-
-    }
-
-
-    const now =
-        new Date();
-
-
-    dateElement.textContent =
-        now.toLocaleDateString(
-            "en-GB",
-            {
-                day: "2-digit",
-                month: "short",
-                year: "numeric"
-            }
-        );
-
-}
-
-
-/* =========================================
-   INITIAL DATE
-========================================= */
-
-updateAdminCurrentDate();
-
-
-/* =========================================
-   UPDATE DATE
-========================================= */
-
-setInterval(
-    updateAdminCurrentDate,
-    60000
 );
-async function renderAdminAttendanceTeachersList() {
-
-    const tbody = document.getElementById("adminAttendanceTeachersBody");
-    if (!tbody) return;
-
-    const { data: teachers, error } =
-        await supabaseClient
-            .from("teachers")
-            .select("*")
-            .order("created_at", { ascending: false });
-
-    if (error || !teachers || teachers.length === 0) {
-        tbody.innerHTML = `
-            <tr><td colspan="5" style="text-align:center; padding:30px; color:#64748b;">
-                No teachers found.
-            </td></tr>`;
-        return;
-    }
-
-    tbody.innerHTML = teachers.map(function (teacher, index) {
-        return `
-            <tr>
-                <td>${index + 1}</td>
-                <td><strong>${escapeHtml(teacher.name || "—")}</strong></td>
-                <td>${escapeHtml(teacher.subject || "—")}</td>
-                <td>${escapeHtml(teacher.teacher_class || "—")}</td>
-                <td>${escapeHtml(teacher.status || "Active")}</td>
-            </tr>
-        `;
-    }).join("");
-}

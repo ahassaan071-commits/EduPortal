@@ -15,11 +15,10 @@
 
 body{
     min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    display:block;
     background:linear-gradient(135deg,#2563eb,#1e3a8a);
-    padding:20px;
+    padding:0;
+    overflow:hidden;
 }
 
 .container{
@@ -133,11 +132,11 @@ button:hover{
 
 #studentDashboard{
 
-    display:none;
+    display:none !important;
 
     width:100%;
 
-    height:100vh;
+    min-height:100vh;
 
     background:#f1f5f9;
 
@@ -1525,11 +1524,9 @@ body.dark-mode .progress-bar{
 ========================== */
 
 #studentDashboard{
-
     position:relative;
     overflow-x:hidden;
-    overflow-y:auto;
-
+    overflow-y:hidden;
 }
 
 
@@ -2292,7 +2289,7 @@ body.dark-mode .progress-bar{
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: hidden;
     background: #f1f5f9;
 }
 
@@ -2616,168 +2613,113 @@ body.dark-mode .progress-bar{
 #settingsSection .profile-card:hover {
     box-shadow: 0 15px 35px rgba(15,23,42,.10);
 }
-/* =========================================================
-   ADMIN DASHBOARD - FINAL FIXED LAYOUT
-========================================================= */
+/* ==============================
+   FINAL DASHBOARD WORKSPACE FIX
+============================== */
 
-#adminDashboard {
-    position: fixed !important;
+/* Main right-side workspace */
+.main-content {
+    margin-left: 260px !important;
+    width: calc(100% - 260px) !important;
+    min-height: 100vh;
+    padding: 25px 35px 50px !important;
+}
 
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
+/* Header uses full workspace */
+.top-header {
+    width: auto !important;
+    margin: -25px -35px 30px !important;
+}
 
-    width: 100vw !important;
-    height: 100vh !important;
-
-    display: flex !important;
-    flex-direction: row !important;
-
+/* All sidebar sections use full available width */
+#profileSection,
+#attendanceSection,
+#subjectsSection,
+#resultsSection,
+#assignmentsSection,
+#feeSection,
+#settingsSection {
+    width: 100% !important;
+    max-width: none !important;
     margin: 0 !important;
     padding: 0 !important;
-
-    overflow: hidden !important;
-
-    box-sizing: border-box !important;
+    display: flex;
+    justify-content: flex-start !important;
+    align-items: flex-start;
 }
 
-
-/* SIDEBAR */
-
-#adminDashboard .admin-sidebar {
-    position: relative !important;
-
-    top: auto !important;
-    left: auto !important;
-
-    width: 260px !important;
-    min-width: 260px !important;
-    max-width: 260px !important;
-
-    height: 100vh !important;
-
-    flex: 0 0 260px !important;
-
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-
-    box-sizing: border-box !important;
-}
-
-
-/* MAIN */
-
-#adminDashboard .admin-main {
-    position: relative !important;
-
-    width: calc(100vw - 260px) !important;
-    min-width: 0 !important;
-
-    height: 100vh !important;
-    min-height: 100vh !important;
-
+/* Main section card */
+#profileSection .profile-card,
+#attendanceSection .profile-card,
+#subjectsSection .profile-card,
+#resultsSection .profile-card,
+#assignmentsSection .profile-card,
+#feeSection .profile-card,
+#settingsSection .profile-card {
+    width: 100% !important;
+    max-width: 1100px !important;
     margin: 0 !important;
-    padding: 0 !important;
-
-    flex: 1 1 auto !important;
-
-    display: flex !important;
-    flex-direction: column !important;
-
-    overflow: hidden !important;
-
-    box-sizing: border-box !important;
 }
 
-
-/* HEADER */
-
-#adminDashboard .admin-header {
+/* Subjects should use the complete card width */
+#subjectsSection .subjects-grid {
     width: 100% !important;
-
-    min-height: 75px !important;
-
-    flex-shrink: 0 !important;
-
-    margin: 0 !important;
-
-    box-sizing: border-box !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 20px;
 }
 
-
-/* CONTENT */
-
-#adminDashboard .admin-content {
-    width: 100% !important;
-
-    min-width: 0 !important;
-    min-height: 0 !important;
-
-    flex: 1 1 auto !important;
-
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-
-    padding: 25px 30px 40px !important;
-
-    box-sizing: border-box !important;
+/* Attendance boxes */
+#attendanceSection .attendance-summary {
+    width: 100%;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
+/* Results boxes */
+#resultsSection .results-summary {
+    width: 100%;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
 
-/* HOME */
+/* Fee boxes */
+#feeSection .fee-summary {
+    width: 100%;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+/* ==============================
+   FINAL MAIN WORKSPACE WIDTH FIX
+============================== */
 
-#adminDashboard #adminHomeSection {
+#studentDashboard {
     width: 100% !important;
+    min-width: 100%;
+}
 
-    max-width: 1250px !important;
+/* Remove empty space after sidebar */
+.main-content {
+    margin-left: 260px !important;
+    width: auto !important;
+    max-width: none !important;
+    min-height: 100vh;
+    padding: 25px 35px 50px !important;
+}
 
+/* Header should fill the workspace */
+.top-header {
+    width: auto !important;
+    margin: -25px -35px 30px !important;
+}
+
+/* Section card stays centered inside available workspace */
+#profileSection .profile-card,
+#attendanceSection .profile-card,
+#subjectsSection .profile-card,
+#resultsSection .profile-card,
+#assignmentsSection .profile-card,
+#feeSection .profile-card,
+#settingsSection .profile-card {
+    width: 100% !important;
+    max-width: 1100px !important;
     margin: 0 auto !important;
-
-    box-sizing: border-box !important;
-}
-
-
-/* ALL ADMIN SECTIONS */
-
-#adminDashboard > .admin-main .admin-section {
-    width: 100% !important;
-
-    max-width: 1250px !important;
-
-    margin-left: auto !important;
-    margin-right: auto !important;
-
-    box-sizing: border-box !important;
-}
-
-
-/* PREVENT OVERFLOW */
-
-#adminDashboard * {
-    box-sizing: border-box;
-}
-
-
-/* LAPTOP */
-
-@media (max-width: 900px) {
-
-    #adminDashboard .admin-sidebar {
-        width: 230px !important;
-        min-width: 230px !important;
-        max-width: 230px !important;
-
-        flex-basis: 230px !important;
-    }
-
-    #adminDashboard .admin-main {
-        width: calc(100vw - 230px) !important;
-    }
-
-    #adminDashboard .admin-content {
-        padding: 20px !important;
-    }
 }
 /* ==============================
    ASSIGNMENTS PREMIUM DESIGN
@@ -7193,831 +7135,288 @@ body.dark-mode {
     }
 
 }
-/* =========================================================
-   EDUPORTAL - STUDENTS MANAGEMENT
-   FINAL PROFESSIONAL DESIGN
-========================================================= */
+/* ==========================================
+   ADMIN STUDENTS TABLE - FINAL CLEAN
+========================================== */
 
-#adminDashboard #adminStudentsSection {
-    width: 100% !important;
-    max-width: 1240px !important;
-    margin: 0 auto !important;
-    padding: 0 !important;
-    color: #0f172a;
-    box-sizing: border-box;
-}
-
-
-/* =========================================================
-   PAGE HEADER
-========================================================= */
-
-#adminDashboard .students-page-header {
+.admin-students-table-container {
     width: 100%;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 24px;
-    margin-bottom: 24px;
-}
-
-#adminDashboard .students-page-title {
-    min-width: 0;
-}
-
-#adminDashboard .students-eyebrow {
-    display: block;
-    margin-bottom: 6px;
-    color: #2563eb;
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: .8px;
-}
-
-#adminDashboard .students-page-title h2 {
-    margin: 0;
-    color: #0f172a;
-    font-size: 27px;
-    line-height: 1.25;
-    font-weight: 750;
-    letter-spacing: -.5px;
-}
-
-#adminDashboard .students-page-title p {
-    margin: 7px 0 0;
-    color: #64748b;
-    font-size: 13px;
-    line-height: 1.5;
-}
-
-#adminDashboard .students-add-btn {
-    min-width: 158px;
-    height: 48px;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-
-    flex-shrink: 0;
-
-    padding: 0 18px;
-
-    border: none;
-    border-radius: 11px;
-
-    background: #2563eb;
-    color: #ffffff;
-
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 700;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 7px 18px rgba(37, 99, 235, .20);
-
-    transition:
-        transform .2s ease,
-        box-shadow .2s ease,
-        background .2s ease;
-}
-
-#adminDashboard .students-add-btn span {
-    font-size: 19px;
-    line-height: 1;
-}
-
-#adminDashboard .students-add-btn:hover {
-    background: #1d4ed8;
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 10px 24px rgba(37, 99, 235, .27);
-}
-
-
-/* =========================================================
-   STATISTICS
-========================================================= */
-
-#adminDashboard .students-stat-grid {
-    width: 100%;
-
-    display: grid;
-    grid-template-columns:
-        repeat(4, minmax(0, 1fr));
-
-    gap: 16px;
-
-    margin-bottom: 20px;
-}
-
-#adminDashboard .students-stat-card {
-    position: relative;
-
-    min-height: 112px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 14px;
-
-    padding: 18px;
-
-    overflow: hidden;
-
-    background: #ffffff;
-
-    border: 1px solid #e2e8f0;
-    border-radius: 14px;
-
-    box-shadow:
-        0 5px 18px rgba(15, 23, 42, .045);
-
-    box-sizing: border-box;
-
-    transition:
-        transform .2s ease,
-        box-shadow .2s ease,
-        border-color .2s ease;
-}
-
-#adminDashboard .students-stat-card::before {
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-    top: 0;
-
-    width: 100%;
-    height: 3px;
-
-    border-radius: 14px 14px 0 0;
-}
-
-#adminDashboard .students-stat-card:hover {
-    transform: translateY(-3px);
-
-    box-shadow:
-        0 11px 26px rgba(15, 23, 42, .08);
-}
-
-
-/* ---------- BLUE ---------- */
-
-#adminDashboard .students-stat-blue::before {
-    background: #2563eb;
-}
-
-#adminDashboard .students-stat-blue .students-stat-icon {
-    background: #eff6ff;
-    color: #2563eb;
-}
-
-
-/* ---------- GREEN ---------- */
-
-#adminDashboard .students-stat-green::before {
-    background: #16a34a;
-}
-
-#adminDashboard .students-stat-green .students-stat-icon {
-    background: #ecfdf5;
-    color: #16a34a;
-}
-
-
-/* ---------- ORANGE ---------- */
-
-#adminDashboard .students-stat-orange::before {
-    background: #f59e0b;
-}
-
-#adminDashboard .students-stat-orange .students-stat-icon {
-    background: #fffbeb;
-    color: #d97706;
-}
-
-
-/* ---------- PURPLE ---------- */
-
-#adminDashboard .students-stat-purple::before {
-    background: #7c3aed;
-}
-
-#adminDashboard .students-stat-purple .students-stat-icon {
-    background: #f5f3ff;
-    color: #7c3aed;
-}
-
-
-/* ---------- STAT ICON ---------- */
-
-#adminDashboard .students-stat-icon {
-    width: 48px;
-    height: 48px;
-
-    min-width: 48px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 13px;
-
-    font-size: 20px;
-    font-weight: 800;
-
-    box-sizing: border-box;
-}
-
-
-/* ---------- STAT TEXT ---------- */
-
-#adminDashboard .students-stat-content {
-    min-width: 0;
-}
-
-#adminDashboard .students-stat-content span {
-    display: block;
-
-    margin-bottom: 3px;
-
-    color: #64748b;
-
-    font-size: 12px;
-    font-weight: 600;
-}
-
-#adminDashboard .students-stat-content strong {
-    display: block;
-
-    color: #0f172a;
-
-    font-size: 25px;
-    line-height: 1.2;
-    font-weight: 750;
-}
-
-#adminDashboard .students-stat-content small {
-    display: block;
-
-    margin-top: 3px;
-
-    color: #94a3b8;
-
-    font-size: 10.5px;
-    line-height: 1.3;
-}
-
-
-/* =========================================================
-   FILTER CARD
-========================================================= */
-
-#adminDashboard .students-filter-card {
-    width: 100%;
-
-    display: grid;
-
-    grid-template-columns:
-        minmax(260px, 1fr)
-        175px
-        175px
-        175px
-        auto;
-
-    align-items: center;
-
-    gap: 10px;
-
-    margin-bottom: 18px;
-
-    padding: 13px;
-
-    background: #ffffff;
-
-    border: 1px solid #e2e8f0;
-    border-radius: 14px;
-
-    box-shadow:
-        0 4px 15px rgba(15, 23, 42, .035);
-
-    box-sizing: border-box;
-}
-
-
-/* ---------- SEARCH ---------- */
-
-#adminDashboard .students-search-box {
-    position: relative;
-
-    width: 100%;
-    height: 43px;
-
-    display: flex;
-    align-items: center;
-
-    box-sizing: border-box;
-}
-
-#adminDashboard .students-search-icon {
-    position: absolute;
-
-    left: 13px;
-
-    color: #64748b;
-
-    font-size: 16px;
-
-    pointer-events: none;
-}
-
-#adminDashboard .students-search-box input {
-    width: 100%;
-    height: 43px;
-
-    padding:
-        0 13px 0 40px;
-
-    border: 1px solid #dbe2ea;
-    border-radius: 9px;
-
-    outline: none;
-
-    background: #f8fafc;
-    color: #334155;
-
-    font-family: inherit;
-    font-size: 12.5px;
-
-    box-sizing: border-box;
-
-    transition:
-        border-color .2s ease,
-        box-shadow .2s ease,
-        background .2s ease;
-}
-
-#adminDashboard .students-search-box input::placeholder {
-    color: #94a3b8;
-}
-
-#adminDashboard .students-search-box input:focus {
-    background: #ffffff;
-
-    border-color: #2563eb;
-
-    box-shadow:
-        0 0 0 3px rgba(37, 99, 235, .09);
-}
-
-
-/* ---------- SELECTS ---------- */
-
-#adminDashboard .students-filter-card select {
-    width: 100%;
-    height: 43px;
-
-    padding: 0 11px;
-
-    border: 1px solid #dbe2ea;
-    border-radius: 9px;
-
-    outline: none;
-
-    background: #f8fafc;
-    color: #334155;
-
-    font-family: inherit;
-    font-size: 12px;
-    font-weight: 500;
-
-    cursor: pointer;
-
-    box-sizing: border-box;
-
-    transition:
-        border-color .2s ease,
-        box-shadow .2s ease,
-        background .2s ease;
-}
-
-#adminDashboard .students-filter-card select:focus {
-    background: #ffffff;
-
-    border-color: #2563eb;
-
-    box-shadow:
-        0 0 0 3px rgba(37, 99, 235, .09);
-}
-
-
-/* ---------- RESET ---------- */
-
-#adminDashboard .students-reset-btn {
-    height: 43px;
-
-    padding: 0 15px;
-
-    border: 1px solid #dbe2ea;
-    border-radius: 9px;
-
-    background: #ffffff;
-    color: #64748b;
-
-    font-family: inherit;
-    font-size: 12px;
-    font-weight: 650;
-
-    cursor: pointer;
-
-    transition:
-        all .2s ease;
-}
-
-#adminDashboard .students-reset-btn:hover {
-    background: #eff6ff;
-    border-color: #bfdbfe;
-    color: #2563eb;
-}
-
-
-/* =========================================================
-   TABLE CARD
-========================================================= */
-
-#adminDashboard .students-table-card {
-    width: 100%;
-
-    background: #ffffff;
-
-    border: 1px solid #e2e8f0;
-    border-radius: 16px;
-
-    overflow: hidden;
-
-    box-shadow:
-        0 5px 20px rgba(15, 23, 42, .045);
-
-    box-sizing: border-box;
-}
-
-
-/* ---------- TABLE HEADER ---------- */
-
-#adminDashboard .students-table-header {
-    min-height: 72px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 20px;
-
-    padding: 16px 18px;
-
-    border-bottom: 1px solid #e8edf3;
-
-    box-sizing: border-box;
-}
-
-#adminDashboard .students-table-label {
-    display: block;
-
-    margin-bottom: 4px;
-
-    color: #2563eb;
-
-    font-size: 10px;
-    font-weight: 800;
-
-    letter-spacing: .75px;
-}
-
-#adminDashboard .students-table-header h3 {
-    margin: 0;
-
-    color: #0f172a;
-
-    font-size: 17px;
-    font-weight: 700;
-}
-
-#adminDashboard .students-record-count {
-    display: inline-flex;
-    align-items: center;
-
-    min-height: 30px;
-
-    padding: 0 11px;
-
-    border-radius: 999px;
-
-    background: #f8fafc;
-
-    border: 1px solid #e2e8f0;
-
-    color: #64748b;
-
-    font-size: 11px;
-    font-weight: 650;
-
-    white-space: nowrap;
-}
-
-
-/* =========================================================
-   TABLE
-========================================================= */
-
-#adminDashboard .students-table-scroll {
-    width: 100%;
-
+    margin-top: 18px;
     overflow-x: auto;
-    overflow-y: hidden;
-
-    scrollbar-width: thin;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.08);
 }
 
-#adminDashboard .students-table {
-    width: 100%;
-
-    min-width: 1120px;
-
-    border-collapse: separate;
-    border-spacing: 0;
-
-    table-layout: auto;
-
-    font-size: 12px;
+.admin-students-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    border-spacing: 0 !important;
+    table-layout: fixed !important;
 }
 
 
-/* ---------- HEADER ---------- */
+/* ==========================================
+   HEADER
+========================================== */
 
-#adminDashboard .students-table thead th {
-    height: 48px;
+.admin-students-table thead th {
+    height: 38px !important;
+    padding: 8px 10px !important;
 
-    padding: 0 14px;
+    background: #f1f5f9 !important;
+    color: #1e293b !important;
 
-    background: #f8fafc;
+    border: none !important;
+    border-bottom: 2px solid #e2e8f0 !important;
 
-    color: #334155;
+    font-size: 13px !important;
+    font-weight: 700 !important;
 
-    border-bottom: 1px solid #e2e8f0;
+    line-height: 1 !important;
 
-    font-size: 11px;
-    font-weight: 750;
-
-    text-align: left;
-
-    white-space: nowrap;
+    text-align: left !important;
+    white-space: nowrap !important;
 }
 
 
-/* ---------- BODY ---------- */
+/* ==========================================
+   ROW
+========================================== */
 
-#adminDashboard .students-table tbody td {
-    min-height: 62px;
-
-    padding: 12px 14px;
-
-    color: #475569;
-
-    border-bottom: 1px solid #edf1f5;
-
-    font-size: 12px;
-
-    white-space: nowrap;
-
-    vertical-align: middle;
-
-    box-sizing: border-box;
-}
-
-#adminDashboard .students-table tbody tr {
-    transition:
-        background .18s ease;
-}
-
-#adminDashboard .students-table tbody tr:hover {
-    background: #f8fbff;
-}
-
-#adminDashboard .students-table tbody tr:last-child td {
-    border-bottom: none;
+.admin-students-table tbody tr {
+    height: 38px !important;
 }
 
 
-/* ---------- FIRST COLUMN ---------- */
+/* ==========================================
+   CELLS
+========================================== */
 
-#adminDashboard .students-table th:first-child,
-#adminDashboard .students-table td:first-child {
-    width: 48px;
+.admin-students-table tbody td {
+    height: 38px !important;
 
-    color: #64748b;
+    padding: 5px 10px !important;
 
-    font-weight: 700;
+    background: #ffffff !important;
+    color: #334155 !important;
+
+    border: none !important;
+    border-bottom: 1px solid #e5e7eb !important;
+
+    font-size: 13px !important;
+    line-height: 1 !important;
+
+    vertical-align: middle !important;
+    white-space: nowrap !important;
 }
 
 
-/* ---------- STUDENT ID ---------- */
+/* Hover */
 
-#adminDashboard .students-table td:nth-child(3) {
-    color: #2563eb;
-    font-weight: 700;
+.admin-students-table tbody tr:hover td {
+    background: #f8fafc !important;
 }
 
 
-/* =========================================================
-   ACTION BUTTONS
-========================================================= */
+/* ==========================================
+   COLUMN WIDTHS
+========================================== */
 
-#adminDashboard .students-table td:last-child {
-    min-width: 150px;
+/* # */
+
+.admin-students-table th:nth-child(1),
+.admin-students-table td:nth-child(1) {
+    width: 45px !important;
 }
 
-#adminDashboard .students-table .admin-table-view-btn,
-#adminDashboard .students-table .admin-table-edit-btn,
-#adminDashboard .students-table .admin-table-delete-btn {
-    height: 34px;
 
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+/* Student ID */
 
-    gap: 5px;
+.admin-students-table th:nth-child(2),
+.admin-students-table td:nth-child(2) {
+    width: 14% !important;
+    color: #2563eb !important;
+    font-weight: 700 !important;
+}
 
-    padding: 0 10px;
 
-    border-radius: 8px;
+/* Name */
 
-    font-family: inherit;
-    font-size: 11px;
-    font-weight: 650;
+.admin-students-table th:nth-child(3),
+.admin-students-table td:nth-child(3) {
+    width: 20% !important;
+    color: #0f172a !important;
+    font-weight: 600 !important;
+}
 
-    cursor: pointer;
 
-    transition:
-        all .18s ease;
+/* Class */
+
+.admin-students-table th:nth-child(4),
+.admin-students-table td:nth-child(4) {
+    width: 9% !important;
+}
+
+
+/* Section */
+
+.admin-students-table th:nth-child(5),
+.admin-students-table td:nth-child(5) {
+    width: 10% !important;
+}
+
+
+/* Roll Number */
+
+.admin-students-table th:nth-child(6),
+.admin-students-table td:nth-child(6) {
+    width: 11% !important;
+}
+
+
+/* Status */
+
+.admin-students-table th:nth-child(7),
+.admin-students-table td:nth-child(7) {
+    width: 10% !important;
+    color: #15803d !important;
+    font-weight: 600 !important;
+}
+
+
+/* ==========================================
+   ACTIONS
+========================================== */
+
+.admin-students-table th:nth-child(8),
+.admin-students-table td:nth-child(8) {
+    width: 180px !important;
+}
+
+
+.admin-students-table tbody td:last-child {
+    padding: 3px 6px !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+}
+
+
+/* Buttons */
+
+.admin-students-table tbody td:last-child button {
+    display: inline-flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: auto !important;
+    min-width: 0 !important;
+
+    height: 28px !important;
+    min-height: 28px !important;
+
+    margin: 0 2px !important;
+
+    padding: 4px 9px !important;
+
+    border: none !important;
+    border-radius: 6px !important;
+
+    font-family: inherit !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+
+    line-height: 1 !important;
+
+    cursor: pointer !important;
 }
 
 
 /* View */
 
-#adminDashboard .students-table .admin-table-view-btn {
-    border: 1px solid #dbeafe;
-
-    background: #eff6ff;
-    color: #2563eb;
-}
-
-#adminDashboard .students-table .admin-table-view-btn:hover {
-    background: #dbeafe;
-    border-color: #93c5fd;
+.admin-students-table tbody td:last-child button:first-child {
+    background: #eff6ff !important;
+    color: #2563eb !important;
 }
 
 
 /* Edit */
 
-#adminDashboard .students-table .admin-table-edit-btn {
-    border: 1px solid #e2e8f0;
-
-    background: #ffffff;
-    color: #475569;
-}
-
-#adminDashboard .students-table .admin-table-edit-btn:hover {
-    background: #f8fafc;
-    border-color: #94a3b8;
-    color: #0f172a;
+.admin-students-table tbody td:last-child button:nth-child(2) {
+    background: #fffbeb !important;
+    color: #b45309 !important;
 }
 
 
-/* Delete */
+/* Hover */
 
-#adminDashboard .students-table .admin-table-delete-btn {
-    border: 1px solid #fecaca;
-
-    background: #fff7f7;
-    color: #dc2626;
-}
-
-#adminDashboard .students-table .admin-table-delete-btn:hover {
-    background: #fef2f2;
-    border-color: #fca5a5;
+.admin-students-table tbody td:last-child button:hover {
+    transform: translateY(-1px);
 }
 
 
-/* =========================================================
-   EMPTY / LOADING STATE
-========================================================= */
+/* ==========================================
+   SEARCH
+========================================== */
 
-#adminDashboard .students-table .admin-empty-state {
-    padding: 45px 20px;
+#adminStudentSearch {
+    width: 350px !important;
+    max-width: 100% !important;
 
-    text-align: center;
-}
+    height: 42px !important;
 
-#adminDashboard .students-table .admin-empty-state h3 {
-    margin: 0 0 6px;
+    padding: 0 13px !important;
 
-    color: #334155;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 9px !important;
 
-    font-size: 14px;
-}
+    box-sizing: border-box !important;
 
-#adminDashboard .students-table .admin-empty-state p {
-    margin: 0;
-
-    color: #94a3b8;
-
-    font-size: 12px;
+    font-family: inherit !important;
+    font-size: 14px !important;
 }
 
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
+/* ==========================================
+   CLASS FILTER
+========================================== */
 
-@media (max-width: 1100px) {
+#adminStudentClassFilter {
+    width: 180px !important;
 
-    #adminDashboard .students-stat-grid {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-    }
+    height: 42px !important;
 
-    #adminDashboard .students-filter-card {
-        grid-template-columns:
-            minmax(220px, 1fr)
-            1fr
-            1fr;
-    }
+    padding: 0 13px !important;
 
-    #adminDashboard .students-search-box {
-        grid-column: 1 / -1;
-    }
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 9px !important;
 
-    #adminDashboard .students-reset-btn {
-        width: 100%;
-    }
+    box-sizing: border-box !important;
+
+    font-family: inherit !important;
+    font-size: 14px !important;
 }
 
 
-@media (max-width: 700px) {
+/* ==========================================
+   MOBILE
+========================================== */
 
-    #adminDashboard .students-page-header {
-        align-items: stretch;
-        flex-direction: column;
+@media (max-width: 800px) {
+
+    .admin-students-table {
+        min-width: 850px !important;
     }
 
-    #adminDashboard .students-add-btn {
-        width: 100%;
+    #adminStudentSearch {
+        width: 100% !important;
     }
 
-    #adminDashboard .students-stat-grid {
-        grid-template-columns: 1fr;
+    #adminStudentClassFilter {
+        width: 100% !important;
     }
 
-    #adminDashboard .students-filter-card {
-        grid-template-columns: 1fr;
-    }
-
-    #adminDashboard .students-search-box {
-        grid-column: auto;
-    }
-
-    #adminDashboard .students-table-header {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    #adminDashboard .students-page-title h2 {
-        font-size: 23px;
-    }
-}
-
-
-@media (max-width: 450px) {
-
-    #adminDashboard .students-stat-card {
-        min-height: 100px;
-        padding: 15px;
-    }
-
-    #adminDashboard .students-stat-icon {
-        width: 43px;
-        height: 43px;
-        min-width: 43px;
-    }
-
-    #adminDashboard .students-stat-content strong {
-        font-size: 22px;
-    }
 }
 /* ==========================================
    USER MANAGEMENT - STUDENTS TABLE
@@ -33860,9 +33259,11 @@ table tbody tr:hover td {
 ========================================================= */
 
 #teacherDashboard .teacher-section-page {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 30px 38px 60px !important;
+    box-sizing: border-box !important;
 }
 
 
@@ -34520,240 +33921,184 @@ table tbody tr:hover td {
 ========================= */
 
 #teacherDashboard .teacher-students-toolbar {
-    padding: 23px 25px;
+    padding: 22px 24px !important;
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
 
-    gap: 20px;
+    gap: 20px !important;
 
-    border-bottom: 1px solid #eef2f7;
+    border-bottom: 1px solid #eef2f7 !important;
+    box-sizing: border-box !important;
 }
 
 #teacherDashboard .teacher-students-toolbar h3 {
-    margin: 0;
+    margin: 0 !important;
 
-    color: #172033;
+    color: #172033 !important;
 
-    font-size: 20px;
-    font-weight: 800;
-}
+    font-size: 18px !important;
+    font-weight: 800 !important;
 
-#teacherDashboard .teacher-students-toolbar p {
-    margin: 5px 0 0;
-
-    color: #94a3b8;
-
-    font-size: 13px;
+    font-family: inherit !important;
 }
 
 
-/* =========================
-   SEARCH
-========================= */
+/* =========================================================
+   SEARCH + DATE FILTER
+========================================================= */
+
+#teacherDashboard .teacher-student-toolbar-controls {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+
+    flex: 1 !important;
+    justify-content: flex-end !important;
+}
+
+
+/* SEARCH */
 
 #teacherDashboard .teacher-student-search {
-    width: 270px;
+    width: 340px !important;
 
-    display: flex;
-    align-items: center;
+    min-height: 44px !important;
 
-    gap: 9px;
+    display: flex !important;
+    align-items: center !important;
 
-    padding: 10px 13px;
+    gap: 9px !important;
 
-    background: #f8fafc;
+    padding: 9px 13px !important;
 
-    border: 1px solid #dbe3ef;
-    border-radius: 11px;
+    background: #ffffff !important;
 
-    transition: .2s ease;
+    border: 1px solid #dbe3ef !important;
+
+    border-radius: 11px !important;
+
+    box-sizing: border-box !important;
+
+    transition: .2s ease !important;
 }
 
 #teacherDashboard .teacher-student-search:focus-within {
-    background: #ffffff;
-
-    border-color: #2563eb;
+    border-color: #2563eb !important;
 
     box-shadow:
-        0 0 0 3px rgba(37, 99, 235, .09);
-}
-
-#teacherDashboard .teacher-student-search span {
-    font-size: 14px;
+        0 0 0 3px rgba(37, 99, 235, .09) !important;
 }
 
 #teacherDashboard .teacher-student-search input {
-    width: 100%;
+    width: 100% !important;
 
-    border: none;
-    outline: none;
+    border: none !important;
+    outline: none !important;
 
-    background: transparent;
+    background: transparent !important;
 
-    color: #172033;
+    color: #172033 !important;
 
-    font-family: inherit;
+    font-family: inherit !important;
 
-    font-size: 13px;
-}
-
-#teacherDashboard .teacher-student-search input::placeholder {
-    color: #94a3b8;
+    font-size: 13px !important;
 }
 
 
-/* =========================
-   TABLE
-========================= */
+/* DATE FILTER */
 
-#teacherDashboard .teacher-students-table-wrapper {
-    width: 100%;
+#teacherDashboard .teacher-student-date-filter {
+    width: 190px !important;
 
-    overflow-x: auto;
+    min-height: 44px !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    gap: 9px !important;
+
+    padding: 9px 12px !important;
+
+    background: #ffffff !important;
+
+    border: 1px solid #dbe3ef !important;
+
+    border-radius: 11px !important;
+
+    box-sizing: border-box !important;
+
+    transition: .2s ease !important;
 }
 
-#teacherDashboard .teacher-students-table {
-    width: 100%;
+#teacherDashboard .teacher-student-date-filter:focus-within {
+    border-color: #2563eb !important;
 
-    min-width: 760px;
-
-    border-collapse: collapse;
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, .09) !important;
 }
 
-#teacherDashboard .teacher-students-table th {
-    padding: 15px 18px;
-
-    background: #f8fafc;
-
-    border-bottom: 1px solid #e2e8f0;
-
-    color: #64748b;
-
-    font-size: 11px;
-    font-weight: 800;
-
-    text-align: left;
-
-    text-transform: uppercase;
-
-    letter-spacing: .5px;
+#teacherDashboard .teacher-student-date-filter span {
+    font-size: 15px !important;
 }
 
-#teacherDashboard .teacher-students-table td {
-    padding: 16px 18px;
+#teacherDashboard .teacher-student-date-filter input {
+    width: 100% !important;
 
-    border-bottom: 1px solid #f1f5f9;
+    border: none !important;
+    outline: none !important;
 
-    color: #475569;
+    background: transparent !important;
 
-    font-size: 13px;
-}
+    color: #475569 !important;
 
-#teacherDashboard .teacher-students-table tbody tr {
-    transition: .2s ease;
-}
+    font-family: inherit !important;
 
-#teacherDashboard .teacher-students-table tbody tr:hover {
-    background: #f8fbff;
-}
+    font-size: 13px !important;
 
-#teacherDashboard .teacher-students-table td strong {
-    color: #172033;
-
-    font-weight: 700;
+    cursor: pointer !important;
 }
 
 
-/* =========================
-   STATUS
-========================= */
-
-#teacherDashboard .teacher-student-status {
-    display: inline-flex;
-
-    align-items: center;
-
-    padding: 6px 10px;
-
-    border-radius: 20px;
-
-    font-size: 11px;
-    font-weight: 800;
-}
-
-#teacherDashboard .teacher-student-status.active {
-    background: #dcfce7;
-
-    color: #15803d;
-}
-
-#teacherDashboard .teacher-student-status.disabled {
-    background: #fee2e2;
-
-    color: #b91c1c;
-}
-
-
-/* =========================
-   VIEW BUTTON
-========================= */
-
-#teacherDashboard .teacher-view-student-btn {
-    padding: 8px 13px;
-
-    border: 1px solid #dbeafe;
-
-    border-radius: 9px;
-
-    background: #eff6ff;
-
-    color: #2563eb;
-
-    font-family: inherit;
-
-    font-size: 11px;
-    font-weight: 800;
-
-    cursor: pointer;
-
-    transition: .2s ease;
-}
-
-#teacherDashboard .teacher-view-student-btn:hover {
-    background: #2563eb;
-
-    color: #ffffff;
-
-    border-color: #2563eb;
-
-    transform: translateY(-1px);
-}
-
-
-/* =========================
+/* =========================================================
    RESPONSIVE
-========================= */
+========================================================= */
 
-@media (max-width: 750px) {
-
-    #teacherDashboard .teacher-students-summary {
-        grid-template-columns: 1fr;
-    }
+@media (max-width: 850px) {
 
     #teacherDashboard .teacher-students-toolbar {
-        align-items: stretch;
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
 
-        flex-direction: column;
+    #teacherDashboard .teacher-student-toolbar-controls {
+        width: 100% !important;
+        justify-content: stretch !important;
     }
 
     #teacherDashboard .teacher-student-search {
-        width: 100%;
+        flex: 1 !important;
+        width: auto !important;
     }
 
+    #teacherDashboard .teacher-student-date-filter {
+        width: 180px !important;
+    }
 }
-/* =========================================================
+
+
+@media (max-width: 600px) {
+
+    #teacherDashboard .teacher-student-toolbar-controls {
+        flex-direction: column !important;
+    }
+
+    #teacherDashboard .teacher-student-search,
+    #teacherDashboard .teacher-student-date-filter {
+        width: 100% !important;
+    }
+}/* =========================================================
    TEACHER ASSIGNMENTS
 ========================================================= */
 
@@ -37323,8 +36668,7 @@ button.late.active {
 
 }
 /* =========================================================
-   EDUPORTAL - TEACHER SIDEBAR MODULE CENTER FIX
-   Applies to ALL Teacher module pages
+   EDUPORTAL - TEACHER MODULE LAYOUT FIX
 ========================================================= */
 
 #teacherDashboard #teacherStudentsSection,
@@ -37333,10 +36677,10 @@ button.late.active {
 #teacherDashboard #teacherResultsSection,
 #teacherDashboard #teacherNoticesSection {
 
-    width: calc(100% - 270px) !important;
+    width: 100% !important;
     max-width: none !important;
 
-    margin-left: 270px !important;
+    margin-left: 0 !important;
     margin-right: 0 !important;
 
     padding: 30px 38px 60px !important;
@@ -37347,7 +36691,7 @@ button.late.active {
 
 /* ---------------------------------------------------------
    INNER CONTENT
-   --------------------------------------------------------- */
+--------------------------------------------------------- */
 
 #teacherDashboard #teacherStudentsSection .teacher-section-page,
 #teacherDashboard #teacherAttendanceSection .teacher-section-page,
@@ -37369,23 +36713,6 @@ button.late.active {
 
 
 /* =========================================================
-   DESKTOP
-========================================================= */
-
-@media (min-width: 801px) {
-
-    #teacherDashboard #teacherStudentsSection,
-    #teacherDashboard #teacherAttendanceSection,
-    #teacherDashboard #teacherAssignmentsSection,
-    #teacherDashboard #teacherResultsSection,
-    #teacherDashboard #teacherNoticesSection {
-
-        min-height: calc(100vh - 60px);
-    }
-}
-
-
-/* =========================================================
    TABLET
 ========================================================= */
 
@@ -37397,21 +36724,13 @@ button.late.active {
     #teacherDashboard #teacherResultsSection,
     #teacherDashboard #teacherNoticesSection {
 
-        width: calc(100% - 220px) !important;
+        width: 100% !important;
 
-        margin-left: 220px !important;
+        margin-left: 0 !important;
 
         padding: 22px !important;
     }
 
-    #teacherDashboard #teacherStudentsSection .teacher-section-page,
-    #teacherDashboard #teacherAttendanceSection .teacher-section-page,
-    #teacherDashboard #teacherAssignmentsSection .teacher-section-page,
-    #teacherDashboard #teacherResultsSection .teacher-section-page,
-    #teacherDashboard #teacherNoticesSection .teacher-section-page {
-
-        max-width: 100% !important;
-    }
 }
 
 
@@ -37433,310 +36752,7 @@ button.late.active {
 
         padding: 20px !important;
     }
-}
 
-/* =========================================================
-   TEACHER PROFILE PAGE
-========================================================= */
-
-#teacherProfileSection {
-    width: calc(100% - 270px) !important;
-    margin-left: 270px !important;
-    padding: 35px 40px 60px !important;
-    box-sizing: border-box !important;
-    min-height: calc(100vh - 60px);
-    background: #f8fafc;
-}
-
-.teacher-profile-page {
-    width: 100%;
-    max-width: 1180px;
-    margin: 0 auto;
-}
-
-
-/* =========================================================
-   PROFILE HEADER
-========================================================= */
-
-.teacher-profile-header {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-
-    padding: 28px 30px;
-    margin-bottom: 24px;
-
-    background: #ffffff;
-    border-radius: 18px;
-
-    border: 1px solid #e5e7eb;
-
-    box-shadow:
-        0 8px 25px rgba(15, 23, 42, 0.06);
-}
-
-.teacher-profile-avatar {
-    width: 92px;
-    height: 92px;
-
-    flex-shrink: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 50%;
-
-    font-size: 42px;
-
-    background: #eef2ff;
-
-    border: 4px solid #ffffff;
-
-    box-shadow:
-        0 5px 18px rgba(15, 23, 42, 0.12);
-}
-
-.teacher-profile-header-info h2 {
-    margin: 0 0 6px;
-
-    font-size: 26px;
-    font-weight: 700;
-
-    color: #111827;
-}
-
-.teacher-profile-header-info p {
-    margin: 0 0 10px;
-
-    font-size: 15px;
-
-    color: #64748b;
-}
-
-.teacher-profile-status {
-    display: inline-flex;
-
-    align-items: center;
-    justify-content: center;
-
-    padding: 5px 12px;
-
-    border-radius: 20px;
-
-    font-size: 12px;
-    font-weight: 700;
-
-    color: #166534;
-    background: #dcfce7;
-}
-
-
-/* =========================================================
-   PROFILE CARDS
-========================================================= */
-
-.teacher-profile-card {
-    background: #ffffff;
-
-    border: 1px solid #e5e7eb;
-
-    border-radius: 18px;
-
-    padding: 26px 30px;
-
-    margin-bottom: 22px;
-
-    box-shadow:
-        0 8px 25px rgba(15, 23, 42, 0.05);
-}
-
-.teacher-profile-card-header {
-    margin-bottom: 24px;
-
-    padding-bottom: 18px;
-
-    border-bottom: 1px solid #eef2f7;
-}
-
-.teacher-profile-card-header h3 {
-    margin: 0 0 5px;
-
-    font-size: 18px;
-    font-weight: 700;
-
-    color: #111827;
-}
-
-.teacher-profile-card-header p {
-    margin: 0;
-
-    font-size: 13px;
-
-    color: #64748b;
-}
-
-
-/* =========================================================
-   PROFILE GRID
-========================================================= */
-
-.teacher-profile-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-    gap: 18px 24px;
-}
-
-.teacher-profile-field {
-    min-height: 82px;
-
-    padding: 17px 19px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    border-radius: 12px;
-
-    background: #f8fafc;
-
-    border: 1px solid #e5e7eb;
-
-    transition: all 0.2s ease;
-}
-
-.teacher-profile-field:hover {
-    border-color: #cbd5e1;
-
-    transform: translateY(-1px);
-
-    box-shadow:
-        0 5px 14px rgba(15, 23, 42, 0.05);
-}
-
-.teacher-profile-label {
-    margin-bottom: 7px;
-
-    font-size: 12px;
-    font-weight: 600;
-
-    color: #64748b;
-
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-}
-
-.teacher-profile-field strong {
-    font-size: 15px;
-    font-weight: 600;
-
-    color: #1e293b;
-
-    word-break: break-word;
-}
-
-
-/* =========================================================
-   ACCOUNT STATUS
-========================================================= */
-
-.teacher-profile-account-card {
-    display: flex;
-    align-items: center;
-
-    gap: 18px;
-}
-
-.teacher-profile-account-icon {
-    width: 52px;
-    height: 52px;
-
-    flex-shrink: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 12px;
-
-    background: #eef2ff;
-
-    font-size: 24px;
-}
-
-.teacher-profile-account-card h3 {
-    margin: 0 0 5px;
-
-    font-size: 17px;
-    color: #111827;
-}
-
-.teacher-profile-account-card p {
-    margin: 0;
-
-    font-size: 14px;
-
-    color: #64748b;
-}
-
-.teacher-profile-account-card strong {
-    color: #16a34a;
-}
-
-
-/* =========================================================
-   TABLET
-========================================================= */
-
-@media (max-width: 800px) {
-
-    #teacherProfileSection {
-        width: calc(100% - 220px) !important;
-
-        margin-left: 220px !important;
-
-        padding: 25px !important;
-    }
-
-    .teacher-profile-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 650px) {
-
-    #teacherProfileSection {
-        width: 100% !important;
-
-        margin-left: 0 !important;
-
-        padding: 20px !important;
-    }
-
-    .teacher-profile-header {
-        padding: 22px;
-
-        flex-direction: column;
-
-        text-align: center;
-    }
-
-    .teacher-profile-card {
-        padding: 22px;
-    }
-
-    .teacher-profile-account-card {
-        align-items: flex-start;
-    }
 }
 /* =========================================================
    TEACHER SETTINGS PAGE
@@ -38526,8 +37542,11 @@ button.late.active {
 ========================================================= */
 
 #teacherDashboard .main-content {
-    padding: 24px !important;
+    padding: 0 !important;
     box-sizing: border-box !important;
+    min-height: 100vh !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
 }
 
 
@@ -39196,7 +38215,7 @@ body:has(#teacherDashboard[style*="display"]) {
 
 
 /* =========================================================
-   MAIN AREA - PROPER CENTERING
+   MAIN AREA - FINAL TEACHER LAYOUT
 ========================================================= */
 
 #teacherDashboard > .main-content {
@@ -39204,33 +38223,134 @@ body:has(#teacherDashboard[style*="display"]) {
 
     width: calc(100% - 270px) !important;
 
+    height: 100vh !important;
     min-height: 100vh !important;
 
-    padding: 28px 38px 60px !important;
+    padding: 24px 32px 50px !important;
+
+    box-sizing: border-box !important;
+
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+
+    scroll-behavior: smooth !important;
 }
 
 
-/* Keep all dashboard content visually centered */
-#teacherDashboard .top-header,
+/* ---------------------------------------------------------
+   TEACHER MODULE PAGES
+--------------------------------------------------------- */
+
+#teacherDashboard #teacherStudentsSection,
+#teacherDashboard #teacherAttendanceSection,
+#teacherDashboard #teacherAssignmentsSection,
+#teacherDashboard #teacherResultsSection,
+#teacherDashboard #teacherNoticesSection,
+#teacherDashboard #teacherProfileSection,
+#teacherDashboard #teacherSettingsSection {
+
+    width: 100% !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+
+    padding: 20px 0 50px !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* ---------------------------------------------------------
+   MODULE INNER CONTENT
+--------------------------------------------------------- */
+
+#teacherDashboard
+.teacher-section-page {
+
+    width: 100% !important;
+
+    max-width: 1200px !important;
+
+    margin: 0 auto !important;
+
+    padding: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* ---------------------------------------------------------
+   HEADER
+--------------------------------------------------------- */
+
+#teacherDashboard .top-header {
+
+    width: 100% !important;
+
+    max-width: 1200px !important;
+
+    margin: 0 auto 22px !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* ---------------------------------------------------------
+   DASHBOARD CONTENT
+--------------------------------------------------------- */
+
 #teacherDashboard .dashboard-cards,
 #teacherDashboard .admin-section-card,
 #teacherDashboard .admin-dashboard-actions {
+
     width: 100% !important;
 
     max-width: 1200px !important;
 
     margin-left: auto !important;
     margin-right: auto !important;
+
+    box-sizing: border-box !important;
 }
 
 
-/* Header spacing */
-#teacherDashboard .top-header {
-    margin-top: 0 !important;
-    margin-bottom: 22px !important;
+/* ---------------------------------------------------------
+   RESPONSIVE
+--------------------------------------------------------- */
+
+@media (max-width: 1100px) {
+
+    #teacherDashboard > .main-content {
+
+        margin-left: 235px !important;
+
+        width: calc(100% - 235px) !important;
+
+        padding-left: 24px !important;
+        padding-right: 24px !important;
+    }
+
 }
 
 
+@media (max-width: 750px) {
+
+    #teacherDashboard > .main-content {
+
+        margin-left: 0 !important;
+
+        width: 100% !important;
+
+        height: auto !important;
+
+        min-height: 100vh !important;
+
+        padding: 20px 16px 40px !important;
+
+        overflow-y: visible !important;
+    }
+
+}
 /* =========================================================
    RESPONSIVE
 ========================================================= */
@@ -41849,10 +40969,11 @@ body:has(#teacherDashboard[style*="display"]) {
     justify-content: center;
 
     background:
-       conic-gradient(
-           #e2e8f0 0deg,
-           #e2e8f0 360deg
-       );
+        conic-gradient(
+            #16a34a 0deg 335deg,
+            #ef4444 335deg 356deg,
+            #f59e0b 356deg 360deg
+        );
 
     position: relative;
 
@@ -42016,11 +41137,11 @@ body:has(#teacherDashboard[style*="display"]) {
 
     justify-content: center;
 
-   background:
-    conic-gradient(
-        #e2e8f0 0deg,
-        #e2e8f0 360deg
-    );
+    background:
+        conic-gradient(
+            #f59e0b 0deg 252deg,
+            #edf2f7 252deg 360deg
+        );
 
     position: relative;
 }
@@ -44049,2680 +43170,1438 @@ body:has(#teacherDashboard[style*="display"]) {
 .student-section-hidden {
     display: none !important;
 }
-/* ===== FORCE FIX: ADMIN SECTIONS VISIBILITY ===== */
-#adminStudentsSection,
-#adminTeachersSection,
-#adminAttendanceSection,
-#adminFeesSection,
-#adminNoticesSection,
-#adminUsersStudentsSection,
-#adminSettingsSection,
-#adminAssignmentsSection,
-#adminResultsSection {
-    display: none;
-}
+/* ==========================================
+   ADMINISTRATOR HEADER - PROFESSIONAL
+========================================== */
 
-#adminStudentsSection.force-show,
-#adminTeachersSection.force-show,
-#adminAttendanceSection.force-show,
-#adminFeesSection.force-show,
-#adminNoticesSection.force-show,
-#adminUsersStudentsSection.force-show,
-#adminSettingsSection.force-show,
-#adminAssignmentsSection.force-show,
-#adminResultsSection.force-show {
-    display: block !important;
-}
-/* =========================================================
-   EDUPORTAL — ADMINISTRATOR DASHBOARD
-   FINAL PROFESSIONAL LAYOUT
-   ========================================================= */
-
-#adminDashboard {
-    --admin-primary: #2563eb;
-    --admin-primary-dark: #1d4ed8;
-    --admin-bg: #f5f7fb;
-    --admin-card: #ffffff;
-    --admin-border: #e2e8f0;
-    --admin-text: #172033;
-    --admin-muted: #64748b;
-
-    width: 100%;
-    height: 100vh;
-    min-height: 100vh;
-
-    display: flex;
-    flex-direction: row;
-
-    background: var(--admin-bg);
-    color: var(--admin-text);
-
-    font-family: "Poppins", "Segoe UI", Arial, sans-serif;
-
-    position: fixed;
-    inset: 0;
-
-    overflow: hidden;
-
-    box-sizing: border-box;
-}
-
-
-/* =========================================================
-   ADMIN SIDEBAR
-   ========================================================= */
-
-#adminDashboard .admin-sidebar {
-    width: 260px;
-    min-width: 260px;
-    height: 100vh;
-
-    flex: 0 0 260px;
-
-    display: flex;
-    flex-direction: column;
-
-    padding: 22px 14px;
-
-    box-sizing: border-box;
-
-    background:
-        linear-gradient(
-            180deg,
-            #0f172a 0%,
-            #172033 55%,
-            #1e293b 100%
-        );
-
-    color: #ffffff;
-
-    overflow: hidden;
-
-    position: relative;
-    z-index: 20;
-}
-
-
-/* =========================================================
-   BRAND
-   ========================================================= */
-
-#adminDashboard .admin-brand {
+.admin-top-header {
     display: flex;
     align-items: center;
-
-    gap: 12px;
-
-    padding: 8px 12px 22px;
-
-    margin-bottom: 16px;
-
-    border-bottom:
-        1px solid rgba(255,255,255,.10);
-
-    flex-shrink: 0;
+    justify-content: space-between;
+    padding: 22px 32px;
 }
 
-#adminDashboard .admin-brand-logo {
-    width: 46px;
-    height: 46px;
-
-    display: grid;
-    place-items: center;
-
-    flex-shrink: 0;
-
-    border-radius: 14px;
-
-    background:
-        rgba(255,255,255,.12);
-
-    font-size: 23px;
-}
-
-#adminDashboard .admin-brand h2 {
+.admin-header-left h1 {
     margin: 0;
-
-    font-size: 20px;
-    font-weight: 700;
-
-    color: #ffffff;
+    font-size: 32px;
+    font-weight: 800;
+    color: #111827;
+    letter-spacing: -0.5px;
 }
 
-#adminDashboard .admin-brand span {
-    display: block;
-
-    margin-top: 3px;
-
-    font-size: 11px;
-
-    color: #cbd5e1;
-
-    letter-spacing: .5px;
-}
-
-
-/* =========================================================
-   ADMIN NAVIGATION
-   ========================================================= */
-
-#adminDashboard .admin-nav {
+.admin-header-right {
     display: flex;
-    flex-direction: column;
-    gap: 6px;
-    flex: 1;
-    min-height: 0;
-
-    overflow-y: hidden;
-    overflow-x: hidden;
-
-    padding-right: 0;
+    align-items: center;
+    gap: 18px;
 }
 
-#adminDashboard .admin-nav-item {
-    width: 100%;
-    min-height: 48px;
+.admin-live-date {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 11px 16px;
+    background: #ffffff;
+    border: 1px solid #dbe3ef;
+    border-radius: 12px;
+    font-size: 16px;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+.admin-live-date span {
+    font-size: 20px;
+}
+
+.admin-live-date strong {
+    font-weight: 700;
+    color: #1f2937;
+    white-space: nowrap;
+}
+/* =========================================================
+   TEACHER HEADER - ACCOUNT DROPDOWN
+   Existing EduPortal Theme
+========================================================= */
+
+#teacherDashboard .teacher-header-title {
+    flex: 1;
+}
+
+#teacherDashboard .teacher-header-title h1 {
+    margin: 0 !important;
+
+    font-size: 24px !important;
+    line-height: 1.3 !important;
+
+    font-weight: 700 !important;
+
+    color: #111827 !important;
+}
+
+
+/* PROFILE AREA */
+
+#teacherDashboard .teacher-header-profile {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+}
+
+
+/* PROFILE BUTTON */
+
+#teacherDashboard
+.teacher-header-profile-btn {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
 
     border: none;
-    outline: none;
-
-    border-radius: 12px;
-
     background: transparent;
-
-    color: #cbd5e1;
-
-    display: flex;
-    align-items: center;
-
-    gap: 13px;
-
-    padding: 0 14px;
 
     cursor: pointer;
 
-    font-family:
-        "Poppins",
-        "Segoe UI",
-        Arial,
-        sans-serif;
+    font: inherit;
+}
 
-    text-align: left;
 
-    flex-shrink: 0;
+/* PROFILE CIRCLE */
+
+#teacherDashboard
+.teacher-header-profile-btn
+.profile-circle {
+
+    width: 46px !important;
+    height: 46px !important;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50% !important;
+
+    background: #eef2ff !important;
+
+    border: 1px solid #dbe4ff !important;
+
+    box-shadow:
+        0 4px 12px
+        rgba(15, 23, 42, 0.08);
+
+    font-size: 20px !important;
 
     transition:
-        background .2s ease,
-        color .2s ease,
-        transform .2s ease;
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-#adminDashboard .admin-nav-item span {
-    width: 25px;
 
-    text-align: center;
+#teacherDashboard
+.teacher-header-profile-btn:hover
+.profile-circle {
 
-    font-size: 18px;
-
-    flex-shrink: 0;
-}
-
-#adminDashboard .admin-nav-item strong {
-    font-size: 14px;
-
-    font-weight: 600;
-
-    white-space: nowrap;
-}
-
-#adminDashboard .admin-nav-item:hover {
-    background: rgba(255,255,255,.09);
-
-    color: #ffffff;
-
-    transform: translateX(2px);
-}
-
-#adminDashboard .admin-nav-item.active {
-    background:
-        linear-gradient(
-            135deg,
-            #2563eb,
-            #3b82f6
-        );
-
-    color: #ffffff;
+    transform: translateY(-1px);
 
     box-shadow:
-        0 8px 20px
-        rgba(37,99,235,.30);
-
-    transform: none;
+        0 7px 16px
+        rgba(15, 23, 42, 0.12);
 }
 
 
-/* =========================================================
-   LOGOUT
-   ========================================================= */
+/* DROPDOWN */
 
-#adminDashboard .admin-sidebar-footer {
-    padding-top: 14px;
+#teacherDashboard
+.teacher-header-dropdown {
 
-    margin-top: 10px;
+    display: none;
 
-    border-top:
-        1px solid rgba(255,255,255,.10);
+    position: absolute;
 
-    flex-shrink: 0;
-}
+    top: calc(100% + 10px);
 
-#adminDashboard .admin-logout:hover {
-    background:
-        rgba(239,68,68,.16);
+    right: 0;
 
-    color: #fecaca;
-}
+    min-width: 180px;
 
+    padding: 8px;
 
-/* =========================================================
-   MAIN WORKSPACE
-   ========================================================= */
+    background: #ffffff;
 
-#adminDashboard .admin-main {
-    flex: 1 1 auto;
+    border: 1px solid #e5e7eb;
 
-    width: calc(100% - 260px);
+    border-radius: 12px;
 
-    min-width: 0;
+    box-shadow:
+        0 10px 30px
+        rgba(15, 23, 42, 0.12);
 
-    height: 100vh;
-
-    display: flex;
-    flex-direction: column;
-
-    background: var(--admin-bg);
-
-    overflow: hidden;
-
-    box-sizing: border-box;
+    z-index: 99999;
 }
 
 
-/* =========================================================
-   HEADER
-   ========================================================= */
+/* SHOW DROPDOWN */
 
-#adminDashboard .admin-header {
+#teacherDashboard
+.teacher-header-dropdown.open {
+
+    display: block;
+}
+
+
+/* LOGOUT BUTTON */
+
+#teacherDashboard
+.teacher-header-logout {
+
     width: 100%;
 
-    min-height: 76px;
-
-    padding: 12px 30px;
-
-    box-sizing: border-box;
-
-    background:
-        rgba(255,255,255,.96);
-
-    border-bottom:
-        1px solid var(--admin-border);
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: 20px;
-
-    flex-shrink: 0;
-
-    position: relative;
-
-    z-index: 10;
-
-    box-shadow:
-        0 3px 15px
-        rgba(15,23,42,.04);
-}
-
-#adminDashboard .admin-header-left {
-    display: flex;
-
-    align-items: center;
-
-    gap: 15px;
-
-    min-width: 0;
-}
-
-#adminDashboard .admin-header h1 {
-    margin: 0;
-
-    font-size: 25px;
-
-    line-height: 1.25;
-
-    font-weight: 700;
-
-    color: #172033;
-}
-
-#adminDashboard .admin-header-right {
-    display: flex;
-
-    align-items: center;
-
-    gap: 18px;
-
-    flex-shrink: 0;
-}
-
-
-/* =========================================================
-   LIVE DATA
-   ========================================================= */
-
-#adminDashboard .admin-live-indicator {
-    display: flex;
-
-    align-items: center;
-
-    gap: 7px;
-
-    font-size: 12px;
-
-    font-weight: 700;
-
-    color: #16a34a;
-}
-
-#adminDashboard .admin-live-indicator span {
-    width: 9px;
-    height: 9px;
-
-    border-radius: 50%;
-
-    background: #22c55e;
-
-    box-shadow:
-        0 0 0 4px
-        rgba(34,197,94,.12);
-}
-
-
-/* =========================================================
-   DATE
-   ========================================================= */
-
-#adminDashboard .admin-date-display {
-    display: flex;
-
-    align-items: center;
-
-    gap: 7px;
-
-    color: #64748b;
-
-    font-size: 12px;
-
-    padding-right: 16px;
-
-    border-right:
-        1px solid #e2e8f0;
-}
-
-
-/* =========================================================
-   PROFILE
-   ========================================================= */
-
-#adminDashboard .admin-profile {
     display: flex;
 
     align-items: center;
 
     gap: 10px;
-}
 
-#adminDashboard .admin-profile-avatar {
-    width: 44px;
-    height: 44px;
+    padding: 11px 12px;
 
-    border-radius: 12px;
+    border: none;
 
-    display: grid;
-    place-items: center;
+    border-radius: 8px;
 
-    background: #eff6ff;
-
-    font-size: 22px;
-
-    flex-shrink: 0;
-}
-
-#adminDashboard .admin-profile strong {
-    display: block;
-
-    color: #172033;
-
-    font-size: 13px;
-
-    line-height: 1.3;
-}
-
-#adminDashboard .admin-profile small {
-    display: block;
-
-    margin-top: 2px;
-
-    color: #64748b;
-
-    font-size: 10px;
-}
-
-
-/* =========================================================
-   CONTENT AREA
-   ========================================================= */
-
-#adminDashboard .admin-content {
-    flex: 1 1 auto;
-
-    width: 100%;
-
-    min-width: 0;
-    min-height: 0;
-
-    overflow-y: auto;
-    overflow-x: hidden;
-
-    padding: 28px 30px 45px;
-
-    box-sizing: border-box;
-
-    background:
-        linear-gradient(
-            180deg,
-            #f8fafc 0%,
-            #f5f7fb 100%
-        );
-}
-
-#adminDashboard .admin-content::-webkit-scrollbar {
-    width: 7px;
-}
-
-#adminDashboard .admin-content::-webkit-scrollbar-track {
     background: transparent;
-}
 
-#adminDashboard .admin-content::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
+    color: #dc2626;
 
-    border-radius: 10px;
-}
+    font-family: inherit;
 
+    font-size: 14px;
 
-/* =========================================================
-   DASHBOARD HOME
-   ========================================================= */
+    font-weight: 600;
 
-#adminDashboard #adminHomeSection {
-    width: 100%;
+    text-align: left;
 
-    max-width: 1240px;
-
-    margin: 0 auto;
-
-    box-sizing: border-box;
-}
-
-
-/* =========================================================
-   WELCOME BANNER
-   ========================================================= */
-
-#adminDashboard .admin-welcome {
-    width: 100%;
-
-    min-height: 145px;
-
-    padding: 28px 32px;
-
-    margin-bottom: 24px;
-
-    box-sizing: border-box;
-
-    border-radius: 20px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: 25px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #1e3a8a,
-            #2563eb
-        );
-
-    color: #ffffff;
-
-    box-shadow:
-        0 12px 30px
-        rgba(37,99,235,.18);
-
-    overflow: hidden;
-}
-
-#adminDashboard .admin-welcome > div:first-child {
-    min-width: 0;
-}
-
-#adminDashboard .admin-welcome h2 {
-    margin: 0 0 7px;
-
-    font-size: 25px;
-
-    line-height: 1.3;
-
-    font-weight: 700;
-
-    color: #ffffff;
-}
-
-#adminDashboard .admin-welcome p {
-    margin: 0;
-
-    font-size: 13px;
-
-    color: rgba(255,255,255,.85);
-}
-
-#adminDashboard .admin-welcome-icon {
-    width: 78px;
-    height: 78px;
-
-    display: grid;
-    place-items: center;
-
-    flex-shrink: 0;
-
-    border-radius: 20px;
-
-    background:
-        rgba(255,255,255,.16);
-
-    font-size: 38px;
-}
-
-
-/* =========================================================
-   STATISTICS
-   ========================================================= */
-
-#adminDashboard .admin-stat-grid {
-    width: 100%;
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(5, minmax(0, 1fr));
-
-    gap: 18px;
-
-    margin-bottom: 24px;
-}
-
-#adminDashboard .admin-stat-card {
-    min-width: 0;
-
-    min-height: 130px;
-
-    padding: 20px;
-
-    box-sizing: border-box;
-
-    background: #ffffff;
-
-    border:
-        1px solid var(--admin-border);
-
-    border-radius: 17px;
-
-    box-shadow:
-        0 5px 18px
-        rgba(15,23,42,.045);
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 14px;
+    cursor: pointer;
 
     transition:
-        transform .2s ease,
-        box-shadow .2s ease;
+        background 0.2s ease;
 }
 
-#adminDashboard .admin-stat-card:hover {
-    transform: translateY(-3px);
 
-    box-shadow:
-        0 10px 25px
-        rgba(15,23,42,.08);
-}
+#teacherDashboard
+.teacher-header-logout:hover {
 
-#adminDashboard .admin-stat-icon {
-    width: 48px;
-    height: 48px;
-
-    min-width: 48px;
-
-    border-radius: 14px;
-
-    display: grid;
-
-    place-items: center;
-
-    font-size: 22px;
-}
-
-#adminDashboard .admin-stat-icon.student {
-    background: #eff6ff;
-}
-
-#adminDashboard .admin-stat-icon.teacher {
-    background: #f5f3ff;
-}
-
-#adminDashboard .admin-stat-icon.attendance {
-    background: #ecfdf5;
-}
-
-#adminDashboard .admin-stat-icon.result {
-    background: #fff7ed;
-}
-
-#adminDashboard .admin-stat-icon.fee {
     background: #fef2f2;
 }
-
-#adminDashboard .admin-stat-card span {
-    display: block;
-
-    color: #64748b;
-
-    font-size: 11px;
-
-    line-height: 1.4;
-
-    margin-bottom: 4px;
-}
-
-#adminDashboard .admin-stat-card strong {
-    display: block;
-
-    color: #172033;
-
-    font-size: 24px;
-
-    line-height: 1.2;
-
-    font-weight: 700;
-}
-
-#adminDashboard .admin-stat-card small {
-    display: block;
-
-    margin-top: 5px;
-
-    color: #94a3b8;
-
-    font-size: 9px;
-}
-
 /* =========================================================
-   FINAL PROFESSIONAL DASHBOARD ANALYTICS
+   TEACHER DASHBOARD - NEW SIMPLE ANALYTICS
+   Same EduPortal Theme
 ========================================================= */
 
-#adminDashboard .admin-overview-grid {
 
-    width: 100%;
+/* ==========================================
+   TOP STAT CARDS
+========================================== */
 
-    display: grid;
+#teacherDashboard .teacher-dashboard-top-cards {
+
+    display: grid !important;
 
     grid-template-columns:
         repeat(2, minmax(0, 1fr));
 
-    gap: 24px;
+    gap: 20px;
 
-    margin-bottom: 28px;
+    margin-bottom: 20px;
 
 }
 
 
-/* =========================================================
-   MAIN ANALYTICS CARD
-========================================================= */
-
-#adminDashboard .admin-chart-panel {
+#teacherDashboard
+.teacher-dashboard-stat-card {
 
     position: relative;
 
-    min-width: 0;
-
-    min-height: 345px;
-
-    padding: 28px;
-
-    box-sizing: border-box;
-
-    background: #ffffff;
-
-    border: 1px solid #e2e8f0;
-
-    border-radius: 20px;
-
-    box-shadow:
-        0 8px 28px rgba(15, 23, 42, .055);
-
-    overflow: hidden;
-
-    transition:
-        transform .2s ease,
-        box-shadow .2s ease,
-        border-color .2s ease;
-
-}
-
-
-/* TOP COLORED LINE */
-
-#adminDashboard .admin-chart-panel::before {
-
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-
-    left: 0;
-
-    right: 0;
-
-    height: 4px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #2563eb,
-            #60a5fa
-        );
-
-}
-
-
-/* INDIVIDUAL CARD COLORS */
-
-#adminDashboard
-.admin-chart-panel:nth-child(2)::before {
-
-    background:
-        linear-gradient(
-            90deg,
-            #16a34a,
-            #4ade80
-        );
-
-}
-
-
-#adminDashboard
-.admin-chart-panel:nth-child(3)::before {
-
-    background:
-        linear-gradient(
-            90deg,
-            #7c3aed,
-            #a78bfa
-        );
-
-}
-
-
-#adminDashboard
-.admin-chart-panel:nth-child(4)::before {
-
-    background:
-        linear-gradient(
-            90deg,
-            #f97316,
-            #fb923c
-        );
-
-}
-
-
-#adminDashboard .admin-chart-panel:hover {
-
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 14px 34px rgba(15, 23, 42, .09);
-
-}
-
-
-/* =========================================================
-   PANEL HEADER
-========================================================= */
-
-#adminDashboard .admin-chart-panel
-.admin-panel-header {
+    min-height: 145px;
 
     display: flex;
 
-    align-items: flex-start;
+    align-items: center;
+
+    gap: 18px;
+
+    overflow: hidden;
+
+}
+
+
+/* STAT CONTENT */
+
+#teacherDashboard
+.teacher-stat-content {
+
+    position: relative;
+
+    z-index: 2;
+
+}
+
+
+#teacherDashboard
+.teacher-stat-content h3 {
+
+    margin: 0 0 6px 0;
+
+}
+
+
+#teacherDashboard
+.teacher-stat-content strong {
+
+    display: block;
+
+    font-size: 30px;
+
+    line-height: 1.1;
+
+}
+
+
+#teacherDashboard
+.teacher-stat-content p {
+
+    margin: 6px 0 0 0;
+
+}
+
+
+/* ==========================================
+   MINI GRAPH INSIDE CARD
+========================================== */
+
+#teacherDashboard
+.teacher-stat-mini-chart {
+
+    position: absolute;
+
+    right: 20px;
+    bottom: 15px;
+
+    width: 180px;
+    height: 70px;
+
+    color: #2563eb;
+
+    opacity: 0.95;
+
+    pointer-events: none;
+
+}
+
+
+#teacherDashboard
+.teacher-stat-mini-chart svg {
+
+    width: 100%;
+    height: 100%;
+
+    overflow: visible;
+
+}
+
+
+#teacherDashboard
+.attendance-mini-chart {
+
+    color: #10b981;
+
+}
+
+
+/* ==========================================
+   MAIN MY STUDENTS GRAPH
+========================================== */
+
+#teacherDashboard
+.teacher-dashboard-chart-card {
+
+    width: 100%;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 16px;
+
+    padding: 24px;
+
+    box-shadow:
+        0 4px 18px
+        rgba(15, 23, 42, 0.06);
+
+    margin-bottom: 20px;
+
+}
+
+
+/* GRAPH HEADER */
+
+#teacherDashboard
+.teacher-dashboard-chart-header {
+
+    display: flex;
+
+    align-items: center;
 
     justify-content: space-between;
 
     gap: 20px;
 
-    margin-bottom: 24px;
+    margin-bottom: 22px;
 
 }
 
 
-#adminDashboard .admin-chart-label {
-
-    display: inline-flex;
-
-    align-items: center;
-
-    min-height: 25px;
-
-    padding: 0 11px;
-
-    margin-bottom: 7px;
-
-    border-radius: 20px;
-
-    background: #eff6ff;
-
-    color: #2563eb;
-
-    font-size: 11px;
-
-    font-weight: 800;
-
-    letter-spacing: .7px;
-
-}
-
-
-#adminDashboard
-.admin-chart-panel:nth-child(2)
-.admin-chart-label {
-
-    background: #ecfdf5;
-
-    color: #15803d;
-
-}
-
-
-#adminDashboard
-.admin-chart-panel:nth-child(3)
-.admin-chart-label {
-
-    background: #f5f3ff;
-
-    color: #7c3aed;
-
-}
-
-
-#adminDashboard
-.admin-chart-panel:nth-child(4)
-.admin-chart-label {
-
-    background: #fff7ed;
-
-    color: #c2410c;
-
-}
-
-
-#adminDashboard .admin-chart-panel
-.admin-panel-header h3 {
-
-    margin: 0 0 5px;
-
-    color: #172033;
-
-    font-size: 18px;
-
-    line-height: 1.25;
-
-    font-weight: 750;
-
-}
-
-
-#adminDashboard .admin-chart-panel
-.admin-panel-header p {
+#teacherDashboard
+.teacher-dashboard-chart-header h3 {
 
     margin: 0;
 
-    color: #64748b;
+    font-size: 19px;
 
-    font-size: 12px;
+    font-weight: 700;
 
-    line-height: 1.5;
+    color: #111827;
 
 }
 
 
-/* =========================================================
-   VIEW BUTTON
-========================================================= */
+#teacherDashboard
+.teacher-dashboard-chart-header p {
 
-#adminDashboard .admin-view-btn {
+    margin: 5px 0 0;
 
-    flex: 0 0 auto;
+    font-size: 13px;
 
-    width: 118px;
+    color: #64748b;
 
-    height: 46px;
+}
 
-    display: flex;
 
-    align-items: center;
+/* PERIOD SELECT */
 
-    justify-content: center;
+#teacherDashboard
+.teacher-chart-period {
 
-    border: none;
+    padding: 9px 13px;
 
-    border-radius: 12px;
+    border: 1px solid #e2e8f0;
 
-    background: #2563eb;
+    border-radius: 9px;
 
-    color: #ffffff;
+    background: #ffffff;
+
+    color: #334155;
 
     font-family: inherit;
 
     font-size: 13px;
 
-    font-weight: 750;
+    outline: none;
 
     cursor: pointer;
 
-    box-shadow:
-        0 7px 18px rgba(37, 99, 235, .22);
+}
 
-    transition:
-        transform .2s ease,
-        box-shadow .2s ease,
-        background .2s ease;
+
+/* ==========================================
+   CHART AREA
+========================================== */
+
+#teacherDashboard
+.teacher-students-chart {
+
+    display: flex;
+
+    width: 100%;
+
+    height: 280px;
 
 }
 
 
-#adminDashboard .admin-view-btn:hover {
+#teacherDashboard
+.teacher-chart-y-axis {
 
-    background: #1d4ed8;
-
-    transform: translateY(-1px);
-
-    box-shadow:
-        0 10px 22px rgba(37, 99, 235, .28);
-
-}
-
-
-#adminDashboard
-.admin-chart-panel:nth-child(2)
-.admin-view-btn {
-
-    background: #16a34a;
-
-    box-shadow:
-        0 7px 18px rgba(22, 163, 74, .20);
-
-}
-
-
-#adminDashboard
-.admin-chart-panel:nth-child(2)
-.admin-view-btn:hover {
-
-    background: #15803d;
-
-}
-
-
-#adminDashboard
-.admin-chart-panel:nth-child(3)
-.admin-view-btn {
-
-    background: #7c3aed;
-
-    box-shadow:
-        0 7px 18px rgba(124, 58, 237, .20);
-
-}
-
-
-#adminDashboard
-.admin-chart-panel:nth-child(3)
-.admin-view-btn:hover {
-
-    background: #6d28d9;
-
-}
-
-
-#adminDashboard
-.admin-chart-panel:nth-child(4)
-.admin-view-btn {
-
-    background: #f97316;
-
-    box-shadow:
-        0 7px 18px rgba(249, 115, 22, .20);
-
-}
-
-
-#adminDashboard
-.admin-chart-panel:nth-child(4)
-.admin-view-btn:hover {
-
-    background: #ea580c;
-
-}
-
-
-/* =========================================================
-   STUDENTS CHART
-========================================================= */
-
-#adminDashboard .admin-chart-content {
+    width: 38px;
 
     display: flex;
 
     flex-direction: column;
 
-    justify-content: center;
+    justify-content: space-between;
 
-    min-height: 220px;
+    padding: 2px 8px 25px 0;
+
+    text-align: right;
+
+    font-size: 12px;
+
+    color: #64748b;
 
 }
 
 
-#adminDashboard .admin-chart-main-value {
+#teacherDashboard
+.teacher-chart-area {
+
+    position: relative;
+
+    flex: 1;
+
+    height: 100%;
+
+    border-bottom: 1px solid #e2e8f0;
+
+}
+
+
+/* GRID */
+
+#teacherDashboard
+.teacher-chart-grid {
+
+    position: absolute;
+
+    inset: 0;
 
     display: flex;
 
-    align-items: baseline;
+    flex-direction: column;
 
-    gap: 10px;
+    justify-content: space-between;
 
-    margin-bottom: 26px;
+    pointer-events: none;
 
 }
 
 
-#adminDashboard .admin-chart-main-value strong {
+#teacherDashboard
+.teacher-chart-grid span {
 
-    color: #2563eb;
+    display: block;
 
-    font-size: 42px;
+    width: 100%;
 
-    line-height: 1;
+    border-top: 1px solid #eef2f7;
+
+}
+
+
+/* ==========================================
+   BAR AREA
+========================================== */
+
+#teacherDashboard
+.teacher-chart-bars {
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 28px;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-around;
+
+    gap: 24px;
+
+    padding:
+        0 20px;
+
+}
+
+
+/* INDIVIDUAL BAR
+   JavaScript will use .teacher-chart-bar
+*/
+
+#teacherDashboard
+.teacher-chart-bar {
+
+    width: 55px;
+
+    max-width: 70px;
+
+    min-height: 8px;
+
+    border-radius:
+        7px 7px 0 0;
+
+    background:
+        linear-gradient(
+            to top,
+            #60a5fa,
+            #93c5fd
+        );
+
+    box-shadow:
+        0 4px 10px
+        rgba(37, 99, 235, 0.12);
+
+    transition:
+        height 0.5s ease,
+        transform 0.2s ease;
+
+    position: relative;
+
+}
+
+
+#teacherDashboard
+.teacher-chart-bar:hover {
+
+    transform:
+        translateY(-4px);
+
+}
+
+
+/* BAR VALUE */
+
+#teacherDashboard
+.teacher-chart-bar span {
+
+    position: absolute;
+
+    top: -24px;
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    color: #334155;
+
+}
+
+
+/* ==========================================
+   CHART LABELS
+========================================== */
+
+#teacherDashboard
+.teacher-chart-labels {
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    bottom: 0;
+
+    height: 28px;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-around;
+
+    gap: 24px;
+
+    padding:
+        0 20px;
+
+}
+
+
+#teacherDashboard
+.teacher-chart-labels span {
+
+    width: 55px;
+
+    max-width: 70px;
+
+    text-align: center;
+
+    font-size: 12px;
+
+    color: #64748b;
+
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 768px) {
+
+    #teacherDashboard
+    .teacher-dashboard-top-cards {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    #teacherDashboard
+    .teacher-stat-mini-chart {
+
+        width: 130px;
+
+        opacity: 0.7;
+
+    }
+
+
+    #teacherDashboard
+    .teacher-dashboard-chart-card {
+
+        padding: 18px;
+
+    }
+
+
+    #teacherDashboard
+    .teacher-dashboard-chart-header {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+
+    #teacherDashboard
+    .teacher-students-chart {
+
+        height: 230px;
+
+    }
+
+
+    #teacherDashboard
+    .teacher-chart-bars,
+    #teacherDashboard
+    .teacher-chart-labels {
+
+        gap: 10px;
+
+        padding-left: 5px;
+        padding-right: 5px;
+
+    }
+
+
+    #teacherDashboard
+    .teacher-chart-bar,
+    #teacherDashboard
+    .teacher-chart-labels span {
+
+        width: 35px;
+
+    }
+
+}
+/* =====================================================
+   TEACHER DASHBOARD - PREMIUM TOP STAT CARDS
+===================================================== */
+
+#teacherDashboard .teacher-dashboard-top-cards {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 22px !important;
+    margin-bottom: 24px !important;
+}
+
+
+/* ---------- MAIN CARD ---------- */
+
+#teacherDashboard .teacher-dashboard-stat-card {
+    position: relative !important;
+    min-height: 176px !important;
+    padding: 26px 28px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    gap: 20px !important;
+
+    overflow: hidden !important;
+
+    background: #ffffff !important;
+
+    border: 1px solid #dbeafe !important;
+    border-radius: 20px !important;
+
+    box-shadow:
+        0 8px 28px rgba(15, 23, 42, 0.07) !important;
+
+    box-sizing: border-box !important;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease !important;
+}
+
+
+/* ---------- HOVER ---------- */
+
+#teacherDashboard .teacher-dashboard-stat-card:hover {
+    transform: translateY(-3px) !important;
+
+    box-shadow:
+        0 14px 35px rgba(15, 23, 42, 0.10) !important;
+}
+
+
+/* ---------- STUDENTS CARD BACKGROUND ---------- */
+
+#teacherDashboard
+.teacher-dashboard-stat-card:first-child::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 300px;
+    height: 150px;
+
+    right: -70px;
+    bottom: -85px;
+
+    background:
+        radial-gradient(
+            ellipse,
+            #dbeafe 0%,
+            #eff6ff 48%,
+            transparent 72%
+        );
+
+    border-radius: 50%;
+
+    transform: rotate(-12deg);
+
+    pointer-events: none;
+}
+
+
+/* ---------- ATTENDANCE CARD ---------- */
+
+#teacherDashboard
+.teacher-dashboard-stat-card:nth-child(2) {
+
+    border-color: #d1fae5 !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff 0%,
+            #f9fffc 100%
+        ) !important;
+}
+
+
+#teacherDashboard
+.teacher-dashboard-stat-card:nth-child(2)::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 300px;
+    height: 150px;
+
+    right: -70px;
+    bottom: -85px;
+
+    background:
+        radial-gradient(
+            ellipse,
+            #d1fae5 0%,
+            #ecfdf5 48%,
+            transparent 72%
+        );
+
+    border-radius: 50%;
+
+    transform: rotate(-12deg);
+
+    pointer-events: none;
+}
+
+
+/* ---------- ICON ---------- */
+
+#teacherDashboard
+.teacher-dashboard-stat-card .card-icon {
+
+    position: relative;
+
+    z-index: 3;
+
+    width: 66px !important;
+    height: 66px !important;
+
+    min-width: 66px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border-radius: 18px !important;
+
+    background: #eff6ff !important;
+
+    border: 1px solid #dbeafe !important;
+
+    font-size: 30px !important;
+
+    box-shadow:
+        0 6px 16px rgba(37, 99, 235, 0.08) !important;
+}
+
+
+#teacherDashboard
+.teacher-dashboard-stat-card:nth-child(2)
+.card-icon {
+
+    background: #ecfdf5 !important;
+
+    border-color: #d1fae5 !important;
+
+    box-shadow:
+        0 6px 16px rgba(16, 185, 129, 0.08) !important;
+}
+
+
+/* ---------- CONTENT ---------- */
+
+#teacherDashboard .teacher-stat-content {
+
+    position: relative !important;
+
+    z-index: 4 !important;
+
+    flex: 1 !important;
+}
+
+
+#teacherDashboard
+.teacher-stat-content h3 {
+
+    margin: 0 0 8px 0 !important;
+
+    font-size: 15px !important;
+
+    line-height: 1.3 !important;
+
+    font-weight: 600 !important;
+
+    color: #475569 !important;
+}
+
+
+#teacherDashboard
+.teacher-stat-content strong {
+
+    display: block !important;
+
+    margin: 0 !important;
+
+    font-size: 34px !important;
+
+    line-height: 1 !important;
+
+    font-weight: 750 !important;
+
+    letter-spacing: -1px !important;
+
+    color: #0f172a !important;
+}
+
+
+#teacherDashboard
+.teacher-stat-content p {
+
+    margin: 8px 0 0 0 !important;
+
+    font-size: 13px !important;
+
+    line-height: 1.4 !important;
+
+    color: #64748b !important;
+}
+
+
+/* ---------- MINI GRAPH AREA ---------- */
+
+#teacherDashboard .teacher-stat-mini-chart {
+
+    position: absolute !important;
+
+    right: 18px !important;
+
+    bottom: 15px !important;
+
+    width: 190px !important;
+
+    height: 82px !important;
+
+    z-index: 2 !important;
+
+    opacity: 1 !important;
+
+    pointer-events: none !important;
+}
+
+
+#teacherDashboard
+.teacher-stat-mini-chart svg {
+
+    width: 100% !important;
+
+    height: 100% !important;
+
+    overflow: visible !important;
+}
+
+
+/* ---------- STUDENT GRAPH ---------- */
+
+#teacherDashboard
+.teacher-dashboard-stat-card:first-child
+.teacher-stat-mini-chart {
+
+    color: #2563eb !important;
+}
+
+
+/* ---------- ATTENDANCE GRAPH ---------- */
+
+#teacherDashboard
+.teacher-dashboard-stat-card:nth-child(2)
+.teacher-stat-mini-chart {
+
+    color: #10b981 !important;
+}
+
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width: 768px) {
+
+    #teacherDashboard
+    .teacher-dashboard-top-cards {
+
+        grid-template-columns: 1fr !important;
+
+    }
+
+    #teacherDashboard
+    .teacher-dashboard-stat-card {
+
+        min-height: 155px !important;
+
+        padding: 22px !important;
+
+    }
+
+}
+/* =========================================================
+   TEACHER MY PROFILE - FINAL DESIGN
+   Same EduPortal Teacher Theme
+========================================================= */
+
+#teacherDashboard .teacher-profile-page {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 0 50px;
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   PROFILE HEADER
+========================================================= */
+
+#teacherDashboard .teacher-profile-header {
+    width: 100%;
+    min-height: 150px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 22px;
+
+    padding: 28px 30px;
+
+    margin-bottom: 22px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5eaf2;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 8px 25px rgba(15, 23, 42, 0.05);
+
+    box-sizing: border-box;
+}
+
+
+/* PROFILE AVATAR */
+
+#teacherDashboard .teacher-profile-avatar {
+    width: 82px;
+    height: 82px;
+
+    flex: 0 0 82px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #eff6ff;
+
+    border: 4px solid #dbeafe;
+
+    font-size: 40px;
+
+    box-shadow:
+        0 6px 18px rgba(37, 99, 235, 0.12);
+}
+
+
+/* PROFILE HEADER TEXT */
+
+#teacherDashboard .teacher-profile-header-info {
+    min-width: 0;
+}
+
+#teacherDashboard .teacher-profile-header-info h2 {
+    margin: 0 0 5px;
+
+    color: #172033;
+
+    font-size: 28px;
+
+    line-height: 1.25;
+
+    font-weight: 800;
+}
+
+#teacherDashboard .teacher-profile-header-info p {
+    margin: 0 0 10px;
+
+    color: #64748b;
+
+    font-size: 14px;
+
+    font-weight: 500;
+}
+
+
+/* ACTIVE STATUS */
+
+#teacherDashboard .teacher-profile-status {
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 6px 12px;
+
+    border-radius: 999px;
+
+    background: #dcfce7;
+
+    color: #16a34a;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   PROFILE CARDS
+========================================================= */
+
+#teacherDashboard .teacher-profile-card {
+    width: 100%;
+
+    margin-bottom: 20px;
+
+    padding: 26px 28px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5eaf2;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 8px 25px rgba(15, 23, 42, 0.05);
+
+    box-sizing: border-box;
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
+}
+
+
+#teacherDashboard .teacher-profile-card:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+
+/* =========================================================
+   CARD HEADER
+========================================================= */
+
+#teacherDashboard .teacher-profile-card-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 22px;
+
+    padding-bottom: 16px;
+
+    border-bottom: 1px solid #edf1f6;
+}
+
+
+#teacherDashboard .teacher-profile-card-header h3 {
+    margin: 0;
+
+    color: #172033;
+
+    font-size: 20px;
 
     font-weight: 800;
 
+    line-height: 1.3;
 }
 
 
-#adminDashboard .admin-chart-main-value span {
+#teacherDashboard .teacher-profile-card-header p {
+    margin: 5px 0 0;
 
     color: #64748b;
 
     font-size: 13px;
 
     font-weight: 500;
-
-}
-
-
-/* STUDENT GRAPH */
-
-#adminDashboard .admin-horizontal-chart {
-
-    position: relative;
-
-    width: 100%;
-
-    height: 18px;
-
-    overflow: hidden;
-
-    border-radius: 20px;
-
-    background: #e8eef7;
-
-}
-
-
-#adminDashboard
-.admin-horizontal-chart-fill {
-
-    width: 0%;
-
-    height: 100%;
-
-    border-radius: inherit;
-
-    background:
-        linear-gradient(
-            90deg,
-            #2563eb,
-            #60a5fa
-        );
-
-    box-shadow:
-        0 3px 10px rgba(37, 99, 235, .22);
-
-    transition:
-        width .6s ease;
-
-}
-
-
-#adminDashboard .admin-chart-footer {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    margin-top: 12px;
-
-}
-
-
-#adminDashboard .admin-chart-footer span {
-
-    color: #64748b;
-
-    font-size: 12px;
-
-}
-
-
-#adminDashboard .admin-chart-footer strong {
-
-    color: #2563eb;
-
-    font-size: 14px;
-
 }
 
 
 /* =========================================================
-   ATTENDANCE CHART
+   PROFILE INFORMATION GRID
 ========================================================= */
 
-#adminDashboard .admin-attendance-chart {
+#teacherDashboard .teacher-profile-grid {
+    display: grid;
 
-    min-height: 220px;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
 
-    display: flex;
-
-    align-items: center;
-
-    gap: 38px;
-
+    gap: 15px;
 }
 
 
-#adminDashboard .admin-attendance-circle {
+/* =========================================================
+   PROFILE FIELD
+========================================================= */
 
-    width: 150px;
-
-    height: 150px;
-
-    min-width: 150px;
-
-    position: relative;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    border-radius: 50%;
-
-    background:
-        conic-gradient(
-            #16a34a 0deg,
-            #16a34a 0deg,
-            #e2e8f0 0deg,
-            #e2e8f0 360deg
-        );
-
-}
-
-
-#adminDashboard .admin-attendance-circle::before {
-
-    content: "";
-
-    position: absolute;
-
-    inset: 12px;
-
-    border-radius: 50%;
-
-    background: #ffffff;
-
-}
-
-
-#adminDashboard .admin-attendance-circle-inner {
-
-    position: relative;
-
-    z-index: 2;
+#teacherDashboard .teacher-profile-field {
+    min-height: 76px;
 
     display: flex;
 
     flex-direction: column;
 
-    align-items: center;
-
     justify-content: center;
 
+    padding: 16px 18px;
+
+    background: #f8fafc;
+
+    border: 1px solid #e8edf4;
+
+    border-radius: 14px;
+
+    box-sizing: border-box;
 }
 
 
-#adminDashboard
-.admin-attendance-circle-inner strong {
+#teacherDashboard .teacher-profile-field:hover {
+    background: #f1f5f9;
 
-    color: #172033;
-
-    font-size: 30px;
-
-    line-height: 1;
-
-    font-weight: 800;
-
+    border-color: #dbeafe;
 }
 
 
-#adminDashboard
-.admin-attendance-circle-inner span {
+/* LABEL */
 
-    margin-top: 6px;
+#teacherDashboard .teacher-profile-label {
+    display: block;
 
-    color: #16a34a;
+    margin-bottom: 6px;
+
+    color: #94a3b8;
 
     font-size: 11px;
 
     font-weight: 700;
 
+    text-transform: uppercase;
+
+    letter-spacing: .5px;
 }
 
 
-#adminDashboard .admin-attendance-legend {
+/* VALUE */
 
-    flex: 1;
+#teacherDashboard .teacher-profile-field strong {
+    display: block;
 
+    color: #172033;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    line-height: 1.4;
+
+    word-break: break-word;
+}
+
+
+/* =========================================================
+   ACCOUNT STATUS
+========================================================= */
+
+#teacherDashboard .teacher-profile-account-card {
     display: flex;
-
-    flex-direction: column;
-
-    gap: 22px;
-
-}
-
-
-#adminDashboard .admin-attendance-legend > div {
-
-    display: grid;
-
-    grid-template-columns: 30px 1fr auto;
 
     align-items: center;
 
-    gap: 10px;
+    gap: 18px;
 
+    padding: 22px 26px;
 }
 
 
-#adminDashboard .admin-attendance-legend span {
+#teacherDashboard .teacher-profile-account-icon {
+    width: 52px;
+    height: 52px;
+
+    flex: 0 0 52px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: #eff6ff;
+
+    font-size: 24px;
+}
+
+
+#teacherDashboard .teacher-profile-account-card h3 {
+    margin: 0 0 5px;
+
+    color: #172033;
+
+    font-size: 18px;
+
+    font-weight: 800;
+}
+
+
+#teacherDashboard .teacher-profile-account-card p {
+    margin: 0;
 
     color: #64748b;
 
     font-size: 13px;
 
+    line-height: 1.6;
 }
 
 
-#adminDashboard .admin-attendance-legend strong {
-
-    color: #172033;
-
-    font-size: 16px;
-
-}
-
-
-#adminDashboard .legend-present {
-
-    width: 30px;
-
-    height: 30px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    border-radius: 50%;
-
-    background: #ecfdf5;
-
-    color: #16a34a !important;
-
-    font-size: 17px !important;
+#teacherDashboard .teacher-profile-account-card p strong {
+    color: #16a34a;
 
     font-weight: 800;
-
-}
-
-
-#adminDashboard .legend-absent {
-
-    width: 30px;
-
-    height: 30px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    border-radius: 50%;
-
-    background: #fef2f2;
-
-    color: #dc2626 !important;
-
-    font-size: 17px !important;
-
-    font-weight: 800;
-
-}
-
-
-/* =========================================================
-   RESULTS CHART
-========================================================= */
-
-#adminDashboard .admin-results-chart {
-
-    min-height: 220px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 38px;
-
-}
-
-
-#adminDashboard .admin-results-score {
-
-    width: 145px;
-
-    height: 145px;
-
-    min-width: 145px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: center;
-
-    border-radius: 50%;
-
-    background:
-        conic-gradient(
-            #7c3aed 0deg,
-            #a78bfa 0deg,
-            #e9e7f5 0deg,
-            #e9e7f5 360deg
-        );
-
-    position: relative;
-
-}
-
-
-#adminDashboard .admin-results-score::before {
-
-    content: "";
-
-    position: absolute;
-
-    inset: 11px;
-
-    border-radius: 50%;
-
-    background: #ffffff;
-
-}
-
-
-#adminDashboard .admin-results-score strong,
-#adminDashboard .admin-results-score span {
-
-    position: relative;
-
-    z-index: 2;
-
-}
-
-
-#adminDashboard .admin-results-score strong {
-
-    color: #172033;
-
-    font-size: 30px;
-
-    line-height: 1;
-
-    font-weight: 800;
-
-}
-
-
-#adminDashboard .admin-results-score span {
-
-    margin-top: 7px;
-
-    color: #7c3aed;
-
-    font-size: 10px;
-
-    font-weight: 700;
-
-    text-align: center;
-
-}
-
-
-#adminDashboard .admin-result-bars {
-
-    flex: 1;
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 24px;
-
-}
-
-
-#adminDashboard .admin-result-bar-row {
-
-    width: 100%;
-
-}
-
-
-#adminDashboard .admin-result-bar-info {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    margin-bottom: 9px;
-
-}
-
-
-#adminDashboard .admin-result-bar-info span {
-
-    color: #475569;
-
-    font-size: 12px;
-
-    font-weight: 600;
-
-}
-
-
-#adminDashboard .admin-result-bar-info strong {
-
-    color: #7c3aed;
-
-    font-size: 12px;
-
-}
-
-
-#adminDashboard .admin-result-bar {
-
-    width: 100%;
-
-    height: 12px;
-
-    overflow: hidden;
-
-    border-radius: 20px;
-
-    background: #eeeef5;
-
-}
-
-
-#adminDashboard .admin-result-passed {
-
-    width: 0%;
-
-    height: 100%;
-
-    border-radius: inherit;
-
-    background:
-        linear-gradient(
-            90deg,
-            #7c3aed,
-            #a855f7
-        );
-
-    transition:
-        width .6s ease;
-
-}
-
-
-#adminDashboard .admin-result-failed {
-
-    width: 0%;
-
-    height: 100%;
-
-    border-radius: inherit;
-
-    background:
-        linear-gradient(
-            90deg,
-            #ef4444,
-            #f97316
-        );
-
-    transition:
-        width .6s ease;
-
-}
-
-
-/* =========================================================
-   FEES CHART
-========================================================= */
-
-#adminDashboard .admin-fee-chart {
-
-    min-height: 220px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: center;
-
-}
-
-
-#adminDashboard .admin-fee-main {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 6px;
-
-    margin-bottom: 26px;
-
-}
-
-
-#adminDashboard .admin-fee-main span {
-
-    color: #64748b;
-
-    font-size: 12px;
-
-}
-
-
-#adminDashboard .admin-fee-main strong {
-
-    color: #ea580c;
-
-    font-size: 34px;
-
-    line-height: 1.1;
-
-    font-weight: 800;
-
-}
-
-
-#adminDashboard .admin-fee-progress {
-
-    width: 100%;
-
-    height: 14px;
-
-    overflow: hidden;
-
-    border-radius: 20px;
-
-    background: #f1f5f9;
-
-}
-
-
-#adminDashboard .admin-fee-progress-fill {
-
-    width: 0%;
-
-    height: 100%;
-
-    border-radius: inherit;
-
-    background:
-        linear-gradient(
-            90deg,
-            #f97316,
-            #fb923c
-        );
-
-    transition:
-        width .6s ease;
-
-}
-
-
-#adminDashboard .admin-fee-footer {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-    gap: 25px;
-
-    margin-top: 16px;
-
-}
-
-
-#adminDashboard .admin-fee-footer > div {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 5px;
-
-}
-
-
-#adminDashboard .admin-fee-footer > div:last-child {
-
-    align-items: flex-end;
-
-    text-align: right;
-
-}
-
-
-#adminDashboard .admin-fee-footer span {
-
-    color: #64748b;
-
-    font-size: 11px;
-
-}
-
-
-#adminDashboard .admin-fee-footer strong {
-
-    color: #ea580c;
-
-    font-size: 16px;
-
-}
-
-
-#adminDashboard .admin-fee-footer
-> div:last-child strong {
-
-    color: #dc2626;
-
-}
-
-
-/* =========================================================
-   RESPONSIVE DASHBOARD
-========================================================= */
-
-@media (max-width: 950px) {
-
-    #adminDashboard .admin-overview-grid {
-
-        grid-template-columns: 1fr;
-
-    }
-
-}
-
-
-@media (max-width: 650px) {
-
-    #adminDashboard .admin-chart-panel {
-
-        min-height: auto;
-
-        padding: 22px;
-
-    }
-
-
-    #adminDashboard .admin-chart-panel
-    .admin-panel-header {
-
-        flex-direction: column;
-
-    }
-
-
-    #adminDashboard .admin-view-btn {
-
-        width: 100%;
-
-    }
-
-
-    #adminDashboard .admin-attendance-chart,
-    #adminDashboard .admin-results-chart {
-
-        flex-direction: column;
-
-        align-items: flex-start;
-
-        gap: 25px;
-
-    }
-
-
-    #adminDashboard .admin-attendance-legend,
-    #adminDashboard .admin-result-bars {
-
-        width: 100%;
-
-    }
-
-
-    #adminDashboard .admin-fee-footer {
-
-        grid-template-columns: 1fr;
-
-    }
-
-
-    #adminDashboard .admin-fee-footer
-    > div:last-child {
-
-        align-items: flex-start;
-
-        text-align: left;
-
-    }
-
-}
-
-/* =========================================================
-   MODULE SECTIONS
-   ========================================================= */
-
-#adminDashboard .admin-section {
-    width: 100%;
-
-    max-width: 1240px;
-
-    margin: 0 auto;
-
-    box-sizing: border-box;
-}
-
-#adminDashboard .admin-section-heading {
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: 20px;
-
-    margin-bottom: 22px;
-}
-
-#adminDashboard .admin-section-heading h2 {
-    margin: 0 0 5px;
-
-    color: #172033;
-
-    font-size: 25px;
-
-    line-height: 1.3;
-}
-
-#adminDashboard .admin-section-heading p {
-    margin: 0;
-
-    color: #64748b;
-
-    font-size: 12px;
-}
-
-
-/* =========================================================
-   PRIMARY BUTTON
-   ========================================================= */
-
-#adminDashboard .admin-primary-btn {
-    width: auto;
-
-    min-width: 135px;
-
-    padding: 11px 18px;
-
-    border: none;
-
-    border-radius: 11px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #2563eb,
-            #3b82f6
-        );
-
-    color: #ffffff;
-
-    font-family: inherit;
-
-    font-size: 12px;
-
-    font-weight: 700;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 6px 16px
-        rgba(37,99,235,.20);
-
-    transition:
-        transform .2s ease,
-        box-shadow .2s ease;
-}
-
-#adminDashboard .admin-primary-btn:hover {
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 9px 22px
-        rgba(37,99,235,.28);
-}
-
-
-/* =========================================================
-   TOOLBAR
-   ========================================================= */
-
-#adminDashboard .admin-toolbar {
-    width: 100%;
-
-    display: flex;
-
-    gap: 12px;
-
-    margin-bottom: 18px;
-}
-
-#adminDashboard .admin-toolbar input,
-#adminDashboard .admin-toolbar select {
-    min-height: 42px;
-
-    padding: 0 13px;
-
-    border:
-        1px solid #cbd5e1;
-
-    border-radius: 10px;
-
-    background: #ffffff;
-
-    color: #172033;
-
-    font-family: inherit;
-
-    font-size: 12px;
-
-    outline: none;
-
-    box-sizing: border-box;
-}
-
-#adminDashboard .admin-toolbar input {
-    flex: 1;
-
-    min-width: 0;
-}
-
-#adminDashboard .admin-toolbar select {
-    width: 170px;
-}
-
-
-/* =========================================================
-   TABLE
-   ========================================================= */
-
-#adminDashboard .admin-table-card {
-    width: 100%;
-
-    background: #ffffff;
-
-    border:
-        1px solid var(--admin-border);
-
-    border-radius: 17px;
-
-    box-shadow:
-        0 5px 18px
-        rgba(15,23,42,.04);
-
-    overflow: hidden;
-}
-
-#adminDashboard .admin-table-scroll {
-    width: 100%;
-
-    overflow-x: auto;
-}
-
-#adminDashboard .admin-table {
-    width: 100%;
-
-    border-collapse: collapse;
-
-    min-width: 850px;
-
-    font-size: 12px;
-}
-
-#adminDashboard .admin-table th {
-    padding: 14px 16px;
-
-    background: #f8fafc;
-
-    color: #334155;
-
-    text-align: left;
-
-    font-size: 11px;
-
-    font-weight: 700;
-
-    white-space: nowrap;
-
-    border-bottom:
-        1px solid #e2e8f0;
-}
-
-#adminDashboard .admin-table td {
-    padding: 14px 16px;
-
-    color: #475569;
-
-    border-bottom:
-        1px solid #f1f5f9;
-
-    white-space: nowrap;
-}
-
-
-/* =========================================================
-   FINANCE
-   ========================================================= */
-
-#adminDashboard .admin-finance-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(4, minmax(0, 1fr));
-
-    gap: 18px;
-
-    margin-bottom: 22px;
-}
-
-#adminDashboard .admin-finance-grid > div {
-    padding: 18px;
-
-    background: #ffffff;
-
-    border:
-        1px solid var(--admin-border);
-
-    border-radius: 15px;
-
-    box-shadow:
-        0 4px 14px
-        rgba(15,23,42,.035);
-}
-
-
-/* =========================================================
-   SETTINGS
-   ========================================================= */
-
-#adminDashboard .admin-settings-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-    gap: 18px;
-}
-
-#adminDashboard .admin-settings-card {
-    padding: 24px;
-
-    background: #ffffff;
-
-    border:
-        1px solid var(--admin-border);
-
-    border-radius: 17px;
-
-    box-shadow:
-        0 4px 15px
-        rgba(15,23,42,.035);
 }
 
 
 /* =========================================================
    RESPONSIVE
-   ========================================================= */
+========================================================= */
 
-@media (max-width: 1200px) {
+@media (max-width: 800px) {
 
-    #adminDashboard .admin-stat-grid {
-        grid-template-columns:
-            repeat(3, minmax(0, 1fr));
-    }
-
-    #adminDashboard .admin-finance-grid {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
+    #teacherDashboard .teacher-profile-grid {
+        grid-template-columns: 1fr;
     }
 
 }
 
 
-@media (max-width: 900px) {
+@media (max-width: 600px) {
 
-    #adminDashboard .admin-sidebar {
-        position: fixed;
+    #teacherDashboard .teacher-profile-header {
+        flex-direction: column;
 
-        left: -280px;
-
-        top: 0;
-
-        width: 260px;
-
-        min-width: 260px;
-
-        height: 100vh;
-
-        transition:
-            left .25s ease;
-
-        z-index: 2000;
-    }
-
-    #adminDashboard .admin-sidebar.mobile-open {
-        left: 0;
-    }
-
-    #adminDashboard .admin-main {
-        width: 100%;
-
-        min-width: 100%;
-    }
-
-    #adminDashboard .admin-menu-toggle {
-        display: block;
-    }
-
-    #adminDashboard .admin-stat-grid {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-    }
-
-    #adminDashboard .admin-overview-grid {
-        grid-template-columns: 1fr;
-    }
-
-    #adminDashboard .admin-content {
-        padding: 22px;
-    }
-
-}
-
-
-@media (max-width: 650px) {
-
-    #adminDashboard .admin-header {
-        padding: 10px 18px;
-    }
-
-    #adminDashboard .admin-header-right {
-        gap: 8px;
-    }
-
-    #adminDashboard .admin-live-indicator,
-    #adminDashboard .admin-date-display {
-        display: none;
-    }
-
-    #adminDashboard .admin-profile > div:last-child {
-        display: none;
-    }
-
-    #adminDashboard .admin-content {
-        padding: 18px;
-    }
-
-    #adminDashboard .admin-stat-grid {
-        grid-template-columns: 1fr;
-
-        gap: 14px;
-    }
-
-    #adminDashboard .admin-finance-grid {
-        grid-template-columns: 1fr;
-    }
-
-    #adminDashboard .admin-settings-grid {
-        grid-template-columns: 1fr;
-    }
-
-    #adminDashboard .admin-welcome {
-        padding: 22px;
-
-        min-height: 125px;
-    }
-
-    #adminDashboard .admin-welcome h2 {
-        font-size: 21px;
-    }
-
-    #adminDashboard .admin-welcome-icon {
-        width: 58px;
-        height: 58px;
-
-        font-size: 28px;
-    }
-
-    #adminDashboard .admin-section-heading {
         align-items: flex-start;
 
-        flex-direction: column;
+        padding: 24px;
     }
 
-    #adminDashboard .admin-toolbar {
-        flex-direction: column;
+    #teacherDashboard .teacher-profile-avatar {
+        width: 70px;
+        height: 70px;
 
-        align-items: stretch;
+        flex-basis: 70px;
+
+        font-size: 34px;
     }
 
-    #adminDashboard .admin-toolbar select {
-        width: 100%;
+    #teacherDashboard .teacher-profile-header-info h2 {
+        font-size: 24px;
     }
 
-}
-
-
-/* =========================================================
-   ADMIN DASHBOARD SAFETY
-   ========================================================= */
-
-#adminDashboard *,
-#adminDashboard *::before,
-#adminDashboard *::after {
-    box-sizing: border-box;
-}
-
-#adminDashboard img {
-    max-width: 100%;
-}
-
-#adminDashboard button {
-    font-family: inherit;
-}
-
-#adminDashboard input,
-#adminDashboard select,
-#adminDashboard textarea {
-    max-width: 100%;
-}
-/* =========================================================
-   ADMINISTRATOR ACCOUNT BUTTON - FINAL
-========================================================= */
-
-#adminDashboard .admin-account-wrapper {
-    position: relative !important;
-    display: flex !important;
-    align-items: center !important;
-}
-
-#adminDashboard .admin-account-btn {
-    width: 180px !important;
-    height: 48px !important;
-
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-
-    gap: 10px !important;
-
-    padding: 0 14px !important;
-
-    background: #ffffff !important;
-    color: #172033 !important;
-
-    border: 1px solid #dbe3ef !important;
-    border-radius: 12px !important;
-
-    font-family: 'Poppins', sans-serif !important;
-    font-size: 13px !important;
-    font-weight: 600 !important;
-
-    cursor: pointer !important;
-
-    box-shadow: 0 5px 16px rgba(15,23,42,.07) !important;
-
-    transition: all .2s ease !important;
-}
-
-#adminDashboard .admin-account-btn:hover {
-    background: #f8fafc !important;
-    border-color: #bfdbfe !important;
-
-    box-shadow:
-        0 8px 22px rgba(37,99,235,.12) !important;
-
-    transform: translateY(-1px) !important;
-}
-
-
-/* Shield icon */
-
-#adminDashboard .admin-account-icon {
-    width: 32px !important;
-    height: 32px !important;
-
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-
-    border-radius: 9px !important;
-
-    background: #eff6ff !important;
-
-    font-size: 16px !important;
-    line-height: 1 !important;
-
-    flex-shrink: 0 !important;
-}
-
-
-/* Administrator text */
-
-#adminDashboard .admin-account-name {
-    color: #172033 !important;
-
-    font-size: 13px !important;
-    font-weight: 700 !important;
-
-    white-space: nowrap !important;
-}
-
-
-/* Arrow */
-
-#adminDashboard .admin-account-arrow {
-    color: #64748b !important;
-
-    font-size: 15px !important;
-    line-height: 1 !important;
-
-    margin-left: 2px !important;
-}
-
-
-/* =========================================================
-   DROPDOWN
-========================================================= */
-
-#adminDashboard .admin-account-dropdown {
-    position: absolute !important;
-
-    top: calc(100% + 8px) !important;
-    right: 0 !important;
-
-    width: 175px !important;
-
-    padding: 7px !important;
-
-    display: none;
-
-    background: #ffffff !important;
-
-    border: 1px solid #e2e8f0 !important;
-    border-radius: 12px !important;
-
-    box-shadow:
-        0 16px 35px rgba(15,23,42,.14) !important;
-
-    z-index: 99999 !important;
-}
-
-
-/* Logout */
-
-#adminDashboard .admin-account-dropdown button {
-    width: 100% !important;
-    height: 42px !important;
-
-    display: flex !important;
-    align-items: center !important;
-
-    gap: 9px !important;
-
-    padding: 0 12px !important;
-
-    border: none !important;
-    border-radius: 9px !important;
-
-    background: transparent !important;
-
-    color: #334155 !important;
-
-    font-family: 'Poppins', sans-serif !important;
-    font-size: 13px !important;
-    font-weight: 600 !important;
-
-    cursor: pointer !important;
-
-    text-align: left !important;
-}
-
-#adminDashboard .admin-account-dropdown button:hover {
-    background: #fef2f2 !important;
-    color: #dc2626 !important;
-}
-/* =========================================================
-   ADMINISTRATOR DROPDOWN OPEN STATE
-========================================================= */
-
-#adminDashboard .admin-account-dropdown.open {
-    display: block !important;
-}
-
-
-/* Keep dropdown above everything */
-
-#adminDashboard .admin-account-wrapper {
-    position: relative !important;
-    z-index: 99999 !important;
-}
-
-#adminDashboard .admin-account-dropdown {
-    z-index: 999999 !important;
-}
-/* ==========================================
-   USER MANAGEMENT - ADD STUDENT / TEACHER MODALS
-========================================== */
-
-#adminAddStudentModal,
-#adminTeacherModal {
-    position: fixed !important;
-    inset: 0 !important;
-    z-index: 999999 !important;
-    background: rgba(15, 23, 42, 0.65) !important;
-    display: none;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 30px !important;
-    overflow-y: auto !important;
-    box-sizing: border-box;
-}
-
-#adminAddStudentModal .admin-modal-overlay,
-#adminTeacherModal .admin-modal-overlay {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#adminAddStudentModal .admin-modal-card,
-#adminTeacherModal .admin-modal-card {
-    width: min(760px, 100%);
-    max-height: 90vh;
-    overflow-y: auto;
-    background: #ffffff;
-    border-radius: 18px;
-    box-shadow: 0 25px 70px rgba(15, 23, 42, 0.30);
-    padding: 30px;
-    box-sizing: border-box;
-}
-
-#adminAddStudentModal .admin-modal-header,
-#adminTeacherModal .admin-modal-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 20px;
-    padding-bottom: 20px;
-    margin-bottom: 24px;
-    border-bottom: 1px solid #e2e8f0;
-}
-
-#adminAddStudentModal .admin-modal-header span,
-#adminTeacherModal .admin-modal-header span {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: #2563eb;
-}
-
-#adminAddStudentModal .admin-modal-header h2,
-#adminTeacherModal .admin-modal-header h2 {
-    margin: 0;
-    font-size: 25px;
-    font-weight: 700;
-    color: #0f172a;
-}
-
-#adminAddStudentModal .admin-modal-header p,
-#adminTeacherModal .admin-modal-header p {
-    margin: 6px 0 0;
-    font-size: 13px;
-    color: #64748b;
-}
-
-#closeAdminAddStudentModal,
-#closeAdminTeacherModal {
-    width: 38px;
-    height: 38px;
-    min-width: 38px;
-    border: none;
-    border-radius: 50%;
-    background: #f1f5f9;
-    color: #475569;
-    font-size: 17px;
-    cursor: pointer;
-}
-
-#adminAddStudentModal .admin-form-grid,
-#adminTeacherModal .admin-form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px 20px;
-}
-
-#adminAddStudentModal .admin-form-group,
-#adminTeacherModal .admin-form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-}
-
-#adminAddStudentModal .admin-form-group label,
-#adminTeacherModal .admin-form-group label {
-    font-size: 13px;
-    font-weight: 600;
-    color: #334155;
-}
-
-#adminAddStudentModal .admin-form-group input,
-#adminAddStudentModal .admin-form-group select,
-#adminTeacherModal .admin-form-group input,
-#adminTeacherModal .admin-form-group select {
-    width: 100%;
-    height: 48px;
-    padding: 0 14px;
-    border: 1px solid #dbe3ec;
-    border-radius: 11px;
-    background: #f8fafc;
-    color: #0f172a;
-    font-size: 14px;
-    outline: none;
-    box-sizing: border-box;
-}
-
-#adminAddStudentModal .admin-form-group input:focus,
-#adminAddStudentModal .admin-form-group select:focus,
-#adminTeacherModal .admin-form-group input:focus,
-#adminTeacherModal .admin-form-group select:focus {
-    background: #ffffff;
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
-}
-
-#adminAddStudentModal .admin-modal-actions,
-#adminTeacherModal .admin-modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 28px;
-    padding-top: 20px;
-    border-top: 1px solid #e2e8f0;
-}
-
-#adminAddStudentModal .admin-modal-actions button,
-#adminTeacherModal .admin-modal-actions button {
-    min-height: 44px;
-    padding: 0 20px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-#adminAddStudentModal .admin-secondary-btn,
-#adminTeacherModal .admin-secondary-btn {
-    border: 1px solid #dbe3ec;
-    background: #f8fafc;
-    color: #475569;
-}
-
-#adminAddStudentModal .admin-primary-btn,
-#adminTeacherModal .admin-primary-btn {
-    border: none;
-    background: #2563eb;
-    color: #ffffff;
-}
-
-@media (max-width: 650px) {
-    #adminAddStudentModal,
-    #adminTeacherModal {
-        padding: 15px !important;
+    #teacherDashboard .teacher-profile-card {
+        padding: 22px 18px;
     }
 
-    #adminAddStudentModal .admin-modal-card,
-    #adminTeacherModal .admin-modal-card {
-        padding: 22px;
+    #teacherDashboard .teacher-profile-account-card {
+        align-items: flex-start;
     }
 
-    #adminAddStudentModal .admin-form-grid,
-    #adminTeacherModal .admin-form-grid {
-        grid-template-columns: 1fr;
-    }
-
-    #adminAddStudentModal .admin-modal-actions,
-    #adminTeacherModal .admin-modal-actions {
-        flex-direction: column-reverse;
-    }
-
-    #adminAddStudentModal .admin-modal-actions button,
-    #adminTeacherModal .admin-modal-actions button {
-        width: 100%;
-    }
-}
-#saveAdminAddStudentBtn {
-    white-space: nowrap;
-    min-width: 150px;
 }
