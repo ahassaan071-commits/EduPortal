@@ -27237,7 +27237,7 @@ if (teacherDashboard) {
     teacherDashboard.style.setProperty(
         "display",
         "flex",
-        "important"
+        // EduPortal
     );
 
     teacherDashboard.style.setProperty(
