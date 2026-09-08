@@ -624,11 +624,25 @@ if (selectedRole === "teacher") {
                 "studentDashboard"
             );
 
-        if (studentDashboard) {
+    if (studentDashboard) {
+    studentDashboard.style.setProperty(
+        "display",
+        "none",
+        "important"
+    );
 
-            studentDashboard.style.display =
-                "none";
-        }
+    studentDashboard.style.setProperty(
+        "visibility",
+        "hidden",
+        "important"
+    );
+
+    studentDashboard.style.setProperty(
+        "opacity",
+        "0",
+        "important"
+    );
+}
 
 
         // ------------------------------------------
