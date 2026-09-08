@@ -1238,10 +1238,29 @@ localStorage.removeItem("isLoggedIn");
 localStorage.removeItem("loggedInRole");
 localStorage.removeItem("loggedInStudent");
 
-document.getElementById("studentDashboard").style.display = "none";
+document.getElementById("studentDashboard").style.setProperty(
+    "display",
+    "none",
+    "important"
+);
 
-document.querySelector(".container").style.display = "flex";
+document.querySelector(".container").style.setProperty(
+    "display",
+    "flex",
+    "important"
+);
 
+document.querySelector(".container").style.setProperty(
+    "visibility",
+    "visible",
+    "important"
+);
+
+document.querySelector(".container").style.setProperty(
+    "opacity",
+    "1",
+    "important"
+);
 username.value = "";
 password.value = "";
 message.textContent = "";
@@ -10778,8 +10797,6 @@ localStorage.getItem(
 
 
 if (!loggedInStudent) {
-
-checkInButton.disabled = true;
 
 message.textContent =
 "Student session not found.";
