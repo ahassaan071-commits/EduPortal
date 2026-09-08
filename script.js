@@ -1435,9 +1435,12 @@ const studentDashboard =
 document.getElementById("studentDashboard");
 
 if (studentDashboard) {
-studentDashboard.style.display = "block";
+studentDashboard.style.setProperty(
+    "display",
+    "block",
+    "important"
+);
 }
-
 // Student Name
 const studentName =
 document.getElementById("studentName");
