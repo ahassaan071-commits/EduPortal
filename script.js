@@ -25935,12 +25935,26 @@ window.openTeacherPanel = function (sectionId, menuElement, event) {
 
     // 4. Hide dashboard home content
     const mainContent = dashboard.querySelector(".main-content");
+
     if (mainContent) {
+
         Array.from(mainContent.children).forEach(function (child) {
-            if (!sections.includes(child.id)) {
-                child.style.setProperty("display", "none", "important");
+
+            if (
+                !sections.includes(child.id) &&
+                !child.classList.contains("top-header")
+            ) {
+
+                child.style.setProperty(
+                    "display",
+                    "none",
+                    "important"
+                );
+
             }
+
         });
+
     }
 
     // 5. Show selected section (FORCE)

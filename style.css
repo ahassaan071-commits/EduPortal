@@ -36007,27 +36007,23 @@ button.late.active {
 --------------------------------------------------------- */
 
 #teacherDashboard .top-header {
-
-    position: fixed !important;
+    position: sticky !important;
 
     top: 0 !important;
 
-    left: 260px !important;
+    z-index: 100 !important;
 
-    z-index: 6000 !important;
+    width: calc(100% + 76px) !important;
 
-    width: calc(100vw - 260px) !important;
+    margin-left: -38px !important;
+    margin-right: -38px !important;
 
     min-height: 145px !important;
 
     padding: 28px 38px !important;
 
-    box-sizing: border-box !important;
-
     display: flex !important;
-
     align-items: center !important;
-
     justify-content: space-between !important;
 
     background:
@@ -36042,8 +36038,8 @@ button.late.active {
 
     box-shadow:
         0 8px 30px rgba(15, 23, 42, 0.12) !important;
-
 }
+
 
 /* Header Title */
 
