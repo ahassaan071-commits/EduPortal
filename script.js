@@ -14762,7 +14762,7 @@ await supabaseClient
 
     })
 
-    .eq("id", adminAccount.id);
+    .ilike("username", currentUsername);
 
 
 if (updateError) {
