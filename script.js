@@ -93,77 +93,51 @@ loginBtn.addEventListener("click", async function () {
     // ADMINISTRATOR
     // ==========================================
 
-    if (selectedRole === "administrator") {
+   if (selectedRole === "administrator") {
 
-        // Check local Administrator account
-        try {
+    // Always check Administrator account from Supabase first
+    try {
 
-            const adminData =
-                localStorage.getItem("adminAccount");
+        const result =
+            await supabaseClient
+                .from("admins")
+                .select("*")
+                .ilike(
+                    "username",
+                    enteredUsername
+                )
+                .limit(1);
 
-            if (adminData) {
-
-                const admin =
-                    JSON.parse(adminData);
-
-                if (
-                    admin &&
-                    String(admin.username || "")
-                        .trim()
-                        .toLowerCase() ===
-                    enteredUsername.toLowerCase()
-                ) {
-                    account = admin;
-                }
-            }
-
-        } catch (error) {
-            console.error(
-                "Administrator local account error:",
-                error
-            );
+        if (
+            !result.error &&
+            result.data &&
+            result.data.length > 0
+        ) {
+            account = result.data[0];
         }
 
-        // Check Supabase if local account not found
-        if (!account) {
+    } catch (error) {
 
-            try {
+        console.error(
+            "Administrator database error:",
+            error
+        );
 
-                const result =
-                    await supabaseClient
-                        .from("admins")
-                        .select("*")
-                        .ilike(
-                            "username",
-                            enteredUsername
-                        )
-                        .limit(1);
-
-                if (
-                    !result.error &&
-                    result.data &&
-                    result.data.length > 0
-                ) {
-                    account = result.data[0];
-                }
-
-            } catch (error) {
-                console.error(
-                    "Administrator database error:",
-                    error
-                );
-            }
-        }
-
-        if (!account) {
-
-            messageElement.style.color = "red";
-            messageElement.textContent =
-                "Administrator account not found.";
-            return;
-        }
     }
 
+
+    // Administrator account not found
+    if (!account) {
+
+        messageElement.style.color = "red";
+
+        messageElement.textContent =
+            "Administrator account not found.";
+
+        return;
+    }
+
+}
 // ==========================================
 // TEACHER
 // ==========================================
@@ -1341,7 +1315,7 @@ function toggleTeacherPassword(teacherId, button) {
 // ROLE-BASED AUTO LOGIN
 // ===============================
 
-window.addEventListener("load", function () {
+window.addEventListener("load", async function () {
 
 const isLoggedIn = localStorage.getItem("isLoggedIn");
 const loggedInRole = localStorage.getItem("loggedInRole");
@@ -1356,66 +1330,143 @@ return;
 
 if (loggedInRole === "administrator") {
 
-const savedAdmin =
-JSON.parse(localStorage.getItem("adminAccount"));
+    let savedAdmin = null;
 
-if (!savedAdmin) {
-localStorage.removeItem("isLoggedIn");
-localStorage.removeItem("loggedInRole");
-return;
+
+    // Verify Administrator session from Supabase
+    try {
+
+        const localAdmin =
+            JSON.parse(
+                localStorage.getItem("adminAccount")
+            );
+
+        if (!localAdmin || !localAdmin.id) {
+
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("loggedInRole");
+
+            return;
+        }
+
+
+        const { data: latestAdmin, error } =
+            await supabaseClient
+                .from("admins")
+                .select("*")
+                .eq("id", localAdmin.id)
+                .limit(1);
+
+
+        if (
+            error ||
+            !latestAdmin ||
+            latestAdmin.length === 0
+        ) {
+
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("loggedInRole");
+            localStorage.removeItem("adminAccount");
+
+            return;
+        }
+
+
+        // Use latest Supabase Administrator data
+        savedAdmin = latestAdmin[0];
+
+
+        // Update local session with latest data
+        localStorage.setItem(
+            "adminAccount",
+            JSON.stringify(savedAdmin)
+        );
+
+        localStorage.setItem(
+            "adminPassword",
+            String(savedAdmin.password || "")
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Administrator auto-login verification error:",
+            error
+        );
+
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("loggedInRole");
+        localStorage.removeItem("adminAccount");
+
+        return;
+    }
+
+
+    const loginContainer =
+        document.querySelector(".container");
+
+    if (loginContainer) {
+
+        loginContainer.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+
+    }
+
+
+    // Keep Student Dashboard hidden
+    const studentDashboard =
+        document.getElementById("studentDashboard");
+
+    if (studentDashboard) {
+
+        studentDashboard.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+
+    }
+
+
+    // Show Admin Dashboard
+    const adminDashboard =
+        document.getElementById("adminDashboard");
+
+    if (adminDashboard) {
+
+        adminDashboard.style.display = "block";
+        adminDashboard.style.visibility = "visible";
+        adminDashboard.style.opacity = "1";
+        adminDashboard.style.position = "fixed";
+        adminDashboard.style.top = "0";
+        adminDashboard.style.left = "0";
+        adminDashboard.style.width = "100vw";
+        adminDashboard.style.height = "100vh";
+        adminDashboard.style.minHeight = "100vh";
+        adminDashboard.style.zIndex = "999999";
+        adminDashboard.style.overflow = "auto";
+
+    }
+
+
+    const adminName =
+        document.getElementById("adminName");
+
+    if (adminName) {
+
+        adminName.textContent =
+            "Welcome, " +
+            (savedAdmin.fullName || "Administrator") +
+            " 👋";
+
+    }
+
+    return;
+
 }
-
-const loginContainer =
-document.querySelector(".container");
-
-if (loginContainer) {
-loginContainer.style.display = "none";
-}
-
-// Keep parent visible
-const studentDashboard =
-document.getElementById("studentDashboard");
-
-if (studentDashboard) {
-    studentDashboard.style.setProperty(
-        "display",
-        "none",
-        "important"
-    );
-}
-
-// Show Admin Dashboard
-const adminDashboard =
-document.getElementById("adminDashboard");
-
-if (adminDashboard) {
-
-adminDashboard.style.display = "block";
-adminDashboard.style.visibility = "visible";
-adminDashboard.style.opacity = "1";
-adminDashboard.style.position = "fixed";
-adminDashboard.style.top = "0";
-adminDashboard.style.left = "0";
-adminDashboard.style.width = "100vw";
-adminDashboard.style.height = "100vh";
-adminDashboard.style.minHeight = "100vh";
-adminDashboard.style.zIndex = "999999";
-adminDashboard.style.overflow = "auto";
-}
-
-const adminName =
-document.getElementById("adminName");
-
-if (adminName) {
-adminName.textContent =
-"Welcome, " +
-savedAdmin.fullName +
-" 👋";
-}
-
-return;
-}
-
 
 // ==========================================
 // STUDENT AUTO LOGIN
@@ -14517,7 +14568,13 @@ if (saveNewPasswordBtn) {
 
 saveNewPasswordBtn.addEventListener(
 "click",
-function () {
+async function () {
+
+const currentUsername =
+currentAdminUsername.value.trim();
+
+const newUsername =
+newAdminUsername.value.trim();
 
 const currentPassword =
 currentAdminPassword.value.trim();
@@ -14529,36 +14586,89 @@ const confirmPassword =
 confirmAdminPassword.value.trim();
 
 
-// Check fields
+// Check required fields
 
 if (
+currentUsername === "" ||
+newUsername === "" ||
 currentPassword === "" ||
 newPassword === "" ||
 confirmPassword === ""
 ) {
 
-alert("Please fill all password fields.");
+alert("Please fill all credential fields.");
 
 return;
 
 }
 
 
-// Get existing password
+// Get current Administrator account
 
-const savedPassword =
-localStorage.getItem("adminPassword");
+const adminAccount =
+JSON.parse(
+localStorage.getItem("adminAccount")
+);
+
+if (!adminAccount || !adminAccount.id) {
+
+alert("Administrator account not found.");
+
+return;
+
+}
 
 
-/*
-* First time:
-* If no password is saved yet,
-* use the current password entered by admin.
-*/
+// Verify current credentials from Supabase
+
+const { data: currentAdmin, error: verifyError } =
+await supabaseClient
+    .from("admins")
+    .select("*")
+    .eq("id", adminAccount.id)
+    .limit(1);
+
 
 if (
-savedPassword !== null &&
-currentPassword !== savedPassword
+verifyError ||
+!currentAdmin ||
+currentAdmin.length === 0
+) {
+
+alert(
+"Administrator account could not be verified."
+);
+
+return;
+
+}
+
+
+const existingAdmin =
+currentAdmin[0];
+
+
+// Verify current username
+
+if (
+String(existingAdmin.username || "")
+.trim()
+.toLowerCase() !==
+currentUsername.toLowerCase()
+) {
+
+alert("Current username is incorrect.");
+
+return;
+
+}
+
+
+// Verify current password
+
+if (
+String(existingAdmin.password || "") !==
+currentPassword
 ) {
 
 alert("Current password is incorrect.");
@@ -14581,7 +14691,7 @@ return;
 }
 
 
-// Confirm password
+// Confirm new password
 
 if (newPassword !== confirmPassword) {
 
@@ -14594,7 +14704,92 @@ return;
 }
 
 
-// Save password
+// Check if new username already exists
+
+const { data: duplicateAdmin, error: duplicateError } =
+await supabaseClient
+    .from("admins")
+    .select("id")
+    .ilike("username", newUsername)
+    .neq("id", adminAccount.id)
+    .limit(1);
+
+
+if (duplicateError) {
+
+console.error(
+"ADMIN USERNAME CHECK ERROR:",
+duplicateError
+);
+
+alert(
+"Unable to check username:\n" +
+duplicateError.message
+);
+
+return;
+
+}
+
+
+if (
+duplicateAdmin &&
+duplicateAdmin.length > 0
+) {
+
+alert(
+"This username is already in use. Please choose another username."
+);
+
+return;
+
+}
+
+
+// Update Administrator credentials in Supabase
+
+const { data: updatedAdmin, error: updateError } =
+await supabaseClient
+    .from("admins")
+    .update({
+        username: newUsername,
+        password: newPassword
+    })
+    .eq("id", adminAccount.id)
+    .select()
+    .single();
+
+
+if (updateError) {
+
+console.error(
+"ADMIN CREDENTIAL UPDATE ERROR:",
+updateError
+);
+
+alert(
+"Credentials update failed:\n" +
+updateError.message
+);
+
+return;
+
+}
+
+
+// Update current laptop session
+
+adminAccount.username =
+newUsername;
+
+adminAccount.password =
+newPassword;
+
+
+localStorage.setItem(
+"adminAccount",
+JSON.stringify(adminAccount)
+);
 
 localStorage.setItem(
 "adminPassword",
@@ -14602,28 +14797,10 @@ newPassword
 );
 
 
-alert("Password updated successfully.");
-// Update Administrator Account Password
-
-const adminAccount =
-JSON.parse(
-localStorage.getItem("adminAccount")
-);
-
-if (adminAccount) {
-
-adminAccount.password =
-newPassword;
-
-localStorage.setItem(
-"adminAccount",
-JSON.stringify(adminAccount)
-);
-
-}
-
 // Clear fields
 
+currentAdminUsername.value = "";
+newAdminUsername.value = "";
 currentAdminPassword.value = "";
 newAdminPassword.value = "";
 confirmAdminPassword.value = "";
@@ -14632,6 +14809,11 @@ confirmAdminPassword.value = "";
 // Close popup
 
 closePasswordModal();
+
+
+alert(
+"Administrator username and password updated successfully. ✅"
+);
 
 }
 );

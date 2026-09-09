@@ -5636,7 +5636,6 @@ ADD NEW STUDENT MODAL
 <!-- ==========================================
 CHANGE PASSWORD MODAL
 ========================================== -->
-
 <div id="changePasswordModal" class="settings-modal">
 
 <div class="settings-modal-box">
@@ -5652,10 +5651,10 @@ CHANGE PASSWORD MODAL
     </div>
 
     <div>
-        <h2>Change Password</h2>
+        <h2>Administrator Credentials</h2>
 
         <p>
-            Update your administrator password
+            Update your administrator username and password
         </p>
     </div>
 
@@ -5665,10 +5664,39 @@ CHANGE PASSWORD MODAL
 
     <div class="settings-input-group">
 
+        <label>Current Username</label>
+
+        <input
+            type="text"
+            id="currentAdminUsername"
+            placeholder="Enter current username"
+            autocomplete="username">
+
+    </div>
+
+
+    <div class="settings-input-group">
+
+        <label>New Username</label>
+
+        <input
+            type="text"
+            id="newAdminUsername"
+            placeholder="Enter new username"
+            autocomplete="username">
+
+    </div>
+
+
+    <div class="settings-input-group">
+
         <label>Current Password</label>
 
-        <input type="password" id="currentAdminPassword"
-            placeholder="Enter current password">
+        <input
+            type="password"
+            id="currentAdminPassword"
+            placeholder="Enter current password"
+            autocomplete="current-password">
 
     </div>
 
@@ -5677,8 +5705,11 @@ CHANGE PASSWORD MODAL
 
         <label>New Password</label>
 
-        <input type="password" id="newAdminPassword"
-            placeholder="Enter new password">
+        <input
+            type="password"
+            id="newAdminPassword"
+            placeholder="Enter new password"
+            autocomplete="new-password">
 
     </div>
 
@@ -5687,8 +5718,11 @@ CHANGE PASSWORD MODAL
 
         <label>Confirm New Password</label>
 
-        <input type="password" id="confirmAdminPassword"
-            placeholder="Confirm new password">
+        <input
+            type="password"
+            id="confirmAdminPassword"
+            placeholder="Confirm new password"
+            autocomplete="new-password">
 
     </div>
 
@@ -5697,24 +5731,24 @@ CHANGE PASSWORD MODAL
 
 <div class="settings-modal-actions">
 
-    <button type="button" id="cancelChangePasswordBtn" class="settings-cancel-btn">
+    <button
+        type="button"
+        id="cancelChangePasswordBtn"
+        class="settings-cancel-btn">
 
         Cancel
 
     </button>
 
 
-    <button type="button" id="saveNewPasswordBtn" class="settings-save-btn">
+    <button
+        type="button"
+        id="saveNewPasswordBtn"
+        class="settings-save-btn">
 
-        🔒 Update Password
+        🔐 Update Credentials
 
     </button>
-
-</div>
-
-</div>
-
-</div>
 
 </div>
 
