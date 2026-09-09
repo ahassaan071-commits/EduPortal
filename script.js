@@ -14551,8 +14551,11 @@ closePasswordModal();
 // SAVE NEW ADMIN PASSWORD
 // ==========================================
 
-const saveNewPasswordBtn =
-document.getElementById("saveNewPasswordBtn");
+const currentAdminUsername =
+document.getElementById("currentAdminUsername");
+
+const newAdminUsername =
+document.getElementById("newAdminUsername");
 
 const currentAdminPassword =
 document.getElementById("currentAdminPassword");
