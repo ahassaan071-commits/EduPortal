@@ -14610,12 +14610,9 @@ JSON.parse(
 localStorage.getItem("adminAccount")
 );
 
-if (!adminAccount || !adminAccount.id) {
-
+if (!adminAccount) {
 alert("Administrator account not found.");
-
 return;
-
 }
 
 
