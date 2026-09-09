@@ -92,11 +92,14 @@ loginBtn.addEventListener("click", async function () {
     // ==========================================
     // ADMINISTRATOR
     // ==========================================
-
-   if (selectedRole === "administrator") {
+if (selectedRole === "administrator") {
 
     // Always check Administrator account from Supabase first
     try {
+
+        const usernameToFind =
+            String(enteredUsername || "")
+                .trim();
 
         const result =
             await supabaseClient
@@ -104,16 +107,34 @@ loginBtn.addEventListener("click", async function () {
                 .select("*")
                 .ilike(
                     "username",
-                    enteredUsername
+                    usernameToFind
                 )
                 .limit(1);
 
+        if (result.error) {
+
+            console.error(
+                "Administrator database error:",
+                result.error
+            );
+
+            messageElement.style.color = "red";
+
+            messageElement.textContent =
+                "Administrator login error: " +
+                result.error.message;
+
+            return;
+        }
+
         if (
-            !result.error &&
             result.data &&
             result.data.length > 0
         ) {
-            account = result.data[0];
+
+            account =
+                result.data[0];
+
         }
 
     } catch (error) {
@@ -123,10 +144,15 @@ loginBtn.addEventListener("click", async function () {
             error
         );
 
+        messageElement.style.color = "red";
+
+        messageElement.textContent =
+            "Unable to connect to Administrator account.";
+
+        return;
     }
 
 
-    // Administrator account not found
     if (!account) {
 
         messageElement.style.color = "red";
