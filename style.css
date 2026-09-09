@@ -44636,3 +44636,8 @@ body:has(#teacherDashboard[style*="display"]) {
     }
 
 }
+#teacherDashboard .top-header {
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
