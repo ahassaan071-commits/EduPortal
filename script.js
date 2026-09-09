@@ -4656,25 +4656,41 @@ if (studentDashboard) {
 studentDashboard.style.display = "none";
 }
 
-
 // ==========================================
+
 // SHOW LOGIN SCREEN
+
 // ==========================================
 
 const loginContainer =
+
 document.querySelector(".container");
 
 if (loginContainer) {
 
-loginContainer.style.display = "flex";
+loginContainer.classList.remove(
+"session-hidden"
+);
 
-loginContainer.style.visibility =
-"visible";
+loginContainer.style.setProperty(
+"display",
+"flex",
+"important"
+);
 
-loginContainer.style.opacity =
-"1";
+loginContainer.style.setProperty(
+"visibility",
+"visible",
+"important"
+);
+
+loginContainer.style.setProperty(
+"opacity",
+"1",
+"important"
+);
+
 }
-
 
 // ==========================================
 // RESET LOGIN FIELDS
