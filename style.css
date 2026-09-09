@@ -37542,11 +37542,20 @@ button.late.active {
 ========================================================= */
 
 #teacherDashboard .main-content {
-    padding: 0 !important;
-    box-sizing: border-box !important;
+    margin-left: 250px !important;
+    width: calc(100% - 250px) !important;
+
+    height: 100vh !important;
     min-height: 100vh !important;
+
+    padding: 0 30px 50px !important;
+
+    box-sizing: border-box !important;
+
     overflow-x: hidden !important;
     overflow-y: auto !important;
+
+    position: relative !important;
 }
 
 
