@@ -37564,6 +37564,10 @@ button.late.active {
 ========================================================= */
 
 #teacherDashboard .top-header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1000 !important;
+
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
@@ -37572,7 +37576,7 @@ button.late.active {
     min-height: 78px !important;
 
     padding: 18px 22px !important;
-    margin-bottom: 20px !important;
+    margin: 0 0 20px 0 !important;
 
     background: #ffffff !important;
 
@@ -37580,7 +37584,7 @@ button.late.active {
     border-radius: 16px !important;
 
     box-shadow:
-        0 6px 20px rgba(15, 23, 42, 0.05) !important;
+        0 6px 20px rgba(15, 23, 42, 0.08) !important;
 
     box-sizing: border-box !important;
 }
@@ -38063,13 +38067,31 @@ body:has(#teacherDashboard[style*="display"]) {
 ========================================================= */
 
 #teacherDashboard > .main-content {
-    padding: 28px 38px 60px !important;
+    margin-left: 270px !important;
+    width: calc(100% - 270px) !important;
+
+    padding: 0 30px 50px !important;
+
+    box-sizing: border-box !important;
+
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+
+    position: relative !important;
 }
 
-/* Center the top header */
+/* Teacher Header */
 #teacherDashboard .top-header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1000 !important;
+
+    width: 100% !important;
     max-width: 1200px !important;
+
     margin: 0 auto 25px !important;
+
+    box-sizing: border-box !important;
 }
 
 /* Keep dashboard sections centered */
