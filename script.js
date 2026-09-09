@@ -14755,9 +14755,7 @@ await supabaseClient
         username: newUsername,
         password: newPassword
     })
-    .eq("id", adminAccount.id)
-    .select()
-    .single();
+    .eq("id", adminAccount.id);
 
 
 if (updateError) {
