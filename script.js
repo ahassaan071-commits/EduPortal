@@ -14748,13 +14748,20 @@ return;
 
 // Update Administrator credentials in Supabase
 
-const { data: updatedAdmin, error: updateError } =
+const { error: updateError } =
+
 await supabaseClient
+
     .from("admins")
+
     .update({
+
         username: newUsername,
+
         password: newPassword
+
     })
+
     .eq("id", adminAccount.id);
 
 
