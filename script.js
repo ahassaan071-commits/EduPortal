@@ -1924,92 +1924,197 @@ window.addEventListener("load", updateDashboardStats);
 
 async function updateDashboardStats() {
 
-   const student =
-    JSON.parse(localStorage.getItem("currentStudent")) ||
-    JSON.parse(localStorage.getItem("loggedInStudent")) ||
-    null;
+    const student =
+        JSON.parse(
+            localStorage.getItem("currentStudent")
+        ) ||
+        JSON.parse(
+            localStorage.getItem("loggedInStudent")
+        ) ||
+        null;
 
     if (!student) {
         return;
     }
 
-
-    // ==========================================
-    // PROFILE COMPLETION
-    // ==========================================
-
-    let completed = 0;
-
-    const totalFields = 8;
-
-    if (student.fullName) completed++;
-    if (student.fatherName) completed++;
-    if (student.studentClass) completed++;
-    if (student.section) completed++;
-    if (student.rollNumber) completed++;
-    if (student.dob) completed++;
-    if (student.email) completed++;
-    if (student.mobile) completed++;
-
-
-    const profilePercentage =
-        Math.round(
-            (
-                completed /
-                totalFields
-            ) * 100
-        );
-
-
-    const profileElement =
-        document.getElementById(
-            "profileCompletion"
-        );
-
-
-    if (profileElement) {
-
-        profileElement.textContent =
-            profilePercentage + "%";
-
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+        return;
     }
 
 
     // ==========================================
-    // ATTENDANCE
+    // FIND STUDENT IN SUPABASE
     // ==========================================
 
-    const attendanceElement =
-        document.getElementById(
-            "attendancePercent"
-        );
+    let dbStudent = null;
 
+    if (student.id) {
 
-    const attendanceValue =
-        document.getElementById(
-            "attendancePercentage"
-        );
+        const result =
+            await supabaseClient
+                .from("students")
+                .select("*")
+                .eq(
+                    "id",
+                    student.id
+                )
+                .maybeSingle();
+
+        if (
+            !result.error &&
+            result.data
+        ) {
+            dbStudent =
+                result.data;
+        }
+    }
 
 
     if (
-        attendanceElement &&
-        attendanceValue
+        !dbStudent &&
+        student.studentId
     ) {
 
-        attendanceElement.textContent =
-            attendanceValue.textContent;
+        const result =
+            await supabaseClient
+                .from("students")
+                .select("*")
+                .eq(
+                    "student_id",
+                    student.studentId
+                )
+                .maybeSingle();
+
+        if (
+            !result.error &&
+            result.data
+        ) {
+            dbStudent =
+                result.data;
+        }
+    }
+
+
+    const data =
+        dbStudent ||
+        student;
+
+
+    // ==========================================
+    // ATTENDANCE FROM SUPABASE
+    // ==========================================
+
+    if (dbStudent) {
+
+        const {
+            data: attendanceRecords
+        } =
+            await supabaseClient
+                .from("attendance")
+                .select("status")
+                .eq(
+                    "student_id",
+                    dbStudent.id
+                );
+
+
+        let present = 0;
+        let absent = 0;
+        let late = 0;
+
+
+        (
+            attendanceRecords ||
+            []
+        ).forEach(
+            function(record) {
+
+                const status =
+                    String(
+                        record.status ||
+                        ""
+                    ).toLowerCase();
+
+
+                if (
+                    status ===
+                    "present"
+                ) {
+                    present++;
+                }
+
+                else if (
+                    status ===
+                    "absent"
+                ) {
+                    absent++;
+                }
+
+                else if (
+                    status ===
+                    "late"
+                ) {
+                    late++;
+                }
+
+            }
+        );
+
+
+        const total =
+            present +
+            absent +
+            late;
+
+
+        const attendancePercentage =
+            total > 0
+                ? Math.round(
+                    (
+                        present /
+                        total
+                    ) * 100
+                )
+                : 0;
+
+
+        const attendanceElement =
+            document.getElementById(
+                "attendancePercent"
+            );
+
+
+        if (attendanceElement) {
+
+            attendanceElement.textContent =
+                attendancePercentage +
+                "%";
+
+        }
 
     }
 
 
     // ==========================================
-    // SUBJECTS
+    // SUBJECT COUNT FROM SUPABASE
     // ==========================================
 
-    const subjectContainer =
-        document.getElementById(
-            "studentSubjects"
-        );
+    const {
+        data: subjects
+    } =
+        await supabaseClient
+            .from("subjects")
+            .select("id");
+
+
+    const subjectCount =
+        (
+            subjects ||
+            []
+        ).length;
 
 
     const subjectCountElement =
@@ -2018,47 +2123,85 @@ async function updateDashboardStats() {
         );
 
 
-    if (
-        subjectContainer &&
-        subjectCountElement
-    ) {
-
-        const subjectItems =
-            subjectContainer.querySelectorAll(
-                ".student-data-item"
-            );
-
+    if (subjectCountElement) {
 
         subjectCountElement.textContent =
-            subjectItems.length +
+            subjectCount +
             " Subjects";
 
     }
 
 
     // ==========================================
-    // FEES
+    // OVERALL RESULT
     // ==========================================
 
-    const feeStatusElement =
-        document.getElementById(
-            "feeStatus"
+    if (dbStudent) {
+
+        const {
+            data: results
+        } =
+            await supabaseClient
+                .from("results")
+                .select(
+                    "marks, total_marks"
+                )
+                .eq(
+                    "student_id",
+                    dbStudent.id
+                );
+
+
+        let obtained = 0;
+        let totalMarks = 0;
+
+
+        (
+            results ||
+            []
+        ).forEach(
+            function(result) {
+
+                obtained +=
+                    Number(
+                        result.marks ||
+                        0
+                    );
+
+                totalMarks +=
+                    Number(
+                        result.total_marks ||
+                        0
+                    );
+
+            }
         );
 
 
-    const dashboardFeeStatus =
-        document.getElementById(
-            "dashboardFeeStatus"
-        );
+        const overallPercentage =
+            totalMarks > 0
+                ? Math.round(
+                    (
+                        obtained /
+                        totalMarks
+                    ) * 100
+                )
+                : 0;
 
 
-    if (
-        dashboardFeeStatus &&
-        feeStatusElement
-    ) {
+        const profileElement =
+            document.getElementById(
+                "profileCompletion"
+            );
 
-        dashboardFeeStatus.textContent =
-            feeStatusElement.textContent;
+
+        if (profileElement) {
+
+            profileElement.textContent =
+                overallPercentage +
+                "%";
+
+        }
 
     }
 
