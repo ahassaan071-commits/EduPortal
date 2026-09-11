@@ -7504,6 +7504,9 @@ if (action === "edit") {
         user.status ||
         "Active";
 
+editingUserType = userType;
+editingUserId = userId;
+
     const modal =
         document.getElementById(
             "editUserManagementModal"
