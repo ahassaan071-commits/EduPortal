@@ -7093,84 +7093,177 @@ button.title = "Show Password";
 // SHOW / HIDE USER MANAGEMENT PASSWORD
 // ==========================================
 
-function toggleUserManagementPassword(index, button) {
-
-    const students =
-        JSON.parse(
-            localStorage.getItem("adminStudents")
-        ) || [];
-
-    const teachers =
-        JSON.parse(
-            localStorage.getItem("adminTeachers")
-        ) || [];
-
-
-    const users = [];
-
-
-    // STUDENTS
-    students.forEach(function (student) {
-
-        users.push({
-            password: student.password || ""
-        });
-
-    });
-
-
-    // TEACHERS
-    teachers.forEach(function (teacher) {
-
-        users.push({
-            password: teacher.password || ""
-        });
-
-    });
-
-
-    const user = users[index];
-
-
-    if (!user || !user.password) {
-        return;
-    }
-
+async function toggleUserManagementPassword(index, button) {
 
     const passwordElement =
         document.getElementById(
             "userPassword-" + index
         );
 
-
     if (!passwordElement) {
         return;
     }
 
-
+    // Already showing → hide
     if (
-        passwordElement.textContent.trim() ===
+        passwordElement.textContent.trim() !==
         "••••••••"
     ) {
-
-        passwordElement.textContent =
-            user.password;
-
-        button.textContent = "🙈";
-
-        button.title =
-            "Hide Password";
-
-    } else {
 
         passwordElement.textContent =
             "••••••••";
 
         button.textContent = "👁️";
+        button.title = "Show Password";
 
-        button.title =
-            "Show Password";
+        return;
     }
+
+    // ==========================================
+    // GET CURRENT USER FROM SUPABASE
+    // ==========================================
+
+    try {
+
+        const tableBody =
+            document.getElementById(
+                "adminUsersStudentsTableBody"
+            );
+
+        if (!tableBody) {
+            return;
+        }
+
+        const rows =
+            tableBody.querySelectorAll("tr");
+
+        const row = rows[index];
+
+        if (!row) {
+            return;
+        }
+
+        const cells =
+            row.querySelectorAll("td");
+
+        // Role column
+        const roleText =
+            cells[1]?.textContent
+                .trim()
+                .toLowerCase() || "";
+
+        // ID column
+        const userDisplayId =
+            cells[2]?.textContent
+                .trim() || "";
+
+        let tableName = "";
+
+        let idColumn = "";
+
+        if (roleText.includes("student")) {
+
+            tableName = "students";
+            idColumn = "id";
+
+        } else if (
+            roleText.includes("teacher")
+        ) {
+
+            tableName = "teachers";
+            idColumn = "id";
+
+        } else {
+
+            return;
+        }
+
+        // ==========================================
+        // FIND USER
+        // ==========================================
+
+        let user = null;
+
+        let result =
+            await supabaseClient
+                .from(tableName)
+                .select("*")
+                .eq(
+                    idColumn,
+                    userDisplayId
+                )
+                .maybeSingle();
+
+        if (
+            !result.error &&
+            result.data
+        ) {
+
+            user = result.data;
+
+        } else {
+
+            // Try ID as number
+            result =
+                await supabaseClient
+                    .from(tableName)
+                    .select("*")
+                    .eq(
+                        idColumn,
+                        Number(userDisplayId)
+                    )
+                    .maybeSingle();
+
+            if (
+                !result.error &&
+                result.data
+            ) {
+
+                user = result.data;
+
+            }
+
+        }
+
+        if (!user) {
+
+            console.error(
+                "Password user not found:",
+                tableName,
+                userDisplayId
+            );
+
+            return;
+        }
+
+        // ==========================================
+        // SHOW PASSWORD
+        // ==========================================
+
+        const password =
+            user.password || "";
+
+        if (!password) {
+            passwordElement.textContent =
+                "Not Set";
+            return;
+        }
+
+        passwordElement.textContent =
+            password;
+
+        button.textContent = "🙈";
+        button.title = "Hide Password";
+
+    } catch (error) {
+
+        console.error(
+            "Password View Error:",
+            error
+        );
+
+    }
+
 }
 // ==========================================
 // TOGGLE STUDENT USER STATUS
