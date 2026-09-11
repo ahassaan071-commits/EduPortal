@@ -30673,53 +30673,29 @@ if (
 
 
     // ==========================================
-    // LOAD SUBJECTS
-    // ==========================================
+// LOAD ALL SUBJECTS FROM SUPABASE
+// ==========================================
 
-const subjectIds =
-    [
-        ...new Set(
-            latestResults.map(
-                function (result) {
-                    return result.subject_id;
-                }
-            )
-            .filter(
-                function (id) {
-                    return (
-                        id !== null &&
-                        id !== undefined
-                    );
-                }
-            )
-        )
-    ];
+const {
+    data: allSubjects,
+    error: subjectsError
+} =
+    await supabaseClient
+        .from("subjects")
+        .select("*")
+        .order(
+            "id",
+            {
+                ascending: true
+            }
+        );
 
 
-    let subjects = [];
-
-
-    if (subjectIds.length) {
-
-        const {
-            data,
-            error:
-                subjectError
-        } =
-            await supabaseClient
-                .from("subjects")
-                .select("*")
-                .in(
-                    "id",
-                    subjectIds
-                );
-
-
-   if (subjectError) {
+if (subjectsError) {
 
     console.error(
         "SUBJECTS LOAD ERROR:",
-        subjectError
+        subjectsError
     );
 
     container.innerHTML = `
@@ -30730,50 +30706,123 @@ const subjectIds =
 
     return;
 }
-         else {
 
-            subjects =
-                data || [];
+
+const subjects =
+    allSubjects || [];
+
+
+// ==========================================
+// MAP LATEST RESULT WITH SUBJECT
+// ==========================================
+
+const resultMap = {};
+
+latestResults.forEach(
+    function(result) {
+
+        const key =
+            String(
+                result.subject_id
+            );
+
+        if (
+            !resultMap[key]
+        ) {
+
+            resultMap[key] =
+                result;
 
         }
 
     }
+);
+
+
 // ==========================================
-// REMOVE DUPLICATE SUBJECT NAMES
+// CREATE RESULT ENTRY FOR EVERY SUBJECT
+// ==========================================
 
-const cleanResults = [];
-const seenSubjectNames = new Set();
+const cleanResults =
+    subjects.map(
+        function(subject) {
 
-latestResults.forEach(function (result) {
+            const result =
+                resultMap[
+                    String(subject.id)
+                ] || null;
 
-    const subjectRow =
-        subjects.find(function (item) {
 
-            return String(item.id) ===
-                   String(result.subject_id);
+            return {
 
-        });
+                subject_id:
+                    subject.id,
 
-    const subjectName =
-        String(
-            subjectRow?.name ||
-            subjectRow?.subject_name ||
-            subjectRow?.title ||
-            "Subject"
-        )
-        .trim()
-        .toLowerCase();
+                subject_name:
+                    subject.name ||
+                    subject.subject_name ||
+                    subject.title ||
+                    "Subject",
 
-    if (seenSubjectNames.has(subjectName)) {
-        return;
-    }
+                subject_code:
+                    subject.code ||
+                    "",
 
-    seenSubjectNames.add(subjectName);
-    cleanResults.push(result);
+                marks:
+                    result
+                        ? (
+                            result.marks ??
+                            result.obtained_marks ??
+                            0
+                        )
+                        : 0,
 
-});
-    
+                total_marks:
+                    result
+                        ? (
+                            result.total_marks ??
+                            0
+                        )
+                        : 0,
 
+                percentage:
+                    result
+                        ? (
+                            result.percentage ??
+                            0
+                        )
+                        : 0,
+
+                grade:
+                    result
+                        ? (
+                            result.grade ||
+                            "-"
+                        )
+                        : "-",
+
+                remarks:
+                    result
+                        ? (
+                            result.remarks ||
+                            ""
+                        )
+                        : ""
+
+            };
+
+        }
+    );
+
+
+// ==========================================
+// RESULT SUBJECT COUNT
+// ==========================================
+
+console.log(
+    "Student Subjects:",
+    cleanResults
+);
     // ==========================================
     // TOTAL RESULT
     // ==========================================
@@ -30890,63 +30939,48 @@ this.setText(
         ? "Pass ✅"
         : "Failed ❌"
 );
+// ==========================================
+// DISPLAY RESULTS
+// ==========================================
 
-    // ==========================================
-    // DISPLAY RESULTS
-    // ==========================================
+container.innerHTML = "";
 
-   cleanResults.forEach(
+cleanResults.forEach(
     function(result) {
 
-            const subjectRow =
-                subjects.find(
-                    function(item) {
+        const subject =
+            result.subject_name ||
+            "Subject";
 
-                        return String(
-                            item.id
-                        ) === String(
-                            result.subject_id
-                        );
+        const code =
+            result.subject_code ||
+            "";
 
-                    }
-                );
+        const marks =
+            Number(
+                result.marks ||
+                0
+            );
 
+        const total =
+            Number(
+                result.total_marks ||
+                0
+            );
 
-            const subject =
-                subjectRow?.name ||
-                subjectRow?.subject_name ||
-                subjectRow?.title ||
-                "Subject";
+        const subjectPercentage =
+            total > 0
+                ? Math.round(
+                    (
+                        marks /
+                        total
+                    ) * 100
+                )
+                : 0;
 
+        let subjectGrade = "-";
 
-            const marks =
-                Number(
-                    result.marks ||
-                    result.obtained_marks ||
-                    0
-                );
-
-
-            const total =
-                Number(
-                    result.total_marks ||
-                    0
-                );
-
-
-            const subjectPercentage =
-                total > 0
-                    ? Math.round(
-                        (
-                            marks /
-                            total
-                        ) * 100
-                    )
-                    : 0;
-
-
-            let subjectGrade = "-";
-
+        if (total > 0) {
 
             if (
                 subjectPercentage >= 90
@@ -30977,64 +31011,73 @@ this.setText(
                 subjectGrade = "F";
             }
 
-
-            const item =
-                document.createElement(
-                    "div"
-                );
+        }
 
 
-            item.className =
-                "student-data-item";
-
-
-            item.innerHTML = `
-
-                <div>
-
-                    <strong>
-                        ${subject}
-                    </strong>
-
-                    <small>
-                        ${marks}
-                        /
-                        ${total}
-
-                        &nbsp; • &nbsp;
-
-                        ${subjectPercentage}%
-                    </small>
-
-                    ${
-                        result.remarks
-                            ? `
-                                <small>
-                                    Remarks:
-                                    ${result.remarks}
-                                </small>
-                            `
-                            : ""
-                    }
-
-                </div>
-
-
-                <span
-                    class="status-badge"
-                >
-                    ${subjectGrade}
-                </span>
-
-            `;
-
-
-            container.appendChild(
-                item
+        const item =
+            document.createElement(
+                "div"
             );
 
-        }
-    );
+        item.className =
+            "student-data-item";
+
+
+        item.innerHTML = `
+            <div>
+
+                <strong>
+                    ${subject}
+                </strong>
+
+                ${
+                    code
+                        ? `
+                            <small>
+                                ${code}
+                            </small>
+                        `
+                        : ""
+                }
+
+                <small>
+                    ${marks}
+                    /
+                    ${total}
+
+                    &nbsp; • &nbsp;
+
+                    ${subjectPercentage}%
+                </small>
+
+                ${
+                    result.remarks
+                        ? `
+                            <small>
+                                Remarks:
+                                ${result.remarks}
+                            </small>
+                        `
+                        : ""
+                }
+
+            </div>
+
+
+            <span
+                class="status-badge"
+            >
+                ${subjectGrade}
+            </span>
+        `;
+
+
+        container.appendChild(
+            item
+        );
+
+    }
+);
 
 }};
  /* -------------------------
