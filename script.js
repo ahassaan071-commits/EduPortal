@@ -6519,30 +6519,52 @@ async function renderUserManagementStudents() {
 
 
     // ==========================================
-    // GET LOCAL STUDENTS
-    // ==========================================
+// GET STUDENTS FROM SUPABASE
+// ==========================================
 
-    let students = [];
+let students = [];
 
-    try {
+try {
 
-        students =
-            JSON.parse(
-                localStorage.getItem(
-                    "adminStudents"
-                )
-            ) || [];
+    const {
+        data: supabaseStudents,
+        error: studentError
+    } =
+        await supabaseClient
+            .from("students")
+            .select("*")
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
 
-    } catch (error) {
+    if (studentError) {
 
         console.error(
-            "Student data error:",
-            error
+            "Supabase Student Error:",
+            studentError
         );
 
         students = [];
+
+    } else {
+
+        students =
+            supabaseStudents || [];
+
     }
 
+} catch (error) {
+
+    console.error(
+        "Student data error:",
+        error
+    );
+
+    students = [];
+}
 
     // ==========================================
     // GET LOCAL TEACHERS
