@@ -30643,29 +30643,37 @@ if (
     latestResults.length === 0
 ) {
 
-        container.innerHTML = `
-            <div class="empty-state">
-                No results available.
-            </div>
-        `;
+    this.setText(
+        "totalMarks",
+        0
+    );
 
-        this.setText(
-            "resultPercentage",
-            "0%"
-        );
+    this.setText(
+        "obtainedMarks",
+        0
+    );
 
-        this.setText(
-            "resultGrade",
-            "-"
-        );
+    this.setText(
+        "percentage",
+        "0%"
+    );
 
-        this.setText(
-            "resultStatus",
-            "No Result"
-        );
+    this.setText(
+        "grade",
+        "-"
+    );
 
-        return;
-    }
+    this.setText(
+        "resultStatus",
+        "No Result"
+    );
+
+    container.innerHTML = `
+        <div class="empty-state">
+            No results available yet.
+        </div>
+    `;
+}
 
 
     // ==========================================
