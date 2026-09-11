@@ -29373,18 +29373,14 @@ const StudentDashboard = {
             return;
         }
 
-        this.loadProfile(student);
-        this.loadDashboard(student);
-        this.loadAttendance(student);
-        this.loadSubjects(student);
-        this.loadResults(student);
-        this.loadAssignments(student);
-        this.loadAssignmentResults(student);
-        
-  this.loadFees(student);
-
-
-
+   this.loadProfile(student);
+this.loadDashboard(student);
+this.loadAttendance(student);
+this.loadSubjects(student);
+this.loadResults(student);
+this.loadAssignments(student);
+this.loadAssignmentResults(student);
+this.loadFees(student);
 this.loadNotices(student);
     },
 
