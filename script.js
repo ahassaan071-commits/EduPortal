@@ -8331,84 +8331,88 @@ teachersSection.style.display = "block";
 
 });
 // ==========================================
-// ADMIN TEACHER MODAL OPEN / CLOSE
+// ADMIN TEACHER MODAL - OPEN / CLOSE
 // ==========================================
 
 document.addEventListener("click", function (event) {
 
-// Open Add Teacher
-if (event.target.closest("#adminAddTeacherBtn")) {
+    // Open Add Teacher
+    if (
+        event.target.closest(
+            "#adminAddTeacherBtn"
+        )
+    ) {
 
-    const modal =
-        document.getElementById("adminTeacherModal");
+        const modal =
+            document.getElementById(
+                "adminTeacherModal"
+            );
 
-    const form =
-        document.getElementById("adminTeacherForm");
+        const form =
+            document.getElementById(
+                "adminTeacherForm"
+            );
 
-    if (form) {
-        form.reset();
+        if (form) {
 
-        // Force clear browser autofill
-        document.getElementById("adminTeacherEmail").value = "";
-        document.getElementById("adminTeacherPassword").value = "";
+            form.reset();
+
+            const emailField =
+                document.getElementById(
+                    "adminTeacherEmail"
+                );
+
+            const passwordField =
+                document.getElementById(
+                    "adminTeacherPassword"
+                );
+
+            if (emailField) {
+                emailField.value = "";
+            }
+
+            if (passwordField) {
+                passwordField.value = "";
+            }
+        }
+
+        if (modal) {
+
+            modal.style.display = "flex";
+            modal.style.position = "fixed";
+            modal.style.inset = "0";
+            modal.style.width = "100vw";
+            modal.style.height = "100vh";
+            modal.style.zIndex = "9999999";
+            modal.style.alignItems = "center";
+            modal.style.justifyContent = "center";
+        }
+
+        return;
     }
 
-    if (modal) {
-        modal.style.display = "flex";
+
+    // Close Teacher Modal
+    if (
+        event.target.closest(
+            "#closeAdminTeacherModal"
+        ) ||
+        event.target.closest(
+            "#cancelAdminTeacher"
+        )
+    ) {
+
+        const modal =
+            document.getElementById(
+                "adminTeacherModal"
+            );
+
+        if (modal) {
+            modal.style.display = "none";
+        }
+
+        return;
     }
-
-    return;
-}
-if (
-    event.target.closest(
-        "#adminUsersAddTeacherBtn"
-    )
-) {
-
-    const modal =
-        document.getElementById(
-            "adminTeacherModal"
-        );
-
-    const form =
-        document.getElementById(
-            "adminTeacherForm"
-        );
-
-    if (form) {
-
-        form.reset();
-
-        document.getElementById(
-            "adminTeacherEmail"
-        ).value = "";
-
-        document.getElementById(
-            "adminTeacherPassword"
-        ).value = "";
-    }
-
-    if (modal) {
-        modal.style.display = "flex";
-    }
-
-    return;
-}
-
-// Close Teacher Modal
-if (
-event.target.closest("#closeAdminTeacherModal") ||
-event.target.closest("#cancelAdminTeacher")
-) {
-
-const modal =
-document.getElementById("adminTeacherModal");
-
-if (modal) {
-modal.style.display = "none";
-}
-
-}
 
 });
 // ==========================================
