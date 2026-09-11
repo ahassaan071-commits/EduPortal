@@ -2521,191 +2521,116 @@ async function updateAnalytics() {
     // ACADEMIC CHART SUBJECT ELEMENTS
     // =====================================================
 
-    const chartSubjects = [
+    // =====================================================
+// DYNAMIC ACADEMIC PERFORMANCE SUBJECTS
+// =====================================================
 
-        {
-            names: [
-                "Computer Science",
-                "Computer science",
-                "computer science"
-            ],
+const academicSubjectsList =
+    document.getElementById(
+        "academicSubjectsList"
+    );
 
-            percentageId:
-                "computerSciencePercentage",
+if (academicSubjectsList) {
 
-            barId:
-                "computerScienceBar"
-        },
+    academicSubjectsList.innerHTML = "";
 
-        {
-            names: [
-                "Mathematics",
-                "Math",
-                "math"
-            ],
+    const dynamicSubjects =
+        latestResults.map(
+            function(result) {
 
-            percentageId:
-                "mathematicsPercentage",
+                const subjectRow =
+                    subjects.find(
+                        function(subject) {
+                            return (
+                                String(subject.id) ===
+                                String(result.subject_id)
+                            );
+                        }
+                    );
 
-            barId:
-                "mathematicsBar"
-        },
+                const subjectName =
+                    subjectRow?.name ||
+                    subjectRow?.subject_name ||
+                    subjectRow?.title ||
+                    "Subject";
 
-        {
-            names: [
-                "English",
-                "english"
-            ],
+                const obtained =
+                    Number(
+                        result.marks ??
+                        result.obtained_marks ??
+                        0
+                    );
 
-            percentageId:
-                "englishPercentage",
+                const total =
+                    Number(
+                        result.total_marks ??
+                        0
+                    );
 
-            barId:
-                "englishBar"
-        },
+                const percentage =
+                    total > 0
+                        ? Math.round(
+                            (
+                                obtained /
+                                total
+                            ) * 100
+                        )
+                        : 0;
 
-        {
-    names: [
-        "Physics",
-        "physics"
-    ],
+                return {
+                    name: subjectName,
+                    percentage: percentage
+                };
+            }
+        );
 
-    percentageId:
-        "physicsPercentage",
+    dynamicSubjects.forEach(
+        function(subject) {
 
-    barId:
-        "physicsBar"
-},
+            const row =
+                document.createElement(
+                    "div"
+                );
 
-{
-    names: [
-        "Chemistry",
-        "chemistry"
-    ],
+            row.className =
+                "academic-row";
 
-    percentageId:
-        "chemistryPercentage",
+            row.innerHTML = `
+                <div class="academic-label">
+                    <span>${subject.name}</span>
 
-    barId:
-        "chemistryBar"
+                    <strong>
+                        ${subject.percentage}%
+                    </strong>
+                </div>
+
+                <div class="academic-bar">
+                    <div
+                        class="academic-bar-fill"
+                        style="width:${subject.percentage}%"
+                    ></div>
+                </div>
+            `;
+
+            academicSubjectsList.appendChild(
+                row
+            );
+        }
+    );
+
+    if (
+        dynamicSubjects.length === 0
+    ) {
+
+        academicSubjectsList.innerHTML = `
+            <div class="academic-empty-state">
+                No result data available yet.
+            </div>
+        `;
+
+    }
+
 }
-
-    ];
-
-
-    // =====================================================
-    // RESET CHART SUBJECTS
-    // =====================================================
-
-    chartSubjects.forEach(
-        function(item) {
-
-            const percentageElement =
-                document.getElementById(
-                    item.percentageId
-                );
-
-
-            const barElement =
-                document.getElementById(
-                    item.barId
-                );
-
-
-            if (percentageElement) {
-
-                percentageElement.textContent =
-                    "0%";
-            }
-
-
-            if (barElement) {
-
-                barElement.style.width =
-                    "0%";
-            }
-
-        }
-    );
-
-
-    // =====================================================
-    // APPLY REAL PERFORMANCE
-    // =====================================================
-
-    chartSubjects.forEach(
-        function(item) {
-
-            let percentage =
-                null;
-
-
-            for (
-                const subjectName
-                of item.names
-            ) {
-
-                if (
-                    performanceMap[
-                        subjectName
-                    ] !== undefined
-                ) {
-
-                    percentage =
-                        performanceMap[
-                            subjectName
-                        ];
-
-                    break;
-                }
-
-            }
-
-
-            if (
-                percentage === null
-            ) {
-
-                return;
-            }
-
-
-            const percentageElement =
-                document.getElementById(
-                    item.percentageId
-                );
-
-
-            const barElement =
-                document.getElementById(
-                    item.barId
-                );
-
-
-            if (percentageElement) {
-
-                percentageElement.textContent =
-                    percentage + "%";
-            }
-
-
-            if (barElement) {
-
-                setTimeout(
-                    function() {
-
-                        barElement.style.width =
-                            percentage + "%";
-
-                    },
-                    100
-                );
-            }
-
-        }
-    );
-
-
     // =====================================================
     // OVERALL PERFORMANCE
     // =====================================================
