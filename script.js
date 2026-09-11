@@ -7427,25 +7427,13 @@ if (action === "edit") {
     const userType =
         actionButton.dataset.userType;
 
-  const userId =
-        String(
-            actionButton.dataset.studentId || ""
-        );
+    const userId =
+        actionButton.dataset.studentId;
 
-    let tableName = "";
-
-    if (userType === "student") {
-        tableName = "students";
-    } else if (userType === "teacher") {
-        tableName = "teachers";
-    } else {
-        alert("Unable to determine user type.");
-        return;
-    }
-
-    // ==========================================
-    // GET USER FROM SUPABASE
-    // ==========================================
+    const tableName =
+        userType === "student"
+            ? "students"
+            : "teachers";
 
     const {
         data: user,
@@ -7457,15 +7445,24 @@ if (action === "edit") {
             .eq("id", userId)
             .maybeSingle();
 
+    console.log(
+        "EDIT USER:",
+        userType,
+        userId,
+        user,
+        error
+    );
+
     if (error) {
 
         console.error(
-            "Edit User Supabase Error:",
+            "Edit User Error:",
             error
         );
 
         alert(
-            "Unable to load user data."
+            "Unable to load user: " +
+            error.message
         );
 
         return;
@@ -7474,15 +7471,11 @@ if (action === "edit") {
     if (!user) {
 
         alert(
-            "User not found."
+            "User not found in Supabase."
         );
 
         return;
     }
-
-    // ==========================================
-    // FILL EDIT MODAL
-    // ==========================================
 
     document.getElementById(
         "editUserType"
@@ -7525,7 +7518,6 @@ if (action === "edit") {
 
     return;
 }
-
 // ==========================================
 // DELETE USER - SUPABASE + LOCAL STORAGE
 // ==========================================
