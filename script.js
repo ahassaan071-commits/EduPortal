@@ -7408,7 +7408,7 @@ const action =
 actionButton.dataset.action;
 
 const studentId =
-Number(actionButton.dataset.studentId);
+actionButton.dataset.studentId;
 
 
 // VIEW
@@ -28743,463 +28743,78 @@ document.addEventListener(
                 "#saveEditUserManagement"
             );
 
-
         if (!saveButton) {
             return;
         }
 
-
-        // ==========================================
-        // GET FIELDS
-        // ==========================================
-
         const nameField =
-            document.getElementById(
-                "editUserName"
-            );
-
-
+            document.getElementById("editUserName");
         const usernameField =
-            document.getElementById(
-                "editUserUsername"
-            );
-
-
+            document.getElementById("editUserUsername");
         const newPasswordField =
-            document.getElementById(
-                "editUserNewPassword"
-            );
-
-
+            document.getElementById("editUserNewPassword");
         const statusField =
-            document.getElementById(
-                "editUserStatus"
-            );
+            document.getElementById("editUserStatus");
 
-
-        if (
-            !nameField ||
-            !usernameField ||
-            !statusField
-        ) {
-
-            alert(
-                "Edit User fields are missing."
-            );
-
+        if (!nameField || !usernameField || !statusField) {
+            alert("Edit User fields are missing.");
             return;
         }
 
-
-        const newName =
-            nameField.value.trim();
-
-
-        const newUsername =
-            usernameField.value.trim();
-
-
-        const newPassword =
-            newPasswordField
-                ? newPasswordField.value.trim()
-                : "";
-
-
-        const newStatus =
-            statusField.value;
-
-
-        // ==========================================
-        // VALIDATION
-        // ==========================================
+        const newName = nameField.value.trim();
+        const newUsername = usernameField.value.trim();
+        const newPassword = newPasswordField ? newPasswordField.value.trim() : "";
+        const newStatus = statusField.value;
 
         if (!newName) {
-
-            alert(
-                "Please enter the user's name."
-            );
-
+            alert("Please enter the user's name.");
             nameField.focus();
-
             return;
         }
-
 
         if (!newUsername) {
-
-            alert(
-                "Please enter the username."
-            );
-
+            alert("Please enter the username.");
             usernameField.focus();
-
             return;
         }
 
-
-        // ==========================================
-        // STORAGE KEY
-        // ==========================================
-
-        const storageKey =
-            editingUserType ===
-            "student"
-                ? "adminStudents"
-                : "adminTeachers";
-
-
-        let users = [];
-
-
-        try {
-
-            users =
-                JSON.parse(
-                    localStorage.getItem(
-                        storageKey
-                    )
-                ) || [];
-
-        } catch (error) {
-
-            console.error(
-                "User data error:",
-                error
-            );
-
-            users = [];
-        }
-
-
-        // ==========================================
-        // FIND USER
-        // ==========================================
-
-        const userIndex =
-            users.findIndex(
-                function (user) {
-
-                    return Number(
-                        user.id
-                    ) ===
-                    Number(
-                        editingUserId
-                    );
-
-                }
-            );
-
-
-        if (userIndex === -1) {
-
-            alert(
-                "User not found."
-            );
-
+        if (typeof supabaseClient === "undefined") {
+            alert("Supabase connection is missing.");
             return;
         }
 
+        const tableName =
+            editingUserType === "student" ? "students" : "teachers";
 
-        const user =
-            users[userIndex];
-
-
-        // ==========================================
-        // UPDATE NAME
-        // ==========================================
-
-        if (
-            editingUserType ===
-            "student"
-        ) {
-
-            user.fullName =
-                newName;
-
-            user.name =
-                newName;
-
-        } else {
-
-            user.name =
-                newName;
-
-            user.fullName =
-                newName;
-
-        }
-
-
-        // ==========================================
-        // UPDATE USERNAME
-        // ==========================================
-
-        user.username =
-            newUsername;
-
-
-        // ==========================================
-        // UPDATE STATUS
-        // ==========================================
-
-        user.status =
-            newStatus;
-
-
-        // ==========================================
-        // UPDATE PASSWORD
-        // ==========================================
+        const updateData = {
+            name: newName,
+            username: newUsername,
+            status: newStatus
+        };
 
         if (newPassword) {
-
-            user.password =
-                newPassword;
-
+            updateData.password = newPassword;
         }
 
+        const { error } =
+            await supabaseClient
+                .from(tableName)
+                .update(updateData)
+                .eq("id", editingUserId);
 
-        // ==========================================
-        // SAVE LOCAL STORAGE
-        // ==========================================
-
-        users[userIndex] =
-            user;
-
-
-        localStorage.setItem(
-            storageKey,
-            JSON.stringify(users)
-        );
-
-
-        // ==========================================
-        // SAVE TO SUPABASE
-        // ==========================================
-
-        if (
-            typeof supabaseClient !==
-            "undefined"
-        ) {
-
-            try {
-
-                const tableName =
-                    editingUserType ===
-                    "student"
-                        ? "students"
-                        : "teachers";
-
-
-                const updateData = {
-
-                    name:
-                        newName,
-
-                    username:
-                        newUsername,
-
-                    status:
-                        newStatus
-
-                };
-
-
-                // Password only if changed
-
-                if (newPassword) {
-
-                    updateData.password =
-                        newPassword;
-
-                }
-
-
-                // ==========================================
-                // UPDATE BY USERNAME
-                // ==========================================
-
-                const oldUsername =
-                    user.username;
-
-
-                const result =
-                    await supabaseClient
-                        .from(tableName)
-                        .update(
-                            updateData
-                        )
-                        .eq(
-                            "username",
-                            oldUsername
-                        );
-
-
-                if (result.error) {
-
-                    console.warn(
-                        "Supabase update warning:",
-                        result.error
-                    );
-
-                }
-
-            } catch (error) {
-
-                console.warn(
-                    "Supabase update skipped:",
-                    error
-                );
-
-            }
-
+        if (error) {
+            console.error("USER UPDATE ERROR:", error);
+            alert("User could not be updated.\n\n" + error.message);
+            return;
         }
-
-
-        // ==========================================
-        // UPDATE CURRENT LOGIN SESSION
-        // ==========================================
-
-        if (
-            editingUserType ===
-            "student"
-        ) {
-
-            const loggedStudent =
-                JSON.parse(
-                    localStorage.getItem(
-                        "loggedInStudent"
-                    )
-                );
-
-
-            if (
-                loggedStudent &&
-                Number(
-                    loggedStudent.id
-                ) ===
-                Number(
-                    editingUserId
-                )
-            ) {
-
-                loggedStudent.fullName =
-                    newName;
-
-                loggedStudent.name =
-                    newName;
-
-                loggedStudent.username =
-                    newUsername;
-
-                loggedStudent.status =
-                    newStatus;
-
-
-                if (newPassword) {
-
-                    loggedStudent.password =
-                        newPassword;
-
-                }
-
-
-                localStorage.setItem(
-                    "loggedInStudent",
-                    JSON.stringify(
-                        loggedStudent
-                    )
-                );
-
-            }
-
-        }
-
-
-        if (
-            editingUserType ===
-            "teacher"
-        ) {
-
-            const loggedTeacher =
-                JSON.parse(
-                    localStorage.getItem(
-                        "loggedInTeacher"
-                    )
-                );
-
-
-            if (
-                loggedTeacher &&
-                Number(
-                    loggedTeacher.id
-                ) ===
-                Number(
-                    editingUserId
-                )
-            ) {
-
-                loggedTeacher.name =
-                    newName;
-
-                loggedTeacher.fullName =
-                    newName;
-
-                loggedTeacher.username =
-                    newUsername;
-
-                loggedTeacher.status =
-                    newStatus;
-
-
-                if (newPassword) {
-
-                    loggedTeacher.password =
-                        newPassword;
-
-                }
-
-
-                localStorage.setItem(
-                    "loggedInTeacher",
-                    JSON.stringify(
-                        loggedTeacher
-                    )
-                );
-
-            }
-
-        }
-
-
-        // ==========================================
-        // REFRESH USER MANAGEMENT
-        // ==========================================
-
-        if (
-            typeof renderUserManagementStudents ===
-            "function"
-        ) {
-
-            await renderUserManagementStudents();
-
-        }
-
-
-        // ==========================================
-        // CLOSE MODAL
-        // ==========================================
 
         closeEditUserManagementModal();
 
+        if (typeof renderUserManagementStudents === "function") {
+            await renderUserManagementStudents();
+        }
 
-        // ==========================================
-        // SUCCESS
-        // ==========================================
-
-        alert(
-            "User updated successfully. ✅"
-        );
-
+        alert("User updated successfully. ✅");
     }
 );
 // ==========================================
