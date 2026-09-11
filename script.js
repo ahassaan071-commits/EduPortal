@@ -14962,6 +14962,8 @@ document.getElementById("newAdminPassword");
 const confirmAdminPassword =
 document.getElementById("confirmAdminPassword");
 
+const saveNewPasswordBtn =
+document.getElementById("saveNewPasswordBtn");
 
 if (saveNewPasswordBtn) {
 
