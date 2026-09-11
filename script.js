@@ -8416,59 +8416,49 @@ document.addEventListener("click", function (event) {
 
 });
 // ==========================================
-// ADMIN TEACHER FORM - OPEN / CLOSE
+// ADMIN TEACHER FORM - CLOSE ONLY
 // ==========================================
 
 document.addEventListener("click", function (event) {
 
-// OPEN ADD TEACHER MODAL
-if (event.target.closest("#adminAddTeacherBtn")) {
+    // CLOSE X BUTTON
+    if (
+        event.target.closest(
+            "#closeAdminTeacherModal"
+        )
+    ) {
 
-const modal =
-document.getElementById("adminTeacherModal");
+        const modal =
+            document.getElementById(
+                "adminTeacherModal"
+            );
 
-if (!modal) {
-alert("Teacher Modal HTML nahi mila.");
-return;
-}
+        if (modal) {
+            modal.style.display = "none";
+        }
 
-modal.style.display = "flex";
-modal.style.position = "fixed";
-modal.style.top = "0";
-modal.style.left = "0";
-modal.style.width = "100%";
-modal.style.height = "100%";
-modal.style.background = "rgba(0,0,0,0.65)";
-modal.style.zIndex = "999999";
-modal.style.alignItems = "center";
-modal.style.justifyContent = "center";
-modal.style.padding = "20px";
-modal.style.boxSizing = "border-box";
-}
+        return;
+    }
 
 
-// CLOSE X BUTTON
-if (event.target.closest("#closeAdminTeacherModal")) {
+    // CANCEL BUTTON
+    if (
+        event.target.closest(
+            "#cancelAdminTeacher"
+        )
+    ) {
 
-const modal =
-document.getElementById("adminTeacherModal");
+        const modal =
+            document.getElementById(
+                "adminTeacherModal"
+            );
 
-if (modal) {
-modal.style.display = "none";
-}
-}
+        if (modal) {
+            modal.style.display = "none";
+        }
 
-
-// CANCEL BUTTON
-if (event.target.closest("#cancelAdminTeacher")) {
-
-const modal =
-document.getElementById("adminTeacherModal");
-
-if (modal) {
-modal.style.display = "none";
-}
-}
+        return;
+    }
 
 });
 // ==========================================
