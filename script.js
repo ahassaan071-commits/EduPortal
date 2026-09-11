@@ -29378,6 +29378,53 @@ this.loadDashboard(student);
 this.loadAttendance(student);
 this.loadSubjects(student);
 this.loadResults(student);
+
+if (
+    typeof supabaseClient !== "undefined"
+) {
+
+    if (
+        window.studentResultsRealtimeChannel
+    ) {
+
+        supabaseClient.removeChannel(
+            window.studentResultsRealtimeChannel
+        );
+
+    }
+
+
+    window.studentResultsRealtimeChannel =
+        supabaseClient
+            .channel(
+                "student-results-live"
+            )
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "results",
+                    filter:
+                        "student_id=eq." +
+                        student.id
+                },
+                function(payload) {
+
+                    console.log(
+                        "Student result updated:",
+                        payload
+                    );
+
+                    StudentDashboard.loadResults(
+                        student
+                    );
+
+                }
+            )
+            .subscribe();
+
+}
 this.loadAssignments(student);
 this.loadAssignmentResults(student);
 this.loadFees(student);
