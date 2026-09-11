@@ -17984,28 +17984,29 @@ document.addEventListener("click", function (event) {
         const studentModal =
             document.getElementById("adminAddStudentModal");
 
-        if (studentModal) {
+        if (!studentModal) {
+            console.error("Add Student Modal not found.");
+            return;
+        }
 
-            studentModal.style.display = "flex";
-            studentModal.style.position = "fixed";
-            studentModal.style.inset = "0";
-            studentModal.style.width = "100vw";
-            studentModal.style.height = "100vh";
-            studentModal.style.zIndex = "9999999";
-            studentModal.style.alignItems = "center";
-            studentModal.style.justifyContent = "center";
+        studentModal.style.display = "flex";
+        studentModal.style.position = "fixed";
+        studentModal.style.inset = "0";
+        studentModal.style.width = "100vw";
+        studentModal.style.height = "100vh";
+        studentModal.style.zIndex = "9999999";
+        studentModal.style.alignItems = "center";
+        studentModal.style.justifyContent = "center";
 
-            // Generate Student ID
-            const studentIdField =
-                document.getElementById("adminNewStudentId");
+        const studentIdField =
+            document.getElementById("adminNewStudentId");
 
-            if (
-                studentIdField &&
-                typeof generateAdminStudentId === "function"
-            ) {
-                studentIdField.value =
-                    generateAdminStudentId();
-            }
+        if (
+            studentIdField &&
+            typeof generateAdminStudentId === "function"
+        ) {
+            studentIdField.value =
+                generateAdminStudentId();
         }
 
         return;
@@ -18023,17 +18024,19 @@ document.addEventListener("click", function (event) {
         const teacherModal =
             document.getElementById("adminTeacherModal");
 
-        if (teacherModal) {
-
-            teacherModal.style.display = "flex";
-            teacherModal.style.position = "fixed";
-            teacherModal.style.inset = "0";
-            teacherModal.style.width = "100vw";
-            teacherModal.style.height = "100vh";
-            teacherModal.style.zIndex = "9999999";
-            teacherModal.style.alignItems = "center";
-            teacherModal.style.justifyContent = "center";
+        if (!teacherModal) {
+            console.error("Add Teacher Modal not found.");
+            return;
         }
+
+        teacherModal.style.display = "flex";
+        teacherModal.style.position = "fixed";
+        teacherModal.style.inset = "0";
+        teacherModal.style.width = "100vw";
+        teacherModal.style.height = "100vh";
+        teacherModal.style.zIndex = "9999999";
+        teacherModal.style.alignItems = "center";
+        teacherModal.style.justifyContent = "center";
 
         return;
     }
