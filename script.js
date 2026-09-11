@@ -6566,32 +6566,53 @@ try {
     students = [];
 }
 
-    // ==========================================
-    // GET LOCAL TEACHERS
-    // ==========================================
+ // ==========================================
+// GET TEACHERS FROM SUPABASE
+// ==========================================
 
-    let teachers = [];
+let teachers = [];
 
-    try {
+try {
 
-        teachers =
-            JSON.parse(
-                localStorage.getItem(
-                    "adminTeachers"
-                )
-            ) || [];
+    const {
+        data: supabaseTeachers,
+        error: teacherError
+    } =
+        await supabaseClient
+            .from("teachers")
+            .select("*")
+            .order(
+                "id",
+                {
+                    ascending: false
+                }
+            );
 
-    } catch (error) {
+    if (teacherError) {
 
         console.error(
-            "Teacher data error:",
-            error
+            "Supabase Teacher Error:",
+            teacherError
         );
 
         teachers = [];
+
+    } else {
+
+        teachers =
+            supabaseTeachers || [];
+
     }
 
+} catch (error) {
 
+    console.error(
+        "Teacher data error:",
+        error
+    );
+
+    teachers = [];
+}
     // ==========================================
     // COMBINE USERS
     // ==========================================
