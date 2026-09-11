@@ -7427,57 +7427,89 @@ if (action === "edit") {
     const userType =
         actionButton.dataset.userType;
 
-    const userId =
-        Number(actionButton.dataset.studentId);
+  const userId =
+        String(
+            actionButton.dataset.studentId || ""
+        );
 
-    let users = [];
+    let tableName = "";
 
     if (userType === "student") {
-
-        users =
-            JSON.parse(
-                localStorage.getItem("adminStudents")
-            ) || [];
-
+        tableName = "students";
+    } else if (userType === "teacher") {
+        tableName = "teachers";
     } else {
-
-        users =
-            JSON.parse(
-                localStorage.getItem("adminTeachers")
-            ) || [];
-
+        alert("Unable to determine user type.");
+        return;
     }
 
-    const user =
-        users.find(function(item) {
+    // ==========================================
+    // GET USER FROM SUPABASE
+    // ==========================================
 
-            return Number(item.id) === userId;
+    const {
+        data: user,
+        error
+    } =
+        await supabaseClient
+            .from(tableName)
+            .select("*")
+            .eq("id", userId)
+            .maybeSingle();
 
-        });
+    if (error) {
+
+        console.error(
+            "Edit User Supabase Error:",
+            error
+        );
+
+        alert(
+            "Unable to load user data."
+        );
+
+        return;
+    }
 
     if (!user) {
 
-        alert("User not found.");
+        alert(
+            "User not found."
+        );
 
         return;
-
     }
 
-    document.getElementById("editUserType").value =
+    // ==========================================
+    // FILL EDIT MODAL
+    // ==========================================
+
+    document.getElementById(
+        "editUserType"
+    ).value =
         userType === "student"
             ? "Student"
             : "Teacher";
 
-    document.getElementById("editUserName").value =
-        userType === "student"
-            ? (user.fullName || "")
-            : (user.name || "");
+    document.getElementById(
+        "editUserName"
+    ).value =
+        user.fullName ||
+        user.full_name ||
+        user.name ||
+        "";
 
-    document.getElementById("editUserUsername").value =
-        user.username || "";
+    document.getElementById(
+        "editUserUsername"
+    ).value =
+        user.username ||
+        "";
 
-    document.getElementById("editUserStatus").value =
-        user.status || "Active";
+    document.getElementById(
+        "editUserStatus"
+    ).value =
+        user.status ||
+        "Active";
 
     const modal =
         document.getElementById(
@@ -7486,19 +7518,12 @@ if (action === "edit") {
 
     if (modal) {
 
-        modal.style.display = "flex";
+        modal.style.display =
+            "flex";
 
     }
 
     return;
-}
-
-// DISABLE / ENABLE
-if (action === "status") {
-
-toggleStudentStatus(studentId);
-
-return;
 }
 
 // ==========================================
