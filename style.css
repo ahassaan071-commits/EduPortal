@@ -38038,11 +38038,26 @@ button.late.active {
 
 }
 /* =========================================================
-   SESSION LOGIN SCREEN FIX
-   Hide Login Completely When User Is Logged In
+   PERMANENT LOGIN SCREEN FIX
+   Login must NEVER appear over an active dashboard
 ========================================================= */
 
 .container.session-hidden {
+    display: none !important;
+}
+
+/* Student Dashboard active */
+body:has(#studentDashboard[style*="display: block"]) .container {
+    display: none !important;
+}
+
+/* Teacher Dashboard active */
+body:has(#teacherDashboard[style*="display: flex"]) .container {
+    display: none !important;
+}
+
+/* Administrator Dashboard active */
+body:has(#adminDashboard[style*="display: block"]) .container {
     display: none !important;
 }
 /* =========================================================

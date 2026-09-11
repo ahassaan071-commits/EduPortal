@@ -10862,92 +10862,318 @@ JSON.stringify(records)
 // UPDATE STUDENT ATTENDANCE UI
 // ==========================================================
 
-function updateStudentAttendanceUI() {
+async function updateStudentAttendanceUI() {
 
-const checkInButton =
-document.getElementById(
-"studentCheckInBtn"
-);
+    const checkInButton =
+        document.getElementById(
+            "studentCheckInBtn"
+        );
+
+    const message =
+        document.getElementById(
+            "todayAttendanceMessage"
+        );
+
+    const todayStatus =
+        document.getElementById(
+            "todayAttendanceStatus"
+        );
 
 
-const message =
-document.getElementById(
-"todayAttendanceMessage"
-);
+    if (!checkInButton || !message) {
+        return;
+    }
 
 
-if (!checkInButton || !message) {
-return;
+    const loggedInStudent =
+        JSON.parse(
+            localStorage.getItem(
+                "loggedInStudent"
+            )
+        );
+
+
+    if (!loggedInStudent) {
+
+        message.textContent =
+            "Student session not found.";
+
+        return;
+    }
+
+
+    // ==========================================
+    // GET DATABASE STUDENT
+    // ==========================================
+
+    let dbStudent = null;
+
+
+    if (loggedInStudent.id) {
+
+        const result =
+            await supabaseClient
+                .from("students")
+                .select(
+                    "id, student_id"
+                )
+                .eq(
+                    "id",
+                    loggedInStudent.id
+                )
+                .maybeSingle();
+
+
+        if (
+            !result.error &&
+            result.data
+        ) {
+
+            dbStudent =
+                result.data;
+
+        }
+    }
+
+
+    // ==========================================
+    // FALLBACK USING STUDENT ID
+    // ==========================================
+
+    if (
+        !dbStudent &&
+        loggedInStudent.studentId
+    ) {
+
+        const result =
+            await supabaseClient
+                .from("students")
+                .select(
+                    "id, student_id"
+                )
+                .eq(
+                    "student_id",
+                    loggedInStudent.studentId
+                )
+                .maybeSingle();
+
+
+        if (
+            !result.error &&
+            result.data
+        ) {
+
+            dbStudent =
+                result.data;
+
+        }
+    }
+
+
+    if (!dbStudent) {
+
+        message.textContent =
+            "Student record not found.";
+
+        return;
+    }
+
+
+    // ==========================================
+    // TODAY
+    // ==========================================
+
+    const today =
+        getStudentAttendanceDate();
+
+
+    // ==========================================
+    // GET TODAY ATTENDANCE FROM SUPABASE
+    // ==========================================
+
+    const {
+        data: todayRecord,
+        error
+    } =
+        await supabaseClient
+            .from("attendance")
+            .select(
+                "id, status, check_in_time, check_out_time"
+            )
+            .eq(
+                "student_id",
+                dbStudent.id
+            )
+            .eq(
+                "attendance_date",
+                today
+            )
+            .maybeSingle();
+
+
+    if (error) {
+
+        console.error(
+            "TODAY ATTENDANCE LOAD ERROR:",
+            error
+        );
+
+        message.textContent =
+            "Unable to load today's attendance.";
+
+        return;
+    }
+
+
+    // ==========================================
+    // ATTENDANCE EXISTS
+    // ==========================================
+
+    if (todayRecord) {
+
+        const status =
+            String(
+                todayRecord.status || ""
+            );
+
+
+        // ------------------------------
+        // PRESENT
+        // ------------------------------
+
+        if (
+            status.toLowerCase() ===
+            "present"
+        ) {
+
+            checkInButton.disabled =
+                true;
+
+            checkInButton.innerHTML =
+                "✓ Attendance Marked";
+
+
+            if (
+                todayRecord.check_in_time
+            ) {
+
+                const checkInDate =
+                    new Date(
+                        todayRecord.check_in_time
+                    );
+
+
+                message.textContent =
+                    "You checked in today at " +
+                    checkInDate.toLocaleTimeString(
+                        [],
+                        {
+                            hour: "2-digit",
+                            minute: "2-digit"
+                        }
+                    );
+
+            }
+            else {
+
+                message.textContent =
+                    "Today's attendance: Present";
+
+            }
+
+
+            if (todayStatus) {
+
+                todayStatus.textContent =
+                    "Present";
+
+            }
+
+            return;
+        }
+
+
+        // ------------------------------
+        // ABSENT
+        // ------------------------------
+
+        if (
+            status.toLowerCase() ===
+            "absent"
+        ) {
+
+            checkInButton.disabled =
+                true;
+
+            checkInButton.innerHTML =
+                "✕ Absent";
+
+
+            message.textContent =
+                "Today's attendance: Absent";
+
+
+            if (todayStatus) {
+
+                todayStatus.textContent =
+                    "Absent";
+
+            }
+
+            return;
+        }
+
+
+        // ------------------------------
+        // OTHER STATUS
+        // ------------------------------
+
+        checkInButton.disabled =
+            true;
+
+        checkInButton.innerHTML =
+            status;
+
+
+        message.textContent =
+            "Today's attendance: " +
+            status;
+
+
+        if (todayStatus) {
+
+            todayStatus.textContent =
+                status;
+
+        }
+
+        return;
+    }
+
+
+    // ==========================================
+    // NO RECORD YET
+    // ==========================================
+
+    checkInButton.disabled =
+        false;
+
+    checkInButton.innerHTML =
+        "🟢 Check In";
+
+
+    message.textContent =
+        "You have not checked in today.";
+
+
+    if (todayStatus) {
+
+        todayStatus.textContent =
+            "Not Marked";
+
+    }
+
 }
-
-
-const loggedInStudent =
-JSON.parse(
-localStorage.getItem(
-"loggedInStudent"
-)
-);
-
-
-if (!loggedInStudent) {
-
-message.textContent =
-"Student session not found.";
-
-return;
-
-}
-
-
-const today =
-getStudentAttendanceDate();
-
-
-const records =
-getStudentAttendanceRecords();
-
-
-const todayRecord =
-records.find(function(record) {
-
-return (
-String(record.studentId) ===
-String(loggedInStudent.id) &&
-
-record.date === today
-);
-
-});
-
-
-if (todayRecord) {
-
-checkInButton.disabled = true;
-
-checkInButton.innerHTML =
-"✓ Attendance Marked";
-
-
-message.textContent =
-"You checked in today at " +
-todayRecord.checkIn;
-
-return;
-
-}
-
-
-checkInButton.disabled = false;
-
-checkInButton.innerHTML =
-"🟢 Check In";
-
-
-message.textContent =
-"You have not checked in today.";
-
-}
-
 
 // ==========================================================
 // STUDENT CHECK-IN - SUPABASE
