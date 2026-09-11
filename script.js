@@ -29364,75 +29364,25 @@ const StudentDashboard = {
        Dashboard Initialization
     ------------------------- */
 
-    init() {
+   init() {
 
-        const student = this.getStudent();
+    const student = this.getStudent();
 
-        if (!student) {
-            console.warn("No logged-in student found.");
-            return;
-        }
-
-   this.loadProfile(student);
-this.loadDashboard(student);
-this.loadAttendance(student);
-this.loadSubjects(student);
-this.loadResults(student);
-
-if (
-    typeof supabaseClient !== "undefined"
-) {
-
-    if (
-        window.studentResultsRealtimeChannel
-    ) {
-
-        supabaseClient.removeChannel(
-            window.studentResultsRealtimeChannel
-        );
-
+    if (!student) {
+        console.warn("No logged-in student found.");
+        return;
     }
 
-
-    window.studentResultsRealtimeChannel =
-        supabaseClient
-            .channel(
-                "student-results-live"
-            )
-            .on(
-                "postgres_changes",
-                {
-                    event: "*",
-                    schema: "public",
-                    table: "results",
-                    filter:
-                        "student_id=eq." +
-                        student.id
-                },
-                function(payload) {
-
-                    console.log(
-                        "Student result updated:",
-                        payload
-                    );
-
-                    StudentDashboard.loadResults(
-                        student
-                    );
-
-                }
-            )
-            .subscribe();
-
-}
-this.loadAssignments(student);
-this.loadAssignmentResults(student);
-this.loadFees(student);
-this.loadNotices(student);
-    },
-
-
-/* -------------------------
+    this.loadProfile(student);
+    this.loadDashboard(student);
+    this.loadAttendance(student);
+    this.loadSubjects(student);
+    this.loadResults(student);
+    this.loadAssignments(student);
+    this.loadAssignmentResults(student);
+    this.loadFees(student);
+    this.loadNotices(student);
+},/* -------------------------
    Profile - SUPABASE
 ------------------------- */
 
@@ -30260,229 +30210,219 @@ if (
     Subjects - SUPABASE
  ------------------------- */
 
- async loadSubjects(student) {
+async loadSubjects(student) {
 
-     const container =
-         document.getElementById(
-             "studentSubjects"
-         );
+    const container =
+        document.getElementById(
+            "studentSubjects"
+        );
 
-     if (!container) {
-         return;
-     }
+    if (!container) {
+        return;
+    }
 
+    container.innerHTML = "";
 
-     container.innerHTML = "";
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+        container.innerHTML = `
+            <div class="empty-state">
+                Unable to connect with database.
+            </div>
+        `;
+        return;
+    }
 
+    if (!student) {
+        return;
+    }
 
-     // ==========================================
-     // SUPABASE CHECK
-     // ==========================================
+    // ==========================================
+    // FIND DATABASE STUDENT
+    // ==========================================
 
-     if (
-         typeof supabaseClient ===
-         "undefined"
-     ) {
+    let dbStudent = null;
 
-         console.error(
-             "Supabase connection missing."
-         );
+    if (student.id) {
 
-         container.innerHTML = `
-             <div class="empty-state">
-                 Unable to load subjects.
-             </div>
-         `;
+        const result =
+            await supabaseClient
+                .from("students")
+                .select("id, student_id")
+                .eq(
+                    "id",
+                    student.id
+                )
+                .maybeSingle();
 
-         return;
-     }
+        if (
+            !result.error &&
+            result.data
+        ) {
+            dbStudent =
+                result.data;
+        }
+    }
 
+    if (
+        !dbStudent &&
+        student.studentId
+    ) {
 
-     // ==========================================
-     // STUDENT CHECK
-     // ==========================================
+        const result =
+            await supabaseClient
+                .from("students")
+                .select("id, student_id")
+                .eq(
+                    "student_id",
+                    student.studentId
+                )
+                .maybeSingle();
 
-     if (!student) {
-         return;
-     }
+        if (
+            !result.error &&
+            result.data
+        ) {
+            dbStudent =
+                result.data;
+        }
+    }
 
+    if (!dbStudent) {
 
-     // ==========================================
-     // FIND STUDENT
-     // ==========================================
+        container.innerHTML = `
+            <div class="empty-state">
+                Student record not found.
+            </div>
+        `;
 
-     let dbStudent = null;
+        return;
+    }
 
+    // ==========================================
+    // LOAD ALL SUBJECTS FROM SUPABASE
+    // ==========================================
 
-     if (student.id) {
+    const {
+        data: subjects,
+        error
+    } =
+        await supabaseClient
+            .from("subjects")
+            .select("*")
+            .order(
+                "id",
+                {
+                    ascending: true
+                }
+            );
 
-         const result =
-             await supabaseClient
-                 .from("students")
-                 .select("*")
-                 .eq(
-                     "id",
-                     student.id
-                 )
-                 .maybeSingle();
+    if (error) {
 
+        console.error(
+            "STUDENT SUBJECTS ERROR:",
+            error
+        );
 
-         if (
-             !result.error &&
-             result.data
-         ) {
+        container.innerHTML = `
+            <div class="empty-state">
+                Unable to load subjects.
+            </div>
+        `;
 
-             dbStudent =
-                 result.data;
+        return;
+    }
 
-         }
-     }
+    // ==========================================
+    // NO SUBJECTS
+    // ==========================================
 
+    if (
+        !subjects ||
+        subjects.length === 0
+    ) {
 
-     // ==========================================
-     // TRY STUDENT ID
-     // ==========================================
+        container.innerHTML = `
+            <div class="empty-state">
+                No subjects available yet.
+            </div>
+        `;
 
-     if (
-         !dbStudent &&
-         student.studentId
-     ) {
+        return;
+    }
 
-         const result =
-             await supabaseClient
-                 .from("students")
-                 .select("*")
-                 .eq(
-                     "student_id",
-                     student.studentId
-                 )
-                 .maybeSingle();
+    // ==========================================
+    // DISPLAY SUBJECTS
+    // ==========================================
 
+    subjects.forEach(
+        function(subject) {
 
-         if (
-             !result.error &&
-             result.data
-         ) {
+            const name =
+                subject.name ||
+                subject.subject_name ||
+                subject.title ||
+                "Subject";
 
-             dbStudent =
-                 result.data;
+            const code =
+                subject.code ||
+                "";
 
-         }
-     }
+            const teacher =
+                subject.teacher_name ||
+                subject.teacher ||
+                "";
 
+            const item =
+                document.createElement(
+                    "div"
+                );
 
- // ==========================================
-// DATABASE STUDENT CHECK
-// ==========================================
+            item.className =
+                "student-data-item";
 
-if (!dbStudent) {
+            item.innerHTML = `
+                <div>
 
-    console.warn(
-        "Student was not found in Supabase."
+                    <strong>
+                        📚 ${name}
+                    </strong>
+
+                    ${
+                        code
+                            ? `
+                                <small>
+                                    Code:
+                                    ${code}
+                                </small>
+                            `
+                            : ""
+                    }
+
+                    ${
+                        teacher
+                            ? `
+                                <small>
+                                    Teacher:
+                                    ${teacher}
+                                </small>
+                            `
+                            : ""
+                    }
+
+                </div>
+            `;
+
+            container.appendChild(
+                item
+            );
+
+        }
     );
 
-    container.innerHTML = `
-        <div class="empty-state">
-            Student record not found.
-        </div>
-    `;
-
-    return;
-}
-
-
-// ==========================================
-// GET SUBJECTS FROM SUPABASE STUDENT
-// ==========================================
-
-const source =
-    dbStudent;
-
-     // ==========================================
-     // EMPTY
-     // ==========================================
-
-     if (!subjects.length) {
-
-         container.innerHTML = `
-             <div class="empty-state">
-                 No subjects available.
-             </div>
-         `;
-
-         return;
-     }
-
-
-     // ==========================================
-     // RENDER
-     // ==========================================
-
-     subjects.forEach(
-         function(subject) {
-
-             const name =
-                 typeof subject === "string"
-                     ? subject
-                     : subject.name ||
-                       subject.subject_name ||
-                       "Subject";
-
-
-             const teacher =
-                 typeof subject === "object"
-                     ? (
-                         subject.teacher ||
-                         subject.teacher_name ||
-                         ""
-                     )
-                     : "";
-
-
-             const item =
-                 document.createElement(
-                     "div"
-                 );
-
-
-             item.className =
-                 "student-data-item";
-
-
-             item.innerHTML = `
-
-                 <div>
-
-                     <strong>
-                         ${name}
-                     </strong>
-
-                     ${
-                         teacher
-                             ? `
-                                 <small>
-                                     Teacher:
-                                     ${teacher}
-                                 </small>
-                             `
-                             : ""
-                     }
-
-                 </div>
-
-             `;
-
-
-             container.appendChild(
-                 item
-             );
-
-         }
-     );
-
- },
-
-
+},
 /* -------------------------
    Results - SUPABASE
 ------------------------- */
