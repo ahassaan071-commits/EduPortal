@@ -41366,11 +41366,17 @@ body:has(#teacherDashboard[style*="display"]) {
 
 }
 /* ==========================================
-   FINAL FIX - HIDE STUDENT RESULTS BY DEFAULT
+   FINAL FIX - STUDENT RESULTS VISIBILITY
    ========================================== */
 
 #studentResults {
-    display: none !important;
+    display: grid !important;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(280px, 1fr)
+    );
+    gap: 18px;
+    margin-top: 28px;
 }
 /* =========================================================
    EDU PORTAL - STUDENT ATTENDANCE PAGE
