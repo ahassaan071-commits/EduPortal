@@ -34996,9 +34996,14 @@ document.addEventListener(
                     typeof loadRealStudentAttendanceChart ===
                     "function"
                 ) {
-
                     loadRealStudentAttendanceChart();
+                }
 
+                if (
+                    typeof loadRealStudentFeeChart ===
+                    "function"
+                ) {
+                    loadRealStudentFeeChart();
                 }
 
             },
