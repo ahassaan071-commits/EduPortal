@@ -3554,64 +3554,49 @@ createLoginMessage.textContent = "";
 
 
 // ==========================================
-// ADMIN ADD STUDENT - OPEN / CLOSE
+// ADMIN ADD STUDENT - CLOSE MODAL
 // ==========================================
 
 document.addEventListener("click", function (event) {
 
-// Open Add Student Modal
-if (event.target.closest("#adminAddStudentBtn")) {
+    // Close X
+    if (
+        event.target.closest(
+            "#closeAdminAddStudentModal"
+        )
+    ) {
 
-const modal =
-document.getElementById("adminAddStudentModal");
+        const modal =
+            document.getElementById(
+                "adminAddStudentModal"
+            );
 
-if (modal) {
+        if (modal) {
+            modal.style.display = "none";
+        }
 
-modal.style.display = "flex";
-
-modal.style.position = "fixed";
-modal.style.top = "0";
-modal.style.left = "0";
-modal.style.width = "100%";
-modal.style.height = "100%";
-modal.style.background = "rgba(0,0,0,0.6)";
-modal.style.zIndex = "999999";
-modal.style.alignItems = "center";
-modal.style.justifyContent = "center";
-
-} else {
-
-alert("Add Student Modal HTML nahi mila.");
-
-}
-
-}
+        return;
+    }
 
 
-// Close X
-if (event.target.closest("#closeAdminAddStudentModal")) {
+    // Close Cancel
+    if (
+        event.target.closest(
+            "#cancelAdminAddStudent"
+        )
+    ) {
 
-const modal =
-document.getElementById("adminAddStudentModal");
+        const modal =
+            document.getElementById(
+                "adminAddStudentModal"
+            );
 
-if (modal) {
-modal.style.display = "none";
-}
+        if (modal) {
+            modal.style.display = "none";
+        }
 
-}
-
-
-// Close Cancel
-if (event.target.closest("#cancelAdminAddStudent")) {
-
-const modal =
-document.getElementById("adminAddStudentModal");
-
-if (modal) {
-modal.style.display = "none";
-}
-
-}
+        return;
+    }
 
 });
 // ==========================================
