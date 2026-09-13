@@ -6397,7 +6397,7 @@ async function loadStudentsIntoResultsDropdown() {
         await supabaseClient
             .from("students")
             .select(
-                "id, student_id, name"
+                "id, student_id, name, student_class, section"
             )
             .order(
                 "created_at",
@@ -6491,7 +6491,242 @@ async function loadStudentsIntoResultsDropdown() {
         }
     );
 }
+// ==========================================
+// RESULT STUDENT CHANGE
+// AUTO CLASS + SUBJECTS
+// ==========================================
 
+const resultStudentField =
+    document.getElementById("resultStudent");
+
+if (resultStudentField) {
+
+    resultStudentField.addEventListener(
+        "change",
+        async function () {
+
+            const selectedStudentId =
+                this.value;
+
+            const classField =
+                document.getElementById(
+                    "resultStudentClass"
+                );
+
+            const subjectField =
+                document.getElementById(
+                    "resultSubject"
+                );
+
+            // Reset
+            if (classField) {
+                classField.value = "";
+            }
+
+            if (subjectField) {
+                subjectField.innerHTML = `
+                    <option value="">
+                        Loading subjects...
+                    </option>
+                `;
+            }
+
+            if (!selectedStudentId) {
+
+                if (subjectField) {
+                    subjectField.innerHTML = `
+                        <option value="">
+                            Select Subject
+                        </option>
+                    `;
+                }
+
+                return;
+            }
+
+            // ==========================================
+            // GET SELECTED STUDENT
+            // ==========================================
+
+            const {
+                data: student,
+                error: studentError
+            } = await supabaseClient
+                .from("students")
+                .select(
+                    "id, student_id, name, student_class, section"
+                )
+                .eq(
+                    "student_id",
+                    String(selectedStudentId)
+                )
+                .maybeSingle();
+
+            if (studentError) {
+
+                console.error(
+                    "RESULT STUDENT LOAD ERROR:",
+                    studentError
+                );
+
+                if (classField) {
+                    classField.value =
+                        "Unable to load";
+                }
+
+                return;
+            }
+
+            if (!student) {
+
+                if (classField) {
+                    classField.value =
+                        "Student not found";
+                }
+
+                return;
+            }
+
+            // ==========================================
+            // AUTO FILL CLASS / SECTION
+            // ==========================================
+
+            const studentClass =
+                student.student_class || "";
+
+            const studentSection =
+                student.section || "";
+
+            if (classField) {
+
+                classField.value =
+                    studentClass +
+                    (
+                        studentSection
+                            ? " - " +
+                              studentSection
+                            : ""
+                    );
+            }
+
+            // ==========================================
+            // LOAD SUBJECTS
+            // ==========================================
+
+            const {
+                data: subjects,
+                error: subjectError
+            } = await supabaseClient
+                .from("subjects")
+                .select("*")
+                .order(
+                    "id",
+                    {
+                        ascending: true
+                    }
+                );
+
+            if (subjectError) {
+
+                console.error(
+                    "RESULT SUBJECT LOAD ERROR:",
+                    subjectError
+                );
+
+                if (subjectField) {
+                    subjectField.innerHTML = `
+                        <option value="">
+                            Unable to load subjects
+                        </option>
+                    `;
+                }
+
+                return;
+            }
+
+            // ==========================================
+            // FILTER SUBJECTS BY STUDENT CLASS
+            // ==========================================
+
+            const matchingSubjects =
+                (subjects || []).filter(
+                    function(subject) {
+
+                        const subjectClass =
+                            subject.student_class ||
+                            subject.class_name ||
+                            subject.className ||
+                            subject.class ||
+                            "";
+
+                        return String(
+                            subjectClass
+                        ).trim().toLowerCase()
+                        ===
+                        String(
+                            studentClass
+                        ).trim().toLowerCase();
+
+                    }
+                );
+
+            // ==========================================
+            // DISPLAY SUBJECTS
+            // ==========================================
+
+            if (!subjectField) {
+                return;
+            }
+
+            subjectField.innerHTML = `
+                <option value="">
+                    Select Subject
+                </option>
+            `;
+
+            matchingSubjects.forEach(
+                function(subject) {
+
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
+
+                    option.value =
+                        subject.name ||
+                        subject.subject_name ||
+                        subject.title ||
+                        "";
+
+                    option.textContent =
+                        subject.name ||
+                        subject.subject_name ||
+                        subject.title ||
+                        "Subject";
+
+                    option.dataset.subjectId =
+                        subject.id;
+
+                    subjectField.appendChild(
+                        option
+                    );
+                }
+            );
+
+            if (
+                matchingSubjects.length === 0
+            ) {
+
+                subjectField.innerHTML = `
+                    <option value="">
+                        No subjects available
+                        for this class
+                    </option>
+                `;
+            }
+        }
+    );
+}
 // ==========================================
 // LOAD STUDENTS WHEN RESULT MODAL OPENS
 // ==========================================
