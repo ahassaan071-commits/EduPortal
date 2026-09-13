@@ -44968,3 +44968,476 @@ body:has(#teacherDashboard[style*="display"]) {
     }
 
 }
+/* =====================================================
+   EDU PORTAL - ADMIN TEACHER MODAL FINAL LAYOUT FIX
+   ===================================================== */
+
+#adminTeacherModal {
+    display: none;
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    background: rgba(15, 23, 42, 0.65) !important;
+    z-index: 9999999 !important;
+}
+
+
+/* =========================
+   MODAL BOX
+   ========================= */
+
+#adminTeacherModal .teacher-modal-box-v2 {
+    width: min(920px, calc(100vw - 40px)) !important;
+    max-width: 920px !important;
+
+    max-height: calc(100vh - 40px) !important;
+    overflow-y: auto !important;
+
+    margin: 0 auto !important;
+    padding: 32px 40px !important;
+
+    box-sizing: border-box !important;
+
+    background: #ffffff !important;
+    border-radius: 22px !important;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.25) !important;
+}
+
+
+/* =========================
+   HEADER
+   ========================= */
+
+#adminTeacherModal .teacher-modal-header-v2 {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    width: 100% !important;
+
+    padding-bottom: 22px !important;
+    margin-bottom: 30px !important;
+
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+
+#adminTeacherModal .teacher-title-wrap-v2 {
+    display: flex !important;
+    align-items: center !important;
+    gap: 18px !important;
+}
+
+
+#adminTeacherModal .teacher-title-icon-v2 {
+    width: 58px !important;
+    height: 58px !important;
+    min-width: 58px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    background: #eff6ff !important;
+    border-radius: 16px !important;
+
+    font-size: 32px !important;
+}
+
+
+#adminTeacherModal .teacher-modal-header-v2 h2 {
+    margin: 0 !important;
+    font-size: 26px !important;
+    line-height: 1.2 !important;
+}
+
+
+#adminTeacherModal .teacher-modal-header-v2 p {
+    margin: 6px 0 0 !important;
+    font-size: 15px !important;
+    color: #64748b !important;
+}
+
+
+/* =========================
+   CLOSE BUTTON
+   ========================= */
+
+#adminTeacherModal .teacher-close-v2 {
+    width: 46px !important;
+    height: 46px !important;
+    min-width: 46px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border: none !important;
+    border-radius: 50% !important;
+
+    background: #f1f5f9 !important;
+    color: #334155 !important;
+
+    font-size: 23px !important;
+    cursor: pointer !important;
+}
+
+
+/* =========================
+   FORM GRID
+   ========================= */
+
+#adminTeacherModal .teacher-form-grid-v2 {
+    display: grid !important;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr) !important;
+
+    column-gap: 26px !important;
+    row-gap: 20px !important;
+
+    width: 100% !important;
+}
+
+
+/* =========================
+   FIELD
+   ========================= */
+
+#adminTeacherModal .teacher-field-v2 {
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+}
+
+
+#adminTeacherModal .teacher-field-v2 label {
+    display: block !important;
+
+    margin: 0 0 8px !important;
+
+    font-size: 15px !important;
+    line-height: 1.3 !important;
+
+    font-weight: 600 !important;
+    color: #334155 !important;
+}
+
+
+#adminTeacherModal .teacher-field-v2 label > span {
+    color: #ef4444 !important;
+    margin-left: 3px !important;
+}
+
+
+/* =====================================================
+   NORMAL INPUT WRAPPER
+   ===================================================== */
+
+#adminTeacherModal .teacher-input-v2 {
+    position: relative !important;
+
+    display: block !important;
+
+    width: 100% !important;
+    height: 58px !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* ICON */
+
+#adminTeacherModal .teacher-input-v2 > span {
+    position: absolute !important;
+
+    left: 16px !important;
+    top: 50% !important;
+
+    transform: translateY(-50%) !important;
+
+    width: 24px !important;
+    height: 24px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    margin: 0 !important;
+
+    font-size: 18px !important;
+    line-height: 1 !important;
+
+    color: #64748b !important;
+
+    pointer-events: none !important;
+
+    z-index: 5 !important;
+}
+
+
+/* INPUT */
+
+#adminTeacherModal .teacher-input-v2 input {
+    display: block !important;
+
+    width: 100% !important;
+    height: 58px !important;
+
+    box-sizing: border-box !important;
+
+    margin: 0 !important;
+
+    padding: 0 16px 0 52px !important;
+
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 13px !important;
+
+    background: #ffffff !important;
+
+    color: #334155 !important;
+
+    font-size: 16px !important;
+    line-height: normal !important;
+
+    outline: none !important;
+}
+
+
+#adminTeacherModal .teacher-input-v2 input:focus {
+    border-color: #2563eb !important;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.10) !important;
+}
+
+
+#adminTeacherModal .teacher-input-v2 input::placeholder {
+    color: #94a3b8 !important;
+    opacity: 1 !important;
+}
+
+
+/* =====================================================
+   PASSWORD - SEPARATE FULL WIDTH ROW
+   ===================================================== */
+
+#adminTeacherModal .teacher-password-input {
+    position: relative !important;
+
+    display: block !important;
+
+    width: 100% !important;
+    height: 58px !important;
+
+    margin: 0 !important;
+}
+
+
+/* PASSWORD FIELD */
+
+#adminTeacherModal .teacher-password-input input {
+    display: block !important;
+
+    width: 100% !important;
+    height: 58px !important;
+
+    box-sizing: border-box !important;
+
+    margin: 0 !important;
+
+    padding: 0 58px 0 52px !important;
+
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 13px !important;
+
+    background: #ffffff !important;
+
+    font-size: 16px !important;
+
+    outline: none !important;
+}
+
+
+#adminTeacherModal .teacher-password-input input:focus {
+    border-color: #2563eb !important;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.10) !important;
+}
+
+
+/* LOCK ICON */
+
+#adminTeacherModal .teacher-password-input > span:first-child {
+    position: absolute !important;
+
+    left: 16px !important;
+    top: 50% !important;
+
+    transform: translateY(-50%) !important;
+
+    width: 24px !important;
+    height: 24px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    margin: 0 !important;
+
+    font-size: 19px !important;
+
+    pointer-events: none !important;
+
+    z-index: 5 !important;
+}
+
+
+/* EYE */
+
+#adminTeacherModal .teacher-password-toggle {
+    position: absolute !important;
+
+    right: 12px !important;
+    top: 50% !important;
+
+    transform: translateY(-50%) !important;
+
+    width: 40px !important;
+    height: 40px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border: none !important;
+    background: transparent !important;
+
+    cursor: pointer !important;
+
+    font-size: 19px !important;
+
+    z-index: 10 !important;
+}
+
+
+/* =====================================================
+   PASSWORD FIELD POSITION
+   ===================================================== */
+
+/*
+   Password grid ke bahar hai.
+   Isliye usko proper gap dete hain.
+*/
+
+#adminTeacherModal .teacher-password-input {
+    margin-top: 0 !important;
+}
+
+
+/* Password ke parent ko full width */
+
+#adminTeacherModal .teacher-password-input {
+    width: 100% !important;
+}
+
+
+/* =====================================================
+   ACTION BUTTONS
+   ===================================================== */
+
+#adminTeacherModal .teacher-modal-actions-v2 {
+    display: grid !important;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr) !important;
+
+    gap: 15px !important;
+
+    width: 100% !important;
+
+    margin-top: 24px !important;
+}
+
+
+#adminTeacherModal .teacher-cancel-v2,
+#adminTeacherModal .teacher-save-v2 {
+    width: 100% !important;
+    height: 56px !important;
+
+    box-sizing: border-box !important;
+
+    border: none !important;
+    border-radius: 12px !important;
+
+    font-size: 16px !important;
+    font-weight: 700 !important;
+
+    cursor: pointer !important;
+}
+
+
+/* CANCEL */
+
+#adminTeacherModal .teacher-cancel-v2 {
+    background: #f1f5f9 !important;
+    color: #334155 !important;
+}
+
+
+/* SAVE */
+
+#adminTeacherModal .teacher-save-v2 {
+    background: #2563eb !important;
+    color: #ffffff !important;
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 700px) {
+
+    #adminTeacherModal {
+        padding: 10px !important;
+    }
+
+    #adminTeacherModal .teacher-modal-box-v2 {
+        width: 100% !important;
+        max-width: 100% !important;
+
+        max-height: calc(100vh - 20px) !important;
+
+        padding: 24px 18px !important;
+
+        border-radius: 18px !important;
+    }
+
+    #adminTeacherModal .teacher-form-grid-v2 {
+        grid-template-columns: 1fr !important;
+        gap: 18px !important;
+    }
+
+    #adminTeacherModal .teacher-modal-actions-v2 {
+        grid-template-columns: 1fr !important;
+    }
+
+}
+/* Password starts after the 2-column grid */
+#adminTeacherModal .teacher-password-field-v2 {
+    width: 100% !important;
+    margin-top: 24px !important;
+}
