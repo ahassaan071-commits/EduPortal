@@ -19651,44 +19651,46 @@ document.addEventListener(
     }
 );
 // ==========================================
-// TEACHER PASSWORD SHOW / HIDE
+// TEACHER PASSWORD SHOW / HIDE - FIXED
 // ==========================================
 
-document.addEventListener("click", function (event) {
-
-    const button =
-        event.target.closest(
-            "#toggleAdminTeacherPassword"
-        );
-
-    if (!button) {
-        return;
-    }
+document.addEventListener("DOMContentLoaded", function () {
 
     const passwordInput =
-        document.getElementById(
-            "adminTeacherPassword"
-        );
+        document.getElementById("adminTeacherPassword");
 
-    if (!passwordInput) {
+    const passwordToggle =
+        document.getElementById("toggleAdminTeacherPassword");
+
+    if (!passwordInput || !passwordToggle) {
+        console.warn(
+            "Teacher password field or toggle button not found."
+        );
         return;
     }
 
-    if (passwordInput.type === "password") {
+    passwordToggle.addEventListener("click", function (event) {
 
-        passwordInput.type = "text";
+        event.preventDefault();
+        event.stopPropagation();
 
-        button.textContent = "🙈";
-        button.title = "Hide Password";
+        if (passwordInput.type === "password") {
 
-    } else {
+            passwordInput.type = "text";
 
-        passwordInput.type = "password";
+            passwordToggle.textContent = "🙈";
+            passwordToggle.title = "Hide Password";
 
-        button.textContent = "👁️";
-        button.title = "Show Password";
+        } else {
 
-    }
+            passwordInput.type = "password";
+
+            passwordToggle.textContent = "👁️";
+            passwordToggle.title = "Show Password";
+
+        }
+
+    });
 
 });
 // ==========================================
