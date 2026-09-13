@@ -4774,7 +4774,6 @@ async function filterAdminStudents() {
                 id,
                 student_id,
                 name,
-                full_name,
                 student_class,
                 section,
                 roll_number,
@@ -8893,11 +8892,19 @@ if (action === "edit") {
 
             try {
 
-                const { error } =
-                    await supabaseClient
-                        .from(tableName)
-                        .delete()
-                        .eq("id", recordId);
+          const { data, error } =
+    await supabaseClient
+        .from(tableName)
+        .delete()
+        .eq("id", recordId)
+        .select();
+
+console.log("DELETE RESULT:", { data, error, recordId, tableName });
+
+if (!error && (!data || data.length === 0)) {
+    alert("Delete ran but 0 rows deleted — RLS permission issue likely.");
+    return;
+}
 
                 if (error) {
 
@@ -14203,7 +14210,7 @@ async function loadFeeStudents() {
         await supabaseClient
             .from("students")
             .select(
-                "id, student_id, name, full_name, student_class, section"
+                "id, student_id, name,  student_class, section"
             )
             .order(
                 "created_at",
