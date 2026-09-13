@@ -8431,52 +8431,7 @@ document.addEventListener("click", function (event) {
     }
 
 });
-// ==========================================
-// ADMIN TEACHER FORM - CLOSE ONLY
-// ==========================================
 
-document.addEventListener("click", function (event) {
-
-    // CLOSE X BUTTON
-    if (
-        event.target.closest(
-            "#closeAdminTeacherModal"
-        )
-    ) {
-
-        const modal =
-            document.getElementById(
-                "adminTeacherModal"
-            );
-
-        if (modal) {
-            modal.style.display = "none";
-        }
-
-        return;
-    }
-
-
-    // CANCEL BUTTON
-    if (
-        event.target.closest(
-            "#cancelAdminTeacher"
-        )
-    ) {
-
-        const modal =
-            document.getElementById(
-                "adminTeacherModal"
-            );
-
-        if (modal) {
-            modal.style.display = "none";
-        }
-
-        return;
-    }
-
-});
 // ==========================================
 // ADMIN SAVE TEACHER - SUPABASE
 // ==========================================
