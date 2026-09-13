@@ -14691,14 +14691,13 @@ const {
 } =
     await supabaseClient
         .from("students")
-        .select(`
-            id,
-            student_id,
-            name,
-            full_name,
-            student_class,
-            section
-        `)
+      .select(`
+    id,
+    student_id,
+    name,
+    student_class,
+    section
+`)
         .eq(
             "student_id",
             String(studentId)
@@ -14729,7 +14728,31 @@ if (!student) {
     return;
 }
 
+// ==========================================
+// LOAD CURRENT FEE RECORDS
+// ==========================================
+const {
+    data: existingFeeRecords,
+    error: feeRecordsLoadError
+} = await supabaseClient
+    .from("fee_records")
+    .select("*");
 
+if (feeRecordsLoadError) {
+    console.error(
+        "FEE RECORDS LOAD ERROR:",
+        feeRecordsLoadError
+    );
+
+    alert(
+        "Fee records could not be loaded.\n\n" +
+        feeRecordsLoadError.message
+    );
+
+    return;
+}
+
+const feeRecords = existingFeeRecords || [];
 // ==========================================
 // CHECK DUPLICATE FEE
 // ==========================================
