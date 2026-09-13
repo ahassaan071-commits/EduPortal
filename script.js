@@ -18393,8 +18393,9 @@ document.addEventListener("click", function (event) {
 
 
 // ==========================================
-// USER MANAGEMENT - ADD STUDENT / TEACHER
-// CLEAN CLICK HANDLER
+// ADMIN USER MANAGEMENT
+// ADD STUDENT + ADD TEACHER
+// FINAL OPEN HANDLER
 // ==========================================
 
 document.addEventListener(
@@ -18417,17 +18418,40 @@ document.addEventListener(
                     "adminAddStudentModal"
                 );
 
+
             if (!studentModal) {
 
                 console.error(
-                    "Add Student Modal not found."
+                    "adminAddStudentModal not found."
+                );
+
+                alert(
+                    "Add Student window could not be opened."
                 );
 
                 return;
             }
 
 
-            // Open modal
+            // ==========================================
+            // RESET STUDENT FORM
+            // ==========================================
+
+            const studentForm =
+                studentModal.querySelector(
+                    "form"
+                );
+
+
+            if (studentForm) {
+                studentForm.reset();
+            }
+
+
+            // ==========================================
+            // OPEN STUDENT MODAL
+            // ==========================================
+
             studentModal.style.display =
                 "flex";
 
@@ -18454,7 +18478,7 @@ document.addEventListener(
 
 
             // ==========================================
-            // GENERATE STUDENT ID
+            // GENERATE NEXT STUDENT ID
             // ==========================================
 
             const studentIdField =
@@ -18462,22 +18486,26 @@ document.addEventListener(
                     "adminNewStudentId"
                 );
 
+
             if (
                 studentIdField &&
                 typeof generateAdminStudentId ===
-                "function"
+                    "function"
             ) {
 
                 studentIdField.value =
                     "Generating...";
+
 
                 try {
 
                     const newStudentId =
                         await generateAdminStudentId();
 
+
                     studentIdField.value =
                         newStudentId;
+
 
                 } catch (error) {
 
@@ -18486,9 +18514,26 @@ document.addEventListener(
                         error
                     );
 
+
                     studentIdField.value =
                         "EDU-0001";
+
                 }
+
+            }
+
+
+            // ==========================================
+            // GENERATE USERNAME AFTER RESET
+            // ==========================================
+
+            if (
+                typeof generateAdminStudentUsername ===
+                "function"
+            ) {
+
+                generateAdminStudentUsername();
+
             }
 
 
@@ -18502,8 +18547,9 @@ document.addEventListener(
 
         const addTeacherButton =
             event.target.closest(
-                "#adminUsersAddTeacherBtn"
+                "#adminUsersAddTeacherBtn, #adminAddTeacherBtn"
             );
+
 
         if (addTeacherButton) {
 
@@ -18512,17 +18558,77 @@ document.addEventListener(
                     "adminTeacherModal"
                 );
 
+
             if (!teacherModal) {
 
                 console.error(
-                    "Add Teacher Modal not found."
+                    "adminTeacherModal not found."
+                );
+
+                alert(
+                    "Add Teacher window could not be opened."
                 );
 
                 return;
             }
 
 
-            // Open teacher modal
+            // ==========================================
+            // RESET TEACHER FORM
+            // ==========================================
+
+            const teacherForm =
+                document.getElementById(
+                    "adminTeacherForm"
+                );
+
+
+            if (teacherForm) {
+                teacherForm.reset();
+            }
+
+
+            // ==========================================
+            // CLEAR IMPORTANT FIELDS
+            // ==========================================
+
+            const teacherEmail =
+                document.getElementById(
+                    "adminTeacherEmail"
+                );
+
+
+            const teacherPassword =
+                document.getElementById(
+                    "adminTeacherPassword"
+                );
+
+
+            const teacherUsername =
+                document.getElementById(
+                    "adminTeacherUsername"
+                );
+
+
+            if (teacherEmail) {
+                teacherEmail.value = "";
+            }
+
+
+            if (teacherPassword) {
+                teacherPassword.value = "";
+            }
+
+
+            if (teacherUsername) {
+                teacherUsername.value = "";
+            }
+
+
+            // ==========================================
+            // OPEN TEACHER MODAL
+            // ==========================================
+
             teacherModal.style.display =
                 "flex";
 
