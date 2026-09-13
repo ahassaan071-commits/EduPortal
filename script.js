@@ -34650,7 +34650,19 @@ document.addEventListener(
 
             return;
         }
+// ==========================================
+        // NEW: UPDATE ASSIGNMENT STATUS
+        // ==========================================
 
+        await supabaseClient
+            .from("assignments")
+            .update({
+                status: "Submitted"
+            })
+            .eq(
+                "id",
+                Number(assignmentId)
+            );
         alert(
             "✅ Assignment submitted successfully!"
         );
