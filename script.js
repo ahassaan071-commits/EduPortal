@@ -7446,7 +7446,7 @@ menu.classList.remove("show");
 });
 // ==========================================
 // USER MANAGEMENT ACTIONS
-// SUPABASE - EDIT / DELETE / VIEW
+// SUPABASE - VIEW / EDIT / DELETE
 // ==========================================
 
 document.addEventListener(
@@ -7455,12 +7455,17 @@ document.addEventListener(
 
         const actionButton =
             event.target.closest(
-                ".user-action-item, .user-edit-btn, .user-delete-btn"
+                ".user-view-btn, .user-edit-btn, .user-delete-btn"
             );
 
         if (!actionButton) {
             return;
         }
+
+
+        // ==========================================
+        // GET USER INFORMATION
+        // ==========================================
 
         const action =
             actionButton.dataset.action;
@@ -7468,8 +7473,33 @@ document.addEventListener(
         const userType =
             actionButton.dataset.userType;
 
-        const userId =
+        const recordId =
+            actionButton.dataset.userId ||
             actionButton.dataset.studentId;
+
+
+        if (!action || !recordId) {
+            console.error(
+                "User Management action data missing:",
+                {
+                    action,
+                    userType,
+                    recordId
+                }
+            );
+
+            return;
+        }
+
+
+        // ==========================================
+        // DETERMINE SUPABASE TABLE
+        // ==========================================
+
+        const tableName =
+            userType === "teacher"
+                ? "teachers"
+                : "students";
 
 
         // ==========================================
@@ -7478,39 +7508,102 @@ document.addEventListener(
 
         if (action === "view") {
 
-            if (
-                typeof openAdminViewStudent ===
-                "function"
-            ) {
-                openAdminViewStudent(userId);
+            try {
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+                        .from(tableName)
+                        .select("*")
+                        .eq("id", recordId)
+                        .maybeSingle();
+
+
+                if (error) {
+
+                    console.error(
+                        "View User Error:",
+                        error
+                    );
+
+                    alert(
+                        "Unable to load user details."
+                    );
+
+                    return;
+                }
+
+
+                if (!data) {
+
+                    alert(
+                        "User record not found."
+                    );
+
+                    return;
+                }
+
+
+                // ==========================================
+                // STUDENT VIEW
+                // ==========================================
+
+                if (userType === "student") {
+
+                    // Keep existing Student View system
+                    if (
+                        typeof openAdminViewStudent ===
+                        "function"
+                    ) {
+
+                        openAdminViewStudent(
+                            Number(recordId)
+                        );
+
+                    } else {
+
+                        showAdminUserDetails(
+                            data,
+                            "Student"
+                        );
+
+                    }
+
+                    return;
+                }
+
+
+                // ==========================================
+                // TEACHER VIEW
+                // ==========================================
+
+                if (userType === "teacher") {
+
+                    showAdminUserDetails(
+                        data,
+                        "Teacher"
+                    );
+
+                    return;
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "VIEW USER ERROR:",
+                    error
+                );
+
+                alert(
+                    "Unable to open user details."
+                );
+
             }
 
             return;
         }
-
-
-        // ==========================================
-        // CHECK USER TYPE
-        // ==========================================
-
-        if (
-            userType !== "student" &&
-            userType !== "teacher"
-        ) {
-
-            console.error(
-                "Invalid User Type:",
-                userType
-            );
-
-            return;
-        }
-
-
-        const tableName =
-            userType === "student"
-                ? "students"
-                : "teachers";
 
 
         // ==========================================
@@ -7522,39 +7615,35 @@ document.addEventListener(
             try {
 
                 const {
-                    data: user,
+                    data,
                     error
                 } =
                     await supabaseClient
                         .from(tableName)
                         .select("*")
-                        .eq(
-                            "id",
-                            userId
-                        )
+                        .eq("id", recordId)
                         .maybeSingle();
 
 
                 if (error) {
 
                     console.error(
-                        "Edit User Error:",
+                        "Edit User Load Error:",
                         error
                     );
 
                     alert(
-                        "Unable to load user.\n\n" +
-                        error.message
+                        "Unable to load user for editing."
                     );
 
                     return;
                 }
 
 
-                if (!user) {
+                if (!data) {
 
                     alert(
-                        "User not found in Supabase."
+                        "User record not found."
                     );
 
                     return;
@@ -7562,117 +7651,153 @@ document.addEventListener(
 
 
                 // ==========================================
-                // FILL EDIT MODAL
-                // ==========================================
-
-                const typeField =
-                    document.getElementById(
-                        "editUserType"
-                    );
-
-                const nameField =
-                    document.getElementById(
-                        "editUserName"
-                    );
-
-                const usernameField =
-                    document.getElementById(
-                        "editUserUsername"
-                    );
-
-                const statusField =
-                    document.getElementById(
-                        "editUserStatus"
-                    );
-
-
-                if (typeField) {
-
-                    typeField.value =
-                        userType === "student"
-                            ? "Student"
-                            : "Teacher";
-                }
-
-
-                if (nameField) {
-
-                    nameField.value =
-                        user.fullName ||
-                        user.full_name ||
-                        user.name ||
-                        "";
-                }
-
-
-                if (usernameField) {
-
-                    usernameField.value =
-                        user.username ||
-                        "";
-                }
-
-
-                if (statusField) {
-
-                    statusField.value =
-                        user.status ||
-                        "Active";
-                }
-
-
-                // ==========================================
-                // SAVE CURRENT EDITING USER
+                // SAVE EDITING STATE
                 // ==========================================
 
                 editingUserType =
                     userType;
 
                 editingUserId =
-                    user.id;
+                    recordId;
+
+
+                // ==========================================
+                // EDIT NAME
+                // ==========================================
+
+                const editName =
+                    document.getElementById(
+                        "editUserName"
+                    );
+
+
+                if (editName) {
+
+                    editName.value =
+                        data.name ||
+                        data.fullName ||
+                        data.full_name ||
+                        "";
+
+                }
+
+
+                // ==========================================
+                // EDIT USERNAME
+                // ==========================================
+
+                const editUsername =
+                    document.getElementById(
+                        "editUsername"
+                    );
+
+
+                if (editUsername) {
+
+                    editUsername.value =
+                        data.username ||
+                        "";
+
+                }
+
+
+                // ==========================================
+                // EDIT PASSWORD
+                // ==========================================
+
+                const editPassword =
+                    document.getElementById(
+                        "editUserPassword"
+                    );
+
+
+                if (editPassword) {
+
+                    editPassword.value =
+                        data.password ||
+                        "";
+
+                }
+
+
+                // ==========================================
+                // EDIT STATUS
+                // ==========================================
+
+                const editStatus =
+                    document.getElementById(
+                        "editUserStatus"
+                    );
+
+
+                if (editStatus) {
+
+                    editStatus.value =
+                        data.status ||
+                        "Active";
+
+                }
 
 
                 // ==========================================
                 // OPEN EDIT MODAL
                 // ==========================================
 
-                const modal =
+                const editModal =
                     document.getElementById(
-                        "editUserManagementModal"
+                        "adminEditUserModal"
                     );
 
-                if (!modal) {
+
+                if (editModal) {
+
+                    editModal.style.display =
+                        "flex";
+
+                    editModal.style.position =
+                        "fixed";
+
+                    editModal.style.inset =
+                        "0";
+
+                    editModal.style.width =
+                        "100vw";
+
+                    editModal.style.height =
+                        "100vh";
+
+                    editModal.style.zIndex =
+                        "9999999";
+
+                    editModal.style.alignItems =
+                        "center";
+
+                    editModal.style.justifyContent =
+                        "center";
+
+                } else {
+
+                    console.error(
+                        "adminEditUserModal not found."
+                    );
 
                     alert(
-                        "Edit User Modal HTML nahi mila."
+                        "Edit User modal not found."
                     );
 
-                    return;
                 }
-
-
-                modal.style.display =
-                    "flex";
-
-                modal.style.position =
-                    "fixed";
-
-                modal.style.inset =
-                    "0";
-
-                modal.style.zIndex =
-                    "9999999";
 
             } catch (error) {
 
                 console.error(
-                    "Edit User Exception:",
+                    "EDIT USER ERROR:",
                     error
                 );
 
                 alert(
                     "Unable to edit user."
                 );
+
             }
 
             return;
@@ -7685,24 +7810,20 @@ document.addEventListener(
 
         if (action === "delete") {
 
-            const confirmed =
+            const confirmDelete =
                 confirm(
                     "Are you sure you want to delete this " +
                     userType +
-                    "?\n\nThis action cannot be undone."
+                    " account?"
                 );
 
 
-            if (!confirmed) {
+            if (!confirmDelete) {
                 return;
             }
 
 
             try {
-
-                actionButton.disabled =
-                    true;
-
 
                 const {
                     error
@@ -7710,10 +7831,7 @@ document.addEventListener(
                     await supabaseClient
                         .from(tableName)
                         .delete()
-                        .eq(
-                            "id",
-                            userId
-                        );
+                        .eq("id", recordId);
 
 
                 if (error) {
@@ -7723,11 +7841,8 @@ document.addEventListener(
                         error
                     );
 
-                    actionButton.disabled =
-                        false;
-
                     alert(
-                        "User could not be deleted.\n\n" +
+                        "Unable to delete user:\n" +
                         error.message
                     );
 
@@ -7736,52 +7851,94 @@ document.addEventListener(
 
 
                 // ==========================================
-                // REMOVE LOCAL COPY
+                // CLEAN OLD LOCAL STORAGE DATA
                 // ==========================================
 
-                const storageKey =
-                    userType === "student"
-                        ? "adminStudents"
-                        : "adminTeachers";
+                if (userType === "student") {
+
+                    try {
+
+                        const students =
+                            JSON.parse(
+                                localStorage.getItem(
+                                    "adminStudents"
+                                )
+                            ) || [];
 
 
-                try {
+                        const updatedStudents =
+                            students.filter(
+                                function (student) {
 
-                    const localUsers =
-                        JSON.parse(
-                            localStorage.getItem(
-                                storageKey
+                                    return String(
+                                        student.id
+                                    ) !==
+                                    String(recordId);
+
+                                }
+                            );
+
+
+                        localStorage.setItem(
+                            "adminStudents",
+                            JSON.stringify(
+                                updatedStudents
                             )
-                        ) || [];
-
-
-                    const updatedUsers =
-                        localUsers.filter(
-                            function (item) {
-
-                                return String(
-                                    item.id
-                                ) !== String(
-                                    userId
-                                );
-
-                            }
                         );
 
+                    } catch (storageError) {
 
-                    localStorage.setItem(
-                        storageKey,
-                        JSON.stringify(
-                            updatedUsers
-                        )
-                    );
+                        console.warn(
+                            "Student localStorage cleanup failed:",
+                            storageError
+                        );
 
-                } catch (storageError) {
+                    }
 
-                    console.warn(
-                        "Local storage update failed:",
-                        storageError
-                    );
+                }
+
+
+                if (userType === "teacher") {
+
+                    try {
+
+                        const teachers =
+                            JSON.parse(
+                                localStorage.getItem(
+                                    "adminTeachers"
+                                )
+                            ) || [];
+
+
+                        const updatedTeachers =
+                            teachers.filter(
+                                function (teacher) {
+
+                                    return String(
+                                        teacher.id
+                                    ) !==
+                                    String(recordId);
+
+                                }
+                            );
+
+
+                        localStorage.setItem(
+                            "adminTeachers",
+                            JSON.stringify(
+                                updatedTeachers
+                            )
+                        );
+
+                    } catch (storageError) {
+
+                        console.warn(
+                            "Teacher localStorage cleanup failed:",
+                            storageError
+                        );
+
+                    }
+
                 }
 
 
@@ -7795,55 +7952,42 @@ document.addEventListener(
                 ) {
 
                     await renderUserManagementStudents();
+
                 }
 
 
                 // ==========================================
-                // REFRESH ATTENDANCE
+                // UPDATE USER COUNT
                 // ==========================================
 
                 if (
-                    typeof renderAttendanceTable ===
+                    typeof updateAdminUserCounts ===
                     "function"
                 ) {
 
-                    await renderAttendanceTable();
-                }
+                    updateAdminUserCounts();
 
-
-                // ==========================================
-                // UPDATE STUDENT COUNT
-                // ==========================================
-
-                if (
-                    typeof updateAdminStudentCount ===
-                    "function"
-                ) {
-
-                    updateAdminStudentCount();
                 }
 
 
                 alert(
-                    userType === "student"
-                        ? "Student deleted successfully. ✅"
-                        : "Teacher deleted successfully. ✅"
+                    userType === "teacher"
+                        ? "Teacher deleted successfully ✅"
+                        : "Student deleted successfully ✅"
                 );
 
 
             } catch (error) {
 
                 console.error(
-                    "Delete User Exception:",
+                    "DELETE USER ERROR:",
                     error
                 );
-
-                actionButton.disabled =
-                    false;
 
                 alert(
                     "Unable to delete user."
                 );
+
             }
 
             return;
@@ -7851,6 +7995,326 @@ document.addEventListener(
 
     }
 );
+
+
+// ==========================================
+// ADMIN USER DETAILS VIEW
+// STUDENT + TEACHER
+// ==========================================
+
+function showAdminUserDetails(
+    user,
+    userType
+) {
+
+    const existingModal =
+        document.getElementById(
+            "adminUniversalUserViewModal"
+        );
+
+
+    if (existingModal) {
+
+        existingModal.remove();
+
+    }
+
+
+    const name =
+        user.name ||
+        user.fullName ||
+        user.full_name ||
+        "—";
+
+
+    const username =
+        user.username ||
+        "—";
+
+
+    const password =
+        user.password ||
+        "Not Set";
+
+
+    const id =
+        userType === "Teacher"
+            ? (
+                user.teacher_id ||
+                user.teacherId ||
+                user.id ||
+                "—"
+            )
+            : (
+                user.student_id ||
+                user.studentId ||
+                user.id ||
+                "—"
+            );
+
+
+    const classOrSubject =
+        userType === "Teacher"
+            ? (
+                user.subject ||
+                user.subject_name ||
+                "—"
+            )
+            : (
+                user.student_class ||
+                user.studentClass ||
+                "—"
+            );
+
+
+    const status =
+        user.status ||
+        "Active";
+
+
+    const modal =
+        document.createElement("div");
+
+
+    modal.id =
+        "adminUniversalUserViewModal";
+
+
+    modal.style.cssText = `
+        position:fixed;
+        inset:0;
+        width:100vw;
+        height:100vh;
+        background:rgba(15,23,42,0.65);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        z-index:99999999;
+        padding:20px;
+        box-sizing:border-box;
+    `;
+
+
+    modal.innerHTML = `
+
+        <div
+            style="
+                width:min(520px, 100%);
+                background:white;
+                border-radius:20px;
+                padding:28px;
+                box-shadow:0 25px 70px rgba(0,0,0,.25);
+                position:relative;
+                max-height:90vh;
+                overflow:auto;
+            "
+        >
+
+            <button
+                type="button"
+                id="closeAdminUniversalUserView"
+                style="
+                    position:absolute;
+                    right:18px;
+                    top:14px;
+                    border:none;
+                    background:#f1f5f9;
+                    width:36px;
+                    height:36px;
+                    border-radius:50%;
+                    cursor:pointer;
+                    font-size:18px;
+                "
+            >
+                ✕
+            </button>
+
+
+            <div
+                style="
+                    font-size:28px;
+                    margin-bottom:8px;
+                "
+            >
+                ${
+                    userType === "Teacher"
+                        ? "👨‍🏫"
+                        : "🎓"
+                }
+            </div>
+
+
+            <h2
+                style="
+                    margin:0 0 6px;
+                    color:#0f172a;
+                "
+            >
+                ${userType} Details
+            </h2>
+
+
+            <p
+                style="
+                    margin:0 0 22px;
+                    color:#64748b;
+                "
+            >
+                Complete account information
+            </p>
+
+
+            <div
+                style="
+                    display:grid;
+                    gap:12px;
+                "
+            >
+
+                <div>
+                    <strong>
+                        ${userType} ID
+                    </strong>
+
+                    <div>
+                        ${id}
+                    </div>
+                </div>
+
+
+                <div>
+                    <strong>
+                        Full Name
+                    </strong>
+
+                    <div>
+                        ${name}
+                    </div>
+                </div>
+
+
+                <div>
+                    <strong>
+                        ${
+                            userType === "Teacher"
+                                ? "Subject"
+                                : "Class"
+                        }
+                    </strong>
+
+                    <div>
+                        ${classOrSubject}
+                    </div>
+                </div>
+
+
+                <div>
+                    <strong>
+                        Username
+                    </strong>
+
+                    <div>
+                        ${username}
+                    </div>
+                </div>
+
+
+                <div>
+                    <strong>
+                        Password
+                    </strong>
+
+                    <div>
+                        ${password}
+                    </div>
+                </div>
+
+
+                <div>
+                    <strong>
+                        Status
+                    </strong>
+
+                    <div>
+                        ${status}
+                    </div>
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="closeAdminUniversalUserViewBottom"
+                style="
+                    width:100%;
+                    margin-top:24px;
+                    border:none;
+                    background:#2563eb;
+                    color:white;
+                    padding:12px;
+                    border-radius:10px;
+                    cursor:pointer;
+                    font-weight:600;
+                "
+            >
+                Close
+            </button>
+
+        </div>
+
+    `;
+
+
+    document.body.appendChild(
+        modal
+    );
+
+
+    const closeModal =
+        function () {
+
+            modal.remove();
+
+        };
+
+
+    document
+        .getElementById(
+            "closeAdminUniversalUserView"
+        )
+        ?.addEventListener(
+            "click",
+            closeModal
+        );
+
+
+    document
+        .getElementById(
+            "closeAdminUniversalUserViewBottom"
+        )
+        ?.addEventListener(
+            "click",
+            closeModal
+        );
+
+
+    modal.addEventListener(
+        "click",
+        function (event) {
+
+            if (
+                event.target === modal
+            ) {
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+}
 // ==========================================
 // ADMIN ASSIGNMENT MODAL - OPEN / CLOSE
 // ==========================================
