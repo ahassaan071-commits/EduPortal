@@ -6398,7 +6398,7 @@ async function loadStudentsIntoResultsDropdown() {
         await supabaseClient
             .from("students")
             .select(
-                "id, student_id, name, full_name"
+                "id, student_id, name"
             )
             .order(
                 "created_at",
@@ -7153,7 +7153,7 @@ async function openEditResult(resultId) {
             await supabaseClient
                 .from("students")
                 .select(
-                    "id, student_id, name, full_name"
+                    "id, student_id, name"
                 );
 
 
