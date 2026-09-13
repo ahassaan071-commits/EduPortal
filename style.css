@@ -44693,3 +44693,278 @@ body:has(#teacherDashboard[style*="display"]) {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
 }
+/* ==========================================
+   ADMIN TEACHER MODAL - FINAL FIX
+   ========================================== */
+
+#adminTeacherModal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.65);
+    z-index: 9999999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#adminTeacherModal .teacher-modal-box-v2 {
+    width: min(900px, 95vw);
+    max-height: 92vh;
+    overflow-y: auto;
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 32px 40px;
+    box-sizing: border-box;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.25);
+}
+
+/* HEADER */
+
+#adminTeacherModal .teacher-modal-header-v2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 22px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+#adminTeacherModal .teacher-title-wrap-v2 {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+#adminTeacherModal .teacher-title-icon-v2 {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eff6ff;
+    color: #2563eb;
+    border-radius: 16px;
+    font-size: 34px;
+}
+
+#adminTeacherModal .teacher-modal-header-v2 h2 {
+    margin: 0;
+    font-size: 27px;
+    color: #0f172a;
+}
+
+#adminTeacherModal .teacher-modal-header-v2 p {
+    margin: 5px 0 0;
+    color: #64748b;
+    font-size: 16px;
+}
+
+/* CLOSE BUTTON */
+
+#adminTeacherModal .teacher-close-v2 {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    border: none;
+    border-radius: 50%;
+    background: #f1f5f9;
+    color: #334155;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s ease;
+}
+
+#adminTeacherModal .teacher-close-v2:hover {
+    background: #e2e8f0;
+}
+
+/* FORM GRID */
+
+#adminTeacherModal .teacher-form-grid-v2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+/* FIELD */
+
+#adminTeacherModal .teacher-field-v2 {
+    min-width: 0;
+}
+
+#adminTeacherModal .teacher-field-v2 label {
+    display: block;
+    margin-bottom: 9px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #334155;
+}
+
+#adminTeacherModal .teacher-field-v2 label > span {
+    color: #ef4444;
+    margin-left: 3px;
+}
+
+/* INPUT WRAPPER */
+
+#adminTeacherModal .teacher-input-v2 {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#adminTeacherModal .teacher-input-v2 > span {
+    position: absolute;
+    left: 17px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    text-align: center;
+    font-size: 19px;
+    color: #64748b;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* INPUTS */
+
+#adminTeacherModal .teacher-input-v2 input {
+    width: 100%;
+    height: 60px;
+    box-sizing: border-box;
+    border: 1px solid #cbd5e1;
+    border-radius: 13px;
+    background: #ffffff;
+    color: #334155;
+    font-size: 16px;
+    padding: 0 18px 0 50px;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+#adminTeacherModal .teacher-input-v2 input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+#adminTeacherModal .teacher-input-v2 input::placeholder {
+    color: #94a3b8;
+}
+
+/* PASSWORD */
+
+#adminTeacherModal .teacher-password-input {
+    position: relative;
+    width: 100%;
+}
+
+#adminTeacherModal .teacher-password-input > span:first-child {
+    position: absolute;
+    left: 17px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    pointer-events: none;
+    font-size: 19px;
+}
+
+#adminTeacherModal .teacher-password-input input {
+    width: 100%;
+    height: 60px;
+    box-sizing: border-box;
+    border: 1px solid #cbd5e1;
+    border-radius: 13px;
+    padding: 0 58px 0 52px;
+    font-size: 16px;
+    outline: none;
+}
+
+#adminTeacherModal .teacher-password-input input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+#adminTeacherModal .teacher-password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 38px;
+    height: 38px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 3;
+}
+
+/* ACTION BUTTONS */
+
+#adminTeacherModal .teacher-modal-actions-v2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 28px;
+}
+
+#adminTeacherModal .teacher-cancel-v2,
+#adminTeacherModal .teacher-save-v2 {
+    height: 56px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+#adminTeacherModal .teacher-cancel-v2 {
+    background: #f1f5f9;
+    color: #334155;
+}
+
+#adminTeacherModal .teacher-cancel-v2:hover {
+    background: #e2e8f0;
+}
+
+#adminTeacherModal .teacher-save-v2 {
+    background: #2563eb;
+    color: #ffffff;
+}
+
+#adminTeacherModal .teacher-save-v2:hover {
+    background: #1d4ed8;
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    #adminTeacherModal {
+        padding: 12px;
+    }
+
+    #adminTeacherModal .teacher-modal-box-v2 {
+        width: 100%;
+        padding: 24px 20px;
+        max-height: 95vh;
+    }
+
+    #adminTeacherModal .teacher-form-grid-v2 {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    #adminTeacherModal .teacher-modal-actions-v2 {
+        grid-template-columns: 1fr;
+    }
+
+}

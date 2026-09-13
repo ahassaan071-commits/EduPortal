@@ -39579,3 +39579,69 @@ setInterval(
 
     }
 );
+// ==========================================
+// ADMIN TEACHER MODAL - CLOSE / CANCEL FIX
+// ==========================================
+
+document.addEventListener("click", function (event) {
+
+    // CLOSE X BUTTON
+    const closeTeacherButton =
+        event.target.closest("#closeAdminTeacherModal");
+
+    if (closeTeacherButton) {
+
+        const teacherModal =
+            document.getElementById("adminTeacherModal");
+
+        if (teacherModal) {
+            teacherModal.style.display = "none";
+        }
+
+        const teacherForm =
+            document.getElementById("adminTeacherForm");
+
+        if (teacherForm) {
+            teacherForm.reset();
+        }
+
+        return;
+    }
+
+
+    // CANCEL BUTTON
+    const cancelTeacherButton =
+        event.target.closest("#cancelAdminTeacher");
+
+    if (cancelTeacherButton) {
+
+        const teacherModal =
+            document.getElementById("adminTeacherModal");
+
+        if (teacherModal) {
+            teacherModal.style.display = "none";
+        }
+
+        const teacherForm =
+            document.getElementById("adminTeacherForm");
+
+        if (teacherForm) {
+            teacherForm.reset();
+        }
+
+        return;
+    }
+
+
+    // CLICK ON BACKDROP TO CLOSE
+    const teacherModal =
+        document.getElementById("adminTeacherModal");
+
+    if (
+        teacherModal &&
+        event.target === teacherModal
+    ) {
+        teacherModal.style.display = "none";
+    }
+
+});
