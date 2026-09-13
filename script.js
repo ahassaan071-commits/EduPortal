@@ -5530,42 +5530,7 @@ async function generateAdminStudentId() {
             .padStart(4, "0")
     );
 }
-// ==========================================
-// GENERATE STUDENT ID WHEN ADD MODAL OPENS
-// ==========================================
 
-document.addEventListener(
-    "click",
-    async function (event) {
-
-        if (
-            !event.target.closest(
-                "#adminAddStudentBtn"
-            )
-        ) {
-            return;
-        }
-
-        const studentIdField =
-            document.getElementById(
-                "adminNewStudentId"
-            );
-
-        if (!studentIdField) {
-            return;
-        }
-
-        studentIdField.value =
-            "Generating...";
-
-        const newStudentId =
-            await generateAdminStudentId();
-
-        studentIdField.value =
-            newStudentId;
-
-    }
-);
 // ==========================================
 // MOBILE NUMBER - 11 DIGIT VALIDATION
 // ==========================================
