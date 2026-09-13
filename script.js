@@ -8124,174 +8124,51 @@ async function toggleStudentPassword(
 async function toggleUserManagementPassword(index, button) {
 
     const passwordElement =
-        document.getElementById(
-            "userPassword-" + index
-        );
+        document.getElementById("userPassword-" + index);
 
-    if (!passwordElement) {
-        return;
-    }
+    if (!passwordElement) return;
 
-    // Already showing → hide
-    if (
-        passwordElement.textContent.trim() !==
-        "••••••••"
-    ) {
-
-        passwordElement.textContent =
-            "••••••••";
-
+    if (passwordElement.textContent.trim() !== "••••••••") {
+        passwordElement.textContent = "••••••••";
         button.textContent = "👁️";
         button.title = "Show Password";
-
         return;
     }
 
-    // ==========================================
-    // GET CURRENT USER FROM SUPABASE
-    // ==========================================
+    const recordId = button.dataset.recordId;
+    const userType = button.dataset.userType;
+
+    if (!recordId || !userType) {
+        console.error("Missing record id or user type on password button.");
+        return;
+    }
+
+    const tableName =
+        userType === "teacher" ? "teachers" : "students";
 
     try {
 
-        const tableBody =
-            document.getElementById(
-                "adminUsersStudentsTableBody"
-            );
-
-        if (!tableBody) {
-            return;
-        }
-
-        const rows =
-            tableBody.querySelectorAll("tr");
-
-        const row = rows[index];
-
-        if (!row) {
-            return;
-        }
-
-        const cells =
-            row.querySelectorAll("td");
-
-        // Role column
-        const roleText =
-            cells[1]?.textContent
-                .trim()
-                .toLowerCase() || "";
-
-        // ID column
-        const userDisplayId =
-            cells[2]?.textContent
-                .trim() || "";
-
-        let tableName = "";
-
-        let idColumn = "";
-
-        if (roleText.includes("student")) {
-
-            tableName = "students";
-            idColumn = "id";
-
-        } else if (
-            roleText.includes("teacher")
-        ) {
-
-            tableName = "teachers";
-            idColumn = "id";
-
-        } else {
-
-            return;
-        }
-
-        // ==========================================
-        // FIND USER
-        // ==========================================
-
-        let user = null;
-
-        let result =
+        const { data, error } =
             await supabaseClient
                 .from(tableName)
-                .select("*")
-                .eq(
-                    idColumn,
-                    userDisplayId
-                )
+                .select("password")
+                .eq("id", recordId)
                 .maybeSingle();
 
-        if (
-            !result.error &&
-            result.data
-        ) {
-
-            user = result.data;
-
-        } else {
-
-            // Try ID as number
-            result =
-                await supabaseClient
-                    .from(tableName)
-                    .select("*")
-                    .eq(
-                        idColumn,
-                        Number(userDisplayId)
-                    )
-                    .maybeSingle();
-
-            if (
-                !result.error &&
-                result.data
-            ) {
-
-                user = result.data;
-
-            }
-
-        }
-
-        if (!user) {
-
-            console.error(
-                "Password user not found:",
-                tableName,
-                userDisplayId
-            );
-
-            return;
-        }
-
-        // ==========================================
-        // SHOW PASSWORD
-        // ==========================================
-
-        const password =
-            user.password || "";
-
-        if (!password) {
-            passwordElement.textContent =
-                "Not Set";
+        if (error) {
+            console.error("Password Load Error:", error);
             return;
         }
 
         passwordElement.textContent =
-            password;
+            data?.password || "Not Set";
 
         button.textContent = "🙈";
         button.title = "Hide Password";
 
     } catch (error) {
-
-        console.error(
-            "Password View Error:",
-            error
-        );
-
+        console.error("Password View Error:", error);
     }
-
 }
 // ==========================================
 // TOGGLE STUDENT USER STATUS
