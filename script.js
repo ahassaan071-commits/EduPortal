@@ -34063,7 +34063,7 @@ if (feeListContainer) {
 
     feeListContainer.innerHTML = "";
 
-    records.forEach(function (record) {
+    feerecords.forEach(function (record) {
 
         const remainingAmt =
             Number(
