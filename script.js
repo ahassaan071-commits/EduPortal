@@ -17963,80 +17963,165 @@ document.addEventListener("click", function (event) {
 
 // ==========================================
 // USER MANAGEMENT - ADD STUDENT / TEACHER
-// FINAL CLICK FIX
+// CLEAN CLICK HANDLER
 // ==========================================
 
-document.addEventListener("click", function (event) {
+document.addEventListener(
+    "click",
+    async function (event) {
 
-    // -----------------------------
-    // ADD NEW STUDENT
-    // -----------------------------
-    const addStudentButton =
-        event.target.closest("#adminAddStudentBtn");
+        // ==========================================
+        // ADD NEW STUDENT
+        // ==========================================
 
-    if (addStudentButton) {
+        const addStudentButton =
+            event.target.closest(
+                "#adminAddStudentBtn"
+            );
 
-        const studentModal =
-            document.getElementById("adminAddStudentModal");
+        if (addStudentButton) {
 
-        if (!studentModal) {
-            console.error("Add Student Modal not found.");
+            const studentModal =
+                document.getElementById(
+                    "adminAddStudentModal"
+                );
+
+            if (!studentModal) {
+
+                console.error(
+                    "Add Student Modal not found."
+                );
+
+                return;
+            }
+
+
+            // Open modal
+            studentModal.style.display =
+                "flex";
+
+            studentModal.style.position =
+                "fixed";
+
+            studentModal.style.inset =
+                "0";
+
+            studentModal.style.width =
+                "100vw";
+
+            studentModal.style.height =
+                "100vh";
+
+            studentModal.style.zIndex =
+                "9999999";
+
+            studentModal.style.alignItems =
+                "center";
+
+            studentModal.style.justifyContent =
+                "center";
+
+
+            // ==========================================
+            // GENERATE STUDENT ID
+            // ==========================================
+
+            const studentIdField =
+                document.getElementById(
+                    "adminNewStudentId"
+                );
+
+            if (
+                studentIdField &&
+                typeof generateAdminStudentId ===
+                "function"
+            ) {
+
+                studentIdField.value =
+                    "Generating...";
+
+                try {
+
+                    const newStudentId =
+                        await generateAdminStudentId();
+
+                    studentIdField.value =
+                        newStudentId;
+
+                } catch (error) {
+
+                    console.error(
+                        "Student ID generation error:",
+                        error
+                    );
+
+                    studentIdField.value =
+                        "EDU-0001";
+                }
+            }
+
+
             return;
         }
 
-        studentModal.style.display = "flex";
-        studentModal.style.position = "fixed";
-        studentModal.style.inset = "0";
-        studentModal.style.width = "100vw";
-        studentModal.style.height = "100vh";
-        studentModal.style.zIndex = "9999999";
-        studentModal.style.alignItems = "center";
-        studentModal.style.justifyContent = "center";
 
-        const studentIdField =
-            document.getElementById("adminNewStudentId");
+        // ==========================================
+        // ADD NEW TEACHER
+        // ==========================================
 
-        if (
-            studentIdField &&
-            typeof generateAdminStudentId === "function"
-        ) {
-            studentIdField.value =
-                generateAdminStudentId();
-        }
+        const addTeacherButton =
+            event.target.closest(
+                "#adminUsersAddTeacherBtn"
+            );
 
-        return;
-    }
+        if (addTeacherButton) {
+
+            const teacherModal =
+                document.getElementById(
+                    "adminTeacherModal"
+                );
+
+            if (!teacherModal) {
+
+                console.error(
+                    "Add Teacher Modal not found."
+                );
+
+                return;
+            }
 
 
-    // -----------------------------
-    // ADD NEW TEACHER
-    // -----------------------------
-    const addTeacherButton =
-        event.target.closest("#adminUsersAddTeacherBtn");
+            // Open teacher modal
+            teacherModal.style.display =
+                "flex";
 
-    if (addTeacherButton) {
+            teacherModal.style.position =
+                "fixed";
 
-        const teacherModal =
-            document.getElementById("adminTeacherModal");
+            teacherModal.style.inset =
+                "0";
 
-        if (!teacherModal) {
-            console.error("Add Teacher Modal not found.");
+            teacherModal.style.width =
+                "100vw";
+
+            teacherModal.style.height =
+                "100vh";
+
+            teacherModal.style.zIndex =
+                "9999999";
+
+            teacherModal.style.alignItems =
+                "center";
+
+            teacherModal.style.justifyContent =
+                "center";
+
+
             return;
         }
 
-        teacherModal.style.display = "flex";
-        teacherModal.style.position = "fixed";
-        teacherModal.style.inset = "0";
-        teacherModal.style.width = "100vw";
-        teacherModal.style.height = "100vh";
-        teacherModal.style.zIndex = "9999999";
-        teacherModal.style.alignItems = "center";
-        teacherModal.style.justifyContent = "center";
-
-        return;
     }
-
-});
+);
 // ==========================================
 // TEACHER PASSWORD SHOW / HIDE
 // ==========================================
