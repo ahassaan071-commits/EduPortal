@@ -34032,6 +34032,71 @@ if (statusElement) {
 
 
 };
+// ==========================================
+// FEE LIST + PAY BUTTON - NEW ADDITION
+// ==========================================
+
+let feeListContainer =
+    document.getElementById("studentFeeRecordsList");
+
+// Agar container HTML me nahi hai to khud bana lo
+if (!feeListContainer) {
+
+    const feeSection =
+        document.getElementById("feeSection");
+
+    if (feeSection) {
+
+        feeListContainer =
+            document.createElement("div");
+
+        feeListContainer.id =
+            "studentFeeRecordsList";
+
+        feeListContainer.style.marginTop = "20px";
+
+        feeSection.appendChild(feeListContainer);
+    }
+}
+
+if (feeListContainer) {
+
+    feeListContainer.innerHTML = "";
+
+    records.forEach(function (record) {
+
+        const remainingAmt =
+            Number(
+                record.remaining_amount ??
+                Math.max(
+                    0,
+                    Number(record.fee_amount || 0) -
+                    Number(record.paid_amount || 0)
+                )
+            );
+
+        const item =
+            document.createElement("div");
+
+        item.className = "student-data-item";
+
+        item.innerHTML = `
+            <div>
+                <strong>${record.month || "Month"}</strong>
+                <small>Total: Rs. ${Number(record.fee_amount || 0).toLocaleString()}</small>
+                <small>Paid: Rs. ${Number(record.paid_amount || 0).toLocaleString()}</small>
+                <small>Remaining: Rs. ${remainingAmt.toLocaleString()}</small>
+            </div>
+            ${
+                remainingAmt > 0
+                    ? `<button type="button" class="student-fee-pay-btn" data-fee-record-id="${record.id}" data-remaining="${remainingAmt}">💳 Submit Fee</button>`
+                    : `<span class="status-badge">Paid ✅</span>`
+            }
+        `;
+
+        feeListContainer.appendChild(item);
+    });
+}
 /* -------------------------
    Notices - SUPABASE
 ------------------------- */
@@ -39759,3 +39824,138 @@ document.addEventListener("click", function (event) {
     }
 
 });
+// ==========================================
+// STUDENT SUBMIT FEE PAYMENT
+// ==========================================
+
+document.addEventListener(
+    "click",
+    async function (event) {
+
+        const button =
+            event.target.closest(
+                ".student-fee-pay-btn"
+            );
+
+        if (!button) {
+            return;
+        }
+
+        const feeRecordId =
+            button.dataset.feeRecordId;
+
+        const remainingAmount =
+            Number(
+                button.dataset.remaining
+            ) || 0;
+
+        if (!feeRecordId) {
+            return;
+        }
+
+        const confirmPay =
+            confirm(
+                "Confirm submitting fee payment of Rs. " +
+                remainingAmount.toLocaleString() +
+                "?"
+            );
+
+        if (!confirmPay) {
+            return;
+        }
+
+        if (
+            typeof supabaseClient ===
+            "undefined"
+        ) {
+            alert(
+                "Supabase connection is missing."
+            );
+            return;
+        }
+
+        // ==========================================
+        // GET CURRENT RECORD
+        // ==========================================
+
+        const {
+            data: feeRecord,
+            error: loadError
+        } =
+            await supabaseClient
+                .from("fee_records")
+                .select("*")
+                .eq(
+                    "id",
+                    feeRecordId
+                )
+                .maybeSingle();
+
+        if (loadError || !feeRecord) {
+
+            alert(
+                "Unable to load fee record."
+            );
+
+            return;
+        }
+
+        const newPaidAmount =
+            Number(feeRecord.fee_amount || 0);
+
+        // ==========================================
+        // UPDATE FEE RECORD - MARK AS PAID
+        // ==========================================
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .from("fee_records")
+                .update({
+                    paid_amount:
+                        newPaidAmount,
+
+                    remaining_amount:
+                        0,
+
+                    status:
+                        "Paid",
+
+                    payment_date:
+                        new Date()
+                            .toISOString()
+                            .split("T")[0]
+                })
+                .eq(
+                    "id",
+                    feeRecordId
+                );
+
+        if (error) {
+
+            console.error(
+                "FEE PAYMENT ERROR:",
+                error
+            );
+
+            alert(
+                "Payment could not be submitted.\n\n" +
+                error.message
+            );
+
+            return;
+        }
+
+        alert(
+            "Fee submitted successfully! ✅"
+        );
+
+        // Refresh fee section
+        const student =
+            StudentDashboard.getStudent();
+
+        StudentDashboard.loadFees(student);
+
+    }
+);
