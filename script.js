@@ -7963,31 +7963,7 @@ async function renderUserManagementStudents() {
                     "
                 >
 
-                    <!-- VIEW -->
-
-                    <button
-                        type="button"
-                        class="user-view-btn"
-                        data-action="view"
-                        data-user-type="${user.type}"
-                        data-user-id="${user.recordId}"
-                        data-student-id="${user.recordId}"
-                        title="View User"
-                        style="
-                            border:none;
-                            background:#0ea5e9;
-                            color:white;
-                            width:38px;
-                            height:38px;
-                            border-radius:10px;
-                            cursor:pointer;
-                            font-size:17px;
-                        "
-                    >
-
-                        👁️
-
-                    </button>
+         
 
 
                     <!-- EDIT -->
@@ -11259,16 +11235,7 @@ async function renderAdminTeachers() {
 
                 <div class="admin-teacher-actions">
 
-                    <button
-                        type="button"
-                        class="user-view-btn"
-                        data-action="view"
-                        data-user-type="teacher"
-                        data-user-id="${teacher.id}"
-                        title="View Teacher"
-                    >
-                        👁️ View
-                    </button>
+                
 
 
                     <button
