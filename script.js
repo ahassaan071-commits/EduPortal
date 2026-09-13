@@ -4985,64 +4985,224 @@ filterAdminStudents
 }
 // ==========================================
 // ADMIN VIEW STUDENT MODAL
+// SUPABASE LIVE DATA
 // ==========================================
 
-function openAdminViewStudent(studentId) {
+async function openAdminViewStudent(studentId) {
 
-const adminStudents =
-JSON.parse(localStorage.getItem("adminStudents")) || [];
+    if (typeof supabaseClient === "undefined") {
+        alert("Supabase connection is missing.");
+        return;
+    }
 
-const student =
-adminStudents.find(function (item) {
-return Number(item.id) === Number(studentId);
-});
+    try {
 
-if (!student) {
-alert("Student record not found.");
-return;
+        const { data: student, error } =
+            await supabaseClient
+                .from("students")
+                .select("*")
+                .eq("id", studentId)
+                .maybeSingle();
+
+        if (error) {
+            console.error(
+                "ADMIN VIEW STUDENT ERROR:",
+                error
+            );
+
+            alert(
+                "Unable to load student details.\n\n" +
+                error.message
+            );
+
+            return;
+        }
+
+        if (!student) {
+            alert("Student record not found.");
+            return;
+        }
+
+        // -------------------------------
+        // STUDENT BASIC INFORMATION
+        // -------------------------------
+
+        const name =
+            student.name ||
+            student.fullName ||
+            student.full_name ||
+            "—";
+
+        const status =
+            student.status ||
+            "Active";
+
+        const studentIdValue =
+            student.student_id ||
+            student.studentId ||
+            student.id ||
+            "—";
+
+        const fatherName =
+            student.father_name ||
+            student.fatherName ||
+            "—";
+
+        const studentClass =
+            student.student_class ||
+            student.studentClass ||
+            "—";
+
+        const section =
+            student.section ||
+            "—";
+
+        const rollNumber =
+            student.roll_number ||
+            student.rollNumber ||
+            "—";
+
+        const dob =
+            student.date_of_birth ||
+            student.dob ||
+            "—";
+
+        const email =
+            student.email ||
+            "—";
+
+        const mobile =
+            student.mobile ||
+            student.phone ||
+            "—";
+
+
+        // -------------------------------
+        // UPDATE VIEW MODAL
+        // -------------------------------
+
+        const viewName =
+            document.getElementById(
+                "viewStudentName"
+            );
+
+        const viewStatus =
+            document.getElementById(
+                "viewStudentStatus"
+            );
+
+        const viewId =
+            document.getElementById(
+                "viewStudentId"
+            );
+
+        const viewFather =
+            document.getElementById(
+                "viewStudentFather"
+            );
+
+        const viewClass =
+            document.getElementById(
+                "viewStudentClass"
+            );
+
+        const viewSection =
+            document.getElementById(
+                "viewStudentSection"
+            );
+
+        const viewRoll =
+            document.getElementById(
+                "viewStudentRoll"
+            );
+
+        const viewDOB =
+            document.getElementById(
+                "viewStudentDOB"
+            );
+
+        const viewEmail =
+            document.getElementById(
+                "viewStudentEmail"
+            );
+
+        const viewMobile =
+            document.getElementById(
+                "viewStudentMobile"
+            );
+
+
+        if (viewName) {
+            viewName.textContent = name;
+        }
+
+        if (viewStatus) {
+            viewStatus.textContent = status;
+        }
+
+        if (viewId) {
+            viewId.textContent = studentIdValue;
+        }
+
+        if (viewFather) {
+            viewFather.textContent = fatherName;
+        }
+
+        if (viewClass) {
+            viewClass.textContent = studentClass;
+        }
+
+        if (viewSection) {
+            viewSection.textContent = section;
+        }
+
+        if (viewRoll) {
+            viewRoll.textContent = rollNumber;
+        }
+
+        if (viewDOB) {
+            viewDOB.textContent = dob;
+        }
+
+        if (viewEmail) {
+            viewEmail.textContent = email;
+        }
+
+        if (viewMobile) {
+            viewMobile.textContent = mobile;
+        }
+
+
+        // -------------------------------
+        // OPEN MODAL
+        // -------------------------------
+
+        const modal =
+            document.getElementById(
+                "adminViewStudentModal"
+            );
+
+        if (!modal) {
+            alert(
+                "Student view modal not found."
+            );
+            return;
+        }
+
+        modal.style.display = "flex";
+
+    } catch (error) {
+
+        console.error(
+            "ADMIN VIEW STUDENT ERROR:",
+            error
+        );
+
+        alert(
+            "Unable to open student details."
+        );
+    }
 }
-
-
-document.getElementById("viewStudentName").textContent =
-student.fullName || "—";
-
-document.getElementById("viewStudentStatus").textContent =
-student.status || "—";
-
-document.getElementById("viewStudentId").textContent =
-student.studentId || "—";
-
-document.getElementById("viewStudentFather").textContent =
-student.fatherName || "—";
-
-document.getElementById("viewStudentClass").textContent =
-student.studentClass || "—";
-
-document.getElementById("viewStudentSection").textContent =
-student.section || "—";
-
-document.getElementById("viewStudentRoll").textContent =
-student.rollNumber || "—";
-
-document.getElementById("viewStudentDOB").textContent =
-student.dob || "—";
-
-document.getElementById("viewStudentEmail").textContent =
-student.email || "—";
-
-document.getElementById("viewStudentMobile").textContent =
-student.mobile || "—";
-
-
-const modal =
-document.getElementById("adminViewStudentModal");
-
-if (modal) {
-modal.style.display = "flex";
-}
-}
-
-
 // ==========================================
 // CLOSE VIEW STUDENT MODAL
 // ==========================================
@@ -17491,20 +17651,28 @@ document.addEventListener(
 );
 // ==========================================
 // USER MANAGEMENT STATUS TOGGLE
+// SUPABASE LIVE STATUS UPDATE
 // ==========================================
 
-function toggleUserManagementStatus(index) {
+async function toggleUserManagementStatus(index) {
 
-    const students =
-        JSON.parse(
-            localStorage.getItem("adminStudents")
-        ) || [];
+    if (typeof supabaseClient === "undefined") {
+        alert("Supabase connection is missing.");
+        return;
+    }
 
-    const teachers =
-        JSON.parse(
-            localStorage.getItem("adminTeachers")
-        ) || [];
+    const studentsResult = await supabaseClient
+        .from("students")
+        .select("id, status")
+        .order("created_at", { ascending: false });
 
+    if (studentsResult.error) {
+        console.error("STUDENT STATUS LOAD ERROR:", studentsResult.error);
+        alert("Unable to load student records.");
+        return;
+    }
+
+    const students = studentsResult.data || [];
 
     // -------------------------------
     // STUDENT
@@ -17514,58 +17682,77 @@ function toggleUserManagementStatus(index) {
 
         const student = students[index];
 
-        if (!student) {
+        if (!student || !student.id) {
+            alert("Student record not found.");
             return;
         }
 
-        student.status =
+        const newStatus =
             (student.status || "Active") === "Active"
                 ? "Disabled"
                 : "Active";
 
+        const { error } = await supabaseClient
+            .from("students")
+            .update({
+                status: newStatus
+            })
+            .eq("id", student.id);
 
-        localStorage.setItem(
-            "adminStudents",
-            JSON.stringify(students)
-        );
+        if (error) {
+            console.error("STUDENT STATUS UPDATE ERROR:", error);
+            alert("Student status update failed.");
+            return;
+        }
 
-
-        renderUserManagementStudents();
-
+        await renderUserManagementStudents();
         return;
     }
-
 
     // -------------------------------
     // TEACHER
     // -------------------------------
 
-    const teacherIndex =
-        index - students.length;
+    const teachersResult = await supabaseClient
+        .from("teachers")
+        .select("id, status")
+        .order("created_at", { ascending: false });
 
-
-    const teacher =
-        teachers[teacherIndex];
-
-
-    if (!teacher) {
+    if (teachersResult.error) {
+        console.error("TEACHER STATUS LOAD ERROR:", teachersResult.error);
+        alert("Unable to load teacher records.");
         return;
     }
 
+    const teachers = teachersResult.data || [];
 
-    teacher.status =
+    const teacherIndex = index - students.length;
+    const teacher = teachers[teacherIndex];
+
+    if (!teacher || !teacher.id) {
+        alert("Teacher record not found.");
+        return;
+    }
+
+    const newStatus =
         (teacher.status || "Active") === "Active"
             ? "Disabled"
             : "Active";
 
+    const { error } = await supabaseClient
+        .from("teachers")
+        .update({
+            status: newStatus
+        })
+        .eq("id", teacher.id);
 
-    localStorage.setItem(
-        "adminTeachers",
-        JSON.stringify(teachers)
-    );
+    if (error) {
+        console.error("TEACHER STATUS UPDATE ERROR:", error);
+        alert("Teacher status update failed.");
+        return;
+    }
 
-
-    renderUserManagementStudents();
+    await renderUserManagementStudents();
 }
 // =========================================================
 // EDU PORTAL - TEACHER MY STUDENTS
