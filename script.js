@@ -4203,18 +4203,7 @@ async function renderAdminStudents() {
                     ${student.mobile || ""}
                 </td>
 
-                <td>
-
-                    <button
-                        type="button"
-                        class="admin-table-edit-btn"
-                        data-student-id="${student.id}"
-                        title="Edit Student"
-                    >
-                        ✏️ Edit
-                    </button>
-
-                </td>
+            
             `;
 
 
