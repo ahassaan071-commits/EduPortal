@@ -7766,203 +7766,164 @@ document.addEventListener(
         }
 
 
-        // ==========================================
-        // EDIT USER
-        // ==========================================
-
-        if (action === "edit") {
-
-            try {
-
-                const {
-                    data,
-                    error
-                } =
-                    await supabaseClient
-                        .from(tableName)
-                        .select("*")
-                        .eq("id", recordId)
-                        .maybeSingle();
-
-
-                if (error) {
-
-                    console.error(
-                        "Edit User Load Error:",
-                        error
-                    );
-
-                    alert(
-                        "Unable to load user for editing."
-                    );
-
-                    return;
-                }
-
-
-                if (!data) {
-
-                    alert(
-                        "User record not found."
-                    );
-
-                    return;
-                }
-
-
-                // ==========================================
-                // SAVE EDITING STATE
-                // ==========================================
-
-                editingUserType =
-                    userType;
-
-                editingUserId =
-                    recordId;
-
-
-                // ==========================================
-                // EDIT NAME
-                // ==========================================
-
-                const editName =
-                    document.getElementById(
-                        "editUserName"
-                    );
-
-
-                if (editName) {
-
-                    editName.value =
-                        data.name ||
-                        data.fullName ||
-                        data.full_name ||
-                        "";
-
-                }
-
-
-                // ==========================================
-                // EDIT USERNAME
-                // ==========================================
-
-                const editUsername =
-                    document.getElementById(
-                        "editUsername"
-                    );
-
-
-                if (editUsername) {
-
-                    editUsername.value =
-                        data.username ||
-                        "";
-
-                }
-
-
-                // ==========================================
-                // EDIT PASSWORD
-                // ==========================================
-
-                const editPassword =
-                    document.getElementById(
-                        "editUserPassword"
-                    );
-
-
-                if (editPassword) {
-
-                    editPassword.value =
-                        data.password ||
-                        "";
-
-                }
-
-
-                // ==========================================
-                // EDIT STATUS
-                // ==========================================
-
-                const editStatus =
-                    document.getElementById(
-                        "editUserStatus"
-                    );
-
-
-                if (editStatus) {
-
-                    editStatus.value =
-                        data.status ||
-                        "Active";
-
-                }
-
-
-                // ==========================================
-                // OPEN EDIT MODAL
-                // ==========================================
-
-                const editModal =
-                    document.getElementById(
-                        "adminEditUserModal"
-                    );
-
-
-                if (editModal) {
-
-                    editModal.style.display =
-                        "flex";
-
-                    editModal.style.position =
-                        "fixed";
-
-                    editModal.style.inset =
-                        "0";
-
-                    editModal.style.width =
-                        "100vw";
-
-                    editModal.style.height =
-                        "100vh";
-
-                    editModal.style.zIndex =
-                        "9999999";
-
-                    editModal.style.alignItems =
-                        "center";
-
-                    editModal.style.justifyContent =
-                        "center";
-
-                } else {
-
-                    console.error(
-                        "adminEditUserModal not found."
-                    );
-
-                    alert(
-                        "Edit User modal not found."
-                    );
-
-                }
-
-            } catch (error) {
-
-                console.error(
-                    "EDIT USER ERROR:",
-                    error
-                );
-
-                alert(
-                    "Unable to edit user."
-                );
-
-            }
+   // ==========================================
+// EDIT USER
+// SUPABASE LIVE DATA
+// ==========================================
+
+if (action === "edit") {
+
+    try {
+
+        const { data, error } =
+            await supabaseClient
+                .from(tableName)
+                .select("*")
+                .eq("id", recordId)
+                .maybeSingle();
+
+        if (error) {
+            console.error(
+                "Edit User Load Error:",
+                error
+            );
+
+            alert(
+                "Unable to load user for editing.\n\n" +
+                error.message
+            );
 
             return;
         }
 
+        if (!data) {
+            alert("User record not found.");
+            return;
+        }
+
+        // -------------------------------
+        // SAVE EDITING STATE
+        // -------------------------------
+
+        editingUserType = userType;
+        editingUserId = recordId;
+
+
+        // -------------------------------
+        // NAME
+        // -------------------------------
+
+        const editName =
+            document.getElementById(
+                "editUserName"
+            );
+
+        if (editName) {
+            editName.value =
+                data.name ||
+                data.fullName ||
+                data.full_name ||
+                "";
+        }
+
+
+        // -------------------------------
+        // USERNAME
+        // -------------------------------
+
+        const editUsername =
+            document.getElementById(
+                "editUserUsername"
+            );
+
+        if (editUsername) {
+            editUsername.value =
+                data.username ||
+                "";
+        }
+
+
+        // -------------------------------
+        // PASSWORD
+        // -------------------------------
+
+        const editPassword =
+            document.getElementById(
+                "editUserNewPassword"
+            );
+
+        if (editPassword) {
+            editPassword.value = "";
+        }
+
+
+        // -------------------------------
+        // STATUS
+        // -------------------------------
+
+        const editStatus =
+            document.getElementById(
+                "editUserStatus"
+            );
+
+        if (editStatus) {
+            editStatus.value =
+                data.status ||
+                "Active";
+        }
+
+
+        // -------------------------------
+        // OPEN EDIT MODAL
+        // -------------------------------
+
+        const editModal =
+            document.getElementById(
+                "editUserManagementModal"
+            ) ||
+            document.getElementById(
+                "adminEditUserModal"
+            );
+
+        if (!editModal) {
+
+            console.error(
+                "Edit User modal not found."
+            );
+
+            alert(
+                "Edit User modal not found."
+            );
+
+            return;
+        }
+
+
+        editModal.style.display = "flex";
+
+        editModal.style.position = "fixed";
+        editModal.style.inset = "0";
+        editModal.style.width = "100vw";
+        editModal.style.height = "100vh";
+        editModal.style.zIndex = "9999999";
+        editModal.style.alignItems = "center";
+        editModal.style.justifyContent = "center";
+
+
+    } catch (error) {
+
+        console.error(
+            "EDIT USER ERROR:",
+            error
+        );
+
+        alert(
+            "Unable to edit user."
+        );
+    }
+
+    return;
+}
 
         // ==========================================
         // DELETE USER
