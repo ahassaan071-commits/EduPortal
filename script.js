@@ -9469,8 +9469,8 @@ document.addEventListener(
             subject:
                 subject,
 
-            teacher:
-                teacher,
+           teacher_name:
+    teacher,
 
             class_name:
                 assignmentClass,
