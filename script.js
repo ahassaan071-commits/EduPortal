@@ -6928,7 +6928,7 @@ async function updateResultsStatistics() {
         await supabaseClient
             .from("results")
             .select(
-               "id, student_id, total_marks, marks, percentage, grade"
+                "id, student_id, total_marks, marks"
             );
 
     if (error) {
