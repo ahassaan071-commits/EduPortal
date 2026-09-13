@@ -4029,7 +4029,7 @@ async function renderAdminStudents() {
     tableBody.innerHTML = `
         <tr>
             <td
-                colspan="11"
+                colspan="10"
                 style="text-align:center;"
             >
                 Loading students...
