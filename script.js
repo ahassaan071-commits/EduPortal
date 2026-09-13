@@ -7469,360 +7469,411 @@ menu.classList.remove("show");
 });
 // ==========================================
 // USER MANAGEMENT ACTIONS
+// SUPABASE - EDIT / DELETE / VIEW
 // ==========================================
 
-document.addEventListener("click", async function (event) {
+document.addEventListener(
+    "click",
+    async function (event) {
 
-const actionButton =
-event.target.closest(
-    ".user-action-item, .user-edit-btn, .user-delete-btn"
+        const actionButton =
+            event.target.closest(
+                ".user-action-item, .user-edit-btn, .user-delete-btn"
+            );
+
+        if (!actionButton) {
+            return;
+        }
+
+        const action =
+            actionButton.dataset.action;
+
+        const userType =
+            actionButton.dataset.userType;
+
+        const userId =
+            actionButton.dataset.studentId;
+
+
+        // ==========================================
+        // VIEW USER
+        // ==========================================
+
+        if (action === "view") {
+
+            if (
+                typeof openAdminViewStudent ===
+                "function"
+            ) {
+                openAdminViewStudent(userId);
+            }
+
+            return;
+        }
+
+
+        // ==========================================
+        // CHECK USER TYPE
+        // ==========================================
+
+        if (
+            userType !== "student" &&
+            userType !== "teacher"
+        ) {
+
+            console.error(
+                "Invalid User Type:",
+                userType
+            );
+
+            return;
+        }
+
+
+        const tableName =
+            userType === "student"
+                ? "students"
+                : "teachers";
+
+
+        // ==========================================
+        // EDIT USER
+        // ==========================================
+
+        if (action === "edit") {
+
+            try {
+
+                const {
+                    data: user,
+                    error
+                } =
+                    await supabaseClient
+                        .from(tableName)
+                        .select("*")
+                        .eq(
+                            "id",
+                            userId
+                        )
+                        .maybeSingle();
+
+
+                if (error) {
+
+                    console.error(
+                        "Edit User Error:",
+                        error
+                    );
+
+                    alert(
+                        "Unable to load user.\n\n" +
+                        error.message
+                    );
+
+                    return;
+                }
+
+
+                if (!user) {
+
+                    alert(
+                        "User not found in Supabase."
+                    );
+
+                    return;
+                }
+
+
+                // ==========================================
+                // FILL EDIT MODAL
+                // ==========================================
+
+                const typeField =
+                    document.getElementById(
+                        "editUserType"
+                    );
+
+                const nameField =
+                    document.getElementById(
+                        "editUserName"
+                    );
+
+                const usernameField =
+                    document.getElementById(
+                        "editUserUsername"
+                    );
+
+                const statusField =
+                    document.getElementById(
+                        "editUserStatus"
+                    );
+
+
+                if (typeField) {
+
+                    typeField.value =
+                        userType === "student"
+                            ? "Student"
+                            : "Teacher";
+                }
+
+
+                if (nameField) {
+
+                    nameField.value =
+                        user.fullName ||
+                        user.full_name ||
+                        user.name ||
+                        "";
+                }
+
+
+                if (usernameField) {
+
+                    usernameField.value =
+                        user.username ||
+                        "";
+                }
+
+
+                if (statusField) {
+
+                    statusField.value =
+                        user.status ||
+                        "Active";
+                }
+
+
+                // ==========================================
+                // SAVE CURRENT EDITING USER
+                // ==========================================
+
+                editingUserType =
+                    userType;
+
+                editingUserId =
+                    user.id;
+
+
+                // ==========================================
+                // OPEN EDIT MODAL
+                // ==========================================
+
+                const modal =
+                    document.getElementById(
+                        "editUserManagementModal"
+                    );
+
+                if (!modal) {
+
+                    alert(
+                        "Edit User Modal HTML nahi mila."
+                    );
+
+                    return;
+                }
+
+
+                modal.style.display =
+                    "flex";
+
+                modal.style.position =
+                    "fixed";
+
+                modal.style.inset =
+                    "0";
+
+                modal.style.zIndex =
+                    "9999999";
+
+            } catch (error) {
+
+                console.error(
+                    "Edit User Exception:",
+                    error
+                );
+
+                alert(
+                    "Unable to edit user."
+                );
+            }
+
+            return;
+        }
+
+
+        // ==========================================
+        // DELETE USER
+        // ==========================================
+
+        if (action === "delete") {
+
+            const confirmed =
+                confirm(
+                    "Are you sure you want to delete this " +
+                    userType +
+                    "?\n\nThis action cannot be undone."
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            try {
+
+                actionButton.disabled =
+                    true;
+
+
+                const {
+                    error
+                } =
+                    await supabaseClient
+                        .from(tableName)
+                        .delete()
+                        .eq(
+                            "id",
+                            userId
+                        );
+
+
+                if (error) {
+
+                    console.error(
+                        "Delete User Error:",
+                        error
+                    );
+
+                    actionButton.disabled =
+                        false;
+
+                    alert(
+                        "User could not be deleted.\n\n" +
+                        error.message
+                    );
+
+                    return;
+                }
+
+
+                // ==========================================
+                // REMOVE LOCAL COPY
+                // ==========================================
+
+                const storageKey =
+                    userType === "student"
+                        ? "adminStudents"
+                        : "adminTeachers";
+
+
+                try {
+
+                    const localUsers =
+                        JSON.parse(
+                            localStorage.getItem(
+                                storageKey
+                            )
+                        ) || [];
+
+
+                    const updatedUsers =
+                        localUsers.filter(
+                            function (item) {
+
+                                return String(
+                                    item.id
+                                ) !== String(
+                                    userId
+                                );
+
+                            }
+                        );
+
+
+                    localStorage.setItem(
+                        storageKey,
+                        JSON.stringify(
+                            updatedUsers
+                        )
+                    );
+
+                } catch (storageError) {
+
+                    console.warn(
+                        "Local storage update failed:",
+                        storageError
+                    );
+                }
+
+
+                // ==========================================
+                // REFRESH USER MANAGEMENT
+                // ==========================================
+
+                if (
+                    typeof renderUserManagementStudents ===
+                    "function"
+                ) {
+
+                    await renderUserManagementStudents();
+                }
+
+
+                // ==========================================
+                // REFRESH ATTENDANCE
+                // ==========================================
+
+                if (
+                    typeof renderAttendanceTable ===
+                    "function"
+                ) {
+
+                    await renderAttendanceTable();
+                }
+
+
+                // ==========================================
+                // UPDATE STUDENT COUNT
+                // ==========================================
+
+                if (
+                    typeof updateAdminStudentCount ===
+                    "function"
+                ) {
+
+                    updateAdminStudentCount();
+                }
+
+
+                alert(
+                    userType === "student"
+                        ? "Student deleted successfully. ✅"
+                        : "Teacher deleted successfully. ✅"
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Delete User Exception:",
+                    error
+                );
+
+                actionButton.disabled =
+                    false;
+
+                alert(
+                    "Unable to delete user."
+                );
+            }
+
+            return;
+        }
+
+    }
 );
-
-if (!actionButton) {
-return;
-}
-
-const action =
-actionButton.dataset.action;
-
-const studentId =
-actionButton.dataset.studentId;
-
-
-// VIEW
-if (action === "view") {
-
-openAdminViewStudent(studentId);
-
-return;
-}
-
-
-// EDIT USER MANAGEMENT
-
-if (action === "edit") {
-
-    const userType =
-        actionButton.dataset.userType;
-
-    const userId =
-        actionButton.dataset.studentId;
-
-    const tableName =
-        userType === "student"
-            ? "students"
-            : "teachers";
-
-    const {
-        data: user,
-        error
-    } =
-        await supabaseClient
-            .from(tableName)
-            .select("*")
-            .eq("id", userId)
-            .maybeSingle();
-
-    console.log(
-        "EDIT USER:",
-        userType,
-        userId,
-        user,
-        error
-    );
-
-    if (error) {
-
-        console.error(
-            "Edit User Error:",
-            error
-        );
-
-        alert(
-            "Unable to load user: " +
-            error.message
-        );
-
-        return;
-    }
-
-    if (!user) {
-
-        alert(
-            "User not found in Supabase."
-        );
-
-        return;
-    }
-
-    document.getElementById(
-        "editUserType"
-    ).value =
-        userType === "student"
-            ? "Student"
-            : "Teacher";
-
-    document.getElementById(
-        "editUserName"
-    ).value =
-        user.fullName ||
-        user.full_name ||
-        user.name ||
-        "";
-
-    document.getElementById(
-        "editUserUsername"
-    ).value =
-        user.username ||
-        "";
-
-    document.getElementById(
-        "editUserStatus"
-    ).value =
-        user.status ||
-        "Active";
-
-editingUserType = userType;
-editingUserId = userId;
-
-    const modal =
-        document.getElementById(
-            "editUserManagementModal"
-        );
-
-    if (modal) {
-
-        modal.style.display =
-            "flex";
-
-    }
-
-    return;
-}
-// ==========================================
-// DELETE USER - SUPABASE + LOCAL STORAGE
-// ==========================================
-
-if (action === "delete") {
-
-    const confirmed =
-        confirm(
-            "Are you sure you want to delete this user?\n\n" +
-            "This action cannot be undone."
-        );
-
-    if (!confirmed) {
-        return;
-    }
-
-
-    // ==========================================
-    // GET USER TYPE
-    // ==========================================
-
-    const userType =
-        actionButton.dataset.userType;
-
-
-    // ==========================================
-    // DELETE FROM SUPABASE
-    // ==========================================
-
-    let tableName = "";
-
-    if (userType === "student") {
-
-        tableName = "students";
-
-    } else if (userType === "teacher") {
-
-        tableName = "teachers";
-
-    } else {
-
-        alert(
-            "Unable to determine user type."
-        );
-
-        return;
-    }
-
-
-    // ==========================================
-    // SHOW DELETING MESSAGE
-    // ==========================================
-
-    actionButton.disabled = true;
-
-
-    const {
-        error: deleteError
-    } =
-        await supabaseClient
-            .from(tableName)
-            .delete()
-            .eq(
-                "id",
-                studentId
-            );
-
-
-    // ==========================================
-    // SUPABASE DELETE ERROR
-    // ==========================================
-
-    if (deleteError) {
-
-        console.error(
-            "USER DELETE ERROR:",
-            deleteError
-        );
-
-        actionButton.disabled = false;
-
-        alert(
-            "User could not be deleted from database.\n\n" +
-            deleteError.message
-        );
-
-        return;
-    }
-
-
-    // ==========================================
-    // DELETE FROM LOCAL STORAGE
-    // ==========================================
-
-    if (userType === "student") {
-
-        const students =
-            JSON.parse(
-                localStorage.getItem(
-                    "adminStudents"
-                )
-            ) || [];
-
-
-        const updatedStudents =
-            students.filter(
-                function(student) {
-
-                    return Number(student.id) !==
-                        studentId;
-
-                }
-            );
-
-
-        localStorage.setItem(
-            "adminStudents",
-            JSON.stringify(
-                updatedStudents
-            )
-        );
-
-    }
-
-
-    // ==========================================
-    // TEACHER LOCAL STORAGE
-    // ==========================================
-
-    if (userType === "teacher") {
-
-        const teachers =
-            JSON.parse(
-                localStorage.getItem(
-                    "adminTeachers"
-                )
-            ) || [];
-
-
-        const updatedTeachers =
-            teachers.filter(
-                function(teacher) {
-
-                    return Number(teacher.id) !==
-                        studentId;
-
-                }
-            );
-
-
-        localStorage.setItem(
-            "adminTeachers",
-            JSON.stringify(
-                updatedTeachers
-            )
-        );
-
-    }
-
-
-    // ==========================================
-    // REFRESH USER MANAGEMENT
-    // ==========================================
-
-    if (
-        typeof renderUserManagementStudents ===
-        "function"
-    ) {
-
-        await renderUserManagementStudents();
-
-    }
-
-
-    // ==========================================
-    // REFRESH ATTENDANCE
-    // ==========================================
-
-    if (
-        typeof renderAttendanceTable ===
-        "function"
-    ) {
-
-        await renderAttendanceTable();
-
-    }
-
-
-    // ==========================================
-    // UPDATE ADMIN STUDENT COUNT
-    // ==========================================
-
-    if (
-        typeof updateAdminStudentCount ===
-        "function"
-    ) {
-
-        updateAdminStudentCount();
-
-    }
-
-
-    // ==========================================
-    // SUCCESS MESSAGE
-    // ==========================================
-
-    if (userType === "student") {
-
-        alert(
-            "Student deleted successfully. ✅"
-        );
-
-    } else {
-
-        alert(
-            "Teacher deleted successfully. ✅"
-        );
-
-    }
-
-    return;
-}
-
-});
 // ==========================================
 // ADMIN ASSIGNMENT MODAL - OPEN / CLOSE
 // ==========================================
