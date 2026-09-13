@@ -6467,102 +6467,88 @@ async function renderUserManagementStudents() {
         return;
     }
 
+    // ==========================================
+    // LOAD STUDENTS FROM SUPABASE
+    // ==========================================
+
+    let students = [];
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("students")
+                .select("*")
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+        if (error) {
+            console.error(
+                "USER MANAGEMENT STUDENT ERROR:",
+                error
+            );
+        } else {
+            students = data || [];
+        }
+
+    } catch (error) {
+
+        console.error(
+            "STUDENT LOAD ERROR:",
+            error
+        );
+
+    }
+
 
     // ==========================================
-// GET STUDENTS FROM SUPABASE
-// ==========================================
+    // LOAD TEACHERS FROM SUPABASE
+    // ==========================================
 
-let students = [];
+    let teachers = [];
 
-try {
+    try {
 
-    const {
-        data: supabaseStudents,
-        error: studentError
-    } =
-        await supabaseClient
-            .from("students")
-            .select("*")
-            .order(
-                "created_at",
-                {
-                    ascending: false
-                }
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("teachers")
+                .select("*")
+                .order(
+                    "id",
+                    {
+                        ascending: false
+                    }
+                );
+
+        if (error) {
+            console.error(
+                "USER MANAGEMENT TEACHER ERROR:",
+                error
             );
+        } else {
+            teachers = data || [];
+        }
 
-    if (studentError) {
+    } catch (error) {
 
         console.error(
-            "Supabase Student Error:",
-            studentError
+            "TEACHER LOAD ERROR:",
+            error
         );
-
-        students = [];
-
-    } else {
-
-        students =
-            supabaseStudents || [];
 
     }
 
-} catch (error) {
 
-    console.error(
-        "Student data error:",
-        error
-    );
-
-    students = [];
-}
-
- // ==========================================
-// GET TEACHERS FROM SUPABASE
-// ==========================================
-
-let teachers = [];
-
-try {
-
-    const {
-        data: supabaseTeachers,
-        error: teacherError
-    } =
-        await supabaseClient
-            .from("teachers")
-            .select("*")
-            .order(
-                "id",
-                {
-                    ascending: false
-                }
-            );
-
-    if (teacherError) {
-
-        console.error(
-            "Supabase Teacher Error:",
-            teacherError
-        );
-
-        teachers = [];
-
-    } else {
-
-        teachers =
-            supabaseTeachers || [];
-
-    }
-
-} catch (error) {
-
-    console.error(
-        "Teacher data error:",
-        error
-    );
-
-    teachers = [];
-}
     // ==========================================
     // COMBINE USERS
     // ==========================================
@@ -6584,29 +6570,30 @@ try {
 
             roleIcon: "🎓",
 
-            id:
-                student.studentId ||
-                student.student_id ||
-                student.id ||
-                "—",
-
             recordId:
                 student.id,
 
+            id:
+                student.student_id ||
+                student.studentId ||
+                student.id ||
+                "—",
+
             name:
-                student.fullName ||
                 student.name ||
+                student.fullName ||
+                student.full_name ||
                 "—",
 
             classSubject:
-                student.studentClass
+                student.student_class
                     ? "Class " +
-                      student.studentClass
+                      student.student_class
                     :
                     (
-                        student.student_class
+                        student.studentClass
                             ? "Class " +
-                              student.student_class
+                              student.studentClass
                             : "—"
                     ),
 
@@ -6641,25 +6628,26 @@ try {
 
             roleIcon: "👨‍🏫",
 
-            id:
-                teacher.teacherId ||
-                teacher.teacher_id ||
-                teacher.id ||
-                "—",
-
             recordId:
                 teacher.id,
 
+            id:
+                teacher.teacher_id ||
+                teacher.teacherId ||
+                teacher.id ||
+                "—",
+
             name:
-                teacher.fullName ||
                 teacher.name ||
+                teacher.fullName ||
+                teacher.full_name ||
                 "—",
 
             classSubject:
-
-                teacher.subject
-                    ? teacher.subject
-                    : "—",
+                teacher.subject ||
+                teacher.teacher_class ||
+                teacher.teacherClass ||
+                "—",
 
             username:
                 teacher.username ||
@@ -6685,9 +6673,7 @@ try {
     if (users.length === 0) {
 
         tableBody.innerHTML = `
-
             <tr>
-
                 <td
                     colspan="9"
                     style="
@@ -6696,14 +6682,10 @@ try {
                         color:#64748b;
                     "
                 >
-
                     👥 No Student or Teacher
                     accounts found.
-
                 </td>
-
             </tr>
-
         `;
 
         return;
@@ -6838,8 +6820,9 @@ try {
 
                     ${
                         user.password
-                            ? `
+                            ?
 
+                            `
                                 <button
                                     type="button"
                                     class="user-password-toggle"
@@ -6853,9 +6836,11 @@ try {
                                 >
                                     👁️
                                 </button>
-
                             `
-                            : ""
+
+                            :
+
+                            ""
                     }
 
                 </div>
@@ -6907,6 +6892,33 @@ try {
                         justify-content:center;
                     "
                 >
+
+                    <!-- VIEW -->
+
+                    <button
+                        type="button"
+                        class="user-view-btn"
+                        data-action="view"
+                        data-user-type="${user.type}"
+                        data-user-id="${user.recordId}"
+                        data-student-id="${user.recordId}"
+                        title="View User"
+                        style="
+                            border:none;
+                            background:#0ea5e9;
+                            color:white;
+                            width:38px;
+                            height:38px;
+                            border-radius:10px;
+                            cursor:pointer;
+                            font-size:17px;
+                        "
+                    >
+
+                        👁️
+
+                    </button>
+
 
                     <!-- EDIT -->
 
