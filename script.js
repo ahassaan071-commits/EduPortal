@@ -4911,20 +4911,7 @@ async function filterAdminStudents() {
                     }
                 </td>
 
-                <td>
-
-                    <button
-                        type="button"
-                        class="admin-table-edit-btn"
-                        data-student-id="${
-                            student.id
-                        }"
-                        title="Edit Student"
-                    >
-                        ✏️ Edit
-                    </button>
-
-                </td>
+           
             `;
 
             tableBody.appendChild(
