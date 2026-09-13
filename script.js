@@ -15884,2475 +15884,1174 @@ return;
 }
 
 });
-// ==========================================================
-// EDUPORTAL ADMIN DASHBOARD
-// STEP 13 - LIVE DASHBOARD STATISTICS
-// ==========================================================
-
-function updateAdminDashboardOverview() {
-
-// ======================================================
-// GET DASHBOARD ELEMENTS
-// ======================================================
-
-const studentsElement =
-document.getElementById("adminTotalStudents");
-
-const teachersElement =
-document.getElementById("adminTotalTeachers");
-
-const attendanceElement =
-document.getElementById("adminAttendance");
-
-const pendingFeesElement =
-document.getElementById("adminPendingFees");
-
-
-// ======================================================
-// TOTAL STUDENTS
-// ======================================================
-
-const students =
-JSON.parse(
-localStorage.getItem("adminStudents")
-) || [];
-
-if (studentsElement) {
-
-studentsElement.textContent =
-students.length;
-
-}
-
-
-// ======================================================
-// TOTAL TEACHERS
-// ======================================================
-
-const teachers =
-JSON.parse(
-localStorage.getItem("adminTeachers")
-) || [];
-
-if (teachersElement) {
-
-teachersElement.textContent =
-teachers.length;
-
-}
-
-
-// ======================================================
-// TODAY'S ATTENDANCE
-// ======================================================
-
-const attendanceRecords =
-JSON.parse(
-localStorage.getItem(
-"eduPortalAttendance"
-)
-) || [];
-
-
-// Today's date
-
-const today =
-new Date().toISOString().split("T")[0];
-
-
-// Today's records
-
-const todayRecords =
-attendanceRecords.filter(
-function (record) {
-
-return record.date === today;
-
-}
-);
-
-
-// Present students
-
-const presentStudents =
-todayRecords.filter(
-function (record) {
-
-return record.status === "Present";
-
-}
-).length;
-
-
-// Calculate percentage
-
-let attendancePercentage = 0;
-
-
-if (students.length > 0) {
-
-attendancePercentage =
-Math.round(
-(presentStudents / students.length) * 100
-);
-
-}
-
-
-if (attendanceElement) {
-
-attendanceElement.textContent =
-attendancePercentage + "%";
-
-}
-
-
-// ======================================================
-// PENDING FEES
-// ======================================================
-
-const feeRecords =
-JSON.parse(
-localStorage.getItem(
-"adminFeeRecords"
-)
-) || [];
-
-
-let pendingFees = 0;
-
-
-feeRecords.forEach(
-function (record) {
-
-const remaining =
-Number(
-record.remainingAmount
-) || 0;
-
-
-if (remaining > 0) {
-
-pendingFees +=
-remaining;
-
-}
-
-}
-);
-
-
-if (pendingFeesElement) {
-
-pendingFeesElement.textContent =
-"Rs. " +
-pendingFees.toLocaleString();
-
-}
-
-}
-
-
-// ==========================================================
-// UPDATE DASHBOARD WHEN PAGE LOADS
-// ==========================================================
-
-window.addEventListener(
-"load",
-function () {
-
-updateAdminDashboardOverview();
-
-}
-);
-
-
-// ==========================================================
-// UPDATE DASHBOARD WHEN DASHBOARD MENU IS CLICKED
-// ==========================================================
-
-document.addEventListener(
-"click",
-function (event) {
-
-const dashboardMenu =
-event.target.closest(
-"#adminDashboardMenu"
-);
-
-
-if (!dashboardMenu) {
-
-return;
-
-}
-
-
-updateAdminDashboardOverview();
-
-}
-);
-/* =========================================================
-EDUPORTAL DASHBOARD ANALYTICS
-PHASE 2 - LIVE DATA
-========================================================= */
-
-function updateAdminDashboardAnalytics() {
-
-/* -----------------------------------------
-STUDENTS
------------------------------------------ */
-
-const students =
-JSON.parse(localStorage.getItem("adminStudents")) || [];
-
-const studentCount =
-students.length;
-
-
-/* -----------------------------------------
-TEACHERS
------------------------------------------ */
-
-const teachers =
-JSON.parse(localStorage.getItem("adminTeachers")) || [];
-
-const teacherCount =
-teachers.length;
-
-
-/* -----------------------------------------
-ATTENDANCE
------------------------------------------ */
-
-const attendance =
-JSON.parse(localStorage.getItem("adminAttendance")) || [];
-
-
-let presentToday = 0;
-let totalToday = 0;
-
-
-const today =
-new Date().toISOString().split("T")[0];
-
-
-attendance.forEach(function (record) {
-
-if (
-record.date === today ||
-record.attendanceDate === today
-) {
-
-totalToday++;
-
-const status =
-String(
-record.status || ""
-).toLowerCase();
-
-if (
-status === "present" ||
-status === "p"
-) {
-presentToday++;
-}
-
-}
-
-});
-
-
-let attendancePercentage = 0;
-
-
-if (totalToday > 0) {
-
-attendancePercentage =
-Math.round(
-(presentToday / totalToday) * 100
-);
-
-}
-
-
-/* -----------------------------------------
-FEES
------------------------------------------ */
-
-const fees =
-JSON.parse(localStorage.getItem("adminFees")) || [];
-
-
-let pendingFees = 0;
-
-
-fees.forEach(function (fee) {
-
-const status =
-String(
-fee.status || ""
-).toLowerCase();
-
-
-if (
-status === "pending" ||
-status === "unpaid" ||
-status === "due"
-) {
-
-pendingFees +=
-Number(
-fee.amount ||
-fee.total ||
-fee.pendingAmount ||
-0
-);
-
-}
-
-});
-
-
-/* -----------------------------------------
-UPDATE STUDENTS
------------------------------------------ */
-
-const analyticsStudents =
-document.getElementById(
-"adminAnalyticsStudents"
-);
-
-
-if (analyticsStudents) {
-
-analyticsStudents.textContent =
-studentCount;
-
-}
-
-
-/* -----------------------------------------
-UPDATE TEACHERS
------------------------------------------ */
-
-const analyticsTeachers =
-document.getElementById(
-"adminAnalyticsTeachers"
-);
-
-
-if (analyticsTeachers) {
-
-analyticsTeachers.textContent =
-teacherCount;
-
-}
-
-
-/* -----------------------------------------
-UPDATE ATTENDANCE
------------------------------------------ */
-
-const analyticsAttendance =
-document.getElementById(
-"adminAnalyticsAttendance"
-);
-
-
-if (analyticsAttendance) {
-
-analyticsAttendance.textContent =
-attendancePercentage + "%";
-
-}
-
-
-const analyticsPresent =
-document.getElementById(
-"adminAnalyticsPresent"
-);
-
-
-if (analyticsPresent) {
-
-analyticsPresent.textContent =
-presentToday;
-
-}
-
-
-const attendanceProgress =
-document.getElementById(
-"adminAttendanceProgress"
-);
-
-
-if (attendanceProgress) {
-
-attendanceProgress.style.width =
-attendancePercentage + "%";
-
-}
-
-
-/* -----------------------------------------
-UPDATE FEES
------------------------------------------ */
-
-const analyticsFees =
-document.getElementById(
-"adminAnalyticsFees"
-);
-
-
-if (analyticsFees) {
-
-analyticsFees.textContent =
-"Rs. " +
-pendingFees.toLocaleString();
-
-}
-
-
-const analyticsFeeStatus =
-document.getElementById(
-"adminAnalyticsFeeStatus"
-);
-
-
-if (analyticsFeeStatus) {
-
-if (pendingFees > 0) {
-
-analyticsFeeStatus.textContent =
-"Payment Pending";
-
-analyticsFeeStatus.style.color =
-"#dc2626";
-
-} else {
-
-analyticsFeeStatus.textContent =
-"No Pending Fees";
-
-analyticsFeeStatus.style.color =
-"#16a34a";
-
-}
-
-}
-
-}
-
-
-/* =========================================================
-INITIAL LOAD
-========================================================= */
-
-document.addEventListener(
-"DOMContentLoaded",
-function () {
-
-updateAdminDashboardAnalytics();
-
-}
-);
-
-/* =========================================================
-RECENT ACTIVITY
-========================================================= */
-
-function updateAdminRecentActivity() {
-
-const activities = [];
-
-
-/* -----------------------------------------
-STUDENTS
------------------------------------------ */
-
-const students =
-JSON.parse(
-localStorage.getItem("adminStudents")
-) || [];
-
-
-students.forEach(function (student) {
-
-if (!student.createdAt) {
-return;
-}
-
-activities.push({
-
-type: "student",
-
-icon: "👨‍🎓",
-
-title: "New Student Added",
-
-description:
-student.name ||
-"Student record created",
-
-date:
-new Date(student.createdAt)
-
-});
-
-});
-
-
-/* -----------------------------------------
-TEACHERS
------------------------------------------ */
-
-const teachers =
-JSON.parse(
-localStorage.getItem("adminTeachers")
-) || [];
-
-
-teachers.forEach(function (teacher) {
-
-if (!teacher.createdAt) {
-return;
-}
-
-activities.push({
-
-type: "teacher",
-
-icon: "👨‍🏫",
-
-title: "New Teacher Added",
-
-description:
-teacher.name ||
-"Teacher record created",
-
-date:
-new Date(teacher.createdAt)
-
-});
-
-});
-
-
-/* -----------------------------------------
-RESULTS
------------------------------------------ */
-
-const results =
-JSON.parse(
-localStorage.getItem("adminResults")
-) || [];
-
-
-results.forEach(function (result) {
-
-if (!result.createdAt) {
-return;
-}
-
-activities.push({
-
-type: "result",
-
-icon: "📝",
-
-title: "Result Added",
-
-description:
-result.studentName ||
-"Student result recorded",
-
-date:
-new Date(result.createdAt)
-
-});
-
-});
-
-
-/* -----------------------------------------
-FEES
------------------------------------------ */
-
-const fees =
-JSON.parse(
-localStorage.getItem("adminFees")
-) || [];
-
-
-fees.forEach(function (fee) {
-
-if (!fee.createdAt) {
-return;
-}
-
-activities.push({
-
-type: "fee",
-
-icon: "💰",
-
-title: "Fee Record Added",
-
-description:
-fee.studentName ||
-"Fee record updated",
-
-date:
-new Date(fee.createdAt)
-
-});
-
-});
-
-
-/* -----------------------------------------
-SORT LATEST FIRST
------------------------------------------ */
-
-activities.sort(function (a, b) {
-
-return b.date - a.date;
-
-});
-
-
-/* -----------------------------------------
-ONLY SHOW LATEST 8
------------------------------------------ */
-
-const latestActivities =
-activities.slice(0, 8);
-
-
-const container =
-document.getElementById(
-"adminRecentActivity"
-);
-
-
-if (!container) {
-return;
-}
-
-
-if (latestActivities.length === 0) {
-
-container.innerHTML = `
-<div class="admin-recent-empty">
-No recent activity available.
-</div>
-`;
-
-return;
-
-}
-
-
-container.innerHTML =
-latestActivities.map(function (activity) {
-
-const dateText =
-activity.date.toLocaleDateString(
-"en-GB",
-{
-day: "2-digit",
-month: "short",
-year: "numeric"
-}
-);
-
-
-return `
-<div class="admin-recent-item">
-
-<div class="admin-recent-item-inner">
-<div class="admin-recent-icon">
-${activity.icon}
-</div>
-
-<div class="admin-recent-content">
-
-<strong>
-    ${activity.title}
-</strong>
-
-<span>
-    ${activity.description}
-</span>
-
-</div>
-
-<div class="admin-recent-time">
-${dateText}
-</div>
-</div>
-
-</div>
-`;
-
-}).join("");
-
-}
-
-/* =========================================================
-INITIAL LOAD
-========================================================= */
-
-document.addEventListener(
-"DOMContentLoaded",
-function () {
-
-updateAdminRecentActivity();
-
-}
-);
-/* =========================================================
-COMPACT DASHBOARD CHARTS - LIVE DATA
-========================================================= */
-
-function updateAdminDashboardCharts() {
-
-/* =====================================================
-STUDENTS
-===================================================== */
-
-const students =
-JSON.parse(
-localStorage.getItem("adminStudents")
-) || [];
-
-const studentCount =
-students.length;
-
-
-const studentTotal =
-document.getElementById(
-"adminChartStudentTotal"
-);
-
-if (studentTotal) {
-studentTotal.textContent =
-studentCount;
-}
-
-
-/*
-* Visual scale for student bar.
-* Maximum visual reference = 100 students.
-*/
-
-const studentBar =
-document.getElementById(
-"adminStudentBar"
-);
-
-if (studentBar) {
-
-const studentWidth =
-Math.min(
-studentCount,
-100
-);
-
-studentBar.style.width =
-studentWidth + "%";
-}
-
-
-/* =====================================================
-ATTENDANCE
-===================================================== */
-
-const attendance =
-JSON.parse(
-localStorage.getItem("adminAttendance")
-) || [];
-
-
-const today =
-new Date()
-.toISOString()
-.split("T")[0];
-
-
-let presentToday = 0;
-let totalToday = 0;
-
-
-attendance.forEach(function (record) {
-
-const recordDate =
-record.date ||
-record.attendanceDate ||
-"";
-
-
-if (recordDate === today) {
-
-totalToday++;
-
-
-const status =
-String(
-record.status || ""
-).toLowerCase();
-
-
-if (
-status === "present" ||
-status === "p"
-) {
-
-presentToday++;
-
-}
-
-}
-
-});
-
-
-const attendancePercentage =
-totalToday > 0
-? Math.round(
-(presentToday / totalToday) * 100
-)
-: 0;
-
-
-const attendanceText =
-document.getElementById(
-"adminChartAttendance"
-);
-
-if (attendanceText) {
-
-attendanceText.textContent =
-attendancePercentage + "%";
-
-}
-
-
-const donutText =
-document.getElementById(
-"adminAttendanceDonutText"
-);
-
-if (donutText) {
-
-donutText.textContent =
-attendancePercentage + "%";
-
-}
-
-
-const donut =
-document.getElementById(
-"adminAttendanceDonut"
-);
-
-
-if (donut) {
-
-const degree =
-attendancePercentage * 3.6;
-
-
-donut.style.background =
-`conic-gradient(
-#2563eb 0deg,
-#2563eb ${degree}deg,
-#e2e8f0 ${degree}deg,
-#e2e8f0 360deg
-)`;
-
-}
-
-
-/* =====================================================
-RESULTS
-===================================================== */
-
-const results =
-JSON.parse(
-localStorage.getItem("adminResults")
-) || [];
-
-
-let totalPercentage = 0;
-
-let passed = 0;
-
-let failed = 0;
-
-
-results.forEach(function (result) {
-
-const percentage =
-Number(
-result.percentage
-) || 0;
-
-
-totalPercentage +=
-percentage;
-
-
-if (percentage >= 40) {
-
-passed++;
-
-} else {
-
-failed++;
-
-}
-
-});
-
-
-const averagePercentage =
-results.length > 0
-? (
-totalPercentage /
-results.length
-).toFixed(1)
-: 0;
-
-
-const averageText =
-document.getElementById(
-"adminChartAverage"
-);
-
-if (averageText) {
-
-averageText.textContent =
-averagePercentage + "%";
-
-}
-
-
-const passedValue =
-document.getElementById(
-"adminPassedChartValue"
-);
-
-if (passedValue) {
-
-passedValue.textContent =
-passed;
-
-}
-
-
-const failedValue =
-document.getElementById(
-"adminFailedChartValue"
-);
-
-if (failedValue) {
-
-failedValue.textContent =
-failed;
-
-}
-
-
-const totalResults =
-passed + failed;
-
-
-const passedWidth =
-totalResults > 0
-? Math.round(
-(passed / totalResults) * 100
-)
-: 0;
-
-
-const failedWidth =
-totalResults > 0
-? Math.round(
-(failed / totalResults) * 100
-)
-: 0;
-
-
-const passedBar =
-document.getElementById(
-"adminPassedBar"
-);
-
-if (passedBar) {
-
-passedBar.style.width =
-passedWidth + "%";
-
-}
-
-
-const failedBar =
-document.getElementById(
-"adminFailedBar"
-);
-
-if (failedBar) {
-
-failedBar.style.width =
-failedWidth + "%";
-
-}
-
-
-/* =====================================================
-FEES
-===================================================== */
-
-const fees =
-JSON.parse(
-localStorage.getItem("adminFees")
-) || [];
-
-
-let totalFees = 0;
-
-let paidFees = 0;
-
-
-fees.forEach(function (fee) {
-
-const amount =
-Number(
-fee.amount ||
-fee.total ||
-fee.feeAmount ||
-fee.totalAmount ||
-0
-);
-
-
-const paid =
-Number(
-fee.paidAmount ||
-fee.paid ||
-0
-);
-
-
-const status =
-String(
-fee.status || ""
-).toLowerCase();
-
-
-totalFees += amount;
-
-
-if (
-status === "paid" ||
-status === "completed"
-) {
-
-paidFees += amount;
-
-} else if (paid > 0) {
-
-paidFees += paid;
-
-}
-
-});
-
-
-const feeRate =
-totalFees > 0
-? Math.round(
-(paidFees / totalFees) * 100
-)
-: 0;
-
-
-const feeRateText =
-document.getElementById(
-"adminChartFeeRate"
-);
-
-if (feeRateText) {
-
-feeRateText.textContent =
-feeRate + "%";
-
-}
-
-
-const paidAmount =
-document.getElementById(
-"adminChartPaidAmount"
-);
-
-if (paidAmount) {
-
-paidAmount.textContent =
-"Rs. " +
-paidFees.toLocaleString();
-
-}
-
-
-const feeBar =
-document.getElementById(
-"adminFeeChartBar"
-);
-
-if (feeBar) {
-
-feeBar.style.width =
-feeRate + "%";
-
-}
-
-}
-
-
-/* =========================================================
-INITIALIZE DASHBOARD CHARTS
-========================================================= */
-
-document.addEventListener(
-"DOMContentLoaded",
-function () {
-
-updateAdminDashboardCharts();
-
-}
-);
 // =========================================================
-// EDUPORTAL ADMIN DASHBOARD
-// DATE BASED PROFESSIONAL ANALYTICS
+// EDUPORTAL - NEW ADMINISTRATOR DASHBOARD
+// SUPABASE LIVE DATA
 // =========================================================
 
-function updateProfessionalAdminDashboard() {
+(function () {
+
+    "use strict";
+
+    // =====================================================
+    // ADMIN DASHBOARD ELEMENT
+    // =====================================================
+
+    const adminDashboard =
+        document.getElementById("adminDashboard");
+
+    if (!adminDashboard) {
+        return;
+    }
+
+
+    // =====================================================
+    // SUPABASE CHECK
+    // =====================================================
+
+    if (
+        typeof supabaseClient === "undefined"
+    ) {
+        console.error(
+            "Admin Dashboard: Supabase connection not found."
+        );
+        return;
+    }
+
+
+    // =====================================================
+    // ADMIN DASHBOARD STATE
+    // =====================================================
+
+    const AdminDashboard = {
+
+        students: [],
+        teachers: [],
+        attendance: [],
+        results: [],
+        subjects: [],
+        fees: [],
+        assignments: [],
+        notices: [],
+
+
+        // =================================================
+        // LOAD ALL DATA
+        // =================================================
+
+        async loadData() {
+
+            try {
+
+                const [
+                    studentsResult,
+                    teachersResult,
+                    attendanceResult,
+                    resultsResult,
+                    subjectsResult,
+                    feesResult,
+                    assignmentsResult,
+                    noticesResult
+                ] = await Promise.all([
+
+                    supabaseClient
+                        .from("students")
+                        .select("*")
+                        .order(
+                            "id",
+                            {
+                                ascending: false
+                            }
+                        ),
+
+                    supabaseClient
+                        .from("teachers")
+                        .select("*")
+                        .order(
+                            "id",
+                            {
+                                ascending: false
+                            }
+                        ),
+
+                    supabaseClient
+                        .from("attendance")
+                        .select("*")
+                        .order(
+                            "id",
+                            {
+                                ascending: false
+                            }
+                        ),
+
+                    supabaseClient
+                        .from("results")
+                        .select("*")
+                        .order(
+                            "id",
+                            {
+                                ascending: false
+                            }
+                        ),
 
-// =========================================
-// SELECTED DASHBOARD DATE
-// =========================================
+                    supabaseClient
+                        .from("subjects")
+                        .select("*")
+                        .order(
+                            "id",
+                            {
+                                ascending: false
+                            }
+                        ),
 
-const dateInput =
-document.getElementById(
-"adminDashboardDate"
-);
+                    supabaseClient
+                        .from("fees")
+                        .select("*")
+                        .order(
+                            "id",
+                            {
+                                ascending: false
+                            }
+                        ),
 
-const todayDate = new Date();
+                    supabaseClient
+                        .from("assignments")
+                        .select("*")
+                        .order(
+                            "id",
+                            {
+                                ascending: false
+                            }
+                        ),
 
-const today =
-todayDate.getFullYear() +
-"-" +
-String(
-todayDate.getMonth() + 1
-).padStart(2, "0") +
-"-" +
-String(
-todayDate.getDate()
-).padStart(2, "0");
+                    supabaseClient
+                        .from("notices")
+                        .select("*")
+                        .order(
+                            "id",
+                            {
+                                ascending: false
+                            }
+                        )
 
+                ]);
 
-// If no date selected, use today
-if (dateInput && !dateInput.value) {
-dateInput.value = today;
-}
 
+                // =========================================
+                // STUDENTS
+                // =========================================
 
-const selectedDate =
-dateInput && dateInput.value
-? dateInput.value
-: today;
+                if (!studentsResult.error) {
 
+                    this.students =
+                        studentsResult.data || [];
 
-// =========================================
-// HELPER
-// =========================================
+                }
+                else {
 
-function recordDate(record) {
+                    console.warn(
+                        "Admin Students:",
+                        studentsResult.error
+                    );
 
-if (!record) {
-return "";
-}
+                    this.students = [];
 
-if (!record.createdAt) {
-return "";
-}
+                }
 
-return String(
-record.createdAt
-).split("T")[0];
-}
 
+                // =========================================
+                // TEACHERS
+                // =========================================
 
-// =========================================
-// STUDENTS
-// =========================================
+                if (!teachersResult.error) {
 
-const students =
-JSON.parse(
-localStorage.getItem(
-"adminStudents"
-)
-) || [];
+                    this.teachers =
+                        teachersResult.data || [];
 
+                }
+                else {
 
-/*
-IMPORTANT:
+                    console.warn(
+                        "Admin Teachers:",
+                        teachersResult.error
+                    );
 
-Only students actually CREATED
-on the selected date are counted.
-*/
+                    this.teachers = [];
 
-const totalStudents =
-students.length;
+                }
 
 
-const studentValue =
-document.getElementById(
-"analyticsTotalStudents"
-);
+                // =========================================
+                // ATTENDANCE
+                // =========================================
 
-const studentChartValue =
-document.getElementById(
-"studentsChartValue"
-);
+                if (!attendanceResult.error) {
 
-const studentProgress =
-document.getElementById(
-"studentsProgressBar"
-);
+                    this.attendance =
+                        attendanceResult.data || [];
 
-const studentPercent =
-document.getElementById(
-"studentsChartPercent"
-);
+                }
+                else {
 
+                    console.warn(
+                        "Admin Attendance:",
+                        attendanceResult.error
+                    );
 
-if (studentValue) {
+                    this.attendance = [];
 
-studentValue.textContent =
-totalStudents;
-}
+                }
 
 
-if (studentChartValue) {
+                // =========================================
+                // RESULTS
+                // =========================================
 
-studentChartValue.textContent =
-totalStudents;
-}
+                if (!resultsResult.error) {
 
+                    this.results =
+                        resultsResult.data || [];
 
-/*
-Visual scale:
-100 records = 100%
-*/
+                }
+                else {
 
-const studentCapacity =
-Math.min(
-totalStudents,
-100
-);
+                    console.warn(
+                        "Admin Results:",
+                        resultsResult.error
+                    );
 
+                    this.results = [];
 
-if (studentProgress) {
+                }
 
-studentProgress.style.width =
-studentCapacity + "%";
-}
 
+                // =========================================
+                // SUBJECTS
+                // =========================================
 
-if (studentPercent) {
+                if (!subjectsResult.error) {
 
-studentPercent.textContent =
-studentCapacity + "%";
-}
+                    this.subjects =
+                        subjectsResult.data || [];
 
+                }
+                else {
 
-// =========================================
-// ATTENDANCE
-// =========================================
+                    console.warn(
+                        "Admin Subjects:",
+                        subjectsResult.error
+                    );
 
-const attendanceRecords =
-JSON.parse(
-localStorage.getItem(
-"eduPortalAttendance"
-)
-) || [];
+                    this.subjects = [];
 
+                }
 
-/*
-Attendance already has its own
-actual attendance date.
-*/
 
-const selectedAttendanceRecords =
-attendanceRecords.filter(
-function (record) {
+                // =========================================
+                // FEES
+                // =========================================
 
-return (
-record.date ===
-selectedDate
-);
+                if (!feesResult.error) {
 
-}
-);
+                    this.fees =
+                        feesResult.data || [];
 
+                }
+                else {
 
-const present =
-selectedAttendanceRecords.filter(
-function (record) {
+                    console.warn(
+                        "Admin Fees:",
+                        feesResult.error
+                    );
 
-return (
-record.status ===
-"Present"
-);
+                    this.fees = [];
 
-}
-).length;
+                }
 
 
-const absent =
-selectedAttendanceRecords.filter(
-function (record) {
+                // =========================================
+                // ASSIGNMENTS
+                // =========================================
 
-return (
-record.status ===
-"Absent"
-);
+                if (!assignmentsResult.error) {
 
-}
-).length;
+                    this.assignments =
+                        assignmentsResult.data || [];
 
+                }
+                else {
 
-/*
-If there is no attendance record
-for selected date => 0%
-*/
+                    console.warn(
+                        "Admin Assignments:",
+                        assignmentsResult.error
+                    );
 
-const attendanceTotal =
-present + absent;
+                    this.assignments = [];
 
+                }
 
-const attendanceRate =
-attendanceTotal > 0
-? Math.round(
-(present /
-attendanceTotal) * 100
-)
-: 0;
 
+                // =========================================
+                // NOTICES
+                // =========================================
 
-const attendanceValue =
-document.getElementById(
-"analyticsAttendance"
-);
+                if (!noticesResult.error) {
 
-const donutValue =
-document.getElementById(
-"attendanceDonutValue"
-);
+                    this.notices =
+                        noticesResult.data || [];
 
-const presentCount =
-document.getElementById(
-"attendancePresentCount"
-);
+                }
+                else {
 
-const absentCount =
-document.getElementById(
-"attendanceAbsentCount"
-);
+                    console.warn(
+                        "Admin Notices:",
+                        noticesResult.error
+                    );
 
-const donut =
-document.getElementById(
-"attendanceDonut"
-);
+                    this.notices = [];
 
+                }
 
-if (attendanceValue) {
 
-attendanceValue.textContent =
-attendanceRate + "%";
-}
+                // =========================================
+                // UPDATE DASHBOARD
+                // =========================================
 
+                this.updateDashboard();
 
-if (donutValue) {
+            }
+            catch (error) {
 
-donutValue.textContent =
-attendanceRate + "%";
-}
+                console.error(
+                    "NEW ADMIN DASHBOARD ERROR:",
+                    error
+                );
 
+            }
 
-if (presentCount) {
+        },
 
-presentCount.textContent =
-present;
-}
 
+        // =================================================
+        // UPDATE DASHBOARD CARDS
+        // =================================================
 
-if (absentCount) {
+        updateDashboard() {
 
-absentCount.textContent =
-absent;
-}
+            // =============================================
+            // TOTAL STUDENTS
+            // =============================================
 
+            const totalStudents =
+                this.students.length;
 
-if (donut) {
+            const studentElements = [
 
-const degrees =
-attendanceRate * 3.6;
+                "adminTotalStudents",
+                "adminAnalyticsStudents",
+                "analyticsTotalStudents",
+                "studentsChartValue"
 
-donut.style.background =
-`conic-gradient(
-#16a34a 0deg,
-#16a34a ${degrees}deg,
-#e2e8f0 ${degrees}deg,
-#e2e8f0 360deg
-)`;
-}
+            ];
 
+            studentElements.forEach(
+                function (id) {
 
-// =========================================
-// RESULTS
-// =========================================
+                    const element =
+                        document.getElementById(id);
 
-const results =
-JSON.parse(
-localStorage.getItem(
-"adminResults"
-)
-) || [];
+                    if (element) {
 
+                        element.textContent =
+                            totalStudents;
 
-/*
-Only results CREATED
-on selected date.
-*/
+                    }
 
-const filteredResults = results;
+                }
+            );
 
 
-let totalPercentage = 0;
+            // =============================================
+            // TOTAL TEACHERS
+            // =============================================
 
-let passed = 0;
+            const totalTeachers =
+                this.teachers.length;
 
-let failed = 0;
+            const teacherElements = [
 
+                "adminTotalTeachers",
+                "adminAnalyticsTeachers"
 
-filteredResults.forEach(
-function (result) {
+            ];
 
-const percentage =
-Number(
-result.percentage
-) || 0;
+            teacherElements.forEach(
+                function (id) {
 
+                    const element =
+                        document.getElementById(id);
 
-totalPercentage +=
-percentage;
+                    if (element) {
 
+                        element.textContent =
+                            totalTeachers;
 
-if (percentage >= 40) {
+                    }
 
-passed++;
+                }
+            );
 
-} else {
 
-failed++;
+            // =============================================
+            // TODAY ATTENDANCE
+            // =============================================
 
-}
+            const today =
+                new Date()
+                    .toISOString()
+                    .split("T")[0];
 
-}
-);
 
+            const todayAttendance =
+                this.attendance.filter(
+                    function (record) {
 
-const averageResult =
-filteredResults.length > 0
-? Math.round(
-totalPercentage /
-filteredResults.length
-)
-: 0;
+                        const date =
+                            record.attendance_date ||
+                            record.attendanceDate ||
+                            record.date ||
+                            "";
 
+                        return String(date)
+                            .substring(0, 10) === today;
 
-const resultsValue =
-document.getElementById(
-"analyticsAverageResult"
-);
+                    }
+                );
 
-const performanceValue =
-document.getElementById(
-"resultsPerformanceValue"
-);
 
-const passedCount =
-document.getElementById(
-"passedCount"
-);
+            let present = 0;
+            let absent = 0;
 
-const failedCount =
-document.getElementById(
-"failedCount"
-);
 
-const passedBar =
-document.getElementById(
-"passedBar"
-);
+            todayAttendance.forEach(
+                function (record) {
 
-const failedBar =
-document.getElementById(
-"failedBar"
-);
+                    const status =
+                        String(
+                            record.status || ""
+                        )
+                        .trim()
+                        .toLowerCase();
 
 
-if (resultsValue) {
+                    if (
+                        status === "present" ||
+                        status === "p"
+                    ) {
 
-resultsValue.textContent =
-averageResult + "%";
-}
+                        present++;
 
+                    }
 
-if (performanceValue) {
 
-performanceValue.textContent =
-averageResult + "%";
-}
+                    if (
+                        status === "absent" ||
+                        status === "a"
+                    ) {
 
+                        absent++;
 
-if (passedCount) {
+                    }
 
-passedCount.textContent =
-passed;
-}
+                }
+            );
 
 
-if (failedCount) {
+            const attendanceTotal =
+                present + absent;
 
-failedCount.textContent =
-failed;
-}
 
+            const attendancePercentage =
+                attendanceTotal > 0
+                    ? Math.round(
+                        (
+                            present /
+                            attendanceTotal
+                        ) * 100
+                    )
+                    : 0;
 
-const totalResults =
-passed + failed;
 
+            const attendanceElements = [
 
-if (passedBar) {
+                "adminAttendance",
+                "adminAnalyticsAttendance",
+                "analyticsAttendance",
+                "attendanceDonutValue"
 
-passedBar.style.width =
-totalResults > 0
-? (
-passed /
-totalResults *
-100
-) + "%"
-: "0%";
-}
+            ];
 
 
-if (failedBar) {
+            attendanceElements.forEach(
+                function (id) {
 
-failedBar.style.width =
-totalResults > 0
-? (
-failed /
-totalResults *
-100
-) + "%"
-: "0%";
-}
+                    const element =
+                        document.getElementById(id);
 
+                    if (element) {
 
-// =========================================
-// FEES
-// =========================================
+                        element.textContent =
+                            attendancePercentage + "%";
 
-const feeRecords =
-JSON.parse(
-localStorage.getItem(
-"adminFeeRecords"
-)
-) || [];
+                    }
 
+                }
+            );
 
-/*
-Only fee records CREATED
-on selected date.
-*/
 
-const filteredFeeRecords = feeRecords;
+            const presentElement =
+                document.getElementById(
+                    "attendancePresentCount"
+                );
 
 
-let totalFees = 0;
+            if (presentElement) {
 
-let collectedFees = 0;
+                presentElement.textContent =
+                    present;
 
+            }
 
-filteredFeeRecords.forEach(
-function (record) {
 
-const feeAmount =
-Number(
-record.feeAmount
-) || 0;
+            const absentElement =
+                document.getElementById(
+                    "attendanceAbsentCount"
+                );
 
 
-const paidAmount =
-Number(
-record.paidAmount
-) || 0;
+            if (absentElement) {
 
+                absentElement.textContent =
+                    absent;
 
-totalFees +=
-feeAmount;
+            }
 
 
-collectedFees +=
-paidAmount;
+            const attendanceProgress =
+                document.getElementById(
+                    "adminAttendanceProgress"
+                );
 
-}
-);
 
+            if (attendanceProgress) {
 
-const feeRate =
-totalFees > 0
-? Math.round(
-(
-collectedFees /
-totalFees
-) * 100
-)
-: 0;
+                attendanceProgress.style.width =
+                    attendancePercentage + "%";
 
+            }
 
-const totalCollectedElement =
-document.getElementById(
-"analyticsTotalCollected"
-);
 
-const feeRateElement =
-document.getElementById(
-"feeCollectionRate"
-);
+            // =============================================
+            // RESULTS
+            // =============================================
 
-const feeCollectedElement =
-document.getElementById(
-"feeCollectedAmount"
-);
+            let resultPercentageTotal = 0;
 
-const feeTotalElement =
-document.getElementById(
-"feeTotalAmount"
-);
+            let passed = 0;
 
-const feeProgress =
-document.getElementById(
-"feeProgressBar"
-);
+            let failed = 0;
 
 
-if (totalCollectedElement) {
+            this.results.forEach(
+                function (result) {
 
-totalCollectedElement.textContent =
-"Rs. " +
-collectedFees.toLocaleString();
-}
+                    let percentage =
+                        Number(
+                            result.percentage
+                        );
 
 
-if (feeRateElement) {
+                    if (
+                        !Number.isFinite(
+                            percentage
+                        )
+                    ) {
 
-feeRateElement.textContent =
-feeRate + "%";
-}
+                        const marks =
+                            Number(
+                                result.marks ??
+                                result.obtained_marks ??
+                                0
+                            );
 
 
-if (feeCollectedElement) {
+                        const totalMarks =
+                            Number(
+                                result.total_marks ??
+                                0
+                            );
 
-feeCollectedElement.textContent =
-"Rs. " +
-collectedFees.toLocaleString();
-}
 
+                        percentage =
+                            totalMarks > 0
+                                ? (
+                                    marks /
+                                    totalMarks
+                                ) * 100
+                                : 0;
 
-if (feeTotalElement) {
+                    }
 
-feeTotalElement.textContent =
-"Rs. " +
-totalFees.toLocaleString();
-}
 
+                    percentage =
+                        Math.max(
+                            0,
+                            Math.min(
+                                100,
+                                percentage
+                            )
+                        );
 
-if (feeProgress) {
 
-feeProgress.style.width =
-feeRate + "%";
-}
+                    resultPercentageTotal +=
+                        percentage;
 
 
-// =========================================
-// DISPLAY SELECTED DATE
-// =========================================
+                    if (percentage >= 40) {
 
-if (dateInput) {
+                        passed++;
 
-const dateObject =
-new Date(
-selectedDate +
-"T00:00:00"
-);
+                    }
+                    else {
 
+                        failed++;
 
-dateInput.title =
-dateObject.toLocaleDateString(
-"en-GB",
-{
-day: "2-digit",
-month: "short",
-year: "numeric"
-}
-);
-}
+                    }
 
-}
-// =========================================================
-// INITIAL LOAD
-// =========================================================
+                }
+            );
 
-window.addEventListener(
-"load",
-function () {
 
-updateProfessionalAdminDashboard();
+            const averageResult =
+                this.results.length > 0
+                    ? Math.round(
+                        resultPercentageTotal /
+                        this.results.length
+                    )
+                    : 0;
 
-}
-);
 
+            const resultElements = [
 
-// =========================================================
-// REFRESH WHEN DASHBOARD IS OPENED
-// =========================================================
+                "analyticsAverageResult",
+                "resultsPerformanceValue"
 
-const professionalDashboardMenu =
-document.getElementById(
-"adminDashboardMenu"
-);
+            ];
 
 
-if (professionalDashboardMenu) {
+            resultElements.forEach(
+                function (id) {
 
-professionalDashboardMenu.addEventListener(
-"click",
-function () {
+                    const element =
+                        document.getElementById(id);
 
-setTimeout(
-function () {
+                    if (element) {
 
-updateProfessionalAdminDashboard();
+                        element.textContent =
+                            averageResult + "%";
 
-},
-100
-);
+                    }
 
-}
-);
+                }
+            );
 
-}
 
+            const passedElement =
+                document.getElementById(
+                    "passedCount"
+                );
 
-// =========================================================
-// LIVE REFRESH
-// =========================================================
 
-setInterval(
-function () {
+            if (passedElement) {
 
-updateProfessionalAdminDashboard();
+                passedElement.textContent =
+                    passed;
 
-},
-5000
-);
-// ==========================================
-// ADMIN DASHBOARD DATE FILTER
-// ==========================================
+            }
 
-function initializeAdminDashboardDate() {
 
-const dateInput =
-document.getElementById(
-"adminDashboardDate"
-);
+            const failedElement =
+                document.getElementById(
+                    "failedCount"
+                );
 
-if (!dateInput) {
-return;
-}
 
-// Today's date
-const today =
-new Date()
-.toISOString()
-.split("T")[0];
+            if (failedElement) {
 
-// Set today's date initially
-dateInput.value = today;
+                failedElement.textContent =
+                    failed;
 
-// When date is changed
-dateInput.addEventListener(
-"change",
-function () {
+            }
 
-const selectedDate =
-this.value;
 
-if (!selectedDate) {
-return;
-}
+            // =============================================
+            // SUBJECTS
+            // =============================================
 
-/*
-* Future step:
-* Dashboard analytics will use
-* this selected date.
-*/
+            const totalSubjects =
+                this.subjects.length;
 
-}
-);
-}
 
+            const subjectElements = [
 
-// ==========================================
-// INITIALIZE DASHBOARD DATE
-// ==========================================
+                "adminTotalSubjects",
+                "adminAnalyticsSubjects",
+                "subjectsChartValue"
 
-document.addEventListener(
-"DOMContentLoaded",
-function () {
+            ];
 
-initializeAdminDashboardDate();
 
-}
-);
-// =========================================================
-// DASHBOARD DATE FILTER CHANGE
-// =========================================================
+            subjectElements.forEach(
+                function (id) {
 
-document.addEventListener(
-"DOMContentLoaded",
-function () {
+                    const element =
+                        document.getElementById(id);
 
-const dateInput =
-document.getElementById(
-"adminDashboardDate"
-);
+                    if (element) {
 
+                        element.textContent =
+                            totalSubjects;
 
-if (!dateInput) {
-return;
-}
+                    }
 
+                }
+            );
 
-// Set today's date initially
-if (!dateInput.value) {
 
-const now =
-new Date();
+            // =============================================
+            // FEES
+            // =============================================
 
-const today =
-now.getFullYear() +
-"-" +
-String(
-now.getMonth() + 1
-).padStart(2, "0") +
-"-" +
-String(
-now.getDate()
-).padStart(2, "0");
+            let totalFees = 0;
 
+            let paidFees = 0;
 
-dateInput.value =
-today;
-}
 
+            this.fees.forEach(
+                function (fee) {
 
-// Update dashboard immediately
-updateProfessionalAdminDashboard();
+                    const total =
+                        Number(
+                            fee.total_amount ??
+                            fee.total ??
+                            fee.amount ??
+                            fee.fee_amount ??
+                            0
+                        );
 
 
-// Update when user selects another date
-dateInput.addEventListener(
-"change",
-function () {
+                    const paid =
+                        Number(
+                            fee.paid_amount ??
+                            fee.paid ??
+                            fee.paidAmount ??
+                            0
+                        );
 
-updateProfessionalAdminDashboard();
 
-}
-);
+                    totalFees +=
+                        Number.isFinite(total)
+                            ? total
+                            : 0;
 
-}
-);
-// =========================================================
-// FINAL ADMIN DASHBOARD DATA SYNC
-// =========================================================
 
-function syncFinalAdminDashboard() {
+                    paidFees +=
+                        Number.isFinite(paid)
+                            ? paid
+                            : 0;
 
-// =========================================
-// STUDENTS
-// =========================================
+                }
+            );
 
-const students =
-JSON.parse(
-localStorage.getItem("adminStudents")
-) || [];
 
-const studentCount = students.length;
+            const pendingFees =
+                Math.max(
+                    0,
+                    totalFees - paidFees
+                );
 
 
-// Top card
-const totalStudents =
-document.getElementById(
-"analyticsTotalStudents"
-);
+            const feeRate =
+                totalFees > 0
+                    ? Math.round(
+                        (
+                            paidFees /
+                            totalFees
+                        ) * 100
+                    )
+                    : 0;
 
-if (totalStudents) {
-totalStudents.textContent =
-studentCount;
-}
 
+            const pendingFeeElement =
+                document.getElementById(
+                    "adminPendingFees"
+                );
 
-// Students overview
-const studentsChart =
-document.getElementById(
-"studentsChartValue"
-);
 
-if (studentsChart) {
-studentsChart.textContent =
-studentCount;
-}
+            if (pendingFeeElement) {
 
+                pendingFeeElement.textContent =
+                    "Rs. " +
+                    pendingFees.toLocaleString();
 
-// =========================================
-// ATTENDANCE
-// =========================================
+            }
 
-const attendance =
-JSON.parse(
-localStorage.getItem(
-"eduPortalAttendance"
-)
-) || [];
 
+            const analyticsFeeElement =
+                document.getElementById(
+                    "adminAnalyticsFees"
+                );
 
-const today =
-new Date()
-.toISOString()
-.split("T")[0];
 
+            if (analyticsFeeElement) {
 
-let present = 0;
-let absent = 0;
+                analyticsFeeElement.textContent =
+                    "Rs. " +
+                    pendingFees.toLocaleString();
 
+            }
 
-attendance.forEach(function (record) {
 
-const recordDate =
-record.date ||
-record.attendanceDate ||
-"";
+            const collectedElement =
+                document.getElementById(
+                    "analyticsTotalCollected"
+                );
 
 
-if (recordDate !== today) {
-return;
-}
+            if (collectedElement) {
 
+                collectedElement.textContent =
+                    "Rs. " +
+                    paidFees.toLocaleString();
 
-const status =
-String(
-record.status || ""
-).toLowerCase();
+            }
 
 
-if (
-status === "present" ||
-status === "p"
-) {
-present++;
-}
+            const feeRateElement =
+                document.getElementById(
+                    "feeCollectionRate"
+                );
 
 
-if (
-status === "absent" ||
-status === "a"
-) {
-absent++;
-}
+            if (feeRateElement) {
 
-});
+                feeRateElement.textContent =
+                    feeRate + "%";
 
+            }
 
-const attendanceRate =
-studentCount > 0
-? Math.round(
-(present / studentCount) * 100
-)
-: 0;
 
+            const feeProgress =
+                document.getElementById(
+                    "feeProgressBar"
+                );
 
-const attendanceValue =
-document.getElementById(
-"analyticsAttendance"
-);
 
-if (attendanceValue) {
-attendanceValue.textContent =
-attendanceRate + "%";
-}
+            if (feeProgress) {
 
+                feeProgress.style.width =
+                    feeRate + "%";
 
-const donutValue =
-document.getElementById(
-"attendanceDonutValue"
-);
+            }
 
-if (donutValue) {
-donutValue.textContent =
-attendanceRate + "%";
-}
 
+            // =============================================
+            // OTHER COUNTS
+            // =============================================
 
-const presentValue =
-document.getElementById(
-"attendancePresentCount"
-);
+            const assignmentElement =
+                document.getElementById(
+                    "adminTotalAssignments"
+                );
 
-if (presentValue) {
-presentValue.textContent =
-present;
-}
 
+            if (assignmentElement) {
 
-const absentValue =
-document.getElementById(
-"attendanceAbsentCount"
-);
+                assignmentElement.textContent =
+                    this.assignments.length;
 
-if (absentValue) {
-absentValue.textContent =
-absent;
-}
+            }
 
 
-const donut =
-document.getElementById(
-"attendanceDonut"
-);
+            const noticeElement =
+                document.getElementById(
+                    "adminTotalNotices"
+                );
 
-if (donut) {
 
-const degree =
-attendanceRate * 3.6;
+            if (noticeElement) {
 
-donut.style.background =
-`conic-gradient(
-#16a34a 0deg,
-#16a34a ${degree}deg,
-#e2e8f0 ${degree}deg,
-#e2e8f0 360deg
-)`;
-}
+                noticeElement.textContent =
+                    this.notices.length;
 
+            }
 
-// =========================================
-// RESULTS
-// =========================================
 
-const results =
-JSON.parse(
-localStorage.getItem(
-"adminResults"
-)
-) || [];
+            // =============================================
+            // LAST UPDATED
+            // =============================================
 
+            const lastUpdated =
+                document.getElementById(
+                    "adminLastUpdated"
+                );
 
-let totalPercentage = 0;
-let passed = 0;
-let failed = 0;
 
+            if (lastUpdated) {
 
-results.forEach(function (result) {
+                lastUpdated.textContent =
+                    new Date()
+                        .toLocaleTimeString();
 
-const percentage =
-Number(
-result.percentage
-) || 0;
+            }
 
+        }
 
-totalPercentage +=
-percentage;
+    };
 
 
-if (percentage >= 40) {
-passed++;
-} else {
-failed++;
-}
+    // =====================================================
+    // GLOBAL ACCESS
+    // =====================================================
 
-});
+    window.AdminDashboard =
+        AdminDashboard;
 
 
-const average =
-results.length > 0
-? Math.round(
-totalPercentage /
-results.length
-)
-: 0;
+    // =====================================================
+    // INITIAL LOAD
+    // =====================================================
 
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
 
-const resultValue =
-document.getElementById(
-"analyticsAverageResult"
-);
+            AdminDashboard.loadData();
 
-if (resultValue) {
-resultValue.textContent =
-average + "%";
-}
+        }
+    );
 
 
-const performanceValue =
-document.getElementById(
-"resultsPerformanceValue"
-);
+    // =====================================================
+    // ADMIN DASHBOARD OPEN
+    // =====================================================
 
-if (performanceValue) {
-performanceValue.textContent =
-average + "%";
-}
+    document.addEventListener(
+        "click",
+        function (event) {
 
+            const menu =
+                event.target.closest(
+                    "#adminDashboardMenu"
+                );
 
-const passedValue =
-document.getElementById(
-"passedCount"
-);
 
-if (passedValue) {
-passedValue.textContent =
-passed;
-}
+            if (!menu) {
 
+                return;
 
-const failedValue =
-document.getElementById(
-"failedCount"
-);
+            }
 
-if (failedValue) {
-failedValue.textContent =
-failed;
-}
 
+            setTimeout(
+                function () {
 
-// =========================================
-// FEES
-// =========================================
+                    AdminDashboard.loadData();
 
-const fees =
-JSON.parse(
-localStorage.getItem(
-"adminFeeRecords"
-)
-) || [];
+                },
+                100
+            );
 
+        }
+    );
 
-let totalFees = 0;
-let collectedFees = 0;
 
+    // =====================================================
+    // SUPABASE REAL-TIME
+    // =====================================================
 
-fees.forEach(function (fee) {
+    const adminRealtimeChannel =
+        supabaseClient
+            .channel(
+                "admin-dashboard-live-sync"
+            )
 
-const amount =
-Number(
-fee.feeAmount ||
-fee.amount ||
-fee.total ||
-0
-);
 
+            // =============================================
+            // STUDENTS
+            // =============================================
 
-const paid =
-Number(
-fee.paidAmount ||
-fee.paid ||
-0
-);
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "students"
+                },
+                function () {
 
+                    AdminDashboard.loadData();
 
-totalFees += amount;
-collectedFees += paid;
+                }
+            )
 
-});
 
+            // =============================================
+            // TEACHERS
+            // =============================================
 
-const feeRate =
-totalFees > 0
-? Math.round(
-(collectedFees /
-totalFees) * 100
-)
-: 0;
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "teachers"
+                },
+                function () {
 
+                    AdminDashboard.loadData();
 
-const totalCollected =
-document.getElementById(
-"analyticsTotalCollected"
-);
+                }
+            )
 
-if (totalCollected) {
-totalCollected.textContent =
-"Rs. " +
-collectedFees.toLocaleString();
-}
 
+            // =============================================
+            // ATTENDANCE
+            // =============================================
 
-const feeRateElement =
-document.getElementById(
-"feeCollectionRate"
-);
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "attendance"
+                },
+                function () {
 
-if (feeRateElement) {
-feeRateElement.textContent =
-feeRate + "%";
-}
+                    AdminDashboard.loadData();
 
+                }
+            )
 
-const collectedAmount =
-document.getElementById(
-"feeCollectedAmount"
-);
 
-if (collectedAmount) {
-collectedAmount.textContent =
-"Rs. " +
-collectedFees.toLocaleString();
-}
+            // =============================================
+            // RESULTS
+            // =============================================
 
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "results"
+                },
+                function () {
 
-const totalFeeElement =
-document.getElementById(
-"feeTotalAmount"
-);
+                    AdminDashboard.loadData();
 
-if (totalFeeElement) {
-totalFeeElement.textContent =
-"Rs. " +
-totalFees.toLocaleString();
-}
+                }
+            )
 
 
-const feeBar =
-document.getElementById(
-"feeProgressBar"
-);
+            // =============================================
+            // SUBJECTS
+            // =============================================
 
-if (feeBar) {
-feeBar.style.width =
-feeRate + "%";
-}
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "subjects"
+                },
+                function () {
 
+                    AdminDashboard.loadData();
 
-// =========================================
-// DATE
-// =========================================
+                }
+            )
 
-const dateElement =
-document.getElementById(
-"adminDashboardDate"
-);
 
-if (dateElement) {
+            // =============================================
+            // FEES
+            // =============================================
 
-dateElement.textContent =
-new Date().toLocaleDateString(
-"en-GB",
-{
-day: "2-digit",
-month: "2-digit",
-year: "numeric"
-}
-);
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "fees"
+                },
+                function () {
 
-}
+                    AdminDashboard.loadData();
 
-}
+                }
+            )
 
 
-// =========================================================
-// RUN AFTER PAGE LOAD
-// =========================================================
+            // =============================================
+            // ASSIGNMENTS
+            // =============================================
 
-window.addEventListener(
-"load",
-function () {
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "assignments"
+                },
+                function () {
 
-setTimeout(
-function () {
+                    AdminDashboard.loadData();
 
-syncFinalAdminDashboard();
+                }
+            )
 
-},
-300
-);
 
-}
-);
+            // =============================================
+            // NOTICES
+            // =============================================
 
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "notices"
+                },
+                function () {
 
-// =========================================================
-// REFRESH WHEN ADMIN DASHBOARD IS OPENED
-// =========================================================
+                    AdminDashboard.loadData();
 
-document.addEventListener(
-"click",
-function (event) {
+                }
+            )
 
-const dashboardMenu =
-event.target.closest(
-"#adminDashboardMenu"
-);
 
+            .subscribe(
+                function (status) {
 
-if (!dashboardMenu) {
-return;
-}
+                    console.log(
+                        "Admin Live Sync:",
+                        status
+                    );
 
+                }
+            );
 
-setTimeout(
-function () {
 
-syncFinalAdminDashboard();
-
-},
-300
-);
-
-}
-);
-/* =========================================================
-EDUPORTAL DASHBOARD - AUTO REFRESH ON OPEN
-========================================================= */
-
-function refreshAdminDashboardData() {
-
-// Students / Attendance / Results charts
-if (
-typeof updateAdminDashboardCharts ===
-"function"
-) {
-
-updateAdminDashboardCharts();
-
-}
-
-
-// Fee analytics
-if (
-typeof updateAdminFeeAnalytics ===
-"function"
-) {
-
-updateAdminFeeAnalytics();
-
-}
-
-
-// Attendance statistics
-if (
-typeof updateAttendanceStatistics ===
-"function"
-) {
-
-updateAttendanceStatistics();
-
-}
-
-}
-
-
-/* =========================================================
-INITIAL PAGE LOAD
-========================================================= */
-
-document.addEventListener(
-"DOMContentLoaded",
-function () {
-
-refreshAdminDashboardData();
-
-}
-);
-
-
-/* =========================================================
-DASHBOARD SECTION WATCHER
-========================================================= */
-
-const dashboardSection =
-document.getElementById(
-"adminDashboardSection"
-);
-
-
-if (dashboardSection) {
-
-const dashboardObserver =
-new MutationObserver(
-function () {
-
-const style =
-window.getComputedStyle(
-dashboardSection
-);
-
-
-const isVisible =
-style.display !== "none" &&
-style.visibility !== "hidden";
-
-
-if (isVisible) {
-
-refreshAdminDashboardData();
-
-}
-
-}
-);
-
-
-dashboardObserver.observe(
-dashboardSection,
-{
-attributes: true,
-attributeFilter: [
-"class",
-"style"
-]
-}
-);
-
-}
+})();
 // ==========================================
 // TEACHER SIDEBAR - FINAL CLICK HANDLER (FIXED)
 // ==========================================
