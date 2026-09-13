@@ -6928,7 +6928,7 @@ async function updateResultsStatistics() {
         await supabaseClient
             .from("results")
             .select(
-                "id, student_id, total_marks, obtained_marks, marks, percentage, grade"
+               "id, student_id, total_marks, marks, percentage, grade"
             );
 
     if (error) {
@@ -7106,7 +7106,7 @@ async function openEditResult(resultId) {
                     subject_id,
                     total_marks,
                     marks,
-                    obtained_marks,
+                    
                     percentage,
                     grade
                 `)
