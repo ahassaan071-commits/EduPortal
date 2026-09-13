@@ -7888,30 +7888,24 @@ async function renderUserManagementStudents() {
                     </span>
 
 
-                    ${
-                        user.password
-                            ?
-
-                            `
-                                <button
-                                    type="button"
-                                    class="user-password-toggle"
-                                    onclick="
-                                        toggleUserManagementPassword(
-                                            ${index},
-                                            this
-                                        )
-                                    "
-                                    title="Show Password"
-                                >
-                                    👁️
-                                </button>
-                            `
-
-                            :
-
-                            ""
-                    }
+                  ${
+    user.password
+        ?
+        `
+            <button
+                type="button"
+                class="user-password-toggle"
+                data-record-id="${user.recordId}"
+                data-user-type="${user.type}"
+                onclick="toggleUserManagementPassword(${index}, this)"
+                title="Show Password"
+            >
+                👁️
+            </button>
+        `
+        :
+        ""
+}
 
                 </div>
 
