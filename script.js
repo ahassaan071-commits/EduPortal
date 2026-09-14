@@ -19257,42 +19257,43 @@ return;
             let paidFees = 0;
 
 
-            this.fees.forEach(
-                function (fee) {
+           this.fees.forEach(
+    function (fee) {
 
-                    const total =
-                        Number(
-                            fee.total_amount ??
-                            fee.total ??
-                            fee.amount ??
-                            fee.fee_amount ??
-                            0
-                        );
+        // =============================================
+        // REAL FEE AMOUNT
+        // fee_records table ka actual column:
+        // fee_amount
+        // =============================================
 
-
-                    const paid =
-                        Number(
-                            fee.paid_amount ??
-                            fee.paid ??
-                            fee.paidAmount ??
-                            0
-                        );
-
-
-                    totalFees +=
-                        Number.isFinite(total)
-                            ? total
-                            : 0;
-
-
-                    paidFees +=
-                        Number.isFinite(paid)
-                            ? paid
-                            : 0;
-
-                }
+        const total =
+            Number(
+                fee.fee_amount ?? 0
             );
 
+        // =============================================
+        // REAL PAID AMOUNT
+        // =============================================
+
+        const paid =
+            Number(
+                fee.paid_amount ?? 0
+            );
+
+        // =============================================
+        // ADD TO TOTALS
+        // =============================================
+
+        if (Number.isFinite(total)) {
+            totalFees += total;
+        }
+
+        if (Number.isFinite(paid)) {
+            paidFees += paid;
+        }
+
+    }
+);
 
             const pendingFees =
                 Math.max(
@@ -19301,15 +19302,15 @@ return;
                 );
 
 
-            const feeRate =
-                totalFees > 0
-                    ? Math.round(
-                        (
-                            paidFees /
-                            totalFees
-                        ) * 100
-                    )
-                    : 0;
+           const feeRate =
+    totalFees > 0
+        ? Math.min(
+            100,
+            Math.round(
+                (paidFees / totalFees) * 100
+            )
+        )
+        : 0;
 
 
             const pendingFeeElement =
