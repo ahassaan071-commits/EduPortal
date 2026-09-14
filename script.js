@@ -40539,3 +40539,67 @@ window.addEventListener(
 console.log(
     "EduPortal Universal Dashboard Refresh System Loaded ✅"
 );
+// =========================================================
+// EDUPORTAL - ADMIN FORGOT PASSWORD
+// OPEN RECOVERY SCREEN
+// =========================================================
+
+document.addEventListener(
+    "click",
+    function (event) {
+
+        const forgotLink =
+            event.target.closest(
+                "#adminForgotPasswordLink"
+            );
+
+        if (!forgotLink) {
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        const loginBox =
+            document.querySelector(".login-box");
+
+        const recoveryPage =
+            document.getElementById(
+                "adminRecoveryPage"
+            );
+
+        if (!recoveryPage) {
+
+            console.error(
+                "adminRecoveryPage not found."
+            );
+
+            alert(
+                "Password recovery page could not be loaded."
+            );
+
+            return;
+        }
+
+        // Hide login
+        if (loginBox) {
+            loginBox.style.display = "none";
+        }
+
+        // Show recovery page
+        recoveryPage.style.display = "flex";
+
+        recoveryPage.style.position = "fixed";
+        recoveryPage.style.inset = "0";
+        recoveryPage.style.width = "100%";
+        recoveryPage.style.height = "100%";
+        recoveryPage.style.zIndex = "999999";
+
+        document.body.style.overflow = "auto";
+
+        console.log(
+            "Admin Recovery Screen Opened ✅"
+        );
+    },
+    true
+);
