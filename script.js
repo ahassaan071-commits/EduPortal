@@ -15183,48 +15183,52 @@ if (typeof supabaseClient === "undefined") {
 const { data, error } =
     await supabaseClient
         .from("fee_records")
-        .insert({
+     .insert({
+    id:
+        feeRecord.id,
 
-            id:
-                feeRecord.id,
+    student_id:
+        Number(studentDbId),
 
-            student_id:
-                   Number(studentDbId),
+    student_name:
+        feeRecord.studentName,
 
-            student_name:
-                feeRecord.studentName,
+    student_class:
+        feeRecord.studentClass,
 
-            student_class:
-                feeRecord.studentClass,
+    section:
+        feeRecord.section,
 
-            section:
-                feeRecord.section,
+    month:
+        feeRecord.month,
 
-            month:
-                feeRecord.month,
+    fee_amount:
+        feeRecord.feeAmount,
 
-            fee_amount:
-                feeRecord.feeAmount,
+    paid_amount:
+        feeRecord.paidAmount,
 
-            paid_amount:
-                feeRecord.paidAmount,
+    remaining_amount:
+        feeRecord.remainingAmount,
 
-            remaining_amount:
-                feeRecord.remainingAmount,
+    due_date:
+        feeRecord.dueDate || null,
 
-            due_date:
-                feeRecord.dueDate || null,
+    payment_date:
+        feeRecord.paymentDate || null,
 
-            payment_date:
-                feeRecord.paymentDate || null,
+    payment_method:
+        "Cash",
 
-            status:
-                feeRecord.status,
+    status:
+        feeRecord.status,
 
-            created_at:
-                feeRecord.createdAt
+    fee_source:
+        "Manual",
 
-        })
+    created_at:
+        feeRecord.createdAt
+})
         .select();
 
 
