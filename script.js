@@ -18625,10 +18625,10 @@ return;
                         ),
 
                     supabaseClient
-                        .from("fees")
+                        .from("fee_records")
                         .select("*")
                         .order(
-                            "id",
+                            "created_at",
                             {
                                 ascending: false
                             }
