@@ -16147,13 +16147,9 @@ async function () {
     // NOTICE ID
     // ==========================================
 
-    const noticeId =
-        editingNoticeId ||
-        (
-            "NOTICE-" +
-            Date.now()
-        );
-
+const noticeId =
+    editingNoticeId ||
+    null;
 
     // ==========================================
     // SAVE TO SUPABASE
