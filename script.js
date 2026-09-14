@@ -19606,20 +19606,23 @@ return;
             // FEES
             // =============================================
 
-            .on(
-                "postgres_changes",
-                {
-                    event: "*",
-                    schema: "public",
-                    table: "fees"
-                },
-                function () {
+        .on(
+    "postgres_changes",
+    {
+        event: "*",
+        schema: "public",
+        table: "fee_records"
+    },
+    function () {
 
-                    AdminDashboard.loadData();
+        console.log(
+            "Admin Dashboard Fees changed — refreshing..."
+        );
 
-                }
-            )
+        AdminDashboard.loadData();
 
+    }
+)
 
             // =============================================
             // ASSIGNMENTS
