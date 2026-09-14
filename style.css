@@ -45441,3 +45441,119 @@ body:has(#teacherDashboard[style*="display"]) {
     width: 100% !important;
     margin-top: 24px !important;
 }
+/* ==========================================
+   PROFESSIONAL FEE ACTION BUTTONS
+   ========================================== */
+
+.fee-action-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+
+/* MARK PAID */
+
+.fee-mark-paid-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    min-width: 108px;
+    height: 38px;
+
+    padding: 0 12px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: #16a34a;
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.fee-mark-paid-btn span {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.fee-mark-paid-btn:hover {
+    background: #15803d;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 12px rgba(22, 163, 74, 0.20);
+}
+
+.fee-mark-paid-btn:active {
+    transform: scale(0.97);
+}
+
+
+/* PAID BADGE */
+
+.fee-paid-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 82px;
+    height: 36px;
+
+    padding: 0 12px;
+
+    border-radius: 9px;
+
+    background: #dcfce7;
+    color: #15803d;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+/* DELETE BUTTON */
+
+.fee-delete-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 38px;
+    height: 38px;
+
+    padding: 0;
+
+    border: 1px solid #dbe3ef;
+    border-radius: 9px;
+
+    background: #ffffff;
+    color: #64748b;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.fee-delete-btn:hover {
+    background: #fef2f2;
+    color: #dc2626;
+    border-color: #fecaca;
+    transform: translateY(-1px);
+}
