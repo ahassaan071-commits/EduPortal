@@ -665,7 +665,13 @@ if (selectedRole === "teacher") {
 
         }
 
-
+// Fresh Teacher data after login
+setTimeout(
+    function () {
+        refreshActiveDashboardData();
+    },
+    100
+);
         // ------------------------------------------
         // UPDATE TEACHER NAME
         // ------------------------------------------
