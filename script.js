@@ -18467,44 +18467,71 @@ updateAdminForgotPassword();
 document.addEventListener("click", function (event) {
 
 // ==========================================
-// OPEN ADMIN RECOVERY PAGE
+// OPEN ADMIN PASSWORD RECOVERY MODAL
 // ==========================================
 
 const forgotLink =
-event.target.closest("#adminForgotPasswordLink");
+    event.target.closest(
+        "#adminForgotPasswordLink"
+    );
 
 if (forgotLink) {
 
-event.preventDefault();
+    event.preventDefault();
+    event.stopPropagation();
 
-const loginBox =
-document.querySelector(".login-box");
+    const recoveryModal =
+        document.getElementById(
+            "adminPasswordRecoveryModal"
+        );
 
-const adminRecoveryPage =
-document.getElementById(
-"adminRecoveryPage"
-);
+    if (!recoveryModal) {
 
-// Hide login box
-if (loginBox) {
+        console.error(
+            "Admin Password Recovery Modal not found."
+        );
 
-loginBox.style.display = "none";
+        alert(
+            "Password recovery system could not be loaded."
+        );
 
+        return;
+    }
+
+    // Open the REAL recovery modal
+    recoveryModal.style.setProperty(
+        "display",
+        "flex",
+        "important"
+    );
+
+    recoveryModal.style.setProperty(
+        "visibility",
+        "visible",
+        "important"
+    );
+
+    recoveryModal.style.setProperty(
+        "opacity",
+        "1",
+        "important"
+    );
+
+    recoveryModal.style.setProperty(
+        "z-index",
+        "99999999",
+        "important"
+    );
+
+    document.body.style.overflow =
+        "hidden";
+
+    console.log(
+        "Admin Password Recovery Modal opened ✅"
+    );
+
+    return;
 }
-
-// Show recovery page
-if (adminRecoveryPage) {
-
-adminRecoveryPage.style.display = "flex";
-
-}
-
-document.body.style.overflow = "auto";
-
-return;
-
-}
-
 
 // ==========================================
 // BACK TO LOGIN
