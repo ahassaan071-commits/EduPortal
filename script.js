@@ -18922,31 +18922,44 @@ return;
             );
 
 
-            // =============================================
-            // TODAY ATTENDANCE
-            // =============================================
+    // =============================================
+// DASHBOARD DATE FILTER
+// =============================================
 
-            const today =
-                new Date()
-                    .toISOString()
-                    .split("T")[0];
+const dashboardDateInput =
+    document.getElementById(
+        "adminDashboardDate"
+    );
+
+const selectedDashboardDate =
+    dashboardDateInput &&
+    dashboardDateInput.value
+        ? dashboardDateInput.value
+        : new Date()
+            .toISOString()
+            .split("T")[0];
 
 
-            const todayAttendance =
-                this.attendance.filter(
-                    function (record) {
+// =============================================
+// ATTENDANCE FOR SELECTED DATE
+// =============================================
 
-                        const date =
-                            record.attendance_date ||
-                            record.attendanceDate ||
-                            record.date ||
-                            "";
+const todayAttendance =
+    this.attendance.filter(
+        function (record) {
 
-                        return String(date)
-                            .substring(0, 10) === today;
+            const date =
+                record.attendance_date ||
+                record.attendanceDate ||
+                record.date ||
+                "";
 
-                    }
-                );
+            return String(date)
+                .substring(0, 10) ===
+                selectedDashboardDate;
+
+        }
+    );
 
 
             let present = 0;
