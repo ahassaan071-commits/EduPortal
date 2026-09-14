@@ -19518,20 +19518,56 @@ if (analyticsFeeElement) {
         AdminDashboard;
 
 
-    // =====================================================
-    // INITIAL LOAD
-    // =====================================================
+// =====================================================
+// ADMIN DASHBOARD DATE FILTER
+// =====================================================
 
-    document.addEventListener(
-        "DOMContentLoaded",
-        function () {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const dashboardDate =
+            document.getElementById(
+                "adminDashboardDate"
+            );
+
+        // Default date = Today
+        if (dashboardDate) {
+
+            dashboardDate.value =
+                new Date()
+                    .toISOString()
+                    .split("T")[0];
+
+        }
+
+        // Load dashboard
+        AdminDashboard.loadData();
+
+    }
+);
+
+
+// =====================================================
+// DASHBOARD DATE CHANGE
+// =====================================================
+
+document.addEventListener(
+    "change",
+    function (event) {
+
+        if (
+            event.target &&
+            event.target.id ===
+                "adminDashboardDate"
+        ) {
 
             AdminDashboard.loadData();
 
         }
-    );
 
-
+    }
+);
     // =====================================================
     // ADMIN DASHBOARD OPEN
     // =====================================================
