@@ -1163,6 +1163,14 @@ if (studentDashboard) {
 
         }
 
+// Fresh Student data after login
+setTimeout(
+    function () {
+        refreshActiveDashboardData();
+    },
+    100
+);
+
     }, 300);
 }
 
