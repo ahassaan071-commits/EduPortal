@@ -40320,3 +40320,200 @@ document.addEventListener(
 
     }
 );
+// =========================================================
+// EDUPORTAL - UNIVERSAL FRESH DASHBOARD DATA SYSTEM
+// STUDENT + TEACHER + ADMINISTRATOR
+// =========================================================
+
+let eduPortalRefreshRunning = false;
+
+async function refreshActiveDashboardData() {
+
+    if (eduPortalRefreshRunning) {
+        return;
+    }
+
+    eduPortalRefreshRunning = true;
+
+    try {
+
+        const loggedIn =
+            localStorage.getItem("isLoggedIn");
+
+        const role =
+            localStorage.getItem("loggedInRole");
+
+        if (loggedIn !== "true") {
+            return;
+        }
+
+        // ==========================================
+        // ADMINISTRATOR
+        // ==========================================
+
+        if (role === "administrator") {
+
+            if (
+                typeof AdminDashboard !== "undefined" &&
+                typeof AdminDashboard.loadData === "function"
+            ) {
+
+                await AdminDashboard.loadData();
+
+                console.log(
+                    "EduPortal Admin Dashboard refreshed ✅"
+                );
+            }
+
+            return;
+        }
+
+
+        // ==========================================
+        // TEACHER
+        // ==========================================
+
+        if (role === "teacher") {
+
+            if (
+                typeof loadTeacherDashboardData ===
+                "function"
+            ) {
+
+                await loadTeacherDashboardData();
+
+                console.log(
+                    "EduPortal Teacher Dashboard refreshed ✅"
+                );
+            }
+
+            return;
+        }
+
+
+        // ==========================================
+        // STUDENT
+        // ==========================================
+
+        if (role === "student") {
+
+            if (
+                typeof StudentDashboard !==
+                "undefined" &&
+                typeof StudentDashboard.loadDashboard ===
+                "function"
+            ) {
+
+                const savedStudent =
+                    localStorage.getItem(
+                        "loggedInStudent"
+                    );
+
+                if (savedStudent) {
+
+                    const student =
+                        JSON.parse(savedStudent);
+
+                    await StudentDashboard.loadDashboard(
+                        student
+                    );
+
+                    console.log(
+                        "EduPortal Student Dashboard refreshed ✅"
+                    );
+                }
+            }
+
+            return;
+        }
+
+    } catch (error) {
+
+        console.error(
+            "EduPortal Dashboard Refresh Error:",
+            error
+        );
+
+    } finally {
+
+        eduPortalRefreshRunning = false;
+    }
+}
+
+
+// =========================================================
+// FRESH DATA WHEN PAGE / SESSION OPENS
+// =========================================================
+
+window.addEventListener(
+    "load",
+    function () {
+
+        setTimeout(
+            function () {
+
+                refreshActiveDashboardData();
+
+            },
+            800
+        );
+
+    }
+);
+
+
+// =========================================================
+// AUTO REFRESH EVERY 30 SECONDS
+// =========================================================
+
+setInterval(
+    function () {
+
+        refreshActiveDashboardData();
+
+    },
+    30000
+);
+
+
+// =========================================================
+// REFRESH WHEN USER RETURNS TO TAB
+// =========================================================
+
+document.addEventListener(
+    "visibilitychange",
+    function () {
+
+        if (
+            document.visibilityState ===
+            "visible"
+        ) {
+
+            refreshActiveDashboardData();
+
+        }
+
+    }
+);
+
+
+// =========================================================
+// REFRESH WHEN INTERNET CONNECTION RETURNS
+// =========================================================
+
+window.addEventListener(
+    "online",
+    function () {
+
+        console.log(
+            "Internet connection restored — refreshing EduPortal..."
+        );
+
+        refreshActiveDashboardData();
+
+    }
+);
+
+console.log(
+    "EduPortal Universal Dashboard Refresh System Loaded ✅"
+);
