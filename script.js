@@ -19293,6 +19293,18 @@ const pendingFees =
     );
 
 // Collection percentage
+
+
+const feeRate =
+    totalFees > 0
+        ? Math.min(
+            100,
+            Math.round(
+                (paidFees / totalFees) * 100
+            )
+        )
+        : 0;
+
             const pendingFeeElement =
                 document.getElementById(
                     "adminPendingFees"
