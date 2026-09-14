@@ -15081,7 +15081,7 @@ studentDbId:
 
 studentName:
     student.name ||
-    student.full_name ||
+    
     "",
 
 studentClass:
