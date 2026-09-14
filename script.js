@@ -15489,21 +15489,54 @@ async function renderFeeRecords() {
                     ${record.status || ""}
                 </td>
 
-                <td>
+          <td>
 
-                    <button
-                        type="button"
-                        class="result-action-btn"
-                        onclick="
-                            deleteFeeRecord(
-                                '${record.id}'
-                            )
-                        "
-                    >
-                        🗑️
-                    </button>
+    ${
+        String(record.status || "").toLowerCase() === "paid"
+            ? `
+                <span
+                    style="
+                        color:#16a34a;
+                        font-weight:600;
+                        margin-right:8px;
+                    "
+                >
+                    Paid ✅
+                </span>
+            `
+            : `
+                <button
+                    type="button"
+                    class="result-action-btn"
+                    style="
+                        background:#16a34a;
+                        color:white;
+                        margin-right:6px;
+                    "
+                    onclick="
+                        markFeeAsPaid(
+                            '${record.id}'
+                        )
+                    "
+                >
+                    💰 Mark as Paid
+                </button>
+            `
+    }
 
-                </td>
+    <button
+        type="button"
+        class="result-action-btn"
+        onclick="
+            deleteFeeRecord(
+                '${record.id}'
+            )
+        "
+    >
+        🗑️
+    </button>
+
+</td>
 
             `;
 
@@ -15878,7 +15911,185 @@ async function deleteFeeRecord(
     );
 
 }
+// ==========================================
+// MARK FEE AS PAID - SUPABASE
+// ==========================================
 
+async function markFeeAsPaid(recordId) {
+
+    if (!recordId) {
+
+        alert(
+            "Fee record ID is missing."
+        );
+
+        return;
+    }
+
+    // ==========================================
+    // SUPABASE CHECK
+    // ==========================================
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+
+        alert(
+            "Supabase connection is missing."
+        );
+
+        return;
+    }
+
+    // ==========================================
+    // GET CURRENT FEE
+    // ==========================================
+
+    const {
+        data: feeRecord,
+        error: loadError
+    } =
+        await supabaseClient
+            .from("fee_records")
+            .select("*")
+            .eq(
+                "id",
+                String(recordId)
+            )
+            .maybeSingle();
+
+    if (
+        loadError ||
+        !feeRecord
+    ) {
+
+        console.error(
+            "FEE LOAD ERROR:",
+            loadError
+        );
+
+        alert(
+            "Unable to load fee record."
+        );
+
+        return;
+    }
+
+    // ==========================================
+    // ALREADY PAID CHECK
+    // ==========================================
+
+    if (
+        String(
+            feeRecord.status || ""
+        ).toLowerCase() === "paid"
+    ) {
+
+        alert(
+            "This fee is already marked as Paid. ✅"
+        );
+
+        return;
+    }
+
+    // ==========================================
+    // CONFIRM PAYMENT
+    // ==========================================
+
+    const feeAmount =
+        Number(
+            feeRecord.fee_amount || 0
+        );
+
+    const confirmed =
+        confirm(
+            "Confirm receiving cash payment of Rs. " +
+            feeAmount.toLocaleString() +
+            " from " +
+            (
+                feeRecord.student_name ||
+                "student"
+            ) +
+            "?"
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    // ==========================================
+    // MARK AS PAID
+    // ==========================================
+
+    const {
+        error: updateError
+    } =
+        await supabaseClient
+            .from("fee_records")
+            .update({
+
+                paid_amount:
+                    feeAmount,
+
+                remaining_amount:
+                    0,
+
+                status:
+                    "Paid",
+
+                payment_method:
+                    "Cash",
+
+                payment_date:
+                    new Date()
+                        .toISOString()
+                        .split("T")[0]
+
+            })
+            .eq(
+                "id",
+                String(recordId)
+            );
+
+    // ==========================================
+    // ERROR
+    // ==========================================
+
+    if (updateError) {
+
+        console.error(
+            "FEE PAYMENT UPDATE ERROR:",
+            updateError
+        );
+
+        alert(
+            "Fee could not be marked as Paid.\n\n" +
+            updateError.message
+        );
+
+        return;
+    }
+
+    // ==========================================
+    // REFRESH ADMIN FEES
+    // ==========================================
+
+    await renderFeeRecords();
+
+    // ==========================================
+    // SUCCESS
+    // ==========================================
+
+    alert(
+        "Fee marked as Paid successfully! ✅\n\n" +
+        "Payment Method: Cash\n" +
+        "Payment Date: " +
+        new Date()
+            .toISOString()
+            .split("T")[0]
+    );
+}
 // ==========================================
 // FEE MANAGEMENT INITIAL LOAD + REALTIME
 // SUPABASE LIVE SYNC
