@@ -2875,351 +2875,388 @@ PROFESSIONAL ANALYTICS
 
 <div id="adminHomeSection">
 
-<!-- Dashboard Heading -->
-<div class="admin-dashboard-title">
-
-<div>
-<h2>Dashboard Analytics</h2>
-<p>Quick visual overview of EduPortal</p>
-</div>
-
-</div>
-
-
-<!-- Top Statistics -->
-<div class="admin-analytics-stats">
-
-<!-- Students -->
-<div class="admin-analytics-stat students">
-
-<div class="analytics-stat-icon">
-👨‍🎓
-</div>
-
-<div class="analytics-stat-content">
-<span>Total Students</span>
-<strong id="analyticsTotalStudents">0</strong>
-<small>Registered Students</small>
-</div>
-
-</div>
-
-
-<!-- Attendance -->
-<div class="admin-analytics-stat attendance">
-
-<div class="analytics-stat-icon">
-📅
-</div>
-
-<div class="analytics-stat-content">
-<span>Today's Attendance</span>
-<strong id="analyticsAttendance">0%</strong>
-<small>Present Today</small>
-</div>
-
-</div>
-
-
-<!-- Results -->
-<div class="admin-analytics-stat results">
-
-<div class="analytics-stat-icon">
-📊
-</div>
-
-<div class="analytics-stat-content">
-<span>Average Performance</span>
-<strong id="analyticsAverageResult">0%</strong>
-<small>Overall Results</small>
-</div>
-
-</div>
-
-
-<!-- Fees -->
-<div class="admin-analytics-stat fees">
-
-<div class="analytics-stat-icon">
-💰
-</div>
-
-<div class="analytics-stat-content">
-<span>Total Collected</span>
-<strong id="analyticsTotalCollected">Rs. 0</strong>
-<small>Fee Collection</small>
-</div>
-
-</div>
-
-</div>
-
-
-<!-- Analytics Grid -->
-<div class="admin-analytics-grid">
-
-
-<!-- Students Overview -->
-<div class="admin-analytics-card">
-
-<div class="analytics-card-header">
-
-<div>
-<h3>👨‍🎓 Students Overview</h3>
-<p>Total registered students</p>
-</div>
-
-<span class="analytics-badge blue">
-Live
-</span>
-
-</div>
-
-
-<div class="students-chart">
-
-<div class="students-chart-value">
-<strong id="studentsChartValue">0</strong>
-<span>Students</span>
-</div>
-
-<div class="students-progress">
-
-<div id="studentsProgressBar" class="students-progress-fill">
-</div>
-
-</div>
-
-<div class="students-chart-footer">
-<span>Current Enrollment</span>
-<strong id="studentsChartPercent">0%</strong>
-</div>
-
-</div>
-
-</div>
-
-
-<!-- Attendance -->
-<div class="admin-analytics-card">
-
-<div class="analytics-card-header">
-
-<div>
-<h3>📅 Attendance</h3>
-<p>Today's attendance overview</p>
-</div>
-
-<span class="analytics-badge green">
-Today
-</span>
-
-</div>
-
-
-<div class="attendance-chart-area">
-
-<div class="attendance-donut" id="attendanceDonut">
-
-<div class="attendance-donut-center">
-    <strong id="attendanceDonutValue">
-        0%
-    </strong>
-    <span>Present</span>
-</div>
-
-</div>
-
-
-<div class="attendance-legend">
-
-<div>
-    <span class="legend-dot present"></span>
-    <span>Present</span>
-    <strong id="attendancePresentCount">0</strong>
-</div>
-
-<div>
-    <span class="legend-dot absent"></span>
-    <span>Absent</span>
-    <strong id="attendanceAbsentCount">0</strong>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- Results Performance -->
-<div class="admin-analytics-card">
-
-<div class="analytics-card-header">
-
-<div>
-<h3>📈 Results Performance</h3>
-<p>Academic performance overview</p>
-</div>
-
-<span class="analytics-badge purple">
-Results
-</span>
-
-</div>
-
-
-<div class="results-performance">
-
-<div class="results-main-value">
-<strong id="resultsPerformanceValue">
-    0%
-</strong>
-
-<span>Average Performance</span>
-</div>
-
-
-<div class="result-bars">
-
-<div class="result-bar-row">
-
-    <span>Passed</span>
-
-    <div class="result-bar">
-        <div id="passedBar" class="passed-fill">
+<!-- ==========================================
+     ADMIN DASHBOARD HOME
+     PROFESSIONAL ANALYTICS
+========================================== -->
+
+<div id="adminHomeSection">
+
+    <!-- Dashboard Heading -->
+    <div class="admin-dashboard-title">
+
+        <div>
+            <h2>Dashboard Analytics</h2>
+            <p>Quick visual overview of EduPortal</p>
         </div>
+
+        <div class="admin-dashboard-date">
+            <span class="dashboard-date-icon">📅</span>
+            <input
+                type="date"
+                id="adminDashboardDate"
+                class="dashboard-date-input"
+            >
+        </div>
+
     </div>
 
-    <strong id="passedCount">0</strong>
 
-</div>
+    <!-- ==========================================
+         TOP STATISTICS
+    ========================================== -->
 
+    <div class="admin-analytics-stats">
 
-<div class="result-bar-row">
+        <!-- TOTAL STUDENTS -->
+        <div class="admin-analytics-stat students">
 
-    <span>Failed</span>
+            <div class="analytics-stat-icon">
+                👨‍🎓
+            </div>
 
-    <div class="result-bar">
-        <div id="failedBar" class="failed-fill">
+            <div class="analytics-stat-content">
+
+                <span>Total Students</span>
+
+                <strong id="analyticsTotalStudents">
+                    0
+                </strong>
+
+                <small>
+                    Registered Students
+                </small>
+
+            </div>
+
         </div>
+
+
+        <!-- TOTAL TEACHERS -->
+        <div class="admin-analytics-stat teachers">
+
+            <div class="analytics-stat-icon">
+                👨‍🏫
+            </div>
+
+            <div class="analytics-stat-content">
+
+                <span>Total Teachers</span>
+
+                <strong id="analyticsTotalTeachers">
+                    0
+                </strong>
+
+                <small>
+                    Active Teachers
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- TODAY ATTENDANCE -->
+        <div class="admin-analytics-stat attendance">
+
+            <div class="analytics-stat-icon">
+                📅
+            </div>
+
+            <div class="analytics-stat-content">
+
+                <span>Today Attendance</span>
+
+                <strong id="analyticsAttendance">
+                    0
+                </strong>
+
+                <small>
+                    Students Present Today
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- TOTAL COLLECTION -->
+        <div class="admin-analytics-stat fees">
+
+            <div class="analytics-stat-icon">
+                💰
+            </div>
+
+            <div class="analytics-stat-content">
+
+                <span>Total Collections</span>
+
+                <strong id="analyticsTotalCollected">
+                    Rs. 0
+                </strong>
+
+                <small>
+                    Fee Collection
+                </small>
+
+            </div>
+
+        </div>
+
     </div>
 
-    <strong id="failedCount">0</strong>
 
-</div>
+    <!-- ==========================================
+         ANALYTICS GRID
+    ========================================== -->
 
-</div>
-
-</div>
-
-</div>
+    <div class="admin-analytics-grid">
 
 
-<!-- Fee Collection -->
-<div class="admin-analytics-card">
+        <!-- ======================================
+             TODAY ATTENDANCE
+        ====================================== -->
 
-<div class="analytics-card-header">
+        <div class="admin-analytics-card">
 
-<div>
-<h3>💰 Fee Collection</h3>
-<p>Overall fee collection status</p>
-</div>
+            <div class="analytics-card-header">
 
-<span class="analytics-badge orange">
-Fees
-</span>
+                <div>
+                    <h3>📅 Today Attendance</h3>
 
-</div>
+                    <p>
+                        Today's attendance overview
+                    </p>
+                </div>
 
+                <span class="analytics-badge green">
+                    Today
+                </span>
 
-<div class="fee-chart">
-
-<div class="fee-chart-header">
-
-<div>
-    <span>Collection Rate</span>
-    <strong id="feeCollectionRate">
-        0%
-    </strong>
-</div>
-
-<div class="fee-total">
-    <span>Collected</span>
-    <strong id="feeCollectedAmount">
-        Rs. 0
-    </strong>
-</div>
-
-</div>
+            </div>
 
 
-<div class="fee-progress">
+            <div class="attendance-chart-area">
 
-<div id="feeProgressBar" class="fee-progress-fill">
-</div>
+                <div
+                    class="attendance-donut"
+                    id="attendanceDonut"
+                >
 
-</div>
+                    <div class="attendance-donut-center">
 
+                        <strong id="attendanceDonutValue">
+                            0%
+                        </strong>
 
-<div class="fee-chart-footer">
+                        <span>
+                            Present
+                        </span>
 
-<span>Total Fee</span>
+                    </div>
 
-<strong id="feeTotalAmount">
-    Rs. 0
-</strong>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
+                </div>
 
 
-<!-- Compact Quick Actions -->
-<div class="admin-dashboard-actions">
+                <div class="attendance-legend">
 
-<h3>Quick Actions</h3>
+                    <div>
 
-<div class="admin-dashboard-action-grid">
+                        <span
+                            class="legend-dot present">
+                        </span>
 
-<button type="button" onclick="document.getElementById('adminStudentsMenu').click()">
+                        <span>
+                            Present
+                        </span>
 
-👨‍🎓
-<span>Add / Manage Students</span>
+                        <strong id="attendancePresentCount">
+                            0
+                        </strong>
 
-</button>
-
-
-<button type="button" onclick="document.getElementById('adminAttendanceMenu').click()">
-
-📅
-<span>Mark Attendance</span>
-
-</button>
+                    </div>
 
 
-<button type="button" onclick="document.getElementById('adminAssignmentsMenu').click()">
+                    <div>
 
-📚
-<span>Assignments</span>
+                        <span
+                            class="legend-dot absent">
+                        </span>
 
-</button>
+                        <span>
+                            Absent
+                        </span>
+
+                        <strong id="attendanceAbsentCount">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
 
 
-<button type="button" onclick="document.getElementById('adminNoticesMenu').click()">
+        <!-- ======================================
+             FEE COLLECTION
+        ====================================== -->
 
-📢
-<span>Publish Notice</span>
+        <div class="admin-analytics-card">
 
-</button>
+            <div class="analytics-card-header">
 
-</div>
+                <div>
 
-</div>
+                    <h3>💰 Fee Collection</h3>
+
+                    <p>
+                        Overall fee collection status
+                    </p>
+
+                </div>
+
+                <span class="analytics-badge orange">
+                    Fees
+                </span>
+
+            </div>
+
+
+            <div class="fee-chart">
+
+                <div class="fee-chart-header">
+
+                    <div>
+
+                        <span>
+                            Collection Rate
+                        </span>
+
+                        <strong id="feeCollectionRate">
+                            0%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="fee-total">
+
+                        <span>
+                            Collected
+                        </span>
+
+                        <strong id="feeCollectedAmount">
+                            Rs. 0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="fee-progress">
+
+                    <div
+                        id="feeProgressBar"
+                        class="fee-progress-fill">
+                    </div>
+
+                </div>
+
+
+                <div class="fee-chart-footer">
+
+                    <span>
+                        Total Fee
+                    </span>
+
+                    <strong id="feeTotalAmount">
+                        Rs. 0
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         QUICK ACTIONS
+    ========================================== -->
+
+    <div class="admin-dashboard-actions">
+
+        <h3>Quick Actions</h3>
+
+        <div class="admin-dashboard-action-grid">
+
+
+            <!-- ADD / MANAGE STUDENTS -->
+            <button
+                type="button"
+                onclick="
+                    document
+                        .getElementById('adminStudentsMenu')
+                        .click()
+                "
+            >
+
+                👨‍🎓
+
+                <span>
+                    Add / Manage Students
+                </span>
+
+            </button>
+
+
+            <!-- ADD / MANAGE TEACHERS -->
+            <button
+                type="button"
+                onclick="
+                    document
+                        .getElementById('adminTeachersMenu')
+                        .click()
+                "
+            >
+
+                👨‍🏫
+
+                <span>
+                    Add / Manage Teachers
+                </span>
+
+            </button>
+
+
+            <!-- PUBLISH NOTICE -->
+            <button
+                type="button"
+                onclick="
+                    document
+                        .getElementById('adminNoticesMenu')
+                        .click()
+                "
+            >
+
+                📢
+
+                <span>
+                    Publish Notice
+                </span>
+
+            </button>
+
+
+        </div>
+
+    </div>
 
 </div>
 <!-- ===========================
