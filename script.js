@@ -19248,71 +19248,51 @@ return;
             );
 
 
-            // =============================================
-            // FEES
-            // =============================================
-
-            let totalFees = 0;
-
-            let paidFees = 0;
+     
 
 
-           this.fees.forEach(
+           // =============================================
+// FEES - REAL SUPABASE COLLECTION
+// =============================================
+
+let totalFees = 0;
+let paidFees = 0;
+
+(this.fees || []).forEach(
     function (fee) {
 
-        // =============================================
-        // REAL FEE AMOUNT
-        // fee_records table ka actual column:
-        // fee_amount
-        // =============================================
+        // Actual fee_records column
+        const feeAmount =
+            Number(fee.fee_amount || 0);
 
-        const total =
-            Number(
-                fee.fee_amount ?? 0
-            );
+        // Actual paid amount
+        const paidAmount =
+            Number(fee.paid_amount || 0);
 
-        // =============================================
-        // REAL PAID AMOUNT
-        // =============================================
-
-        const paid =
-            Number(
-                fee.paid_amount ?? 0
-            );
-
-        // =============================================
-        // ADD TO TOTALS
-        // =============================================
-
-        if (Number.isFinite(total)) {
-            totalFees += total;
+        if (Number.isFinite(feeAmount)) {
+            totalFees += feeAmount;
         }
 
-        if (Number.isFinite(paid)) {
-            paidFees += paid;
+        if (Number.isFinite(paidAmount)) {
+            paidFees += paidAmount;
         }
-
     }
 );
 
-            const pendingFees =
-                Math.max(
-                    0,
-                    totalFees - paidFees
-                );
+// Never allow paid amount to exceed total
+paidFees = Math.min(
+    paidFees,
+    totalFees
+);
 
+// Pending amount
+const pendingFees =
+    Math.max(
+        0,
+        totalFees - paidFees
+    );
 
-           const feeRate =
-    totalFees > 0
-        ? Math.min(
-            100,
-            Math.round(
-                (paidFees / totalFees) * 100
-            )
-        )
-        : 0;
-
-
+// Collection percentage
             const pendingFeeElement =
                 document.getElementById(
                     "adminPendingFees"
