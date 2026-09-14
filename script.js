@@ -16155,27 +16155,15 @@ const noticeId =
     // SAVE TO SUPABASE
     // ==========================================
 
-      const noticeRecord = {
+     const noticeRecord = {
+    title: title,
 
-       id:
-           String(
-               noticeId
-           ),
+    message: description,
 
-       title:
-           title,
+    target_role: audience,
 
-       message:
-           description,
-
-       target_role:
-           audience,
-
-       created_at:
-           new Date()
-               .toISOString()
-
-   };
+    created_at: new Date().toISOString()
+};
 
     const {
         data,
