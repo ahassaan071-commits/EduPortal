@@ -14638,7 +14638,24 @@ if (feeStudent) {
                             : ""
                     );
 
-            } else if (classField) {
+            } 
+            // ==========================================
+// AUTO LOAD STUDENT MONTHLY FEE
+// ==========================================
+
+const monthlyFeeField =
+    document.getElementById(
+        "monthlyFeeAmount"
+    );
+
+if (monthlyFeeField && student) {
+
+    monthlyFeeField.value =
+        Number(student.monthly_fee || 0);
+
+    calculateFeeRemaining();
+}
+            else if (classField) {
 
                 classField.value = "";
 
