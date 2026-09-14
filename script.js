@@ -19002,14 +19002,45 @@ return;
                     : 0;
 
 
-            const attendanceElements = [
+        const attendanceElements = [
+    "adminAttendance",
+    "adminAnalyticsAttendance",
+    "attendanceDonutValue"
+];
 
-                "adminAttendance",
-                "adminAnalyticsAttendance",
-                "analyticsAttendance",
-                "attendanceDonutValue"
+attendanceElements.forEach(
+    function (id) {
 
-            ];
+        const element =
+            document.getElementById(id);
+
+        if (element) {
+
+            element.textContent =
+                attendancePercentage + "%";
+
+        }
+
+    }
+);
+
+
+// =============================================
+// TODAY ATTENDANCE TOP CARD
+// SHOW PRESENT STUDENTS COUNT
+// =============================================
+
+const todayAttendanceElement =
+    document.getElementById(
+        "analyticsAttendance"
+    );
+
+if (todayAttendanceElement) {
+
+    todayAttendanceElement.textContent =
+        present;
+
+}
 
 
             attendanceElements.forEach(
