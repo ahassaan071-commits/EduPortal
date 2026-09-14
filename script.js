@@ -858,17 +858,39 @@ if (selectedRole === "student") {
 
     setTimeout(function () {
 
-        const loginContainer =
-            document.querySelector(
-                ".container"
-            );
+ // ==========================================
+// HIDE LOGIN SCREEN
+// ==========================================
 
-        if (loginContainer) {
+const loginContainer =
+    document.querySelector(
+        ".container"
+    );
 
-            loginContainer.classList.add(
-                "session-hidden"
-            );
-        }
+if (loginContainer) {
+
+    loginContainer.classList.add(
+        "session-hidden"
+    );
+
+    loginContainer.style.setProperty(
+        "display",
+        "none",
+        "important"
+    );
+
+    loginContainer.style.setProperty(
+        "visibility",
+        "hidden",
+        "important"
+    );
+
+    loginContainer.style.setProperty(
+        "opacity",
+        "0",
+        "important"
+    );
+}
 
 
         // Hide Admin
