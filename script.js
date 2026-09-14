@@ -14605,7 +14605,7 @@ if (feeStudent) {
                 await supabaseClient
                     .from("students")
                     .select(
-                        "id, student_id, student_class, section"
+                         "id, student_id, student_class, section, monthly_fee"
                     )
                     .eq(
                         "id",
