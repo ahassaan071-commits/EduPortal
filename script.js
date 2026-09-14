@@ -456,6 +456,14 @@ if (login) {
                 syncFinalAdminDashboard();
             }
 
+// Fresh Admin data after login
+setTimeout(
+    function () {
+        refreshActiveDashboardData();
+    },
+    100
+);
+
         }, 500);
 
         return;
