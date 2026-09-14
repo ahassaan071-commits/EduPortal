@@ -19043,21 +19043,7 @@ if (todayAttendanceElement) {
 }
 
 
-            attendanceElements.forEach(
-                function (id) {
-
-                    const element =
-                        document.getElementById(id);
-
-                    if (element) {
-
-                        element.textContent =
-                            attendancePercentage + "%";
-
-                    }
-
-                }
-            );
+     
 
 
             const presentElement =
@@ -19282,7 +19268,7 @@ if (todayAttendanceElement) {
      
 
 
-           // =============================================
+     // =============================================
 // FEES - REAL SUPABASE COLLECTION
 // =============================================
 
@@ -19292,11 +19278,9 @@ let paidFees = 0;
 (this.fees || []).forEach(
     function (fee) {
 
-        // Actual fee_records column
         const feeAmount =
             Number(fee.fee_amount || 0);
 
-        // Actual paid amount
         const paidAmount =
             Number(fee.paid_amount || 0);
 
@@ -19307,6 +19291,7 @@ let paidFees = 0;
         if (Number.isFinite(paidAmount)) {
             paidFees += paidAmount;
         }
+
     }
 );
 
@@ -19324,8 +19309,6 @@ const pendingFees =
     );
 
 // Collection percentage
-
-
 const feeRate =
     totalFees > 0
         ? Math.min(
@@ -19336,79 +19319,129 @@ const feeRate =
         )
         : 0;
 
-            const pendingFeeElement =
-                document.getElementById(
-                    "adminPendingFees"
-                );
+
+// =============================================
+// TOP CARD - TOTAL COLLECTIONS
+// =============================================
+
+const collectedElement =
+    document.getElementById(
+        "analyticsTotalCollected"
+    );
+
+if (collectedElement) {
+
+    collectedElement.textContent =
+        "Rs. " +
+        paidFees.toLocaleString();
+
+}
 
 
-            if (pendingFeeElement) {
+// =============================================
+// FEE COLLECTION CARD - COLLECTED
+// =============================================
 
-                pendingFeeElement.textContent =
-                    "Rs. " +
-                    pendingFees.toLocaleString();
+const feeCollectedElement =
+    document.getElementById(
+        "feeCollectedAmount"
+    );
 
-            }
+if (feeCollectedElement) {
 
+    feeCollectedElement.textContent =
+        "Rs. " +
+        paidFees.toLocaleString();
 
-            const analyticsFeeElement =
-                document.getElementById(
-                    "adminAnalyticsFees"
-                );
-
-
-            if (analyticsFeeElement) {
-
-                analyticsFeeElement.textContent =
-                    "Rs. " +
-                    pendingFees.toLocaleString();
-
-            }
+}
 
 
-            const collectedElement =
-                document.getElementById(
-                    "analyticsTotalCollected"
-                );
+// =============================================
+// FEE COLLECTION CARD - TOTAL FEE
+// =============================================
+
+const feeTotalElement =
+    document.getElementById(
+        "feeTotalAmount"
+    );
+
+if (feeTotalElement) {
+
+    feeTotalElement.textContent =
+        "Rs. " +
+        totalFees.toLocaleString();
+
+}
 
 
-            if (collectedElement) {
+// =============================================
+// FEE COLLECTION CARD - RATE
+// =============================================
 
-                collectedElement.textContent =
-                    "Rs. " +
-                    paidFees.toLocaleString();
+const feeRateElement =
+    document.getElementById(
+        "feeCollectionRate"
+    );
 
-            }
+if (feeRateElement) {
 
+    feeRateElement.textContent =
+        feeRate + "%";
 
-            const feeRateElement =
-                document.getElementById(
-                    "feeCollectionRate"
-                );
-
-
-            if (feeRateElement) {
-
-                feeRateElement.textContent =
-                    feeRate + "%";
-
-            }
+}
 
 
-            const feeProgress =
-                document.getElementById(
-                    "feeProgressBar"
-                );
+// =============================================
+// FEE COLLECTION PROGRESS BAR
+// =============================================
+
+const feeProgress =
+    document.getElementById(
+        "feeProgressBar"
+    );
+
+if (feeProgress) {
+
+    feeProgress.style.width =
+        feeRate + "%";
+
+}
 
 
-            if (feeProgress) {
+// =============================================
+// PENDING FEE
+// =============================================
 
-                feeProgress.style.width =
-                    feeRate + "%";
+const pendingFeeElement =
+    document.getElementById(
+        "adminPendingFees"
+    );
 
-            }
+if (pendingFeeElement) {
+
+    pendingFeeElement.textContent =
+        "Rs. " +
+        pendingFees.toLocaleString();
+
+}
 
 
+// =============================================
+// OLD ANALYTICS FEE FIELD
+// =============================================
+
+const analyticsFeeElement =
+    document.getElementById(
+        "adminAnalyticsFees"
+    );
+
+if (analyticsFeeElement) {
+
+    analyticsFeeElement.textContent =
+        "Rs. " +
+        pendingFees.toLocaleString();
+
+}
             // =============================================
             // OTHER COUNTS
             // =============================================
