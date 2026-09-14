@@ -34063,7 +34063,7 @@ if (feeListContainer) {
 
     feeListContainer.innerHTML = "";
 
-const records = feeRecords || [];
+const records = [];
 
     records.forEach(function (record) {
 
