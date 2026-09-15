@@ -27255,10 +27255,14 @@ let teacherEditingNoticeId = null;
 
 
 // =========================================================
-// LOAD TEACHER NOTICES
+// LOAD ADMINISTRATOR NOTICES FOR TEACHER
+// SUPABASE + REALTIME
 // =========================================================
 
-function loadTeacherNotices() {
+let teacherAdminNoticesRealtimeChannel = null;
+
+
+async function loadTeacherNotices() {
 
     const list =
         document.getElementById(
@@ -27270,70 +27274,161 @@ function loadTeacherNotices() {
     }
 
 
-    const teacher =
-        JSON.parse(
-            localStorage.getItem(
-                "loggedInTeacher"
-            )
-        ) || {};
-
-
-    const notices =
-        JSON.parse(
-            localStorage.getItem(
-                "teacherNotices"
-            )
-        ) || [];
-
-
-    const teacherId =
-        teacher.id ||
-        teacher.username ||
-        teacher.email ||
-        "";
-
-
-    const teacherClass =
-        teacher.teacherClass ||
-        "Not Assigned";
-
-
     // =========================================
-    // SHOW CLASS
+    // SUPABASE CHECK
     // =========================================
 
-    const classElement =
-        document.getElementById(
-            "teacherNoticesClass"
-        );
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
 
+        list.innerHTML = `
+            <div class="teacher-notice-empty">
 
-    if (classElement) {
+                <div class="teacher-notice-empty-icon">
+                    ⚠️
+                </div>
 
-        classElement.textContent =
-            teacherClass;
+                <strong>
+                    Unable to load notices
+                </strong>
 
+                <p>
+                    Supabase connection is unavailable.
+                </p>
+
+            </div>
+        `;
+
+        return;
     }
 
 
     // =========================================
-    // FILTER TEACHER NOTICES
+    // LOAD ADMINISTRATOR NOTICES
     // =========================================
 
-    const myNotices =
-        notices.filter(
+    const {
+        data: notices,
+        error
+    } =
+        await supabaseClient
+            .from("notices")
+            .select(
+                "id, title, message, target_role, created_at"
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+    // =========================================
+    // ERROR
+    // =========================================
+
+    if (error) {
+
+        console.error(
+            "TEACHER ADMIN NOTICES ERROR:",
+            error
+        );
+
+        list.innerHTML = `
+            <div class="teacher-notice-empty">
+
+                <div class="teacher-notice-empty-icon">
+                    ⚠️
+                </div>
+
+                <strong>
+                    Unable to load notices
+                </strong>
+
+                <p>
+                    ${error.message}
+                </p>
+
+            </div>
+        `;
+
+        return;
+    }
+
+
+    // =========================================
+    // FILTER FOR TEACHER
+    // =========================================
+
+    const teacherNotices =
+        (notices || []).filter(
             function(notice) {
 
-                return String(
-                    notice.teacherId || ""
-                ) === String(teacherId);
+                const target =
+                    String(
+                        notice.target_role ||
+                        ""
+                    )
+                        .trim()
+                        .toLowerCase();
+
+
+                // Show notices intended for everyone
+
+                if (
+                    !target ||
+                    target === "all" ||
+                    target === "everyone" ||
+                    target === "all users"
+                ) {
+                    return true;
+                }
+
+
+                // Show notices intended for teachers
+
+                if (
+                    target === "teacher" ||
+                    target === "teachers"
+                ) {
+                    return true;
+                }
+
+
+                return false;
 
             }
         );
 
 
     // =========================================
-    // CLEAR
+    // NOTICE COUNT
+    // =========================================
+
+    const countElement =
+        document.getElementById(
+            "teacherAdminNoticeCount"
+        );
+
+
+    if (countElement) {
+
+        countElement.textContent =
+            teacherNotices.length +
+            (
+                teacherNotices.length === 1
+                    ? " Notice"
+                    : " Notices"
+            );
+
+    }
+
+
+    // =========================================
+    // CLEAR LIST
     // =========================================
 
     list.innerHTML = "";
@@ -27343,29 +27438,25 @@ function loadTeacherNotices() {
     // EMPTY
     // =========================================
 
-    if (!myNotices.length) {
+    if (!teacherNotices.length) {
 
         list.innerHTML = `
-
             <div class="teacher-notice-empty">
 
-                <div
-                    class="teacher-notice-empty-icon"
-                >
+                <div class="teacher-notice-empty-icon">
                     📢
                 </div>
 
                 <strong>
-                    No notices yet
+                    No administrator notices
                 </strong>
 
                 <p>
-                    Create your first notice
-                    using the form above.
+                    New notices published by the Administrator
+                    will appear here automatically.
                 </p>
 
             </div>
-
         `;
 
         return;
@@ -27373,14 +27464,16 @@ function loadTeacherNotices() {
 
 
     // =========================================
-    // RENDER
+    // RENDER NOTICES
     // =========================================
 
-    myNotices.forEach(
+    teacherNotices.forEach(
         function(notice) {
 
             const item =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
 
             item.className =
@@ -27391,10 +27484,22 @@ function loadTeacherNotices() {
                 notice.id;
 
 
-            const priorityClass =
-                String(
-                    notice.priority || "Normal"
-                ).toLowerCase();
+            const noticeDate =
+                notice.created_at
+                    ? new Date(
+                        notice.created_at
+                    ).toLocaleString(
+                        "en-PK",
+                        {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true
+                        }
+                    )
+                    : "—";
 
 
             item.innerHTML = `
@@ -27408,25 +27513,22 @@ function loadTeacherNotices() {
                     <div>
 
                         <h4>
+                            📢
                             ${
                                 notice.title ||
-                                "Untitled Notice"
+                                "Administrator Notice"
                             }
                         </h4>
 
                     </div>
 
-
                     <span
                         class="
                             teacher-notice-priority
-                            ${priorityClass}
+                            normal
                         "
                     >
-                        ${
-                            notice.priority ||
-                            "Normal"
-                        }
+                        Administrator
                     </span>
 
                 </div>
@@ -27438,7 +27540,7 @@ function loadTeacherNotices() {
                     "
                 >
                     ${
-                        notice.description ||
+                        notice.message ||
                         "No details provided."
                     }
                 </p>
@@ -27452,50 +27554,13 @@ function loadTeacherNotices() {
 
                     <span>
                         📅
-                        ${
-                            notice.date ||
-                            "—"
-                        }
+                        ${noticeDate}
                     </span>
-
 
                     <span>
-                        📚
-                        Class ${
-                            notice.className ||
-                            teacherClass
-                        }
+                        👤
+                        Administrator
                     </span>
-
-                </div>
-
-
-                <div
-                    class="
-                        teacher-notice-actions
-                    "
-                >
-
-                    <button
-                        type="button"
-                        class="teacher-notice-edit"
-                        data-id="
-                            ${notice.id}
-                        "
-                    >
-                        ✏ Edit
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="teacher-notice-delete"
-                        data-id="
-                            ${notice.id}
-                        "
-                    >
-                        🗑 Delete
-                    </button>
 
                 </div>
 
@@ -27506,6 +27571,52 @@ function loadTeacherNotices() {
 
         }
     );
+
+
+    // =========================================
+    // START REALTIME LISTENER ONCE
+    // =========================================
+
+    if (
+        !teacherAdminNoticesRealtimeChannel
+    ) {
+
+        teacherAdminNoticesRealtimeChannel =
+            supabaseClient
+                .channel(
+                    "teacher-admin-notices-realtime"
+                )
+                .on(
+                    "postgres_changes",
+                    {
+                        event: "*",
+                        schema: "public",
+                        table: "notices"
+                    },
+                    async function(payload) {
+
+                        console.log(
+                            "ADMIN NOTICE REALTIME UPDATE:",
+                            payload
+                        );
+
+
+                        await loadTeacherNotices();
+
+                    }
+                )
+                .subscribe(
+                    function(status) {
+
+                        console.log(
+                            "TEACHER ADMIN NOTICES REALTIME:",
+                            status
+                        );
+
+                    }
+                );
+
+    }
 
 }
 
