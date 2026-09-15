@@ -22187,93 +22187,62 @@ function updateTeacherAttendanceCounts() {
     let absent = 0;
     let late = 0;
 
-
     document
         .querySelectorAll(
             "#teacherAttendanceTableBody " +
-            ".teacher-attendance-buttons"
+            ".teacher-attendance-status-badge"
         )
-        .forEach(function(group) {
-
-            const selected =
-                group.querySelector(
-                    ".attendance-status-btn.selected"
-                );
-
-
-            if (!selected) {
-                return;
-            }
-
+        .forEach(function(badge) {
 
             const status =
-                selected.dataset.status;
+                String(
+                    badge.dataset.status ||
+                    badge.textContent ||
+                    ""
+                )
+                .trim()
+                .toLowerCase();
 
-
-            if (status === "Present") {
-
+            if (status === "present") {
                 present++;
-
             }
-
-            else if (status === "Absent") {
-
+            else if (status === "absent") {
                 absent++;
-
             }
-
-            else if (status === "Late") {
-
+            else if (status === "late") {
                 late++;
-
             }
 
         });
-
 
     const presentElement =
         document.getElementById(
             "teacherPresentCount"
         );
 
-
     const absentElement =
         document.getElementById(
             "teacherAbsentCount"
         );
-
 
     const lateElement =
         document.getElementById(
             "teacherLateCount"
         );
 
-
     if (presentElement) {
-
-        presentElement.textContent =
-            present;
-
+        presentElement.textContent = present;
     }
-
 
     if (absentElement) {
-
-        absentElement.textContent =
-            absent;
-
+        absentElement.textContent = absent;
     }
 
-
     if (lateElement) {
-
-        lateElement.textContent =
-            late;
-
+        lateElement.textContent = late;
     }
 
 }
-
 // =========================================================
 // EDU PORTAL - GET LOGGED IN TEACHER FROM SUPABASE
 // =========================================================
