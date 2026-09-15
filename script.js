@@ -40583,3 +40583,316 @@ document.addEventListener(
     },
     true
 );
+// ==========================================
+// ADMIN FORGOT PASSWORD - LIVE EMAIL OTP
+// ==========================================
+
+(function () {
+
+    const RECOVERY_ENDPOINT =
+        SUPABASE_URL + "/functions/v1/admin-recovery";
+
+    let recoveryUsername = null;
+    let recoveryOtp = null;
+
+
+    function recoveryMessage(text, isError) {
+
+        const box =
+            document.getElementById("adminRecoveryMessage");
+
+        if (!box) return;
+
+        box.textContent = text;
+
+        box.style.color =
+            isError ? "#dc2626" : "#16a34a";
+    }
+
+
+    function setButtonLoading(button, isLoading, originalText) {
+
+        if (!button) return;
+
+        button.disabled = isLoading;
+
+        button.textContent =
+            isLoading ? "Please wait..." : originalText;
+    }
+
+
+    async function callRecovery(payload) {
+
+        const response =
+            await fetch(RECOVERY_ENDPOINT, {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + SUPABASE_PUBLISHABLE_KEY,
+                    "apikey": SUPABASE_PUBLISHABLE_KEY
+                },
+
+                body: JSON.stringify(payload)
+            });
+
+        let result = {};
+
+        try {
+            result = await response.json();
+        } catch (error) {
+            result = { error: "Unexpected server response." };
+        }
+
+        return result;
+    }
+
+
+    // ==========================================
+    // STEP 1 - SEND OTP TO REGISTERED EMAIL
+    // ==========================================
+
+    document.addEventListener("click", async function (event) {
+
+        const button =
+            event.target.closest("#adminSendOtpBtn");
+
+        if (!button) return;
+
+        const input =
+            document.getElementById("adminRecoveryEmail");
+
+        const username =
+            input ? input.value.trim() : "";
+
+        if (!username) {
+            recoveryMessage(
+                "Please enter your administrator username.",
+                true
+            );
+            return;
+        }
+
+        setButtonLoading(button, true, "Send OTP to Email");
+
+        const result =
+            await callRecovery({
+                action: "send",
+                username: username
+            });
+
+        setButtonLoading(button, false, "Send OTP to Email");
+
+        if (result.error) {
+            recoveryMessage(result.error, true);
+            return;
+        }
+
+        recoveryUsername = username;
+
+        recoveryMessage(
+            "A 6-digit code has been sent to " +
+            (result.maskedEmail || "your registered email") +
+            ". It expires in 10 minutes.",
+            false
+        );
+
+        const emailStep =
+            document.getElementById("adminRecoveryEmailStep");
+
+        const otpStep =
+            document.getElementById("adminRecoveryOtpStep");
+
+        if (emailStep) emailStep.style.display = "none";
+        if (otpStep) otpStep.style.display = "block";
+
+    });
+
+
+    // ==========================================
+    // STEP 2 - VERIFY OTP
+    // ==========================================
+
+    document.addEventListener("click", async function (event) {
+
+        const button =
+            event.target.closest("#adminVerifyOtpBtn");
+
+        if (!button) return;
+
+        const input =
+            document.getElementById("adminRecoveryOtp");
+
+        const otp =
+            input ? input.value.trim() : "";
+
+        if (!otp) {
+            recoveryMessage(
+                "Please enter the verification code.",
+                true
+            );
+            return;
+        }
+
+        if (!recoveryUsername) {
+            recoveryMessage(
+                "Session expired. Please start again.",
+                true
+            );
+            return;
+        }
+
+        setButtonLoading(button, true, "Verify OTP");
+
+        const result =
+            await callRecovery({
+                action: "verify",
+                username: recoveryUsername,
+                otp: otp
+            });
+
+        setButtonLoading(button, false, "Verify OTP");
+
+        if (result.error) {
+            recoveryMessage(result.error, true);
+            return;
+        }
+
+        recoveryOtp = otp;
+
+        recoveryMessage(
+            "Code verified. Please set your new password.",
+            false
+        );
+
+        const otpStep =
+            document.getElementById("adminRecoveryOtpStep");
+
+        const passwordStep =
+            document.getElementById("adminRecoveryPasswordStep");
+
+        if (otpStep) otpStep.style.display = "none";
+        if (passwordStep) passwordStep.style.display = "block";
+
+    });
+
+
+    // ==========================================
+    // STEP 3 - RESET PASSWORD
+    // ==========================================
+
+    document.addEventListener("click", async function (event) {
+
+        const button =
+            event.target.closest("#adminResetPasswordBtn");
+
+        if (!button) return;
+
+        const newInput =
+            document.getElementById("adminNewPassword");
+
+        const confirmInput =
+            document.getElementById("adminConfirmPassword");
+
+        const newPassword =
+            newInput ? newInput.value.trim() : "";
+
+        const confirmPassword =
+            confirmInput ? confirmInput.value.trim() : "";
+
+        if (!newPassword || !confirmPassword) {
+            recoveryMessage(
+                "Please fill in both password fields.",
+                true
+            );
+            return;
+        }
+
+        if (newPassword.length < 6) {
+            recoveryMessage(
+                "Password must be at least 6 characters.",
+                true
+            );
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            recoveryMessage(
+                "Passwords do not match.",
+                true
+            );
+            return;
+        }
+
+        if (!recoveryUsername || !recoveryOtp) {
+            recoveryMessage(
+                "Session expired. Please start again.",
+                true
+            );
+            return;
+        }
+
+        setButtonLoading(button, true, "Reset Password");
+
+        const result =
+            await callRecovery({
+                action: "reset",
+                username: recoveryUsername,
+                otp: recoveryOtp,
+                newPassword: newPassword
+            });
+
+        setButtonLoading(button, false, "Reset Password");
+
+        if (result.error) {
+            recoveryMessage(result.error, true);
+            return;
+        }
+
+        recoveryMessage(
+            "Password reset successfully! Redirecting to login...",
+            false
+        );
+
+        setTimeout(function () {
+
+            recoveryUsername = null;
+            recoveryOtp = null;
+
+            const emailStep =
+                document.getElementById("adminRecoveryEmailStep");
+
+            const otpStep =
+                document.getElementById("adminRecoveryOtpStep");
+
+            const passwordStep =
+                document.getElementById("adminRecoveryPasswordStep");
+
+            if (emailStep) emailStep.style.display = "block";
+            if (otpStep) otpStep.style.display = "none";
+            if (passwordStep) passwordStep.style.display = "none";
+
+            const usernameInput =
+                document.getElementById("adminRecoveryEmail");
+
+            const otpInput =
+                document.getElementById("adminRecoveryOtp");
+
+            if (usernameInput) usernameInput.value = "";
+            if (otpInput) otpInput.value = "";
+            if (newInput) newInput.value = "";
+            if (confirmInput) confirmInput.value = "";
+
+            recoveryMessage("", false);
+
+            const backButton =
+                document.getElementById("adminRecoveryBackToLogin");
+
+            if (backButton) backButton.click();
+
+        }, 2000);
+
+    });
+
+})();
