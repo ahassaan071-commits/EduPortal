@@ -18460,121 +18460,74 @@ updateAdminForgotPassword
 // Page load par bhi check
 
 updateAdminForgotPassword();
-// ==========================================
-// ADMIN PASSWORD RECOVERY
-// ==========================================
 
-document.addEventListener("click", function (event) {
 
 // ==========================================
-// OPEN ADMIN PASSWORD RECOVERY MODAL
+// ADMIN PASSWORD RECOVERY MODAL
 // ==========================================
 
-const forgotLink =
-    event.target.closest(
-        "#adminForgotPasswordLink"
-    );
+document.addEventListener(
+    "click",
+    function (event) {
 
-if (forgotLink) {
+        const forgotLink =
+            event.target.closest(
+                "#adminForgotPasswordLink"
+            );
 
-    event.preventDefault();
-    event.stopPropagation();
+        if (!forgotLink) {
+            return;
+        }
 
-    const recoveryModal =
-        document.getElementById(
-            "adminPasswordRecoveryModal"
+        event.preventDefault();
+
+        const modal =
+            document.getElementById(
+                "adminPasswordRecoveryModal"
+            );
+
+        if (!modal) {
+
+            console.error(
+                "adminPasswordRecoveryModal not found"
+            );
+
+            return;
+        }
+
+        modal.style.setProperty(
+            "display",
+            "flex",
+            "important"
         );
 
-    if (!recoveryModal) {
-
-        console.error(
-            "Admin Password Recovery Modal not found."
+        modal.style.setProperty(
+            "visibility",
+            "visible",
+            "important"
         );
 
-        alert(
-            "Password recovery system could not be loaded."
+        modal.style.setProperty(
+            "opacity",
+            "1",
+            "important"
         );
 
-        return;
+        modal.style.setProperty(
+            "z-index",
+            "99999999",
+            "important"
+        );
+
+        document.body.style.overflow =
+            "hidden";
+
+        console.log(
+            "Admin Password Recovery Modal opened ✅"
+        );
     }
-
-    // Open the REAL recovery modal
-    recoveryModal.style.setProperty(
-        "display",
-        "flex",
-        "important"
-    );
-
-    recoveryModal.style.setProperty(
-        "visibility",
-        "visible",
-        "important"
-    );
-
-    recoveryModal.style.setProperty(
-        "opacity",
-        "1",
-        "important"
-    );
-
-    recoveryModal.style.setProperty(
-        "z-index",
-        "99999999",
-        "important"
-    );
-
-    document.body.style.overflow =
-        "hidden";
-
-    console.log(
-        "Admin Password Recovery Modal opened ✅"
-    );
-
-    return;
-}
-
-// ==========================================
-// BACK TO LOGIN
-// ==========================================
-
-const backToLogin =
-event.target.closest(
-"#adminRecoveryBackToLogin"
 );
 
-if (backToLogin) {
-
-event.preventDefault();
-
-const loginBox =
-document.querySelector(".login-box");
-
-const adminRecoveryPage =
-document.getElementById(
-"adminRecoveryPage"
-);
-
-// Hide recovery page
-if (adminRecoveryPage) {
-
-adminRecoveryPage.style.display = "none";
-
-}
-
-// Show login box
-if (loginBox) {
-
-loginBox.style.display = "flex";
-
-}
-
-document.body.style.overflow = "";
-
-return;
-
-}
-
-});
 // =========================================================
 // EDUPORTAL - NEW ADMINISTRATOR DASHBOARD
 // SUPABASE LIVE DATA
