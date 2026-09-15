@@ -18350,18 +18350,51 @@ async function loadLatestAdminNotice() {
     }
 
 
-    // ==========================================
-    // DISPLAY
-    // ==========================================
+   // ==========================================
+// DISPLAY NOTICE + REAL DATE & TIME
+// ==========================================
 
-    const notice =
-        notices[0];
+const noticeDate =
+    notice.created_at
+        ? new Date(
+            notice.created_at
+        ).toLocaleString(
+            "en-PK",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true
+            }
+        )
+        : "";
 
 
-    latestNotice.textContent =
-        (notice.title || "Notice") +
-        " — " +
-        (notice.message || "");
+latestNotice.innerHTML = `
+    <div class="latest-notice-content">
+
+        <div class="latest-notice-title">
+            📢 ${notice.title || "Notice"}
+        </div>
+
+        <div class="latest-notice-message">
+            ${notice.message || ""}
+        </div>
+
+        ${
+            noticeDate
+                ? `
+                    <div class="latest-notice-time">
+                        🕐 ${noticeDate}
+                    </div>
+                `
+                : ""
+        }
+
+    </div>
+`;
 
 
     // ==========================================
