@@ -23570,105 +23570,97 @@ async function loadTeacherMyStudents() {
         return;
     }
 
-   // =========================================
-// RENDER STUDENTS
-// =========================================
+    // =========================================
+    // RENDER STUDENTS
+    // =========================================
 
-assignedStudents.forEach(
-    function (
-        student,
-        index
-    ) {
+    if (tableBody) {
 
-        const row =
-            document.createElement(
-                "tr"
-            );
+        assignedStudents.forEach(
+            function (
+                student,
+                index
+            ) {
 
-        row.innerHTML = `
-            <td>
-                ${index + 1}
-            </td>
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
 
-            <td>
-                <strong>
-                    ${
-                        student.name ||
-                        student.full_name ||
-                        "—"
-                    }
-                </strong>
-            </td>
+                const status =
+                    student.status ||
+                    "Active";
 
-            <td>
-                ${
-                    student.student_id ||
-                    student.id ||
-                    "—"
-                }
-            </td>
+                const statusClass =
+                    status === "Active"
+                        ? "active"
+                        : "disabled";
 
-            <td>
-                ${
-                    student.student_class
-                        ? "Class " +
-                          student.student_class
-                        : "—"
-                }
-            </td>
+                row.innerHTML = `
+                    <td>
+                        ${index + 1}
+                    </td>
 
-            <td>
+                    <td>
+                        ${
+                            student.student_id ||
+                            student.id ||
+                            "—"
+                        }
+                    </td>
 
-                <div
-                    class="teacher-attendance-buttons"
-                    data-student-id="${
-                        student.id
-                    }"
-                >
+                    <td>
+                        ${
+                            student.name ||
+                            student.full_name ||
+                            "—"
+                        }
+                    </td>
 
-                    <button
-                        type="button"
-                        class="attendance-status-btn present"
-                        data-status="Present"
-                    >
-                        Present
-                    </button>
+                    <td>
+                        ${
+                            student.student_class ||
+                            "—"
+                        }
+                    </td>
 
-                    <button
-                        type="button"
-                        class="attendance-status-btn absent"
-                        data-status="Absent"
-                    >
-                        Absent
-                    </button>
+                    <td>
+                        ${
+                            student.section ||
+                            "—"
+                        }
+                    </td>
 
-                    <button
-                        type="button"
-                        class="attendance-status-btn late"
-                        data-status="Late"
-                    >
-                        Late
-                    </button>
+                    <td>
+                        <span
+                            class="status-badge ${statusClass}"
+                        >
+                            ${status}
+                        </span>
+                    </td>
 
-                </div>
+                    <td>
+                        <button
+                            type="button"
+                            class="teacher-view-student-btn"
+                            data-student-id="${
+                                student.id
+                            }"
+                            title="View Student"
+                        >
+                            👁️ View
+                        </button>
+                    </td>
+                `;
 
-            </td>
+                tableBody.appendChild(
+                    row
+                );
 
-            <td class="teacher-check-in-cell">
-
-                <span class="teacher-check-in-time">
-                    —
-                </span>
-
-            </td>
-        `;
-
-        tableBody.appendChild(
-            row
+            }
         );
 
     }
-);   }
 
 }
 // =========================================================
