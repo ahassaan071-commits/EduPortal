@@ -589,16 +589,11 @@ if (selectedRole === "teacher") {
 
         teacherDashboard.style.opacity =
             "1";
-            /* Refresh teacher header date after dashboard becomes visible */
+           /* Refresh Teacher Dashboard header date */
 
 setTimeout(function () {
 
-    if (
-        typeof updateTeacherLiveDate ===
-        "function"
-    ) {
-        updateTeacherLiveDate();
-    }
+    updateTeacherLiveDate();
 
 }, 100);
 
@@ -41147,16 +41142,49 @@ function updateTeacherLiveDate() {
 
 
 /* =========================================================
-   INITIAL TEACHER DATE
-   RUN AFTER DASHBOARD IS READY
+   TEACHER LIVE DATE — SAFE INITIALIZATION
 ========================================================= */
 
-setTimeout(function () {
+function initializeTeacherLiveDate() {
+
     updateTeacherLiveDate();
-}, 100);
+
+    /*
+       If the header is not ready yet,
+       try again shortly.
+    */
+    setTimeout(function () {
+
+        updateTeacherLiveDate();
+
+    }, 300);
+
+    setTimeout(function () {
+
+        updateTeacherLiveDate();
+
+    }, 1000);
+}
 
 
-/* Update every minute */
+/* Run only after HTML/DOM is ready */
+
+if (document.readyState === "loading") {
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        initializeTeacherLiveDate
+    );
+
+} else {
+
+    initializeTeacherLiveDate();
+
+}
+
+
+/* Keep date updated every minute */
+
 setInterval(
     updateTeacherLiveDate,
     60000
