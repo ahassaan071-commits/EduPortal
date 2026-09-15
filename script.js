@@ -38825,9 +38825,16 @@ if (chartStatus) {
         // =========================================
 
         loadStudentTodayAttendanceTable(
-            historyRecords
+            records
         );
 
+        // =========================================================
+// STUDENT ATTENDANCE REALTIME
+// =========================================================
+
+initializeStudentAttendanceRealtime(
+    studentId
+);
 
         console.log(
             "REAL STUDENT ATTENDANCE LOADED:",
@@ -38846,7 +38853,97 @@ if (chartStatus) {
 
 }
 
+// =========================================================
+// STUDENT ATTENDANCE REALTIME
+// =========================================================
 
+let studentAttendanceRealtimeChannel = null;
+
+
+function initializeStudentAttendanceRealtime(
+    studentId
+) {
+
+    if (
+        !studentId ||
+        typeof supabaseClient === "undefined"
+    ) {
+        return;
+    }
+
+
+    // =========================================
+    // REMOVE OLD CHANNEL
+    // =========================================
+
+    if (
+        studentAttendanceRealtimeChannel
+    ) {
+
+        try {
+
+            supabaseClient.removeChannel(
+                studentAttendanceRealtimeChannel
+            );
+
+        }
+        catch (error) {
+
+            console.warn(
+                "Old attendance realtime channel could not be removed.",
+                error
+            );
+
+        }
+
+    }
+
+
+    // =========================================
+    // CREATE NEW REALTIME CHANNEL
+    // =========================================
+
+    studentAttendanceRealtimeChannel =
+        supabaseClient
+            .channel(
+                "student-attendance-" +
+                String(studentId)
+            )
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "attendance",
+                    filter:
+                        "student_id=eq." +
+                        String(studentId)
+                },
+                function(payload) {
+
+                    console.log(
+                        "STUDENT ATTENDANCE REALTIME UPDATE:",
+                        payload
+                    );
+
+
+                    // Reload real Supabase attendance
+                    loadRealStudentAttendance();
+
+                }
+            )
+            .subscribe(
+                function(status) {
+
+                    console.log(
+                        "STUDENT ATTENDANCE REALTIME:",
+                        status
+                    );
+
+                }
+            );
+
+}
 // =========================================================
 // ATTENDANCE HISTORY TABLE
 // DATE | STATUS | CHECK IN
