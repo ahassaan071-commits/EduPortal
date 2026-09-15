@@ -45578,3 +45578,24 @@ body:has(#teacherDashboard[style*="display"]) {
     opacity: 0.65;
     margin-top: 3px;
 }
+.latest-notice-content {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.latest-notice-title {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.latest-notice-message {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.latest-notice-time {
+    font-size: 12px;
+    opacity: 0.65;
+    margin-top: 3px;
+}
