@@ -167,18 +167,24 @@
 }
 
 </style>
-/* Remove gap between sidebar and teacher top header */
-#teacherDashboard #teacherTopHeader {
-    left: 304px !important;
-    top: 0 !important;
-    margin-left: 0 !important;
-    margin-top: 0 !important;
-}
+<style>
+/* ==========================================
+   TEACHER DASHBOARD - REDUCE SIDEBAR GAP
+========================================== */
 
 #teacherDashboard .main-content {
     margin-left: 0 !important;
-    padding-left: 0 !important;
+    padding-left: 15px !important;
 }
+
+#teacherDashboard .sidebar {
+    width: 200px;
+}
+
+#teacherDashboard {
+    gap: 0 !important;
+}
+</style>
 </head>
 
 <body>
