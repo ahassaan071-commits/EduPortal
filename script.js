@@ -1731,71 +1731,756 @@ idCardIcon.style.display = "none";
 reader.readAsDataURL(file);
 
 });
-// ===============================
-// Edit Profile
-// ===============================
+// =====================================================
+// STUDENT PROFILE
+// SUPABASE LIVE SAVE
+// =====================================================
 
-const editProfileBtn = document.getElementById("editProfileBtn");
-const editProfileForm = document.getElementById("editProfileForm");
-const saveProfileBtn = document.getElementById("saveProfileBtn");
+const editProfileBtn =
+    document.getElementById(
+        "editProfileBtn"
+    );
 
-editProfileBtn.addEventListener("click", function () {
+const editProfileForm =
+    document.getElementById(
+        "editProfileForm"
+    );
 
-const savedStudent = JSON.parse(localStorage.getItem("studentAccount"));
+const saveProfileBtn =
+    document.getElementById(
+        "saveProfileBtn"
+    );
 
-if (!savedStudent) return;
+const saveProfileImageBtn =
+    document.getElementById(
+        "saveProfileImageBtn"
+    );
 
-// Fill form with current data
-document.getElementById("editFullName").value = savedStudent.fullName || "";
-document.getElementById("editFatherName").value = savedStudent.fatherName || "";
-document.getElementById("editEmail").value = savedStudent.email || "";
-document.getElementById("editMobile").value = savedStudent.mobile || "";
 
-editProfileForm.style.display = "block";
+// =====================================================
+// EDIT PROFILE
+// =====================================================
 
-});
-saveProfileBtn.addEventListener("click", function () {
+if (editProfileBtn) {
 
-const savedStudent = JSON.parse(localStorage.getItem("studentAccount"));
+    editProfileBtn.addEventListener(
+        "click",
+        function () {
 
-if (!savedStudent) return;
+            const savedStudent =
+                JSON.parse(
+                    localStorage.getItem(
+                        "studentAccount"
+                    )
+                );
 
-// Update object
-savedStudent.fullName = document.getElementById("editFullName").value.trim();
-savedStudent.fatherName = document.getElementById("editFatherName").value.trim();
-savedStudent.email = document.getElementById("editEmail").value.trim();
-savedStudent.mobile = document.getElementById("editMobile").value.trim();
+            if (!savedStudent) {
 
-// Save again
-localStorage.setItem("studentAccount", JSON.stringify(savedStudent));
+                alert(
+                    "Student account not found."
+                );
 
-// Update Dashboard
-document.getElementById("studentName").textContent =
-"Welcome, " + savedStudent.fullName + " 👋";
+                return;
+            }
 
-// Update Profile
-document.getElementById("profileFullName").textContent = savedStudent.fullName;
-// Update Header
-document.querySelector(".main-content h1").textContent =
-"Welcome, " + savedStudent.fullName + " 👋";
+            document.getElementById(
+                "editFullName"
+            ).value =
+                savedStudent.fullName || "";
 
-// Update Welcome Banner
-document.getElementById("greetingText").textContent =
-"Welcome, " + savedStudent.fullName + " 👋";
+            document.getElementById(
+                "editFatherName"
+            ).value =
+                savedStudent.fatherName || "";
 
-// Update Student ID Card
-idCardName.textContent = savedStudent.fullName;
-idCardClass.textContent = savedStudent.studentClass;
-studentId.textContent = savedStudent.studentId;
-document.getElementById("profileFatherName").textContent = savedStudent.fatherName;
-document.getElementById("profileEmail").textContent = savedStudent.email;
-document.getElementById("profileMobile").textContent = savedStudent.mobile;
+            document.getElementById(
+                "editEmail"
+            ).value =
+                savedStudent.email || "";
 
-alert("Profile Updated Successfully ✅");
+            document.getElementById(
+                "editMobile"
+            ).value =
+                savedStudent.mobile || "";
 
-editProfileForm.style.display = "none";
+            if (editProfileForm) {
 
-});
+                editProfileForm.style.display =
+                    "block";
+
+            }
+
+        }
+    );
+
+}
+
+
+// =====================================================
+// SAVE PROFILE TO SUPABASE
+// =====================================================
+
+if (saveProfileBtn) {
+
+    saveProfileBtn.addEventListener(
+        "click",
+        async function () {
+
+            const savedStudent =
+                JSON.parse(
+                    localStorage.getItem(
+                        "studentAccount"
+                    )
+                );
+
+            if (!savedStudent) {
+
+                alert(
+                    "Student account not found."
+                );
+
+                return;
+            }
+
+
+            const fullName =
+                document.getElementById(
+                    "editFullName"
+                ).value.trim();
+
+            const fatherName =
+                document.getElementById(
+                    "editFatherName"
+                ).value.trim();
+
+            const email =
+                document.getElementById(
+                    "editEmail"
+                ).value.trim();
+
+            const mobile =
+                document.getElementById(
+                    "editMobile"
+                ).value.trim();
+
+
+            if (!fullName) {
+
+                alert(
+                    "Please enter Full Name."
+                );
+
+                return;
+            }
+
+
+            if (
+                mobile &&
+                !/^\d{11}$/.test(
+                    mobile
+                )
+            ) {
+
+                alert(
+                    "Mobile number must contain exactly 11 digits."
+                );
+
+                return;
+            }
+
+
+            // ==========================================
+            // FIND STUDENT DATABASE ID
+            // ==========================================
+
+            let databaseStudent = null;
+
+
+            if (savedStudent.id) {
+
+                const result =
+                    await supabaseClient
+                        .from("students")
+                        .select("*")
+                        .eq(
+                            "id",
+                            savedStudent.id
+                        )
+                        .maybeSingle();
+
+                if (
+                    !result.error &&
+                    result.data
+                ) {
+
+                    databaseStudent =
+                        result.data;
+
+                }
+
+            }
+
+
+            if (
+                !databaseStudent &&
+                savedStudent.studentId
+            ) {
+
+                const result =
+                    await supabaseClient
+                        .from("students")
+                        .select("*")
+                        .eq(
+                            "student_id",
+                            savedStudent.studentId
+                        )
+                        .maybeSingle();
+
+                if (
+                    !result.error &&
+                    result.data
+                ) {
+
+                    databaseStudent =
+                        result.data;
+
+                }
+
+            }
+
+
+            if (!databaseStudent) {
+
+                alert(
+                    "Student record could not be found in Supabase."
+                );
+
+                return;
+            }
+
+
+            // ==========================================
+            // UPDATE SUPABASE
+            // ==========================================
+
+            const {
+                data: updatedStudent,
+                error
+            } =
+                await supabaseClient
+                    .from("students")
+                    .update({
+                        name:
+                            fullName,
+
+                        father_name:
+                            fatherName,
+
+                        email:
+                            email || null,
+
+                        mobile:
+                            mobile || null
+                    })
+                    .eq(
+                        "id",
+                        databaseStudent.id
+                    )
+                    .select()
+                    .single();
+
+
+            if (error) {
+
+                console.error(
+                    "STUDENT PROFILE SAVE ERROR:",
+                    error
+                );
+
+                alert(
+                    "Profile could not be saved.\n\n" +
+                    error.message
+                );
+
+                return;
+            }
+
+
+            // ==========================================
+            // UPDATE LOCAL SESSION
+            // ==========================================
+
+            savedStudent.fullName =
+                fullName;
+
+            savedStudent.fatherName =
+                fatherName;
+
+            savedStudent.email =
+                email;
+
+            savedStudent.mobile =
+                mobile;
+
+
+            localStorage.setItem(
+                "studentAccount",
+                JSON.stringify(
+                    savedStudent
+                )
+            );
+
+            localStorage.setItem(
+                "loggedInStudent",
+                JSON.stringify(
+                    savedStudent
+                )
+            );
+
+
+            // ==========================================
+            // UPDATE PROFILE UI
+            // ==========================================
+
+            const profileFullName =
+                document.getElementById(
+                    "profileFullName"
+                );
+
+            if (profileFullName) {
+
+                profileFullName.textContent =
+                    fullName;
+
+            }
+
+
+            const profileFatherName =
+                document.getElementById(
+                    "profileFatherName"
+                );
+
+            if (profileFatherName) {
+
+                profileFatherName.textContent =
+                    fatherName;
+
+            }
+
+
+            const profileEmail =
+                document.getElementById(
+                    "profileEmail"
+                );
+
+            if (profileEmail) {
+
+                profileEmail.textContent =
+                    email;
+
+            }
+
+
+            const profileMobile =
+                document.getElementById(
+                    "profileMobile"
+                );
+
+            if (profileMobile) {
+
+                profileMobile.textContent =
+                    mobile;
+
+            }
+
+
+            const studentName =
+                document.getElementById(
+                    "studentName"
+                );
+
+            if (studentName) {
+
+                studentName.textContent =
+                    "Welcome, " +
+                    fullName +
+                    " 👋";
+
+            }
+
+
+            const greetingText =
+                document.getElementById(
+                    "greetingText"
+                );
+
+            if (greetingText) {
+
+                greetingText.textContent =
+                    "Welcome, " +
+                    fullName +
+                    " 👋";
+
+            }
+
+
+            if (
+                typeof idCardName !==
+                "undefined"
+            ) {
+
+                idCardName.textContent =
+                    fullName;
+
+            }
+
+
+            // ==========================================
+            // CLOSE EDIT FORM
+            // ==========================================
+
+            if (editProfileForm) {
+
+                editProfileForm.style.display =
+                    "none";
+
+            }
+
+
+            alert(
+                "Profile Updated Successfully ✅"
+            );
+
+        }
+    );
+
+}
+
+
+// =====================================================
+// PROFILE IMAGE SELECT
+// =====================================================
+
+if (profileImageInput) {
+
+    profileImageInput.addEventListener(
+        "change",
+        function () {
+
+            const file =
+                this.files &&
+                this.files[0];
+
+            if (!file) {
+                return;
+            }
+
+
+            if (
+                !file.type.startsWith(
+                    "image/"
+                )
+            ) {
+
+                alert(
+                    "Please select a valid image."
+                );
+
+                this.value = "";
+
+                return;
+            }
+
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                function (event) {
+
+                    const imageData =
+                        event.target.result;
+
+
+                    // Preview immediately
+                    if (profileImage) {
+
+                        profileImage.src =
+                            imageData;
+
+                        profileImage.style.display =
+                            "block";
+
+                    }
+
+
+                    if (profileIcon) {
+
+                        profileIcon.style.display =
+                            "none";
+
+                    }
+
+
+                    if (
+                        typeof headerProfileImage !==
+                        "undefined" &&
+                        headerProfileImage
+                    ) {
+
+                        headerProfileImage.src =
+                            imageData;
+
+                        headerProfileImage.style.display =
+                            "block";
+
+                    }
+
+
+                    if (
+                        typeof headerProfileIcon !==
+                        "undefined" &&
+                        headerProfileIcon
+                    ) {
+
+                        headerProfileIcon.style.display =
+                            "none";
+
+                    }
+
+
+                    if (
+                        typeof idCardImage !==
+                        "undefined" &&
+                        idCardImage
+                    ) {
+
+                        idCardImage.src =
+                            imageData;
+
+                        idCardImage.style.display =
+                            "block";
+
+                    }
+
+
+                    if (
+                        typeof idCardIcon !==
+                        "undefined" &&
+                        idCardIcon
+                    ) {
+
+                        idCardIcon.style.display =
+                            "none";
+
+                    }
+
+
+                    // Show Save Profile button
+                    if (
+                        saveProfileImageBtn
+                    ) {
+
+                        saveProfileImageBtn.style.display =
+                            "block";
+
+                    }
+
+
+                    // Temporary image
+                    window.pendingStudentProfileImage =
+                        imageData;
+
+                };
+
+
+            reader.readAsDataURL(file);
+
+        }
+    );
+
+}
+
+
+// =====================================================
+// SAVE PROFILE PICTURE TO SUPABASE
+// =====================================================
+
+if (saveProfileImageBtn) {
+
+    saveProfileImageBtn.addEventListener(
+        "click",
+        async function () {
+
+            const imageData =
+                window.pendingStudentProfileImage;
+
+            if (!imageData) {
+
+                alert(
+                    "Please select a profile picture first."
+                );
+
+                return;
+            }
+
+
+            const savedStudent =
+                JSON.parse(
+                    localStorage.getItem(
+                        "studentAccount"
+                    )
+                );
+
+
+            if (!savedStudent) {
+
+                alert(
+                    "Student account not found."
+                );
+
+                return;
+            }
+
+
+            let databaseStudent = null;
+
+
+            if (savedStudent.id) {
+
+                const result =
+                    await supabaseClient
+                        .from("students")
+                        .select("id")
+                        .eq(
+                            "id",
+                            savedStudent.id
+                        )
+                        .maybeSingle();
+
+                if (
+                    !result.error &&
+                    result.data
+                ) {
+
+                    databaseStudent =
+                        result.data;
+
+                }
+
+            }
+
+
+            if (
+                !databaseStudent &&
+                savedStudent.studentId
+            ) {
+
+                const result =
+                    await supabaseClient
+                        .from("students")
+                        .select("id")
+                        .eq(
+                            "student_id",
+                            savedStudent.studentId
+                        )
+                        .maybeSingle();
+
+                if (
+                    !result.error &&
+                    result.data
+                ) {
+
+                    databaseStudent =
+                        result.data;
+
+                }
+
+            }
+
+
+            if (!databaseStudent) {
+
+                alert(
+                    "Student record could not be found."
+                );
+
+                return;
+            }
+
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from("students")
+                    .update({
+                        profile_image:
+                            imageData
+                    })
+                    .eq(
+                        "id",
+                        databaseStudent.id
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "PROFILE IMAGE SAVE ERROR:",
+                    error
+                );
+
+                alert(
+                    "Profile picture could not be saved.\n\n" +
+                    error.message
+                );
+
+                return;
+            }
+
+
+            localStorage.setItem(
+                "profileImage",
+                imageData
+            );
+
+
+            savedStudent.profileImage =
+                imageData;
+
+
+            localStorage.setItem(
+                "studentAccount",
+                JSON.stringify(
+                    savedStudent
+                )
+            );
+
+            localStorage.setItem(
+                "loggedInStudent",
+                JSON.stringify(
+                    savedStudent
+                )
+            );
+
+
+            saveProfileImageBtn.style.display =
+                "none";
+
+            window.pendingStudentProfileImage =
+                null;
+
+
+            alert(
+                "Profile Picture Saved Successfully ✅"
+            );
+
+        }
+    );
+
+}
 // ===============================
 // Sidebar Menu Variables
 // ===============================
