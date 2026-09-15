@@ -325,6 +325,69 @@
 }
 
 </style>
+<style>
+
+/* =========================================================
+   TEACHER ATTENDANCE — CHECK IN
+========================================================= */
+
+#teacherDashboard .teacher-check-in-cell {
+    text-align: center;
+    white-space: nowrap;
+}
+
+
+#teacherDashboard .teacher-check-in-time {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 88px;
+    min-height: 34px;
+
+    padding: 6px 12px;
+
+    border-radius: 9px;
+
+    background: #f8fafc;
+
+    border: 1px solid #e2e8f0;
+
+    color: #475569;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+/* When a real time exists */
+
+#teacherDashboard
+.teacher-check-in-time:not(:empty) {
+    box-shadow:
+        0 3px 10px rgba(15, 23, 42, 0.04);
+}
+
+
+@media (max-width: 768px) {
+
+    #teacherDashboard
+    .teacher-check-in-time {
+
+        min-width: 78px;
+
+        padding:
+            6px 8px;
+
+        font-size: 12px;
+
+    }
+
+}
+
+</style>
 </head>
 
 <body>
