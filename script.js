@@ -38825,7 +38825,7 @@ if (chartStatus) {
         // =========================================
 
         loadStudentTodayAttendanceTable(
-            records
+            historyRecords
         );
 
 
@@ -41752,3 +41752,42 @@ document.addEventListener(
     });
 
 })();
+// =========================================================
+// ATTENDANCE HISTORY DATE FILTER
+// =========================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        const dateInput =
+            document.getElementById(
+                "attendanceHistoryDateFilter"
+            );
+
+        if (!dateInput) {
+            return;
+        }
+
+
+        // Default = Today
+        if (!dateInput.value) {
+
+            dateInput.value =
+                getStudentAttendanceDate();
+
+        }
+
+
+        // Load selected date
+        dateInput.addEventListener(
+            "change",
+            function() {
+
+                loadRealStudentAttendance();
+
+            }
+        );
+
+    }
+);
