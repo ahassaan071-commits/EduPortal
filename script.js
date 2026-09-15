@@ -22124,7 +22124,7 @@ async function loadTeacherAttendanceSection() {
                     }
                 </td>
 
-                <td>
+                               <td>
 
                     <div
                         class="teacher-attendance-buttons"
