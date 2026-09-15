@@ -23213,15 +23213,15 @@ document.addEventListener(
 );
 // =========================================================
 // LOAD SAVED ATTENDANCE
+// SUPABASE + CHECK-IN TIME
 // =========================================================
 
-function loadSavedTeacherAttendance() {
+async function loadSavedTeacherAttendance() {
 
     const dateInput =
         document.getElementById(
             "teacherAttendanceDate"
         );
-
 
     if (
         !dateInput ||
@@ -23230,56 +23230,151 @@ function loadSavedTeacherAttendance() {
         return;
     }
 
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+        return;
+    }
 
-    const attendance =
-        JSON.parse(
-            localStorage.getItem(
-                "teacherAttendance"
-            )
-        ) || {};
-
-
-    const dateData =
-        attendance[
-            dateInput.value
-        ] || {};
+    const date =
+        dateInput.value;
 
 
-    document
-        .querySelectorAll(
+    const groups =
+        document.querySelectorAll(
             "#teacherAttendanceTableBody " +
             ".teacher-attendance-buttons"
-        )
-        .forEach(function(group) {
+        );
+
+
+    if (!groups.length) {
+        updateTeacherAttendanceCounts();
+        return;
+    }
+
+
+    const studentIds =
+        Array.from(groups)
+            .map(function(group) {
+
+                return Number(
+                    group.dataset.studentId
+                );
+
+            })
+            .filter(function(id) {
+
+                return Number.isFinite(id);
+
+            });
+
+
+    if (!studentIds.length) {
+        updateTeacherAttendanceCounts();
+        return;
+    }
+
+
+    // =========================================
+    // LOAD ATTENDANCE FROM SUPABASE
+    // =========================================
+
+    const {
+        data: attendanceRecords,
+        error
+    } =
+        await supabaseClient
+            .from("attendance")
+            .select(
+                "student_id, status, check_in_time"
+            )
+            .in(
+                "student_id",
+                studentIds
+            )
+            .eq(
+                "attendance_date",
+                date
+            );
+
+
+    if (error) {
+
+        console.error(
+            "TEACHER ATTENDANCE LOAD ERROR:",
+            error
+        );
+
+        return;
+    }
+
+
+    const attendanceMap =
+        new Map();
+
+
+    (attendanceRecords || [])
+        .forEach(function(record) {
+
+            attendanceMap.set(
+                Number(
+                    record.student_id
+                ),
+                record
+            );
+
+        });
+
+
+    // =========================================
+    // APPLY STATUS + CHECK-IN TIME
+    // =========================================
+
+    groups.forEach(
+        function(group) {
 
             const studentId =
-                group.dataset.studentId;
+                Number(
+                    group.dataset.studentId
+                );
 
 
-            const savedStatus =
-                dateData[studentId];
+            const record =
+                attendanceMap.get(
+                    studentId
+                );
 
 
+            // Remove old selection
             group
                 .querySelectorAll(
                     ".attendance-status-btn"
                 )
-                .forEach(function(button) {
+                .forEach(
+                    function(button) {
 
-                    button.classList.remove(
-                        "selected"
-                    );
+                        button.classList.remove(
+                            "selected"
+                        );
 
-                });
+                    }
+                );
 
 
-            if (savedStatus) {
+            // =====================================
+            // STATUS
+            // =====================================
+
+            if (
+                record &&
+                record.status
+            ) {
 
                 const button =
                     group.querySelector(
-                        `[data-status="${savedStatus}"]`
+                        `[data-status="${record.status}"]`
                     );
-
 
                 if (button) {
 
@@ -23291,7 +23386,70 @@ function loadSavedTeacherAttendance() {
 
             }
 
-        });
+
+            // =====================================
+            // CHECK-IN
+            // =====================================
+
+            const row =
+                group.closest("tr");
+
+
+            const checkInElement =
+                row
+                    ? row.querySelector(
+                        ".teacher-check-in-time"
+                    )
+                    : null;
+
+
+            if (
+                checkInElement
+            ) {
+
+                if (
+                    record &&
+                    record.check_in_time
+                ) {
+
+                    const checkInDate =
+                        new Date(
+                            record.check_in_time
+                        );
+
+
+                    checkInElement.textContent =
+                        new Intl.DateTimeFormat(
+                            "en-PK",
+                            {
+                                timeZone:
+                                    "Asia/Karachi",
+
+                                hour:
+                                    "2-digit",
+
+                                minute:
+                                    "2-digit",
+
+                                hour12:
+                                    true
+                            }
+                        ).format(
+                            checkInDate
+                        );
+
+                }
+                else {
+
+                    checkInElement.textContent =
+                        "—";
+
+                }
+
+            }
+
+        }
+    );
 
 
     updateTeacherAttendanceCounts();
