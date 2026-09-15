@@ -22124,42 +22124,25 @@ async function loadTeacherAttendanceSection() {
                     }
                 </td>
 
-                               <td>
+                              <td>
 
-                    <div
-                        class="teacher-attendance-buttons"
-                        data-student-id="${
-                            student.id
-                        }"
-                    >
+    <div
+        class="teacher-attendance-buttons"
+        data-student-id="${
+            student.id
+        }"
+    >
 
-                        <button
-                            type="button"
-                            class="attendance-status-btn present"
-                            data-status="Present"
-                        >
-                            Present
-                        </button>
+        <span
+            class="teacher-attendance-status-badge not-marked"
+            data-status="Not Marked"
+        >
+            Not Marked
+        </span>
 
-                        <button
-                            type="button"
-                            class="attendance-status-btn absent"
-                            data-status="Absent"
-                        >
-                            Absent
-                        </button>
+    </div>
 
-                        <button
-                            type="button"
-                            class="attendance-status-btn late"
-                            data-status="Late"
-                        >
-                            Late
-                        </button>
-
-                    </div>
-
-                </td>
+</td>
             `;
 
             tableBody.appendChild(
