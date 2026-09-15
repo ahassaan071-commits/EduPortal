@@ -40566,6 +40566,18 @@ document.addEventListener(
             loginBox.style.display = "none";
         }
 
+        // Hide login
+        if (loginBox) {
+            loginBox.style.display = "none";
+        }
+
+        // Move recovery page out of the hidden adminDashboard container
+        document.body.appendChild(recoveryPage);
+
+        // Show recovery page
+        recoveryPage.style.display = "flex";
+
+
         // Show recovery page
         recoveryPage.style.display = "flex";
 
