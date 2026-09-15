@@ -45604,3 +45604,16 @@ body:has(#teacherDashboard[style*="display"]) {
     border-bottom: none !important;
     box-shadow: none !important;
 }
+/* REMOVE ONLY STUDENT ATTENDANCE HEADER LINE */
+#attendanceSection .student-attendance-header {
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+
+#attendanceSection .student-attendance-header::before,
+#attendanceSection .student-attendance-header::after {
+    display: none !important;
+    content: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
