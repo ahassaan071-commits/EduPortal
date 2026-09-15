@@ -45599,3 +45599,8 @@ body:has(#teacherDashboard[style*="display"]) {
     opacity: 0.65;
     margin-top: 3px;
 }
+/* Remove Attendance header line */
+#attendanceSection > div:first-child {
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
