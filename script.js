@@ -40862,7 +40862,7 @@ document.addEventListener(
             return;
         }
 
-        recoveryMessage(
+              recoveryMessage(
             "Password reset successfully! Redirecting to login...",
             false
         );
@@ -40898,10 +40898,90 @@ document.addEventListener(
 
             recoveryMessage("", false);
 
-            const backButton =
-                document.getElementById("adminRecoveryBackToLogin");
+            // ==========================================
+            // DIRECTLY SHOW LOGIN SCREEN
+            // NO PAGE REFRESH NEEDED
+            // ==========================================
 
-            if (backButton) backButton.click();
+            const recoveryPage =
+                document.getElementById("adminRecoveryPage");
+
+            const loginBox =
+                document.querySelector(".login-box");
+
+            const loginContainer =
+                document.querySelector(".container");
+
+            if (recoveryPage) {
+
+                recoveryPage.style.setProperty(
+                    "display",
+                    "none",
+                    "important"
+                );
+
+            }
+
+            if (loginContainer) {
+
+                loginContainer.classList.remove(
+                    "session-hidden"
+                );
+
+                loginContainer.style.setProperty(
+                    "display",
+                    "flex",
+                    "important"
+                );
+
+                loginContainer.style.setProperty(
+                    "visibility",
+                    "visible",
+                    "important"
+                );
+
+                loginContainer.style.setProperty(
+                    "opacity",
+                    "1",
+                    "important"
+                );
+
+            }
+
+            if (loginBox) {
+
+                loginBox.style.setProperty(
+                    "display",
+                    "flex",
+                    "important"
+                );
+
+            }
+
+            document.body.style.overflow = "";
+
+            // Reset the login form fields too
+            const usernameField =
+                document.getElementById("username");
+
+            const passwordField =
+                document.getElementById("password");
+
+            const roleField =
+                document.getElementById("loginRole");
+
+            const messageField =
+                document.getElementById("message");
+
+            if (usernameField) usernameField.value = "";
+            if (passwordField) passwordField.value = "";
+            if (roleField) roleField.value = "administrator";
+            if (messageField) messageField.textContent = "";
+
+            window.scrollTo({
+                top: 0,
+                behavior: "instant"
+            });
 
         }, 2000);
 
