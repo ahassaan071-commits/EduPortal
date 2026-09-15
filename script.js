@@ -18349,7 +18349,7 @@ async function loadLatestAdminNotice() {
         return;
     }
 
-
+const notice = notices[0];
    // ==========================================
 // DISPLAY NOTICE + REAL DATE & TIME
 // ==========================================
