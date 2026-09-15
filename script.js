@@ -23014,11 +23014,15 @@ const record = {
         dbTeacher.name || "",
 
     check_in_time:
-        existingCheckInTime,
+        status === "Absent"
+            ? null
+            : (
+                existingCheckInTime ||
+                new Date().toISOString()
+            ),
 
     updated_at:
         new Date().toISOString()
-
 };
             const {
                 data,
