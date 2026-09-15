@@ -22176,58 +22176,7 @@ async function loadTeacherAttendanceSection() {
     loadSavedTeacherAttendance();
 
 }
-// =========================================================
-// TEACHER ATTENDANCE STATUS
-// =========================================================
 
-document.addEventListener(
-    "click",
-    function(event) {
-
-        const button =
-            event.target.closest(
-                ".attendance-status-btn"
-            );
-
-
-        if (!button) {
-            return;
-        }
-
-
-        const group =
-            button.closest(
-                ".teacher-attendance-buttons"
-            );
-
-
-        if (!group) {
-            return;
-        }
-
-
-        group
-            .querySelectorAll(
-                ".attendance-status-btn"
-            )
-            .forEach(function(item) {
-
-                item.classList.remove(
-                    "selected"
-                );
-
-            });
-
-
-        button.classList.add(
-            "selected"
-        );
-
-
-        updateTeacherAttendanceCounts();
-
-    }
-);
 // =========================================================
 // ATTENDANCE COUNTS
 // =========================================================
