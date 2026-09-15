@@ -1154,67 +1154,141 @@ Login
 </div>
 <!-- =========================================================
      TEACHER NOTICES
+     ADMINISTRATOR PUBLISHED NOTICES ONLY
 ========================================================= -->
-<div id="teacherNoticesSection" style="display:none;">
+
+<div
+    id="teacherNoticesSection"
+    style="display:none;"
+>
 
     <div class="teacher-section-page">
 
+        <!-- =========================================
+             HEADER
+        ========================================== -->
+
         <div class="teacher-section-header">
+
             <div class="teacher-section-title">
-                <div class="teacher-section-icon">📢</div>
+
+                <div class="teacher-section-icon">
+                    📢
+                </div>
+
                 <div>
-                    <h2>Notices</h2>
-                    <p>Create and manage notices for your students.</p>
+
+                    <h2>
+                        Administrator Notices
+                    </h2>
+
+                    <p>
+                        Important notices published by the Administrator.
+                    </p>
+
                 </div>
+
             </div>
-            <div class="teacher-class-badge">
-                📚 Class: <strong id="teacherNoticesClass">—</strong>
-            </div>
+
         </div>
 
-        <!-- Create Notice -->
-        <div class="teacher-notice-create-card" style="background:#fff; padding:25px; border-radius:16px; margin-bottom:25px; box-shadow:0 4px 15px rgba(0,0,0,0.06);">
-            <h3>Create Notice</h3>
-            <form id="teacherNoticeForm">
-                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:15px; margin-bottom:15px;">
-                    <div>
-                        <label>Notice Title</label>
-                        <input type="text" id="teacherNoticeTitle" placeholder="Enter title" required style="width:100%; padding:12px; border:1px solid #ddd; border-radius:8px;">
-                    </div>
-                    <div>
-                        <label>Priority</label>
-                        <select id="teacherNoticePriority" required style="width:100%; padding:12px; border:1px solid #ddd; border-radius:8px;">
-                            <option value="">Select Priority</option>
-                            <option value="Normal">Normal</option>
-                            <option value="Important">Important</option>
-                            <option value="Urgent">Urgent</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>Notice Date</label>
-                        <input type="date" id="teacherNoticeDate" required style="width:100%; padding:12px; border:1px solid #ddd; border-radius:8px;">
-                    </div>
-                </div>
-                <div style="margin-bottom:15px;">
-                    <label>Notice Details</label>
-                    <textarea id="teacherNoticeDescription" rows="5" placeholder="Write notice details..." required style="width:100%; padding:12px; border:1px solid #ddd; border-radius:8px;"></textarea>
-                </div>
-                <button type="submit" id="teacherNoticeSaveBtn" style="background:#2563eb; color:white; border:none; padding:12px 24px; border-radius:8px; cursor:pointer;">
-                    ➕ Publish Notice
-                </button>
-            </form>
-        </div>
 
-        <!-- Notices List -->
-        <div class="teacher-notices-card" style="background:#fff; padding:25px; border-radius:16px; box-shadow:0 4px 15px rgba(0,0,0,0.06);">
-            <h3>My Notices</h3>
-            <div id="teacherNoticesList" class="teacher-notices-list">
-                <!-- JS will fill -->
+        <!-- =========================================
+             ADMINISTRATOR NOTICES
+        ========================================== -->
+
+        <div
+            class="teacher-notices-card"
+            style="
+                background:#fff;
+                padding:25px;
+                border-radius:16px;
+                box-shadow:0 4px 15px rgba(0,0,0,0.06);
+            "
+        >
+
+            <div
+                style="
+                    display:flex;
+                    align-items:center;
+                    justify-content:space-between;
+                    gap:15px;
+                    margin-bottom:20px;
+                "
+            >
+
+                <div>
+
+                    <h3 style="margin:0;">
+                        Administrator Notices
+                    </h3>
+
+                    <p
+                        style="
+                            margin:6px 0 0;
+                            color:#64748b;
+                            font-size:14px;
+                        "
+                    >
+                        Latest notices from the school administration.
+                    </p>
+
+                </div>
+
+                <span
+                    id="teacherAdminNoticeCount"
+                    style="
+                        background:#eff6ff;
+                        color:#2563eb;
+                        padding:8px 13px;
+                        border-radius:10px;
+                        font-size:13px;
+                        font-weight:600;
+                    "
+                >
+                    0 Notices
+                </span>
+
             </div>
+
+
+            <!-- NOTICE LIST -->
+
+            <div
+                id="teacherNoticesList"
+                class="teacher-notices-list"
+            >
+
+                <div
+                    class="teacher-notice-empty"
+                >
+
+                    <div
+                        class="teacher-notice-empty-icon"
+                    >
+                        📢
+                    </div>
+
+                    <strong>
+                        Loading notices...
+                    </strong>
+
+                    <p>
+                        Please wait while administrator notices are loaded.
+                    </p>
+
+                </div>
+
+            </div>
+
         </div>
 
     </div>
+
 </div>
+
+
+
 <!-- =========================================================
      TEACHER ATTENDANCE SECTION
 ========================================================= -->
