@@ -36522,41 +36522,57 @@ document.addEventListener(
 
     }
 );
-/* =========================================================
-   STUDENT NOTIFICATIONS
-   ADMIN NOTICES -> STUDENT HEADER BELL
-========================================================= */
+
+// =========================================================
+// EDUPORTAL STUDENT NOTIFICATIONS
+// SUPABASE + REALTIME
+// ADMIN NOTICES -> STUDENT HEADER BELL
+// =========================================================
 
 (function () {
 
-    const button = document.getElementById(
-        "studentNotificationBtn"
-    );
+    const button =
+        document.getElementById(
+            "studentNotificationBtn"
+        );
 
-    const dropdown = document.getElementById(
-        "studentNotificationDropdown"
-    );
+    const dropdown =
+        document.getElementById(
+            "studentNotificationDropdown"
+        );
 
-    const list = document.getElementById(
-        "studentNotificationList"
-    );
+    const list =
+        document.getElementById(
+            "studentNotificationList"
+        );
 
-    const badge = document.getElementById(
-        "studentNotificationBadge"
-    );
+    const badge =
+        document.getElementById(
+            "studentNotificationBadge"
+        );
 
-    const countText = document.getElementById(
-        "studentNotificationCount"
-    );
+    const countText =
+        document.getElementById(
+            "studentNotificationCount"
+        );
 
-    const markRead = document.getElementById(
-        "markNotificationsRead"
-    );
+    const markRead =
+        document.getElementById(
+            "markNotificationsRead"
+        );
 
 
     if (!button || !dropdown || !list || !badge) {
+        console.warn(
+            "Student notification elements not found."
+        );
         return;
     }
+
+
+    // =====================================================
+    // READ NOTIFICATION IDS
+    // =====================================================
 
     function getReadIds() {
 
@@ -36577,6 +36593,10 @@ document.addEventListener(
     }
 
 
+    // =====================================================
+    // SAVE READ IDS
+    // =====================================================
+
     function saveReadIds(ids) {
 
         localStorage.setItem(
@@ -36587,37 +36607,206 @@ document.addEventListener(
     }
 
 
-    function renderNotifications() {
+    // =====================================================
+    // GET CURRENT STUDENT
+    // =====================================================
 
-        let notices =
-    JSON.parse(
-        localStorage.getItem("teacherNotices")
-    ) || [];
+    function getCurrentStudent() {
 
-        const readIds = getReadIds();
+        try {
+
+            return JSON.parse(
+                localStorage.getItem(
+                    "loggedInStudent"
+                )
+            ) || JSON.parse(
+                localStorage.getItem(
+                    "studentAccount"
+                )
+            ) || null;
+
+        } catch (error) {
+
+            return null;
+
+        }
+
+    }
 
 
-        notices.sort(function (a, b) {
+    // =====================================================
+    // GET NOTICE ID
+    // =====================================================
 
-            return new Date(
-                b.createdAt || b.date || 0
-            ) - new Date(
-                a.createdAt || a.date || 0
+    function getNoticeId(notice) {
+
+        return String(
+            notice.id ||
+            (
+                String(
+                    notice.created_at ||
+                    ""
+                ) +
+                "_" +
+                String(
+                    notice.title ||
+                    ""
+                )
+            )
+        );
+
+    }
+
+
+    // =====================================================
+    // LOAD NOTICES FROM SUPABASE
+    // =====================================================
+
+    async function loadNotifications() {
+
+        if (
+            typeof supabaseClient ===
+            "undefined"
+        ) {
+
+            console.error(
+                "Supabase client not available."
             );
 
-        });
+            return;
+
+        }
 
 
-        const unread = notices.filter(function (notice) {
+        const student =
+            getCurrentStudent();
 
-            return !readIds.includes(
-                String(notice.id)
+
+        const {
+            data: notices,
+            error
+        } =
+            await supabaseClient
+                .from("notices")
+                .select(
+                    "id, title, message, target_role, created_at"
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+
+        if (error) {
+
+            console.error(
+                "STUDENT NOTIFICATIONS LOAD ERROR:",
+                error
             );
 
-        });
+            list.innerHTML = `
+                <div class="notification-empty">
+                    ⚠️ Unable to load notifications
+                </div>
+            `;
+
+            badge.style.display = "none";
+
+            if (countText) {
+
+                countText.textContent =
+                    "Unable to load notifications";
+
+            }
+
+            return;
+
+        }
 
 
-        /* BADGE */
+        // =================================================
+        // FILTER NOTICES FOR STUDENT
+        // =================================================
+
+        const records =
+            (notices || []).filter(
+                function (notice) {
+
+                    const target =
+                        String(
+                            notice.target_role ||
+                            ""
+                        )
+                            .trim()
+                            .toLowerCase();
+
+
+                    // Empty target = show
+                    if (!target) {
+                        return true;
+                    }
+
+
+                    // Everyone / all users
+                    if (
+                        target === "all" ||
+                        target === "everyone" ||
+                        target === "students"
+                    ) {
+                        return true;
+                    }
+
+
+                    // Student
+                    if (
+                        target === "student"
+                    ) {
+                        return true;
+                    }
+
+
+                    return false;
+
+                }
+            );
+
+
+        renderNotifications(
+            records
+        );
+
+    }
+
+
+    // =====================================================
+    // RENDER NOTIFICATIONS
+    // =====================================================
+
+    function renderNotifications(
+        notices
+    ) {
+
+        const readIds =
+            getReadIds();
+
+
+        const unread =
+            notices.filter(
+                function (notice) {
+
+                    return !readIds.includes(
+                        getNoticeId(notice)
+                    );
+
+                }
+            );
+
+
+        // =================================================
+        // BADGE
+        // =================================================
 
         if (unread.length > 0) {
 
@@ -36626,16 +36815,23 @@ document.addEventListener(
                     ? "99+"
                     : unread.length;
 
-            badge.style.display = "flex";
+            badge.style.display =
+                "flex";
 
         } else {
 
-            badge.style.display = "none";
+            badge.textContent =
+                "0";
+
+            badge.style.display =
+                "none";
 
         }
 
 
-        /* COUNT TEXT */
+        // =================================================
+        // COUNT TEXT
+        // =================================================
 
         if (countText) {
 
@@ -36652,12 +36848,14 @@ document.addEventListener(
         }
 
 
-        /* EMPTY */
+        // =================================================
+        // EMPTY
+        // =================================================
 
-        if (notices.length === 0) {
+        if (!notices.length) {
 
             list.innerHTML = `
-                <div class="student-notification-empty">
+                <div class="notification-empty">
                     🔔 No new notifications
                 </div>
             `;
@@ -36667,85 +36865,125 @@ document.addEventListener(
         }
 
 
-        /* NOTICES */
+        // =================================================
+        // SHOW LATEST 10
+        // =================================================
 
-        list.innerHTML = notices
-            .slice(0, 10)
-            .map(function (notice) {
+        list.innerHTML =
+            notices
+                .slice(0, 10)
+                .map(
+                    function (notice) {
 
-                const id = String(
-                    notice.id || ""
-                );
-
-                const isUnread =
-                    !readIds.includes(id);
+                        const id =
+                            getNoticeId(
+                                notice
+                            );
 
 
-                return `
-                    <div
-                        class="student-notification-item ${
-                            isUnread ? "unread" : ""
-                        }"
-                        data-notification-id="${id}"
-                    >
+                        const isUnread =
+                            !readIds.includes(
+                                id
+                            );
 
-                        <div class="student-notification-icon">
-                            📢
-                        </div>
 
-                        <div class="student-notification-content">
+                        const title =
+                            notice.title ||
+                            "New Notice";
 
-                            <strong>
-                                ${
-                                    notice.title ||
-                                    "New Notice"
-                                }
-                            </strong>
 
-                            <p>
-                                ${
-                                    notice.description ||
-                                    notice.message ||
-                                    "New notice available."
-                                }
-                            </p>
+                        const message =
+                            notice.message ||
+                            "New notice available.";
 
-                            <span class="student-notification-date">
-                                ${
-                                    notice.createdAt ||
-                                    notice.date ||
-                                    ""
-                                }
-                            </span>
 
-                        </div>
+                        const date =
+                            notice.created_at
+                                ? new Date(
+                                    notice.created_at
+                                ).toLocaleString()
+                                : "";
 
-                    </div>
-                `;
 
-            })
-            .join("");
+                        return `
+                            <div
+                                class="
+                                    student-notification-item
+                                    ${isUnread ? "unread" : ""}
+                                "
+                                data-notification-id="${id}"
+                            >
+
+                                <div
+                                    class="notification-item-icon"
+                                >
+                                    📢
+                                </div>
+
+
+                                <div
+                                    class="notification-item-content"
+                                >
+
+                                    <strong>
+                                        ${title}
+                                    </strong>
+
+
+                                    <p>
+                                        ${message}
+                                    </p>
+
+
+                                    ${
+                                        date
+                                            ? `
+                                                <span
+                                                    class="notification-item-date"
+                                                >
+                                                    ${date}
+                                                </span>
+                                            `
+                                            : ""
+                                    }
+
+                                </div>
+
+                            </div>
+                        `;
+
+                    }
+                )
+                .join("");
 
     }
 
 
-    /* BELL */
+    // =====================================================
+    // BELL CLICK
+    // =====================================================
 
     button.addEventListener(
         "click",
-        function (event) {
+        async function (event) {
 
             event.stopPropagation();
 
-            renderNotifications();
 
-            dropdown.classList.toggle("show");
+            await loadNotifications();
+
+
+            dropdown.classList.toggle(
+                "show"
+            );
 
         }
     );
 
 
-    /* CLICK NOTICE */
+    // =====================================================
+    // CLICK INDIVIDUAL NOTICE
+    // =====================================================
 
     list.addEventListener(
         "click",
@@ -36756,51 +36994,93 @@ document.addEventListener(
                     ".student-notification-item"
                 );
 
-            if (!item) return;
+
+            if (!item) {
+                return;
+            }
 
 
             const id =
                 item.dataset.notificationId;
 
-            if (!id) return;
+
+            if (!id) {
+                return;
+            }
 
 
-            const ids = getReadIds();
+            const readIds =
+                getReadIds();
 
-            if (!ids.includes(id)) {
 
-                ids.push(id);
+            if (!readIds.includes(id)) {
 
-                saveReadIds(ids);
+                readIds.push(id);
+
+                saveReadIds(
+                    readIds
+                );
 
             }
 
 
-            renderNotifications();
+            loadNotifications();
 
         }
     );
 
 
-    /* MARK ALL READ */
+    // =====================================================
+    // MARK ALL AS READ
+    // =====================================================
 
     if (markRead) {
 
         markRead.addEventListener(
             "click",
-            function () {
+            function (event) {
 
-                const notices = getNotices();
+                event.stopPropagation();
 
-                const ids = notices.map(
-                    function (notice) {
-                        return String(notice.id);
-                    }
-                );
 
-                saveReadIds(ids);
+                loadNotifications()
+                    .then(
+                        async function () {
 
-                renderNotifications();
+                            const {
+                                data: notices
+                            } =
+                                await supabaseClient
+                                    .from("notices")
+                                    .select(
+                                        "id"
+                                    );
+
+
+                            const ids =
+                                (notices || [])
+                                    .map(
+                                        function (
+                                            notice
+                                        ) {
+
+                                            return String(
+                                                notice.id
+                                            );
+
+                                        }
+                                    );
+
+
+                            saveReadIds(
+                                ids
+                            );
+
+
+                            await loadNotifications();
+
+                        }
+                    );
 
             }
         );
@@ -36808,7 +37088,9 @@ document.addEventListener(
     }
 
 
-    /* CLICK OUTSIDE */
+    // =====================================================
+    // CLOSE DROPDOWN OUTSIDE
+    // =====================================================
 
     document.addEventListener(
         "click",
@@ -36830,295 +37112,62 @@ document.addEventListener(
     );
 
 
-    /* ADMIN NOTICE UPDATE */
-
-    window.addEventListener(
-        "storage",
-        function (event) {
-
-            if (
-                event.key === "adminNotices"
-            ) {
-
-                renderNotifications();
-
-            }
-
-        }
-    );
-
-
-    /* SAME PAGE UPDATE */
-
-    let previous =
-        localStorage.getItem(
-            "adminNotices"
-        ) || "[]";
-
-
-    setInterval(
-        function () {
-
-            const current =
-                localStorage.getItem(
-                    "adminNotices"
-                ) || "[]";
-
-
-            if (current !== previous) {
-
-                previous = current;
-
-                renderNotifications();
-
-            }
-
-        },
-        2000
-    );
-
-
-    /* INITIAL */
-
-    renderNotifications();
-
-})();
-// =========================================================
-// STUDENT NOTIFICATION SYSTEM
-// SUPABASE -> STUDENT HEADER BELL
-// =========================================================
-
-async function loadStudentNotifications() {
-
-    const list =
-        document.getElementById(
-            "studentNotificationList"
-        );
-
-    const badge =
-        document.getElementById(
-            "notificationBadge"
-        );
-
-    const total =
-        document.getElementById(
-            "notificationTotal"
-        );
-
-
-    if (!list) {
-        return;
-    }
-
-
-    // =========================================
-    // SUPABASE CHECK
-    // =========================================
+    // =====================================================
+    // SUPABASE REALTIME
+    // =====================================================
 
     if (
-        typeof supabaseClient ===
+        typeof supabaseClient !==
         "undefined"
     ) {
 
-        console.error(
-            "Supabase connection is missing."
-        );
-
-        return;
-    }
+        const notificationChannel =
+            supabaseClient.channel(
+                "student-notices-live"
+            );
 
 
-    // =========================================
-    // LOAD NOTICES
-    // =========================================
-
-    const {
-        data: notices,
-        error
-    } =
-        await supabaseClient
-            .from("notices")
-            .select("*")
-            .order(
-                "created_at",
+        notificationChannel
+            .on(
+                "postgres_changes",
                 {
-                    ascending: false
+                    event: "*",
+                    schema: "public",
+                    table: "notices"
+                },
+                async function () {
+
+                    console.log(
+                        "New notice received in realtime."
+                    );
+
+
+                    await loadNotifications();
+
+                }
+            )
+            .subscribe(
+                function (status) {
+
+                    console.log(
+                        "Student notification realtime:",
+                        status
+                    );
+
                 }
             );
 
-
-    // =========================================
-    // ERROR
-    // =========================================
-
-    if (error) {
-
-        console.error(
-            "STUDENT NOTIFICATIONS ERROR:",
-            error
-        );
-
-        list.innerHTML = `
-            <div class="notification-empty">
-                ⚠️ Unable to load notifications
-            </div>
-        `;
-
-        if (badge) {
-            badge.textContent = "0";
-        }
-
-        if (total) {
-            total.textContent = "0";
-        }
-
-        return;
     }
 
 
-    const records =
-        notices || [];
+    // =====================================================
+    // INITIAL LOAD
+    // =====================================================
+
+    loadNotifications();
 
 
-    // =========================================
-    // COUNT
-    // =========================================
-
-    if (badge) {
-
-        badge.textContent =
-            records.length;
-
-    }
-
-
-    if (total) {
-
-        total.textContent =
-            records.length;
-
-    }
-
-
-    // =========================================
-    // EMPTY
-    // =========================================
-
-    if (!records.length) {
-
-        list.innerHTML = `
-            <div class="notification-empty">
-                🔔 No new notifications
-            </div>
-        `;
-
-        return;
-    }
-
-
-    // =========================================
-    // SHOW LATEST 5
-    // =========================================
-
-    const latestNotices =
-        records.slice(0, 5);
-
-
-    list.innerHTML = "";
-
-
-    latestNotices.forEach(
-        function(notice) {
-
-            const title =
-                notice.title ||
-                notice.heading ||
-                "Notice";
-
-
-            const message =
-                notice.message ||
-                notice.description ||
-                "New notice available.";
-
-
-            const date =
-                notice.date ||
-                (
-                    notice.created_at
-                        ? new Date(
-                            notice.created_at
-                        ).toLocaleDateString()
-                        : ""
-                );
-
-
-            const item =
-                document.createElement(
-                    "div"
-                );
-
-
-            item.className =
-                "student-notification-item";
-
-
-            item.innerHTML = `
-
-                <div
-                    class="notification-item-icon"
-                >
-                    ${
-                        String(
-                            notice.priority ||
-                            ""
-                        ).toLowerCase() ===
-                        "high"
-                            ? "⚠️"
-                            : "📢"
-                    }
-                </div>
-
-
-                <div
-                    class="notification-item-content"
-                >
-
-                    <strong>
-                        ${title}
-                    </strong>
-
-                    <p>
-                        ${message}
-                    </p>
-
-                    ${
-                        date
-                            ? `
-                                <span
-                                    class="
-                                        notification-item-date
-                                    "
-                                >
-                                    ${date}
-                                </span>
-                            `
-                            : ""
-                    }
-
-                </div>
-
-            `;
-
-
-            list.appendChild(
-                item
-            );
-
-        }
-    );
-
-}
+})();
 /* =========================================================
    BELL CLICK
 ========================================================= */
