@@ -38873,34 +38873,18 @@ function initializeStudentAttendanceRealtime(
 
 
     // =========================================
-    // REMOVE OLD CHANNEL
+    // ALREADY CONNECTED
     // =========================================
 
     if (
         studentAttendanceRealtimeChannel
     ) {
-
-        try {
-
-            supabaseClient.removeChannel(
-                studentAttendanceRealtimeChannel
-            );
-
-        }
-        catch (error) {
-
-            console.warn(
-                "Old attendance realtime channel could not be removed.",
-                error
-            );
-
-        }
-
+        return;
     }
 
 
     // =========================================
-    // CREATE NEW REALTIME CHANNEL
+    // CREATE REALTIME CHANNEL
     // =========================================
 
     studentAttendanceRealtimeChannel =
@@ -38927,7 +38911,7 @@ function initializeStudentAttendanceRealtime(
                     );
 
 
-                    // Reload real Supabase attendance
+                    // Reload latest real data
                     loadRealStudentAttendance();
 
                 }
