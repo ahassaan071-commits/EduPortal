@@ -38852,6 +38852,14 @@ if (chartStatus) {
 // DATE | STATUS | CHECK IN
 // =========================================================
 
+let studentAttendanceHistoryRecords = [];
+let studentAttendanceHistoryVisible = 5;
+
+
+// =========================================================
+// RENDER ATTENDANCE HISTORY
+// =========================================================
+
 async function loadStudentTodayAttendanceTable(
     records
 ) {
@@ -38861,22 +38869,130 @@ async function loadStudentTodayAttendanceTable(
             "todayAttendanceTableBody"
         );
 
+    const viewMoreWrapper =
+        document.getElementById(
+            "attendanceHistoryViewMoreWrapper"
+        );
+
+    const viewMoreButton =
+        document.getElementById(
+            "attendanceHistoryViewMoreBtn"
+        );
+
+
     if (!tableBody) {
         return;
     }
 
 
     // =========================================
-    // NO RECORDS
+    // STORE REAL RECORDS
+    // =========================================
+
+    studentAttendanceHistoryRecords =
+        Array.isArray(records)
+            ? [...records]
+            : [];
+
+
+    // =========================================
+    // SORT — LATEST DATE FIRST
+    // =========================================
+
+    studentAttendanceHistoryRecords.sort(
+        function(a, b) {
+
+            return String(
+                b.attendance_date || ""
+            ).localeCompare(
+                String(
+                    a.attendance_date || ""
+                )
+            );
+
+        }
+    );
+
+
+    // =========================================
+    // RESET TO FIRST 5 RECORDS
+    // =========================================
+
+    studentAttendanceHistoryVisible = 5;
+
+
+    renderStudentAttendanceHistory();
+
+
+    // =========================================
+    // VIEW MORE CLICK
     // =========================================
 
     if (
-        !records ||
-        records.length === 0
+        viewMoreButton &&
+        !viewMoreButton.dataset.bound
     ) {
+
+        viewMoreButton.dataset.bound =
+            "true";
+
+
+        viewMoreButton.addEventListener(
+            "click",
+            function() {
+
+                studentAttendanceHistoryVisible += 5;
+
+                renderStudentAttendanceHistory();
+
+            }
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// RENDER VISIBLE ATTENDANCE RECORDS
+// =========================================================
+
+function renderStudentAttendanceHistory() {
+
+    const tableBody =
+        document.getElementById(
+            "todayAttendanceTableBody"
+        );
+
+    const viewMoreWrapper =
+        document.getElementById(
+            "attendanceHistoryViewMoreWrapper"
+        );
+
+    const viewMoreButton =
+        document.getElementById(
+            "attendanceHistoryViewMoreBtn"
+        );
+
+
+    if (!tableBody) {
+        return;
+    }
+
+
+    const records =
+        studentAttendanceHistoryRecords || [];
+
+
+    // =========================================
+    // NO RECORDS
+    // =========================================
+
+    if (records.length === 0) {
 
         tableBody.innerHTML = `
             <tr>
+
                 <td colspan="3">
 
                     <div class="attendance-empty-state">
@@ -38895,42 +39011,44 @@ async function loadStudentTodayAttendanceTable(
                     </div>
 
                 </td>
+
             </tr>
         `;
+
+
+        if (viewMoreWrapper) {
+            viewMoreWrapper.style.display =
+                "none";
+        }
 
         return;
     }
 
 
     // =========================================
-    // SORT — LATEST DATE FIRST
+    // GET VISIBLE RECORDS
     // =========================================
 
-    const sortedRecords =
-        [...records].sort(
-            function (a, b) {
-
-                return String(
-                    b.attendance_date || ""
-                ).localeCompare(
-                    String(
-                        a.attendance_date || ""
-                    )
-                );
-
-            }
+    const visibleRecords =
+        records.slice(
+            0,
+            studentAttendanceHistoryVisible
         );
 
 
     // =========================================
-    // CREATE TABLE
+    // CLEAR TABLE
     // =========================================
 
     tableBody.innerHTML = "";
 
 
-    sortedRecords.forEach(
-        function (record) {
+    // =========================================
+    // CREATE ROWS
+    // =========================================
+
+    visibleRecords.forEach(
+        function(record) {
 
             const date =
                 record.attendance_date ||
@@ -39041,7 +39159,7 @@ async function loadStudentTodayAttendanceTable(
 
 
             // =====================================
-            // ROW
+            // CREATE ROW
             // =====================================
 
             const row =
@@ -39057,10 +39175,12 @@ async function loadStudentTodayAttendanceTable(
                 </td>
 
                 <td>
+
                     <span
                         class="${statusClass}">
                         ${status}
                     </span>
+
                 </td>
 
                 <td>
@@ -39076,6 +39196,45 @@ async function loadStudentTodayAttendanceTable(
 
         }
     );
+
+
+    // =========================================
+    // VIEW MORE / HIDE BUTTON
+    // =========================================
+
+    if (viewMoreWrapper) {
+
+        if (
+            studentAttendanceHistoryVisible <
+            records.length
+        ) {
+
+            viewMoreWrapper.style.display =
+                "flex";
+
+
+            if (viewMoreButton) {
+
+                viewMoreButton.innerHTML =
+                    `
+                    View More
+
+                    <span>
+                        ↓
+                    </span>
+                    `;
+
+            }
+
+        }
+        else {
+
+            viewMoreWrapper.style.display =
+                "none";
+
+        }
+
+    }
 
 }
 // =========================================================
