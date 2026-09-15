@@ -21951,28 +21951,13 @@ async function loadTeacherAttendanceSection() {
     // LOAD STUDENTS FROM SUPABASE
     // =========================================
 
-    const {
-        data: students,
-        error
-    } =
-        await supabaseClient
-            .from("students")
-            .select(`
-                id,
-                student_id,
-                name,
-                full_name,
-                student_class,
-                section,
-                roll_number,
-                status
-            `)
-            .order(
-                "created_at",
-                {
-                    ascending: false
-                }
-            );
+ const {
+    data: students,
+    error
+} =
+    await supabaseClient
+        .from("students")
+        .select("*");
 
     if (error) {
 
@@ -22170,7 +22155,7 @@ async function loadTeacherAttendanceSection() {
                     }
                 </td>
 
-                              <td>
+                            <td>
 
     <div
         class="teacher-attendance-buttons"
@@ -22187,6 +22172,14 @@ async function loadTeacherAttendanceSection() {
         </span>
 
     </div>
+
+</td>
+
+<td class="teacher-check-in-cell">
+
+    <span class="teacher-check-in-time">
+        —
+    </span>
 
 </td>
             `;
