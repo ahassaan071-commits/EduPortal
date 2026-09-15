@@ -589,6 +589,18 @@ if (selectedRole === "teacher") {
 
         teacherDashboard.style.opacity =
             "1";
+            /* Refresh teacher header date after dashboard becomes visible */
+
+setTimeout(function () {
+
+    if (
+        typeof updateTeacherLiveDate ===
+        "function"
+    ) {
+        updateTeacherLiveDate();
+    }
+
+}, 100);
 
         teacherDashboard.style.position =
             "relative";
@@ -41134,8 +41146,14 @@ function updateTeacherLiveDate() {
 }
 
 
-/* Initial date */
-updateTeacherLiveDate();
+/* =========================================================
+   INITIAL TEACHER DATE
+   RUN AFTER DASHBOARD IS READY
+========================================================= */
+
+setTimeout(function () {
+    updateTeacherLiveDate();
+}, 100);
 
 
 /* Update every minute */
