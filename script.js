@@ -38398,7 +38398,52 @@ async function loadRealStudentAttendance() {
 
 
         const records =
-            attendanceRows || [];
+    attendanceRows || [];
+
+
+// =========================================
+// ATTENDANCE HISTORY DATE FILTER
+// =========================================
+
+const historyDateInput =
+    document.getElementById(
+        "attendanceHistoryDateFilter"
+    );
+
+
+// Default date = Today
+if (
+    historyDateInput &&
+    !historyDateInput.value
+) {
+
+    historyDateInput.value =
+        getStudentAttendanceDate();
+
+}
+
+
+// Selected date
+const selectedHistoryDate =
+    historyDateInput &&
+    historyDateInput.value
+        ? historyDateInput.value
+        : getStudentAttendanceDate();
+
+
+// Only show records for selected date
+const historyRecords =
+    records.filter(
+        function(record) {
+
+            return String(
+                record.attendance_date || ""
+            ) === String(
+                selectedHistoryDate
+            );
+
+        }
+    );
 
 
         // =========================================
