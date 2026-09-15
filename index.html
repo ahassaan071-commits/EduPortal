@@ -7,7 +7,63 @@
 <title>EduPortal - Student Portal</title>
 
 <link rel="stylesheet" href="style.css">
+<style>
 
+/* ==========================================
+   TEACHER DASHBOARD TOP HEADER
+   ========================================== */
+
+#teacherDashboard .main-content {
+    position: relative;
+    padding-top: 0;
+}
+
+
+/* Header stays at the very top */
+
+#teacherDashboard #teacherTopHeader {
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+
+    width: 100%;
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    margin-top: 0;
+}
+
+
+/* Header shadow */
+
+#teacherDashboard #teacherTopHeader {
+    box-shadow:
+        0 4px 18px rgba(15, 23, 42, 0.08);
+}
+
+
+/* Header background must stay solid
+   while content scrolls underneath */
+
+#teacherDashboard #teacherTopHeader::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: #ffffff;
+
+    z-index: -1;
+}
+
+
+/* Keep sidebar above everything */
+
+#teacherDashboard .sidebar {
+    z-index: 10000;
+}
+
+</style>
 </head>
 
 <body>
