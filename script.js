@@ -27434,34 +27434,7 @@ async function loadTeacherNotices() {
     list.innerHTML = "";
 
 
-    // =========================================
-    // EMPTY
-    // =========================================
-
-    if (!teacherNotices.length) {
-
-        list.innerHTML = `
-            <div class="teacher-notice-empty">
-
-                <div class="teacher-notice-empty-icon">
-                    📢
-                </div>
-
-                <strong>
-                    No administrator notices
-                </strong>
-
-                <p>
-                    New notices published by the Administrator
-                    will appear here automatically.
-                </p>
-
-            </div>
-        `;
-
-        return;
-    }
-
+   
 
     // =========================================
     // RENDER NOTICES
