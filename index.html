@@ -370,10 +370,14 @@ Login
      TEACHER TOP HEADER
 ========================================== -->
 
-<div class="top-header">
+<!-- ==========================================
+     TEACHER TOP HEADER
+========================================== -->
 
-    <!-- LEFT: DASHBOARD TITLE -->
-    <div class="teacher-header-title">
+<div class="top-header" id="teacherTopHeader">
+
+    <!-- PAGE TITLE -->
+    <div class="dashboard-page-title">
 
         <h1>
             Teacher Dashboard
@@ -389,36 +393,41 @@ Login
     </div>
 
 
-    <!-- RIGHT: TEACHER PROFILE -->
-    <div class="teacher-header-profile">
+    <!-- HEADER ACTIONS -->
+    <div class="header-actions">
 
-        <button
-            type="button"
-            id="teacherHeaderProfileBtn"
-            class="teacher-header-profile-btn"
-            aria-label="Teacher Account"
-        >
-
-            <span class="profile-circle">
-                👨‍🏫
-            </span>
-
-        </button>
-
-
-        <!-- PROFILE DROPDOWN -->
-        <div
-            id="teacherHeaderDropdown"
-            class="teacher-header-dropdown"
-        >
+        <!-- TEACHER PROFILE -->
+        <div class="profile-box">
 
             <button
                 type="button"
-                id="teacherHeaderLogoutBtn"
-                class="teacher-header-logout"
+                id="teacherHeaderProfileBtn"
+                class="teacher-header-profile-btn"
+                aria-label="Teacher Account"
             >
-                🚪 Logout
+
+                <div class="profile-circle">
+                    👨‍🏫
+                </div>
+
             </button>
+
+
+            <!-- PROFILE DROPDOWN -->
+            <div
+                id="teacherHeaderDropdown"
+                class="teacher-header-dropdown"
+            >
+
+                <button
+                    type="button"
+                    id="teacherHeaderLogoutBtn"
+                    class="teacher-header-logout"
+                >
+                    🚪 Logout
+                </button>
+
+            </div>
 
         </div>
 
