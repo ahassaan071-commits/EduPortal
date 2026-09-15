@@ -23078,7 +23078,7 @@ const record = {
 
     updateTeacherAttendanceCounts();
 
-
+await loadSavedTeacherAttendance();
 // ==========================================
 // REFRESH STUDENT ATTENDANCE
 // ==========================================
