@@ -21859,6 +21859,52 @@ document.addEventListener(
     }
 );
 // =========================================================
+// TEACHER ATTENDANCE REALTIME
+// =========================================================
+
+let teacherAttendanceRealtimeChannel = null;
+
+function initializeTeacherAttendanceRealtime() {
+
+    if (
+        typeof supabaseClient === "undefined" ||
+        teacherAttendanceRealtimeChannel
+    ) {
+        return;
+    }
+
+    teacherAttendanceRealtimeChannel =
+        supabaseClient
+            .channel("teacher-attendance-realtime")
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "attendance"
+                },
+                async function(payload) {
+
+                    console.log(
+                        "TEACHER ATTENDANCE REALTIME UPDATE:",
+                        payload
+                    );
+
+                    await loadTeacherAttendanceSection();
+
+                }
+            )
+            .subscribe(function(status) {
+
+                console.log(
+                    "TEACHER ATTENDANCE REALTIME:",
+                    status
+                );
+
+            });
+
+}
+// =========================================================
 // TEACHER ATTENDANCE - LOAD SECTION
 // SUPABASE LIVE DATA
 // =========================================================
@@ -22152,11 +22198,13 @@ async function loadTeacherAttendanceSection() {
         }
     );
 
-    // =========================================
-    // LOAD SAVED ATTENDANCE
-    // =========================================
+// =========================================
+// LOAD SAVED ATTENDANCE
+// =========================================
 
-    loadSavedTeacherAttendance();
+loadSavedTeacherAttendance();
+
+initializeTeacherAttendanceRealtime();
 
 }
 
@@ -23236,126 +23284,92 @@ async function loadSavedTeacherAttendance() {
     // APPLY STATUS + CHECK-IN TIME
     // =========================================
 
-    groups.forEach(
-        function(group) {
+ groups.forEach(
+    function(group) {
 
-            const studentId =
-                Number(
-                    group.dataset.studentId
+        const studentId =
+            Number(
+                group.dataset.studentId
+            );
+
+        const record =
+            attendanceMap.get(
+                studentId
+            );
+
+        const status =
+            record &&
+            record.status
+                ? String(
+                    record.status
+                  ).trim()
+                : "Not Marked";
+
+        const statusClass =
+            status
+                .toLowerCase()
+                .replace(
+                    /\s+/g,
+                    "-"
                 );
 
+        let checkInTime = "—";
 
-            const record =
-                attendanceMap.get(
-                    studentId
-                );
+        if (
+            record &&
+            record.check_in_time
+        ) {
 
-
-            // Remove old selection
-            group
-                .querySelectorAll(
-                    ".attendance-status-btn"
-                )
-                .forEach(
-                    function(button) {
-
-                        button.classList.remove(
-                            "selected"
-                        );
-
+            checkInTime =
+                new Date(
+                    record.check_in_time
+                ).toLocaleTimeString(
+                    "en-PK",
+                    {
+                        timeZone:
+                            "Asia/Karachi",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: true
                     }
                 );
+        }
 
+        group.innerHTML = `
+            <span
+                class="
+                    teacher-attendance-status-badge
+                    ${statusClass}
+                "
+                data-status="${status}"
+            >
+                ${status}
+            </span>
+        `;
 
-            // =====================================
-            // STATUS
-            // =====================================
+        const row =
+            group.closest("tr");
 
-            if (
-                record &&
-                record.status
-            ) {
-
-                const button =
-                    group.querySelector(
-                        `[data-status="${record.status}"]`
-                    );
-
-                if (button) {
-
-                    button.classList.add(
-                        "selected"
-                    );
-
-                }
-
-            }
-
-
-            // =====================================
-            // CHECK-IN
-            // =====================================
-
-            const row =
-                group.closest("tr");
-
+        if (row) {
 
             const checkInElement =
-                row
-                    ? row.querySelector(
-                        ".teacher-check-in-time"
-                    )
-                    : null;
+                row.querySelector(
+                    ".teacher-check-in-time"
+                );
 
+            if (checkInElement) {
 
-            if (
-                checkInElement
-            ) {
-
-                if (
-                    record &&
-                    record.check_in_time
-                ) {
-
-                    const checkInDate =
-                        new Date(
-                            record.check_in_time
-                        );
-
-
-                    checkInElement.textContent =
-                        new Intl.DateTimeFormat(
-                            "en-PK",
-                            {
-                                timeZone:
-                                    "Asia/Karachi",
-
-                                hour:
-                                    "2-digit",
-
-                                minute:
-                                    "2-digit",
-
-                                hour12:
-                                    true
-                            }
-                        ).format(
-                            checkInDate
-                        );
-
-                }
-                else {
-
-                    checkInElement.textContent =
-                        "—";
-
-                }
+                checkInElement.textContent =
+                    checkInTime;
 
             }
 
         }
-    );
 
+    }
+);
+
+        
 
     updateTeacherAttendanceCounts();
 
