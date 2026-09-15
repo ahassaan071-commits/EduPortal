@@ -38803,8 +38803,8 @@ if (chartStatus) {
 
 
 // =========================================================
-// TODAY ATTENDANCE TABLE
-// DATE | SUBJECT | STATUS
+// ATTENDANCE HISTORY TABLE
+// DATE | STATUS | CHECK IN
 // =========================================================
 
 async function loadStudentTodayAttendanceTable(
@@ -38816,14 +38816,13 @@ async function loadStudentTodayAttendanceTable(
             "todayAttendanceTableBody"
         );
 
-
     if (!tableBody) {
         return;
     }
 
 
     // =========================================
-    // ONLY REAL RECORDS
+    // NO RECORDS
     // =========================================
 
     if (
@@ -38834,14 +38833,22 @@ async function loadStudentTodayAttendanceTable(
         tableBody.innerHTML = `
             <tr>
                 <td colspan="3">
+
                     <div class="attendance-empty-state">
+
                         <div>📅</div>
-                        <strong>No attendance record yet</strong>
+
+                        <strong>
+                            No attendance record yet
+                        </strong>
+
                         <span>
                             Attendance will appear here when
                             your teacher marks it.
                         </span>
+
                     </div>
+
                 </td>
             </tr>
         `;
@@ -38851,40 +38858,23 @@ async function loadStudentTodayAttendanceTable(
 
 
     // =========================================
-    // GET TEACHERS
-    // FOR SUBJECT INFORMATION
+    // SORT — LATEST DATE FIRST
     // =========================================
 
-    let teachers = [];
+    const sortedRecords =
+        [...records].sort(
+            function (a, b) {
 
+                return String(
+                    b.attendance_date || ""
+                ).localeCompare(
+                    String(
+                        a.attendance_date || ""
+                    )
+                );
 
-    try {
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .from("teachers")
-                .select("*");
-
-
-        if (!error) {
-
-            teachers =
-                data || [];
-
-        }
-
-    }
-    catch (error) {
-
-        console.warn(
-            "Teacher subject lookup failed:",
-            error
+            }
         );
-
-    }
 
 
     // =========================================
@@ -38894,105 +38884,155 @@ async function loadStudentTodayAttendanceTable(
     tableBody.innerHTML = "";
 
 
-    records.forEach(function(record) {
+    sortedRecords.forEach(
+        function (record) {
 
-        const row =
-            document.createElement("tr");
-
-
-        const date =
-            record.attendance_date ||
-            "—";
+            const date =
+                record.attendance_date ||
+                "—";
 
 
-        const teacher =
-            teachers.find(function(item) {
-
-                return String(item.id) ===
-                    String(record.teacher_id);
-
-            });
+            const status =
+                record.status ||
+                "—";
 
 
-        const subject =
-            teacher?.subject ||
-            record.subject ||
-            "—";
+            // =====================================
+            // REAL CHECK-IN TIME
+            // =====================================
+
+            let checkInTime = "—";
 
 
-        const status =
-            record.status ||
-            "—";
+            if (
+                record.check_in_time
+            ) {
+
+                const dateTime =
+                    new Date(
+                        record.check_in_time
+                    );
 
 
-        let statusClass =
-            "attendance-status";
+                if (
+                    !Number.isNaN(
+                        dateTime.getTime()
+                    )
+                ) {
+
+                    checkInTime =
+                        dateTime.toLocaleTimeString(
+                            "en-US",
+                            {
+                                timeZone:
+                                    "Asia/Karachi",
+
+                                hour:
+                                    "2-digit",
+
+                                minute:
+                                    "2-digit",
+
+                                hour12:
+                                    true
+                            }
+                        );
+
+                }
+
+            }
 
 
-        if (
-            String(status).toLowerCase() ===
-            "present"
-        ) {
+            // =====================================
+            // STATUS CLASS
+            // =====================================
 
-            statusClass +=
-                " present";
+            let statusClass =
+                "attendance-status";
+
+
+            const normalizedStatus =
+                String(status)
+                    .trim()
+                    .toLowerCase();
+
+
+            if (
+                normalizedStatus ===
+                "present"
+            ) {
+
+                statusClass +=
+                    " present";
+
+            }
+            else if (
+                normalizedStatus ===
+                "absent"
+            ) {
+
+                statusClass +=
+                    " absent";
+
+            }
+            else if (
+                normalizedStatus ===
+                "late"
+            ) {
+
+                statusClass +=
+                    " late";
+
+            }
+            else if (
+                normalizedStatus ===
+                "leave"
+            ) {
+
+                statusClass +=
+                    " leave";
+
+            }
+
+
+            // =====================================
+            // ROW
+            // =====================================
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${date}
+                </td>
+
+                <td>
+                    <span
+                        class="${statusClass}">
+                        ${status}
+                    </span>
+                </td>
+
+                <td>
+                    ${checkInTime}
+                </td>
+
+            `;
+
+
+            tableBody.appendChild(
+                row
+            );
 
         }
-        else if (
-            String(status).toLowerCase() ===
-            "absent"
-        ) {
-
-            statusClass +=
-                " absent";
-
-        }
-        else if (
-            String(status).toLowerCase() ===
-            "late"
-        ) {
-
-            statusClass +=
-                " late";
-
-        }
-        else if (
-            String(status).toLowerCase() ===
-            "leave"
-        ) {
-
-            statusClass +=
-                " leave";
-
-        }
-
-
-        row.innerHTML = `
-
-            <td>
-                ${date}
-            </td>
-
-            <td>
-                ${subject}
-            </td>
-
-            <td>
-                <span class="${statusClass}">
-                    ${status}
-                </span>
-            </td>
-
-        `;
-
-
-        tableBody.appendChild(row);
-
-    });
+    );
 
 }
-
-
 // =========================================================
 // LOAD REAL ATTENDANCE AFTER PAGE LOAD
 // =========================================================
