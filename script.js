@@ -41494,20 +41494,10 @@ if (logoutButton) {
         );
     }
 
-    const confirmLogout =
-        confirm(
-            "Are you sure you want to logout?"
-        );
-
-    if (!confirmLogout) {
-        return;
-    }
-
     logoutTeacher();
 
     return;
 }
-
 
         // ==========================================
         // CLICK OUTSIDE
