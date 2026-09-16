@@ -40169,7 +40169,157 @@ document.addEventListener(
     }
 );
 
+// =========================================================
+// EXPORT ADMIN ATTENDANCE TO EXCEL
+// =========================================================
 
+document.addEventListener(
+    "click",
+    function (event) {
+
+        const exportButton =
+            event.target.closest(
+                "#exportAttendanceExcel"
+            );
+
+        if (!exportButton) {
+            return;
+        }
+
+        const table =
+            document.getElementById(
+                "attendanceTable"
+            );
+
+        const tableBody =
+            document.getElementById(
+                "attendanceTableBody"
+            );
+
+        if (!table || !tableBody) {
+            alert(
+                "Attendance table not found."
+            );
+            return;
+        }
+
+        const rows =
+            table.querySelectorAll(
+                "tr"
+            );
+
+        if (!rows.length) {
+            alert(
+                "No attendance data available to export."
+            );
+            return;
+        }
+
+        let csv = [];
+
+        rows.forEach(
+            function (row) {
+
+                const cells =
+                    row.querySelectorAll(
+                        "th, td"
+                    );
+
+                const rowData = [];
+
+                cells.forEach(
+                    function (cell) {
+
+                        let value =
+                            cell.innerText
+                                .replace(
+                                    /\s+/g,
+                                    " "
+                                )
+                                .trim();
+
+                        value =
+                            '"' +
+                            value.replace(
+                                /"/g,
+                                '""'
+                            ) +
+                            '"';
+
+                        rowData.push(
+                            value
+                        );
+
+                    }
+                );
+
+                if (rowData.length) {
+
+                    csv.push(
+                        rowData.join(",")
+                    );
+
+                }
+
+            }
+        );
+
+        const csvContent =
+            "\uFEFF" +
+            csv.join("\r\n");
+
+        const blob =
+            new Blob(
+                [csvContent],
+                {
+                    type:
+                        "text/csv;charset=utf-8;"
+                }
+            );
+
+        const url =
+            URL.createObjectURL(
+                blob
+            );
+
+        const link =
+            document.createElement(
+                "a"
+            );
+
+        link.href = url;
+
+        const date =
+            document.getElementById(
+                "attendanceDateFilter"
+            );
+
+        const selectedDate =
+            date && date.value
+                ? date.value
+                : "attendance";
+
+        link.download =
+            "EduPortal_Attendance_" +
+            selectedDate +
+            ".csv";
+
+        document.body.appendChild(
+            link
+        );
+
+        link.click();
+
+        document.body.removeChild(
+            link
+        );
+
+        URL.revokeObjectURL(
+            url
+        );
+
+    }
+);
 // =========================================================
 // APPLY ADMIN ATTENDANCE FILTERS
 // =========================================================
@@ -40196,7 +40346,7 @@ document.addEventListener(
 // =========================================================
 // ADMIN ATTENDANCE DATE
 // TODAY BY DEFAULT
-// OLD DATE CAN BE SELECTED MANUALLY
+// DATA LOADS ONLY AFTER APPLY FILTERS
 // =========================================================
 
 document.addEventListener(
@@ -40208,34 +40358,12 @@ document.addEventListener(
                 "attendanceDateFilter"
             );
 
-
         if (!dateFilter) {
             return;
         }
 
-
-        // Automatically set today's date
         dateFilter.value =
             getTodayDate();
-
-
-        // User can manually select
-        // any previous date from calendar
-        dateFilter.addEventListener(
-            "change",
-            function () {
-
-                if (
-                    typeof loadRealAdminAttendance ===
-                    "function"
-                ) {
-
-                    loadRealAdminAttendance();
-
-                }
-
-            }
-        );
 
     }
 );
