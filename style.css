@@ -46238,3 +46238,350 @@ body:has(#teacherDashboard[style*="display"]) {
     }
 
 }
+/* =========================================================
+   EDUPORTAL - TEACHER SIDEBAR / MAIN CONTENT FINAL FIX
+   Fix sidebar overlap caused by padding + box sizing
+========================================================= */
+
+#teacherDashboard > .sidebar {
+    width: 270px !important;
+    min-width: 270px !important;
+    max-width: 270px !important;
+
+    box-sizing: border-box !important;
+
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+
+    height: 100vh !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    z-index: 100000 !important;
+}
+
+
+/* Main content must start exactly after sidebar */
+
+#teacherDashboard > .main-content {
+    margin-left: 270px !important;
+
+    width: calc(100% - 270px) !important;
+
+    max-width: none !important;
+    min-width: 0 !important;
+
+    box-sizing: border-box !important;
+
+    position: relative !important;
+
+    overflow-x: hidden !important;
+}
+
+
+/* Keep every Teacher module inside the main area */
+
+#teacherDashboard > .main-content > #teacherStudentsSection,
+#teacherDashboard > .main-content > #teacherAttendanceSection,
+#teacherDashboard > .main-content > #teacherAssignmentsSection,
+#teacherDashboard > .main-content > #teacherResultsSection,
+#teacherDashboard > .main-content > #teacherNoticesSection,
+#teacherDashboard > .main-content > #teacherProfileSection,
+#teacherDashboard > .main-content > #teacherSettingsSection {
+
+    width: 100% !important;
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    left: 0 !important;
+    right: auto !important;
+
+    transform: none !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* Inner module pages */
+
+#teacherDashboard
+.teacher-section-page {
+
+    width: 100% !important;
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    left: 0 !important;
+
+    transform: none !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+    #teacherDashboard > .sidebar {
+        width: 235px !important;
+        min-width: 235px !important;
+        max-width: 235px !important;
+    }
+
+    #teacherDashboard > .main-content {
+        margin-left: 235px !important;
+        width: calc(100% - 235px) !important;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+    #teacherDashboard > .sidebar {
+        position: relative !important;
+
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+
+        height: auto !important;
+    }
+
+    #teacherDashboard > .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+
+}
+/* =========================================================
+   EDUPORTAL TEACHER DASHBOARD
+   FINAL MODULE LEFT ALIGNMENT FIX
+========================================================= */
+
+/* Main workspace */
+#teacherDashboard > .main-content {
+    margin-left: 270px !important;
+    width: calc(100% - 270px) !important;
+
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+
+    box-sizing: border-box !important;
+
+    display: block !important;
+}
+
+
+/* IMPORTANT:
+   Do NOT center Teacher module sections */
+#teacherDashboard > .main-content > #teacherStudentsSection,
+#teacherDashboard > .main-content > #teacherAttendanceSection,
+#teacherDashboard > .main-content > #teacherAssignmentsSection,
+#teacherDashboard > .main-content > #teacherResultsSection,
+#teacherDashboard > .main-content > #teacherNoticesSection,
+#teacherDashboard > .main-content > #teacherProfileSection,
+#teacherDashboard > .main-content > #teacherSettingsSection {
+
+    width: 100% !important;
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+    position: relative !important;
+    left: 0 !important;
+
+    transform: none !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* Remove old auto-centering from every direct child */
+#teacherDashboard > .main-content > * {
+    box-sizing: border-box !important;
+}
+
+
+/* My Students wrapper */
+#teacherDashboard .teacher-students-wrapper {
+    width: 100% !important;
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+    position: relative !important;
+    left: 0 !important;
+
+    transform: none !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* My Students card */
+#teacherDashboard .teacher-students-card {
+    width: 100% !important;
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* Attendance */
+#teacherDashboard .teacher-attendance-card,
+#teacherDashboard .teacher-attendance-controls {
+    width: 100% !important;
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* Assignments */
+#teacherDashboard .teacher-assignment-card {
+    width: 100% !important;
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* Results */
+#teacherDashboard .teacher-results-card {
+    width: 100% !important;
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* Notices */
+#teacherDashboard .teacher-notices-card {
+    width: 100% !important;
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* Profile */
+#teacherDashboard .teacher-profile-page,
+#teacherDashboard .teacher-profile-card {
+    width: 100% !important;
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* Settings */
+#teacherDashboard #teacherSettingsSection,
+#teacherDashboard .teacher-settings-page {
+    width: 100% !important;
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* Inner module page */
+#teacherDashboard > .main-content .teacher-section-page {
+    width: 100% !important;
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+    position: relative !important;
+    left: 0 !important;
+
+    transform: none !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    #teacherDashboard > .main-content {
+        margin-left: 235px !important;
+        width: calc(100% - 235px) !important;
+
+        padding-left: 24px !important;
+        padding-right: 24px !important;
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    #teacherDashboard > .sidebar {
+        position: relative !important;
+
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+
+        height: auto !important;
+    }
+
+    #teacherDashboard > .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+
+}
