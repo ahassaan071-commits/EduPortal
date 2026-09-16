@@ -430,29 +430,7 @@ font-weight:600;
 
 }
 
-.profile-image{
 
-    width:100px;
-
-    height:100px;
-
-    border-radius:50%;
-
-    background:#2563eb;
-
-    color:white;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    font-size:40px;
-
-    margin:20px auto;
-
-}
 
 .profile-card p{
 
@@ -747,70 +725,7 @@ Student ID Card
     color:#16a34a;
     font-weight:bold;
 }
-/* ==========================
-Student ID Card
-========================== */
 
-.student-id-card{
-    margin:30px 0;
-    background:#ffffff;
-    border-radius:18px;
-    padding:25px;
-    display:flex;
-    align-items:center;
-    gap:25px;
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
-    border-left:6px solid #2563eb;
-    transition:.3s;
-}
-
-.student-id-card:hover{
-    transform:translateY(-5px);
-    box-shadow:0 15px 35px rgba(0,0,0,.12);
-}
-
-.student-photo{
-    width:120px;
-    height:120px;
-    border-radius:50%;
-    overflow:hidden;
-    background:#2563eb;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-shrink:0;
-}
-
-.student-photo img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:none;
-}
-
-.student-photo span{
-    color:#fff;
-    font-size:55px;
-}
-
-.student-details{
-    flex:1;
-}
-
-.student-details h2{
-    color:#1e3a8a;
-    margin-bottom:12px;
-}
-
-.student-details p{
-    margin:8px 0;
-    font-size:16px;
-}
-
-.active-status{
-    color:#16a34a;
-    font-weight:bold;
-}
 /* ==========================
 Welcome Banner
 ========================== */
