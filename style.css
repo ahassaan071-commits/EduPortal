@@ -45631,3 +45631,262 @@ body:has(#teacherDashboard[style*="display"]) {
     border: none !important;
     box-shadow: none !important;
 }
+/* =========================================================
+   EDUPORTAL — TEACHER DASHBOARD FINAL POSITION FIX
+   FIX ALL SIDEBAR MODULES
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   SIDEBAR
+--------------------------------------------------------- */
+
+#teacherDashboard > .sidebar {
+    position: fixed !important;
+
+    top: 0 !important;
+    left: 0 !important;
+
+    width: 270px !important;
+    min-width: 270px !important;
+    max-width: 270px !important;
+
+    height: 100vh !important;
+
+    box-sizing: border-box !important;
+
+    z-index: 5000 !important;
+}
+
+
+/* ---------------------------------------------------------
+   MAIN CONTENT
+--------------------------------------------------------- */
+
+#teacherDashboard > .main-content {
+
+    position: relative !important;
+
+    margin-left: 270px !important;
+
+    width: calc(100% - 270px) !important;
+    max-width: none !important;
+
+    min-width: 0 !important;
+
+    min-height: 100vh !important;
+
+    padding:
+        130px
+        32px
+        50px
+        32px !important;
+
+    box-sizing: border-box !important;
+
+    overflow-x: hidden !important;
+}
+
+
+/* ---------------------------------------------------------
+   ALL TEACHER MODULE SECTIONS
+--------------------------------------------------------- */
+
+#teacherDashboard > .main-content > #teacherStudentsSection,
+#teacherDashboard > .main-content > #teacherAttendanceSection,
+#teacherDashboard > .main-content > #teacherAssignmentsSection,
+#teacherDashboard > .main-content > #teacherResultsSection,
+#teacherDashboard > .main-content > #teacherNoticesSection,
+#teacherDashboard > .main-content > #teacherProfileSection,
+#teacherDashboard > .main-content > #teacherSettingsSection {
+
+    display: block;
+
+    width: 100% !important;
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* ---------------------------------------------------------
+   INNER MODULE CONTENT
+--------------------------------------------------------- */
+
+#teacherDashboard > .main-content
+.teacher-section-page {
+
+    width: 100% !important;
+
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* ---------------------------------------------------------
+   MY STUDENTS
+--------------------------------------------------------- */
+
+#teacherDashboard .teacher-students-wrapper {
+
+    width: 100% !important;
+
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* ---------------------------------------------------------
+   SETTINGS
+   Remove old double margin
+--------------------------------------------------------- */
+
+#teacherDashboard #teacherSettingsSection {
+
+    width: 100% !important;
+
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* ---------------------------------------------------------
+   TOP HEADER
+--------------------------------------------------------- */
+
+#teacherDashboard #teacherTopHeader {
+
+    position: fixed !important;
+
+    top: 0 !important;
+    left: 270px !important;
+    right: 0 !important;
+
+    width: calc(100% - 270px) !important;
+
+    max-width: none !important;
+
+    height: 105px !important;
+
+    margin: 0 !important;
+
+    box-sizing: border-box !important;
+
+    z-index: 99999 !important;
+}
+
+
+/* ---------------------------------------------------------
+   DASHBOARD HOME CONTENT
+--------------------------------------------------------- */
+
+#teacherDashboard > .main-content > .dashboard-cards,
+#teacherDashboard > .main-content > .teacher-dashboard-chart-card,
+#teacherDashboard > .main-content > .welcome-banner {
+
+    width: 100% !important;
+
+    max-width: 1200px !important;
+
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* ---------------------------------------------------------
+   RESPONSIVE
+--------------------------------------------------------- */
+
+@media (max-width: 900px) {
+
+    #teacherDashboard > .sidebar {
+        width: 235px !important;
+        min-width: 235px !important;
+        max-width: 235px !important;
+    }
+
+    #teacherDashboard > .main-content {
+
+        margin-left: 235px !important;
+
+        width: calc(100% - 235px) !important;
+
+        padding:
+            120px
+            24px
+            40px
+            24px !important;
+    }
+
+    #teacherDashboard #teacherTopHeader {
+
+        left: 235px !important;
+
+        width: calc(100% - 235px) !important;
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    #teacherDashboard > .sidebar {
+
+        position: relative !important;
+
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+
+        height: auto !important;
+    }
+
+    #teacherDashboard > .main-content {
+
+        margin-left: 0 !important;
+
+        width: 100% !important;
+
+        padding:
+            20px
+            16px
+            40px !important;
+    }
+
+    #teacherDashboard #teacherTopHeader {
+
+        position: relative !important;
+
+        top: auto !important;
+        left: auto !important;
+
+        width: 100% !important;
+
+        height: auto !important;
+
+        margin: 0 0 20px !important;
+    }
+
+}
