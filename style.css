@@ -38138,6 +38138,7 @@ body:has(#teacherDashboard[style*="display"]) {
 #teacherDashboard .sidebar {
     width: 270px !important;
     height: 100vh !important;
+    box-sizing: border-box !important;
 
     position: fixed !important;
     top: 0 !important;
@@ -45675,11 +45676,11 @@ body:has(#teacherDashboard[style*="display"]) {
 
     min-height: 100vh !important;
 
-    padding:
-        130px
-        32px
-        50px
-        32px !important;
+   padding:
+    24px
+    32px
+    50px
+    32px !important;
 
     box-sizing: border-box !important;
 
