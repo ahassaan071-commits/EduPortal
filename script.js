@@ -39680,7 +39680,6 @@ async function loadRealAdminAttendance() {
     name,
     student_id,
     student_class,
-    class,
     section,
     roll_number
     `
