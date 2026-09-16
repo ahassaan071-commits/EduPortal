@@ -42236,3 +42236,261 @@ body:has(#teacherDashboard[style*="display"]) {
     }
 
 }
+/* =========================================================
+   EDUPORTAL TEACHER DASHBOARD — FINAL VISUAL OVERRIDE
+========================================================= */
+
+#teacherDashboard {
+    display: flex !important;
+    background: #0b1424 !important;
+    color: #f8fafc !important;
+}
+
+/* SIDEBAR */
+#teacherDashboard .teacher-sidebar {
+    background: #0d1829 !important;
+    border-right: 1px solid rgba(148,163,184,.10) !important;
+}
+
+#teacherDashboard .teacher-sidebar-brand h2 {
+    color: #ffffff !important;
+}
+
+#teacherDashboard .teacher-sidebar-brand span {
+    color: #94a3b8 !important;
+}
+
+#teacherDashboard .teacher-sidebar-nav li {
+    color: #b8c4d5 !important;
+}
+
+#teacherDashboard .teacher-sidebar-nav li.active {
+    background: linear-gradient(135deg,#2563eb,#3b82f6) !important;
+    color: #ffffff !important;
+}
+
+#teacherDashboard .teacher-sidebar-nav li:hover {
+    background: rgba(59,130,246,.12) !important;
+    color: #ffffff !important;
+}
+
+
+/* MAIN */
+#teacherDashboard .teacher-main-content {
+    background: #0b1424 !important;
+    color: #f8fafc !important;
+}
+
+
+/* HEADER */
+#teacherDashboard .teacher-top-header {
+    background: #0b1424 !important;
+    border-bottom: 1px solid rgba(148,163,184,.10) !important;
+}
+
+#teacherDashboard .teacher-header-left h1 {
+    color: #ffffff !important;
+}
+
+#teacherDashboard .teacher-header-left p {
+    color: #718096 !important;
+}
+
+#teacherDashboard .teacher-header-info strong {
+    color: #ffffff !important;
+}
+
+#teacherDashboard .teacher-header-info small {
+    color: #718096 !important;
+}
+
+#teacherDashboard .teacher-notification-btn {
+    color: #cbd5e1 !important;
+}
+
+#teacherDashboard .teacher-header-logout {
+    color: #94a3b8 !important;
+    background: transparent !important;
+}
+
+
+/* WELCOME */
+#teacherDashboard .teacher-dashboard-heading h2 {
+    color: #ffffff !important;
+}
+
+#teacherDashboard .teacher-dashboard-heading h2 span {
+    color: #ffffff !important;
+}
+
+#teacherDashboard .teacher-dashboard-heading p {
+    color: #7f8da3 !important;
+}
+
+#teacherDashboard .teacher-dashboard-date {
+    background: #111d30 !important;
+    border-color: rgba(148,163,184,.10) !important;
+}
+
+#teacherDashboard .teacher-dashboard-date strong {
+    color: #dbe5f3 !important;
+}
+
+#teacherDashboard .teacher-dashboard-date small {
+    color: #718096 !important;
+}
+
+
+/* STAT CARDS */
+#teacherDashboard .teacher-stat-card {
+    background: linear-gradient(145deg,#111d30,#0f1a2c) !important;
+
+    border: 1px solid rgba(148,163,184,.10) !important;
+
+    box-shadow: 0 8px 25px rgba(0,0,0,.12) !important;
+}
+
+#teacherDashboard .teacher-stat-content strong {
+    color: #ffffff !important;
+}
+
+#teacherDashboard .teacher-stat-content span {
+    color: #d5deeb !important;
+}
+
+#teacherDashboard .teacher-stat-content small {
+    color: #718096 !important;
+}
+
+
+/* CHART CARDS */
+#teacherDashboard .teacher-analytics-card,
+#teacherDashboard .teacher-today-card,
+#teacherDashboard .teacher-section-card {
+    background: linear-gradient(145deg,#111d30,#0f1a2c) !important;
+
+    border: 1px solid rgba(148,163,184,.10) !important;
+
+    box-shadow: 0 8px 25px rgba(0,0,0,.12) !important;
+}
+
+#teacherDashboard .teacher-card-heading h3 {
+    color: #f1f5f9 !important;
+}
+
+#teacherDashboard .teacher-card-heading p {
+    color: #66768d !important;
+}
+
+#teacherDashboard .teacher-card-heading select {
+    color: #cbd5e1 !important;
+    background: #16243a !important;
+    border-color: rgba(148,163,184,.12) !important;
+}
+
+
+/* CHART */
+#teacherDashboard .teacher-chart-legend {
+    color: #8190a6 !important;
+}
+
+#teacherDashboard .teacher-attendance-chart {
+    background:
+        repeating-linear-gradient(
+            to top,
+            transparent 0,
+            transparent 34px,
+            rgba(148,163,184,.08) 35px
+        ) !important;
+
+    border-bottom-color: rgba(148,163,184,.10) !important;
+}
+
+#teacherDashboard .teacher-chart-column small {
+    color: #718096 !important;
+}
+
+
+/* DONUT */
+#teacherDashboard .teacher-donut {
+    background:
+        conic-gradient(
+            #3b82f6 0deg,
+            #3b82f6 295deg,
+            #ef5350 295deg,
+            #ef5350 360deg
+        ) !important;
+}
+
+#teacherDashboard .teacher-donut::after {
+    background: #111d30 !important;
+}
+
+#teacherDashboard .teacher-donut-center strong {
+    color: #ffffff !important;
+}
+
+#teacherDashboard .teacher-donut-center span {
+    color: #718096 !important;
+}
+
+#teacherDashboard .teacher-distribution-legend span {
+    color: #9aa8ba !important;
+}
+
+#teacherDashboard .teacher-distribution-legend strong {
+    color: #ffffff !important;
+}
+
+#teacherDashboard .teacher-distribution-legend small {
+    color: #66768d !important;
+}
+
+
+/* TODAY ATTENDANCE */
+#teacherDashboard .teacher-view-all-btn {
+    color: #60a5fa !important;
+}
+
+#teacherDashboard .teacher-data-table {
+    background: transparent !important;
+}
+
+#teacherDashboard .teacher-data-table th {
+    color: #718096 !important;
+    background: #16243a !important;
+    border-bottom-color: rgba(148,163,184,.08) !important;
+}
+
+#teacherDashboard .teacher-data-table td {
+    color: #c7d2e0 !important;
+    background: transparent !important;
+    border-bottom-color: rgba(148,163,184,.07) !important;
+}
+
+#teacherDashboard .teacher-data-table tbody tr:hover {
+    background: rgba(59,130,246,.04) !important;
+}
+
+
+/* OTHER MODULES */
+#teacherDashboard .teacher-page-heading h2 {
+    color: #ffffff !important;
+}
+
+#teacherDashboard .teacher-page-heading p {
+    color: #718096 !important;
+}
+
+#teacherDashboard .teacher-search-box {
+    background: #16243a !important;
+}
+
+#teacherDashboard .teacher-search-box input {
+    color: #dbe5f3 !important;
+    background: transparent !important;
+}
+
+#teacherDashboard .teacher-search-box input::placeholder {
+    color: #64748b !important;
+}
