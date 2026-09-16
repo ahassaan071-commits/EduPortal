@@ -46225,3 +46225,23 @@ body:has(#teacherDashboard[style*="display"]) {
     }
 
 }
+/* =========================================================
+   TEACHER MODULE CONTENT — FINAL LEFT ALIGNMENT
+   ========================================================= */
+
+#teacherDashboard .teacher-section-page,
+#teacherDashboard .teacher-students-wrapper,
+#teacherDashboard .teacher-attendance-controls,
+#teacherDashboard .teacher-attendance-summary,
+#teacherDashboard .teacher-attendance-card,
+#teacherDashboard .teacher-assignments-card,
+#teacherDashboard .teacher-results-card,
+#teacherDashboard .teacher-notices-card,
+#teacherDashboard .teacher-profile-card,
+#teacherDashboard .teacher-settings-card {
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+}
