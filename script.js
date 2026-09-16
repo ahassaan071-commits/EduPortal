@@ -41474,37 +41474,39 @@ setInterval(
             return;
         }
 
+// ==========================================
+// LOGOUT CLICK
+// ==========================================
 
-        // ==========================================
-        // LOGOUT CLICK
-        // ==========================================
+const logoutButton =
+    event.target.closest(
+        "#teacherHeaderLogoutBtn, #teacherLogoutMenu"
+    );
 
-        const logoutButton =
-            event.target.closest(
-                "#teacherHeaderLogoutBtn"
-            );
+if (logoutButton) {
 
-        if (logoutButton) {
+    event.preventDefault();
 
-            event.preventDefault();
+    // Close profile dropdown if it is open
+    if (dropdown) {
+        dropdown.classList.remove(
+            "open"
+        );
+    }
 
-            dropdown.classList.remove(
-                "open"
-            );
+    const confirmLogout =
+        confirm(
+            "Are you sure you want to logout?"
+        );
 
-            const confirmLogout =
-                confirm(
-                    "Are you sure you want to logout?"
-                );
+    if (!confirmLogout) {
+        return;
+    }
 
-            if (!confirmLogout) {
-                return;
-            }
+    logoutTeacher();
 
-            logoutTeacher();
-
-            return;
-        }
+    return;
+}
 
 
         // ==========================================
