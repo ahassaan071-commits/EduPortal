@@ -33618,6 +33618,20 @@ table tbody tr:hover td {
     font-size: 13px;
 }
 
+/* Check In column alignment */
+
+#teacherDashboard .teacher-attendance-table th:last-child,
+#teacherDashboard .teacher-attendance-table td:last-child {
+    text-align: center !important;
+}
+
+#teacherDashboard .teacher-attendance-table td:last-child .teacher-check-in-time {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
 
 #teacherDashboard .teacher-attendance-table tbody tr {
     transition: .2s ease;
