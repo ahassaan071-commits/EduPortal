@@ -973,6 +973,7 @@ if (studentDashboard) {
         "important"
     );
 
+    
     studentDashboard.style.setProperty(
         "visibility",
         "visible",
