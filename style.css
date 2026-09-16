@@ -33262,10 +33262,9 @@ table tbody tr:hover td {
     width: 100% !important;
     max-width: none !important;
     margin: 0 !important;
-    padding: 30px 38px 60px !important;
+    padding: 0 !important;
     box-sizing: border-box !important;
 }
-
 
 /* =========================
    HEADER
