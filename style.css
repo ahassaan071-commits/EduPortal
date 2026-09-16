@@ -32800,8 +32800,11 @@ table tbody tr:hover td {
 ========================================================= */
 
 #teacherDashboard .teacher-students-wrapper {
-    max-width: 1200px;
-    margin: 0 auto;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
 }
 
 
@@ -38352,17 +38355,11 @@ body:has(#teacherDashboard[style*="display"]) {
 #teacherDashboard .dashboard-cards,
 #teacherDashboard .admin-section-card,
 #teacherDashboard .admin-dashboard-actions {
-
     width: 100% !important;
-
-    max-width: 1200px !important;
-
-    margin-left: auto !important;
-    margin-right: auto !important;
-
+    max-width: none !important;
+    margin: 0 0 24px 0 !important;
     box-sizing: border-box !important;
 }
-
 
 /* ---------------------------------------------------------
    RESPONSIVE
