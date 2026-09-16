@@ -39674,19 +39674,17 @@ async function loadRealAdminAttendance() {
     } =
         await supabaseClient
             .from("students")
-            .select(
-                `
-                id,
-                name,
-                full_name,
-                student_name,
-                student_id,
-                student_class,
-                class,
-                section,
-                roll_number
-                `
-            );
+          .select(
+    `
+    id,
+    name,
+    student_id,
+    student_class,
+    class,
+    section,
+    roll_number
+    `
+);
 
 
     if (studentsError) {
