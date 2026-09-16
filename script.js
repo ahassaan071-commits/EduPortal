@@ -28745,10 +28745,15 @@ selected.style.setProperty(
         if (sectionId === "teacherStudentsSection" && typeof loadTeacherMyStudents === "function") {
             loadTeacherMyStudents();
         }
-        if (sectionId === "teacherAttendanceSection") {
-            if (typeof setTeacherAttendanceDate === "function") setTeacherAttendanceDate();
-            if (typeof loadTeacherAttendance === "function") loadTeacherAttendance();
-        }
+     if (sectionId === "teacherAttendanceSection") {
+    if (typeof setTeacherAttendanceDate === "function") {
+        setTeacherAttendanceDate();
+    }
+
+    if (typeof loadTeacherAttendanceSection === "function") {
+        loadTeacherAttendanceSection();
+    }
+}
         if (sectionId === "teacherAssignmentsSection" && typeof loadTeacherAssignments === "function") {
             loadTeacherAssignments();
         }
