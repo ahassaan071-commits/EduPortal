@@ -36084,16 +36084,6 @@ button.late.active {
 }
 
 
-/* ---------------------------------------------------------
-   DASHBOARD HOME CONTENT
---------------------------------------------------------- */
-
-#teacherDashboard .main-content > * {
-    max-width: 1180px !important;
-
-    margin-left: auto !important;
-    margin-right: auto !important;
-}
 
 
 /* Keep Header Full Width */
