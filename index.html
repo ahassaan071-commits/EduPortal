@@ -388,6 +388,39 @@
 }
 
 </style>
+
+<style>
+/* Admin Attendance Table - Compact Left Alignment */
+
+#attendanceTable th,
+#attendanceTable td {
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+/* First visible column ko left side se start karo */
+#attendanceTable th:first-child,
+#attendanceTable td:first-child {
+    padding-left: 12px;
+}
+
+/* Attendance table ko unnecessary wide na hone do */
+#attendanceTable {
+    width: 100%;
+}
+
+/* Status column */
+#attendanceTable .attendance-status-badge {
+    white-space: nowrap;
+}
+
+/* Check-in / Check-out columns */
+#attendanceTable .teacher-check-in-cell,
+#attendanceTable .teacher-check-out-cell {
+    white-space: nowrap;
+}
+</style>
+
 </head>
 
 <body>
