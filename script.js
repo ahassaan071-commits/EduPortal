@@ -23536,7 +23536,6 @@ async function loadTeacherMyStudents() {
                 id,
                 student_id,
                 name,
-                full_name,
                 student_class,
                 section,
                 roll_number,
