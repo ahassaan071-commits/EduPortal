@@ -589,13 +589,32 @@ if (selectedRole === "teacher") {
 
         teacherDashboard.style.opacity =
             "1";
-           /* Refresh Teacher Dashboard header date */
+/* Refresh Teacher Dashboard header date */
 
 setTimeout(function () {
 
-    updateTeacherLiveDate();
+    const dateElement =
+        document.getElementById(
+            "teacherLiveDate"
+        );
 
-}, 100);
+    if (dateElement) {
+
+        const now = new Date();
+
+        dateElement.textContent =
+            now.toLocaleDateString(
+                "en-GB",
+                {
+                    weekday: "long",
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric"
+                }
+            );
+    }
+
+}, 300);
 
         teacherDashboard.style.position =
             "relative";
