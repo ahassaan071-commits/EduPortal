@@ -41397,37 +41397,7 @@ document.addEventListener(
             return;
         }
 
-/* =========================================================
-   TEACHER HEADER - LIVE DATE
-========================================================= */
 
-function updateTeacherLiveDate() {
-
-    const dateElement =
-        document.getElementById(
-            "teacherLiveDate"
-        );
-
-    if (!dateElement) {
-        return;
-    }
-
-    const now = new Date();
-
-    const formattedDate =
-        now.toLocaleDateString(
-            "en-GB",
-            {
-                weekday: "long",
-                day: "2-digit",
-                month: "long",
-                year: "numeric"
-            }
-        );
-
-    dateElement.textContent =
-        formattedDate;
-}
 
 
 /* =========================================================
