@@ -41514,3 +41514,326 @@ body:has(#teacherDashboard[style*="display"]) {
     margin-right: 0 !important;
     box-sizing: border-box !important;
 }
+/* =========================================================
+   EDUPORTAL — TEACHER DASHBOARD FINAL CLEAN OVERRIDE
+   ========================================================= */
+
+#teacherDashboard {
+    width: 100% !important;
+    min-height: 100vh !important;
+    background: #f5f7fb !important;
+    color: #1e293b !important;
+    font-family: "Segoe UI", Arial, sans-serif !important;
+}
+
+/* SIDEBAR */
+#teacherDashboard .sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+
+    width: 270px !important;
+    height: 100vh !important;
+    min-height: 100vh !important;
+
+    padding: 22px 16px !important;
+    box-sizing: border-box !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    background: #111827 !important;
+    color: #fff !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    z-index: 2000 !important;
+}
+
+/* SIDEBAR LOGO */
+#teacherDashboard .sidebar h2 {
+    margin: 0 6px 22px !important;
+    padding: 0 8px 18px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    font-family: "Poppins", "Segoe UI", Arial, sans-serif !important;
+    font-size: 23px !important;
+    font-weight: 700 !important;
+
+    color: #fff !important;
+    border-bottom: 1px solid rgba(255,255,255,.08) !important;
+}
+
+/* SIDEBAR MENU */
+#teacherDashboard .sidebar ul {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 5px !important;
+
+    list-style: none !important;
+}
+
+#teacherDashboard .sidebar ul li {
+    width: 100% !important;
+    min-height: 48px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+
+    padding: 11px 15px !important;
+    box-sizing: border-box !important;
+
+    border-radius: 11px !important;
+
+    font-family: "Poppins", "Segoe UI", Arial, sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+
+    line-height: 1.3 !important;
+    white-space: nowrap !important;
+
+    color: #cbd5e1 !important;
+    cursor: pointer !important;
+
+    transition: all .2s ease !important;
+}
+
+#teacherDashboard .sidebar ul li:hover {
+    background: rgba(255,255,255,.08) !important;
+    color: #fff !important;
+    transform: translateX(3px) !important;
+}
+
+#teacherDashboard .sidebar ul li.active {
+    background: linear-gradient(135deg,#2563eb,#3b82f6) !important;
+    color: #fff !important;
+
+    box-shadow: 0 6px 16px rgba(37,99,235,.28) !important;
+}
+
+/* MAIN CONTENT */
+#teacherDashboard > .main-content {
+    margin-left: 270px !important;
+    width: calc(100% - 270px) !important;
+
+    min-height: 100vh !important;
+
+    padding: 28px 36px 60px !important;
+    box-sizing: border-box !important;
+
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+}
+
+/* HEADER */
+#teacherDashboard .top-header {
+    width: 100% !important;
+    max-width: 1200px !important;
+
+    min-height: 78px !important;
+
+    margin: 0 auto 22px !important;
+    padding: 18px 22px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    box-sizing: border-box !important;
+
+    background: #fff !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 16px !important;
+
+    box-shadow: 0 6px 20px rgba(15,23,42,.08) !important;
+}
+
+/* PAGE TITLE */
+#teacherDashboard .top-header h1,
+#teacherPageTitle {
+    margin: 0 !important;
+
+    font-family: "Segoe UI", Arial, sans-serif !important;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+
+    color: #111827 !important;
+}
+
+/* HEADER LOGOUT */
+#teacherHeaderLogoutBtn {
+    border-radius: 10px !important;
+    cursor: pointer !important;
+}
+
+/* DASHBOARD CARDS */
+#teacherDashboard .dashboard-cards {
+    width: 100% !important;
+    max-width: 1200px !important;
+
+    margin: 0 auto 24px !important;
+
+    display: grid !important;
+    grid-template-columns: repeat(4,minmax(0,1fr)) !important;
+    gap: 18px !important;
+}
+
+#teacherDashboard .dashboard-cards .card {
+    min-width: 0 !important;
+    height: 145px !important;
+
+    padding: 20px !important;
+    box-sizing: border-box !important;
+
+    display: flex !important;
+    align-items: center !important;
+    gap: 15px !important;
+
+    background: #fff !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 16px !important;
+
+    box-shadow: 0 6px 20px rgba(15,23,42,.05) !important;
+
+    overflow: hidden !important;
+    transition: all .2s ease !important;
+}
+
+#teacherDashboard .dashboard-cards .card:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 10px 28px rgba(15,23,42,.09) !important;
+}
+
+/* MODULE SECTIONS */
+#teacherDashboard #teacherStudentsSection,
+#teacherDashboard #teacherAttendanceSection,
+#teacherDashboard #teacherAssignmentsSection,
+#teacherDashboard #teacherResultsSection,
+#teacherDashboard #teacherNoticesSection,
+#teacherDashboard #teacherProfileSection,
+#teacherDashboard #teacherSettingsSection {
+    width: 100% !important;
+    max-width: 1200px !important;
+
+    margin: 0 auto !important;
+    padding: 20px 0 50px !important;
+
+    box-sizing: border-box !important;
+}
+
+/* TABLES */
+#teacherDashboard table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    background: #fff !important;
+}
+
+#teacherDashboard th {
+    padding: 13px 14px !important;
+
+    background: #f8fafc !important;
+    color: #475569 !important;
+
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    text-align: left !important;
+
+    border-bottom: 1px solid #e5e7eb !important;
+}
+
+#teacherDashboard td {
+    padding: 13px 14px !important;
+
+    color: #334155 !important;
+    font-size: 13px !important;
+
+    border-bottom: 1px solid #eef2f7 !important;
+}
+
+/* SEARCH / INPUTS */
+#teacherDashboard input,
+#teacherDashboard select,
+#teacherDashboard textarea {
+    font-family: "Segoe UI",Arial,sans-serif !important;
+
+    background: #fff !important;
+    color: #1e293b !important;
+
+    border: 1px solid #dbe1ea !important;
+    border-radius: 9px !important;
+
+    box-sizing: border-box !important;
+}
+
+#teacherDashboard input:focus,
+#teacherDashboard select:focus,
+#teacherDashboard textarea:focus {
+    outline: none !important;
+
+    border-color: #6366f1 !important;
+    box-shadow: 0 0 0 3px rgba(99,102,241,.10) !important;
+}
+
+/* BUTTONS */
+#teacherDashboard button {
+    font-family: "Segoe UI",Arial,sans-serif !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+}
+
+/* MOBILE */
+@media (max-width: 1100px) {
+
+    #teacherDashboard .dashboard-cards {
+        grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+    }
+
+    #teacherDashboard > .main-content {
+        margin-left: 235px !important;
+        width: calc(100% - 235px) !important;
+
+        padding-left: 24px !important;
+        padding-right: 24px !important;
+    }
+
+    #teacherDashboard .sidebar {
+        width: 235px !important;
+    }
+}
+
+@media (max-width: 750px) {
+
+    #teacherDashboard .sidebar {
+        position: relative !important;
+
+        width: 100% !important;
+        height: auto !important;
+        min-height: auto !important;
+    }
+
+    #teacherDashboard > .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+
+        min-height: 100vh !important;
+
+        padding: 20px 16px 40px !important;
+    }
+
+    #teacherDashboard .dashboard-cards {
+        grid-template-columns: 1fr !important;
+    }
+
+    #teacherDashboard .top-header {
+        padding: 15px !important;
+    }
+}
