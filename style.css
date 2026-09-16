@@ -45890,3 +45890,351 @@ body:has(#teacherDashboard[style*="display"]) {
     }
 
 }
+/* =========================================================
+   EDUPORTAL — TEACHER MODULES
+   PERMANENT LEFT ALIGNMENT FIX
+   ALL SIDEBAR PAGES SAME POSITION
+   ========================================================= */
+
+
+/* =========================================================
+   MAIN CONTENT BASE
+   ========================================================= */
+
+#teacherDashboard > .main-content {
+    margin-left: 270px !important;
+    width: calc(100% - 270px) !important;
+
+    max-width: none !important;
+
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* =========================================================
+   ALL TEACHER MODULE SECTIONS
+   ========================================================= */
+
+#teacherDashboard > .main-content > #teacherStudentsSection,
+#teacherDashboard > .main-content > #teacherAttendanceSection,
+#teacherDashboard > .main-content > #teacherAssignmentsSection,
+#teacherDashboard > .main-content > #teacherResultsSection,
+#teacherDashboard > .main-content > #teacherNoticesSection,
+#teacherDashboard > .main-content > #teacherProfileSection,
+#teacherDashboard > .main-content > #teacherSettingsSection {
+
+    width: 100% !important;
+
+    max-width: none !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    position: relative !important;
+
+    left: 0 !important;
+    right: auto !important;
+
+    transform: none !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* =========================================================
+   COMMON MODULE INNER PAGE
+   ========================================================= */
+
+#teacherDashboard
+#teacherStudentsSection
+.teacher-section-page,
+
+#teacherDashboard
+#teacherAttendanceSection
+.teacher-section-page,
+
+#teacherDashboard
+#teacherAssignmentsSection
+.teacher-section-page,
+
+#teacherDashboard
+#teacherResultsSection
+.teacher-section-page,
+
+#teacherDashboard
+#teacherNoticesSection
+.teacher-section-page {
+
+    width: 100% !important;
+
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+    position: relative !important;
+
+    left: 0 !important;
+
+    transform: none !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* =========================================================
+   MY STUDENTS
+   ========================================================= */
+
+#teacherDashboard .teacher-students-wrapper {
+
+    width: 100% !important;
+
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    position: relative !important;
+
+    left: 0 !important;
+
+    transform: none !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* =========================================================
+   ATTENDANCE
+   ========================================================= */
+
+#teacherDashboard .teacher-attendance-controls,
+#teacherDashboard .teacher-attendance-card {
+
+    width: 100% !important;
+
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    position: relative !important;
+
+    left: 0 !important;
+
+    transform: none !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* =========================================================
+   RESULTS
+   ========================================================= */
+
+#teacherDashboard .teacher-results-card {
+
+    width: 100% !important;
+
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    position: relative !important;
+
+    left: 0 !important;
+
+    transform: none !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* =========================================================
+   NOTICES
+   ========================================================= */
+
+#teacherDashboard .teacher-notices-card {
+
+    width: 100% !important;
+
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    position: relative !important;
+
+    left: 0 !important;
+
+    transform: none !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* =========================================================
+   PROFILE
+   ========================================================= */
+
+#teacherDashboard .teacher-profile-page {
+
+    width: 100% !important;
+
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+    position: relative !important;
+
+    left: 0 !important;
+
+    transform: none !important;
+
+    box-sizing: border-box !important;
+}
+
+
+#teacherDashboard .teacher-profile-card,
+#teacherDashboard .teacher-profile-header {
+
+    width: 100% !important;
+
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* =========================================================
+   SETTINGS
+   IMPORTANT:
+   REMOVE OLD 270px OFFSET
+   ========================================================= */
+
+#teacherDashboard #teacherSettingsSection {
+
+    width: 100% !important;
+
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+    position: relative !important;
+
+    left: 0 !important;
+
+    transform: none !important;
+
+    box-sizing: border-box !important;
+}
+
+
+#teacherDashboard .teacher-settings-page {
+
+    width: 100% !important;
+
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+    position: relative !important;
+
+    left: 0 !important;
+
+    transform: none !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* =========================================================
+   MODULE HEADERS
+   ========================================================= */
+
+#teacherDashboard .teacher-section-header {
+
+    width: 100% !important;
+
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* =========================================================
+   SETTINGS HEADER
+   ========================================================= */
+
+#teacherDashboard .teacher-settings-header {
+
+    width: 100% !important;
+
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    #teacherDashboard > .main-content {
+
+        margin-left: 235px !important;
+
+        width: calc(100% - 235px) !important;
+
+        padding-left: 24px !important;
+        padding-right: 24px !important;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    #teacherDashboard > .main-content {
+
+        margin-left: 0 !important;
+
+        width: 100% !important;
+
+        padding-left: 18px !important;
+        padding-right: 18px !important;
+    }
+
+}
