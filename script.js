@@ -13242,6 +13242,89 @@ renderAttendanceTable();
 updateAttendanceStatistics();
 
 }
+
+// =========================================================
+// ADMIN ATTENDANCE REALTIME
+// AUTOMATIC ABSENT + LIVE ATTENDANCE SYNC
+// =========================================================
+
+let adminAttendanceRealtimeChannel = null;
+
+function initializeAdminAttendanceRealtime() {
+
+    if (
+        typeof supabaseClient === "undefined" ||
+        adminAttendanceRealtimeChannel
+    ) {
+        return;
+    }
+
+    adminAttendanceRealtimeChannel =
+        supabaseClient
+            .channel(
+                "admin-attendance-realtime"
+            )
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "attendance"
+                },
+                async function(payload) {
+
+                    console.log(
+                        "ADMIN ATTENDANCE REALTIME UPDATE:",
+                        payload
+                    );
+
+                    // Refresh Attendance Table
+                    if (
+                        typeof renderAttendanceTable ===
+                        "function"
+                    ) {
+                        await renderAttendanceTable();
+                    }
+
+                    // Refresh Attendance Statistics
+                    if (
+                        typeof updateAttendanceStatistics ===
+                        "function"
+                    ) {
+                        await updateAttendanceStatistics();
+                    }
+
+                    // Refresh Admin Dashboard
+                    if (
+                        typeof AdminDashboard !==
+                        "undefined" &&
+                        typeof AdminDashboard.loadData ===
+                        "function"
+                    ) {
+                        await AdminDashboard.loadData();
+                    }
+
+                }
+            )
+            .subscribe(
+                function(status) {
+
+                    console.log(
+                        "ADMIN ATTENDANCE REALTIME:",
+                        status
+                    );
+
+                }
+            );
+
+}
+
+
+// =========================================================
+// START ADMIN ATTENDANCE REALTIME
+// =========================================================
+
+initializeAdminAttendanceRealtime();
 // ==========================================
 // ATTENDANCE TABLE RENDER
 // SUPABASE STUDENTS - FINAL SYNC
