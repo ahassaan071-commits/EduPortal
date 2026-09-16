@@ -29738,7 +29738,29 @@ window.openTeacherPanel = function (sectionId, menuElement, event) {
     selected.style.setProperty("opacity", "1", "important");
     selected.style.setProperty("position", "relative", "important");
     selected.style.setProperty("z-index", "50", "important");
-    selected.style.setProperty("width", "100%", "important");
+   selected.style.setProperty(
+    "width",
+    "100%",
+    "important"
+);
+
+selected.style.setProperty(
+    "margin-left",
+    "0",
+    "important"
+);
+
+selected.style.setProperty(
+    "margin-right",
+    "0",
+    "important"
+);
+
+selected.style.setProperty(
+    "box-sizing",
+    "border-box",
+    "important"
+);
     selected.style.setProperty("min-height", "400px", "important");
 
     // Active menu
