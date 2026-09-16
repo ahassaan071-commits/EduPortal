@@ -41375,6 +41375,47 @@ updateAdminLiveDate();
 
 // Keep date updated
 setInterval(updateAdminLiveDate, 60000);
+
+// =========================================================
+// TEACHER HEADER - LIVE DATE
+// =========================================================
+
+function updateTeacherLiveDate() {
+
+    const dateElement =
+        document.getElementById(
+            "teacherLiveDate"
+        );
+
+    if (!dateElement) {
+        return;
+    }
+
+    const now = new Date();
+
+    dateElement.textContent =
+        now.toLocaleDateString(
+            "en-GB",
+            {
+                weekday: "long",
+                day: "2-digit",
+                month: "long",
+                year: "numeric"
+            }
+        );
+}
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+        updateTeacherLiveDate();
+    }
+);
+
+setInterval(
+    updateTeacherLiveDate,
+    60000
+);
 // =========================================================
 // TEACHER HEADER PROFILE DROPDOWN
 // =========================================================
