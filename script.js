@@ -40013,14 +40013,6 @@ async function loadRealAdminAttendance() {
 
             row.innerHTML = `
 
-                <td>
-                    <input
-                        type="checkbox"
-                        class="attendance-row-checkbox"
-                        data-id="${record.id}"
-                    >
-                </td>
-
 
                 <td>
                     ${index + 1}
