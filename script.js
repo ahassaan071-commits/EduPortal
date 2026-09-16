@@ -40186,10 +40186,10 @@ document.addEventListener(
             return;
         }
 
-        const table =
-            document.getElementById(
-                "attendanceTable"
-            );
+       const table =
+    document.querySelector(
+        ".attendance-table"
+    );
 
         const tableBody =
             document.getElementById(
