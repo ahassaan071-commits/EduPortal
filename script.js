@@ -933,30 +933,57 @@ if (loginContainer) {
 }
 
 
-        // Hide Admin
-        const adminDashboard =
-            document.getElementById(
-                "adminDashboard"
-            );
+ // Hide Admin Dashboard
+const adminDashboard =
+    document.getElementById(
+        "adminDashboard"
+    );
 
-        if (adminDashboard) {
+if (adminDashboard) {
+    adminDashboard.style.setProperty(
+        "display",
+        "none",
+        "important"
+    );
 
-            adminDashboard.style.display =
-                "none";
-        }
+    adminDashboard.style.setProperty(
+        "visibility",
+        "hidden",
+        "important"
+    );
 
+    adminDashboard.style.setProperty(
+        "opacity",
+        "0",
+        "important"
+    );
+}
 
-        // Hide Teacher
-        const teacherDashboard =
-            document.getElementById(
-                "teacherDashboard"
-            );
+ // Hide Teacher Dashboard
+const teacherDashboard =
+    document.getElementById(
+        "teacherDashboard"
+    );
 
-        if (teacherDashboard) {
+if (teacherDashboard) {
+    teacherDashboard.style.setProperty(
+        "display",
+        "none",
+        "important"
+    );
 
-            teacherDashboard.style.display =
-                "none";
-        }
+    teacherDashboard.style.setProperty(
+        "visibility",
+        "hidden",
+        "important"
+    );
+
+    teacherDashboard.style.setProperty(
+        "opacity",
+        "0",
+        "important"
+    );
+}
 
 
   // Show Student
