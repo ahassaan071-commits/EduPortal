@@ -894,3 +894,783 @@ p {
         padding: 0 12px;
     }
 }
+/* =========================================================
+   EDUPORTAL — STEP 3
+   UNIFIED TOP HEADER
+   ========================================================= */
+
+.top-header,
+.admin-top-header,
+.teacher-top-header {
+    height: var(--ep-header-height);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 28px;
+
+    background: #ffffff;
+    border-bottom: 1px solid var(--ep-border);
+
+    position: sticky;
+    top: 0;
+
+    z-index: 900;
+
+    box-shadow: var(--ep-shadow-sm);
+}
+
+
+/* =========================
+   HEADER LEFT
+   ========================= */
+
+.dashboard-page-title,
+.admin-header-left,
+.teacher-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    min-width: 0;
+}
+
+
+/* Student */
+
+.dashboard-page-title h1 {
+    margin: 0;
+
+    color: var(--ep-text);
+
+    font-size: 19px;
+    font-weight: 700;
+}
+
+
+/* Admin */
+
+.admin-header-left h1 {
+    margin: 0;
+
+    color: var(--ep-text);
+
+    font-size: 19px;
+    font-weight: 700;
+}
+
+
+/* Teacher */
+
+.teacher-header-left {
+    gap: 14px;
+}
+
+#teacherPageTitle {
+    margin: 0;
+
+    color: var(--ep-text);
+
+    font-size: 19px;
+    font-weight: 700;
+}
+
+
+/* =========================
+   HEADER RIGHT
+   ========================= */
+
+.header-actions,
+.admin-header-right,
+.teacher-header-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+
+/* =========================
+   PROFILE BOX
+   ========================= */
+
+.profile-box,
+.admin-profile-circle,
+.teacher-header-profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* Student profile */
+
+.profile-box {
+    cursor: pointer;
+}
+
+.profile-circle {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border: 1px solid var(--ep-border);
+
+    border-radius: 50%;
+
+    background: var(--ep-primary-light);
+
+    color: var(--ep-primary);
+
+    font-size: 17px;
+
+    transition:
+        border-color var(--ep-transition),
+        box-shadow var(--ep-transition);
+}
+
+.profile-box:hover .profile-circle {
+    border-color: var(--ep-primary);
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+
+.profile-circle img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+/* =========================
+   ADMIN PROFILE
+   ========================= */
+
+.admin-profile-circle {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 50%;
+
+    background: var(--ep-primary-light);
+
+    border: 1px solid #dbeafe;
+
+    font-size: 17px;
+}
+
+
+/* =========================
+   TEACHER PROFILE
+   ========================= */
+
+.teacher-header-profile {
+    gap: 10px;
+
+    padding: 4px 8px 4px 4px;
+
+    border: 1px solid var(--ep-border);
+
+    border-radius: 999px;
+
+    background: #ffffff;
+}
+
+.teacher-avatar {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+
+    background: var(--ep-primary-light);
+
+    color: var(--ep-primary);
+
+    font-weight: 700;
+}
+
+.teacher-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#teacherHeaderName {
+    color: var(--ep-text);
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+/* =========================
+   SIDEBAR TOGGLE
+   ========================= */
+
+.teacher-sidebar-toggle {
+    width: 38px;
+    height: 38px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--ep-border);
+    border-radius: var(--ep-radius-sm);
+
+    background: #ffffff;
+    color: var(--ep-text);
+
+    font-size: 15px;
+
+    transition:
+        background var(--ep-transition),
+        border-color var(--ep-transition),
+        color var(--ep-transition);
+}
+
+.teacher-sidebar-toggle:hover {
+    background: var(--ep-primary-light);
+    border-color: #bfdbfe;
+    color: var(--ep-primary);
+}
+
+
+/* =========================
+   TEACHER NOTIFICATION
+   ========================= */
+
+.teacher-notification-btn {
+    width: 38px;
+    height: 38px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--ep-border);
+    border-radius: 50%;
+
+    background: #ffffff;
+    color: var(--ep-text-secondary);
+
+    transition:
+        background var(--ep-transition),
+        border-color var(--ep-transition),
+        color var(--ep-transition);
+}
+
+.teacher-notification-btn:hover {
+    background: var(--ep-primary-light);
+    border-color: #bfdbfe;
+    color: var(--ep-primary);
+}
+
+
+/* =========================
+   TEACHER LOGOUT
+   ========================= */
+
+.teacher-header-logout {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 38px;
+    height: 38px;
+
+    border: 1px solid var(--ep-border);
+    border-radius: var(--ep-radius-sm);
+
+    background: #ffffff;
+
+    color: #dc2626;
+
+    transition:
+        background var(--ep-transition),
+        border-color var(--ep-transition);
+}
+
+.teacher-header-logout:hover {
+    background: var(--ep-danger-bg);
+    border-color: #fecaca;
+}
+
+
+/* =========================
+   ADMIN / STUDENT HEADER
+   ========================= */
+
+.admin-top-header {
+    min-height: var(--ep-header-height);
+}
+
+.top-header {
+    min-height: var(--ep-header-height);
+}
+
+
+/* =========================
+   MOBILE HEADER
+   ========================= */
+
+@media (max-width: 768px) {
+
+    .top-header,
+    .admin-top-header,
+    .teacher-top-header {
+        height: 64px;
+
+        padding: 0 16px;
+    }
+
+    .dashboard-page-title h1,
+    .admin-header-left h1,
+    #teacherPageTitle {
+        font-size: 17px;
+    }
+
+    .teacher-header-profile {
+        padding-right: 4px;
+    }
+
+    #teacherHeaderName {
+        display: none;
+    }
+}
+
+
+@media (max-width: 480px) {
+
+    .top-header,
+    .admin-top-header,
+    .teacher-top-header {
+        padding: 0 12px;
+    }
+
+    .profile-circle,
+    .admin-profile-circle,
+    .teacher-avatar {
+        width: 36px;
+        height: 36px;
+    }
+
+    .teacher-notification-btn,
+    .teacher-header-logout,
+    .teacher-sidebar-toggle {
+        width: 36px;
+        height: 36px;
+    }
+
+    .teacher-header-right {
+        gap: 7px;
+    }
+}
+/* =========================================================
+   EDUPORTAL — STEP 4
+   UNIFIED DASHBOARD STATISTICS CARDS
+   ========================================================= */
+
+/* =========================
+   COMMON STATISTICS GRID
+   ========================= */
+
+.teacher-statistics-grid,
+.admin-analytics-stats,
+.admin-stats-grid,
+.dashboard-stats,
+.statistics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+
+/* =========================
+   TEACHER STAT CARDS
+   ========================= */
+
+.teacher-stat-card {
+    position: relative;
+
+    min-height: 125px;
+    padding: 20px;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    background: #ffffff;
+    border: 1px solid var(--ep-border);
+    border-radius: var(--ep-radius-lg);
+
+    box-shadow: var(--ep-shadow-sm);
+
+    overflow: hidden;
+
+    transition:
+        transform var(--ep-transition),
+        box-shadow var(--ep-transition),
+        border-color var(--ep-transition);
+}
+
+.teacher-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--ep-shadow-md);
+    border-color: #dbeafe;
+}
+
+
+/* =========================
+   STAT CARD ICON
+   ========================= */
+
+.teacher-stat-card .stat-icon,
+.teacher-stat-card .icon,
+.admin-analytics-stat .stat-icon,
+.admin-analytics-stat .icon {
+    width: 48px;
+    height: 48px;
+
+    min-width: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: var(--ep-primary-light);
+    color: var(--ep-primary);
+
+    font-size: 20px;
+}
+
+
+/* =========================
+   TEACHER STAT CONTENT
+   ========================= */
+
+.teacher-stat-card .stat-content,
+.teacher-stat-card .stat-info {
+    min-width: 0;
+}
+
+.teacher-stat-card h3,
+.teacher-stat-card .stat-value,
+.teacher-stat-card .stat-number {
+    margin: 0;
+
+    color: var(--ep-text);
+
+    font-size: 25px;
+    font-weight: 800;
+
+    line-height: 1.1;
+}
+
+.teacher-stat-card p,
+.teacher-stat-card .stat-label,
+.teacher-stat-card span {
+    margin-top: 5px;
+
+    color: var(--ep-text-secondary);
+
+    font-size: 12px;
+    font-weight: 500;
+}
+
+
+/* =========================
+   ADMIN ANALYTICS CARDS
+   ========================= */
+
+.admin-analytics-stat {
+    position: relative;
+
+    min-height: 125px;
+    padding: 20px;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    background: #ffffff;
+    border: 1px solid var(--ep-border);
+    border-radius: var(--ep-radius-lg);
+
+    box-shadow: var(--ep-shadow-sm);
+
+    overflow: hidden;
+
+    transition:
+        transform var(--ep-transition),
+        box-shadow var(--ep-transition),
+        border-color var(--ep-transition);
+}
+
+.admin-analytics-stat:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--ep-shadow-md);
+    border-color: #dbeafe;
+}
+
+
+/* Admin stat text */
+
+.admin-analytics-stat h3,
+.admin-analytics-stat .stat-value,
+.admin-analytics-stat .number,
+.admin-analytics-stat strong {
+    color: var(--ep-text);
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.admin-analytics-stat p,
+.admin-analytics-stat .stat-label,
+.admin-analytics-stat span {
+    color: var(--ep-text-secondary);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+
+/* =========================
+   STAT CARD COLOR VARIANTS
+   ========================= */
+
+.teacher-stat-card.students .stat-icon,
+.admin-analytics-stat.students .stat-icon {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.teacher-stat-card.present .stat-icon,
+.admin-analytics-stat.present .stat-icon {
+    background: #f0fdf4;
+    color: #16a34a;
+}
+
+.teacher-stat-card.absent .stat-icon,
+.admin-analytics-stat.absent .stat-icon {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.teacher-stat-card.classes .stat-icon,
+.admin-analytics-stat.classes .stat-icon {
+    background: #fff7ed;
+    color: #ea580c;
+}
+
+
+/* =========================
+   GENERIC DASHBOARD STAT CARDS
+   ========================= */
+
+.dashboard-stats > *,
+.admin-stats-grid > *,
+.statistics-grid > * {
+    min-width: 0;
+
+    background: #ffffff;
+
+    border: 1px solid var(--ep-border);
+    border-radius: var(--ep-radius-lg);
+
+    box-shadow: var(--ep-shadow-sm);
+
+    transition:
+        transform var(--ep-transition),
+        box-shadow var(--ep-transition);
+}
+
+.dashboard-stats > *:hover,
+.admin-stats-grid > *:hover,
+.statistics-grid > *:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--ep-shadow-md);
+}
+
+
+/* =========================
+   STAT CARD TOP ACCENT
+   ========================= */
+
+.teacher-stat-card::after,
+.admin-analytics-stat::after {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 3px;
+
+    background: var(--ep-primary);
+}
+
+
+/* =========================
+   ADMIN TITLE AREA
+   ========================= */
+
+.admin-dashboard-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+}
+
+.admin-dashboard-title h2 {
+    margin: 0;
+
+    color: var(--ep-text);
+
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.admin-dashboard-date {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dashboard-date-input {
+    height: 38px;
+
+    padding: 0 10px;
+
+    border: 1px solid var(--ep-border);
+    border-radius: var(--ep-radius-sm);
+
+    background: #ffffff;
+    color: var(--ep-text);
+
+    font-family: inherit;
+    font-size: 13px;
+
+    outline: none;
+}
+
+.dashboard-date-input:focus {
+    border-color: var(--ep-primary);
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+
+
+/* =========================
+   TEACHER DASHBOARD HEADING
+   ========================= */
+
+.teacher-dashboard-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 22px;
+}
+
+.teacher-dashboard-heading h1,
+.teacher-dashboard-heading h2 {
+    margin: 0;
+
+    color: var(--ep-text);
+
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.teacher-dashboard-date {
+    color: var(--ep-text-secondary);
+    font-size: 13px;
+}
+
+
+/* =========================
+   RESPONSIVE — TABLET
+   ========================= */
+
+@media (max-width: 1100px) {
+
+    .teacher-statistics-grid,
+    .admin-analytics-stats,
+    .admin-stats-grid,
+    .dashboard-stats,
+    .statistics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+/* =========================
+   RESPONSIVE — MOBILE
+   ========================= */
+
+@media (max-width: 600px) {
+
+    .teacher-statistics-grid,
+    .admin-analytics-stats,
+    .admin-stats-grid,
+    .dashboard-stats,
+    .statistics-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .teacher-stat-card,
+    .admin-analytics-stat {
+        min-height: 105px;
+        padding: 16px;
+    }
+
+    .teacher-stat-card .stat-icon,
+    .teacher-stat-card .icon,
+    .admin-analytics-stat .stat-icon,
+    .admin-analytics-stat .icon {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+
+        font-size: 17px;
+    }
+
+    .teacher-stat-card h3,
+    .teacher-stat-card .stat-value,
+    .teacher-stat-card .stat-number,
+    .admin-analytics-stat h3,
+    .admin-analytics-stat .stat-value,
+    .admin-analytics-stat .number {
+        font-size: 22px;
+    }
+
+    .admin-dashboard-title,
+    .teacher-dashboard-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+    }
+}
