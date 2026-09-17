@@ -30168,78 +30168,137 @@ document.addEventListener(
 
     }
 );
-/* =========================================================
-   EDU PORTAL - TEACHER SESSION & AUTH FIX
-========================================================= */
 
 
 /* =========================================================
    TEACHER LOGOUT FUNCTION
 ========================================================= */
-
 function logoutTeacher() {
 
-    /* Remove login/session data */
+    // ==========================================
+    // REMOVE TEACHER SESSION
+    // ==========================================
 
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("loggedInRole");
     localStorage.removeItem("loggedInTeacher");
-
-    /* Remove teacher session timer */
-
     localStorage.removeItem("teacherSessionStart");
 
 
-    /* Hide Teacher Dashboard */
+    // ==========================================
+    // HIDE TEACHER DASHBOARD
+    // ==========================================
 
     const teacherDashboard =
-        document.getElementById(
-            "teacherDashboard"
-        );
+        document.getElementById("teacherDashboard");
 
     if (teacherDashboard) {
 
-        teacherDashboard.style.display =
-            "none";
+        teacherDashboard.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+
+        teacherDashboard.style.setProperty(
+            "visibility",
+            "hidden",
+            "important"
+        );
+
+        teacherDashboard.style.setProperty(
+            "opacity",
+            "0",
+            "important"
+        );
     }
 
 
-    /* Show Login Screen */
+    // ==========================================
+    // HIDE ADMIN DASHBOARD
+    // ==========================================
 
-const loginContainer =
-    document.querySelector(
-        ".container"
-    );
+    const adminDashboard =
+        document.getElementById("adminDashboard");
 
-if (loginContainer) {
+    if (adminDashboard) {
 
-    loginContainer.classList.remove(
-        "session-hidden"
-    );
+        adminDashboard.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+    }
 
-}
+
+    // ==========================================
+    // HIDE STUDENT DASHBOARD
+    // ==========================================
+
+    const studentDashboard =
+        document.getElementById("studentDashboard");
+
+    if (studentDashboard) {
+
+        studentDashboard.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+    }
 
 
-    /* Reset login form */
+    // ==========================================
+    // SHOW LOGIN SCREEN
+    // ==========================================
 
-    const loginForm =
-        document.querySelector(
-            "form"
+    const loginContainer =
+        document.querySelector(".container");
+
+    if (loginContainer) {
+
+        loginContainer.classList.remove(
+            "session-hidden"
         );
 
-    if (loginForm) {
+        loginContainer.style.setProperty(
+            "display",
+            "flex",
+            "important"
+        );
 
+        loginContainer.style.setProperty(
+            "visibility",
+            "visible",
+            "important"
+        );
+
+        loginContainer.style.setProperty(
+            "opacity",
+            "1",
+            "important"
+        );
+    }
+
+
+    // ==========================================
+    // RESET LOGIN FORM
+    // ==========================================
+
+    if (loginForm) {
         loginForm.reset();
     }
 
+    if (message) {
+        message.textContent = "";
+    }
 
-    /* Go to top */
 
-    window.scrollTo(
-        0,
-        0
-    );
+    // ==========================================
+    // SCROLL TO TOP
+    // ==========================================
 
+    window.scrollTo(0, 0);
 }
 
 
