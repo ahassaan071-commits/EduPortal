@@ -44115,7 +44115,3 @@ table tbody tr:hover td {
         grid-template-columns: 1fr !important;
     }
 }
-/* REMOVE TODAY'S ATTENDANCE FROM TEACHER DASHBOARD */
-#teacherDashboard .teacher-today-card {
-    display: none !important;
-}
