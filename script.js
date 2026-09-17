@@ -28744,16 +28744,7 @@ window.openTeacherPanel = function (sectionId, menuElement, event) {
         return;
     }
 
-    // All teacher sections
-    const sections = [
-        "teacherStudentsSection",
-        "teacherAttendanceSection",
-        "teacherAssignmentsSection",
-        "teacherResultsSection",
-        "teacherNoticesSection",
-        "teacherProfileSection",
-        "teacherSettingsSection"
-    ];
+
 
     // 1. Hide ALL sections first
     sections.forEach(function (id) {
