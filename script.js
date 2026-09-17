@@ -651,8 +651,8 @@ setTimeout(function () {
         document.body.style.minHeight =
             "100vh";
 
-        document.body.style.overflowY =
-            "auto";
+       document.body.style.overflowY =
+    "auto";
 
         document.body.style.overflowX =
             "hidden";
