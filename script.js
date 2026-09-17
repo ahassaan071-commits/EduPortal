@@ -31492,7 +31492,7 @@ if (assignedStudents.length > 0) {
                 )
                 .eq(
                     "attendance_date",
-                    today
+                   selectedDashboardDate
                 )
                 .in(
                     "student_id",
