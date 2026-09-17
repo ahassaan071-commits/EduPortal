@@ -41619,3 +41619,651 @@ document.addEventListener(
 
     }
 );
+// =========================================================
+// TEACHER DASHBOARD - LIVE ATTENDANCE OVERVIEW CHART
+// =========================================================
+
+async function renderTeacherAttendanceOverview() {
+
+    const chart =
+        document.getElementById(
+            "teacherAttendanceChart"
+        );
+
+    const periodSelect =
+        document.getElementById(
+            "teacherAttendancePeriod"
+        );
+
+    if (!chart) {
+        return;
+    }
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+        console.error(
+            "Supabase client not available for teacher attendance chart."
+        );
+        return;
+    }
+
+    // ==========================================
+    // GET LOGGED-IN TEACHER
+    // ==========================================
+
+    let teacher = {};
+
+    try {
+
+        teacher =
+            JSON.parse(
+                localStorage.getItem(
+                    "loggedInTeacher"
+                )
+            ) || {};
+
+    } catch (error) {
+
+        console.error(
+            "Teacher session error:",
+            error
+        );
+
+        return;
+    }
+
+    const teacherClass =
+        String(
+            teacher.teacherClass ||
+            ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+    // ==========================================
+    // GET STUDENTS
+    // ==========================================
+
+    const {
+        data: students,
+        error: studentsError
+    } =
+        await supabaseClient
+            .from("students")
+            .select("*");
+
+    if (studentsError) {
+
+        console.error(
+            "Teacher chart students error:",
+            studentsError
+        );
+
+        return;
+    }
+
+
+    // ==========================================
+    // FILTER ASSIGNED STUDENTS
+    // ==========================================
+
+    const assignedStudents =
+        (students || []).filter(
+            function (student) {
+
+                const studentClass =
+                    String(
+                        student.studentClass ||
+                        ""
+                    )
+                    .trim()
+                    .toLowerCase();
+
+                if (
+                    !teacherClass ||
+                    teacherClass ===
+                    "not assigned"
+                ) {
+                    return true;
+                }
+
+                return (
+                    studentClass ===
+                    teacherClass ||
+                    studentClass ===
+                    "class " +
+                    teacherClass
+                );
+            }
+        );
+
+
+    const studentIds =
+        assignedStudents
+            .map(function (student) {
+                return student.id;
+            })
+            .filter(function (id) {
+                return id !== null &&
+                       id !== undefined;
+            });
+
+
+    // ==========================================
+    // BUILD CHART PERIOD
+    // ==========================================
+
+    const selectedPeriod =
+        periodSelect
+            ? periodSelect.value
+            : "week";
+
+    const now =
+        new Date();
+
+
+    let points = [];
+
+
+    // ==========================================
+    // THIS WEEK
+    // ==========================================
+
+    if (
+        selectedPeriod ===
+        "week"
+    ) {
+
+        const day =
+            now.getDay();
+
+        const mondayOffset =
+            day === 0
+                ? -6
+                : 1 - day;
+
+        const monday =
+            new Date(now);
+
+        monday.setDate(
+            now.getDate() +
+            mondayOffset
+        );
+
+        monday.setHours(
+            0,
+            0,
+            0,
+            0
+        );
+
+
+        for (
+            let i = 0;
+            i < 5;
+            i++
+        ) {
+
+            const start =
+                new Date(
+                    monday
+                );
+
+            start.setDate(
+                monday.getDate() +
+                i
+            );
+
+            const end =
+                new Date(
+                    start
+                );
+
+            end.setDate(
+                start.getDate() +
+                1
+            );
+
+            points.push({
+
+                start: start,
+
+                end: end,
+
+                label:
+                    start.toLocaleDateString(
+                        "en-US",
+                        {
+                            weekday:
+                                "short"
+                        }
+                    )
+
+            });
+
+        }
+
+    }
+
+
+    // ==========================================
+    // THIS MONTH
+    // ==========================================
+
+    else {
+
+        const monthStart =
+            new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                1
+            );
+
+        const nextMonth =
+            new Date(
+                now.getFullYear(),
+                now.getMonth() + 1,
+                1
+            );
+
+        const totalDays =
+            Math.ceil(
+                (
+                    nextMonth -
+                    monthStart
+                ) /
+                (
+                    1000 *
+                    60 *
+                    60 *
+                    24
+                )
+            );
+
+
+        for (
+            let i = 0;
+            i < 5;
+            i++
+        ) {
+
+            const start =
+                new Date(
+                    monthStart
+                );
+
+            start.setDate(
+                1 +
+                Math.floor(
+                    (
+                        i *
+                        totalDays
+                    ) /
+                    5
+                )
+            );
+
+            const end =
+                new Date(
+                    monthStart
+                );
+
+            end.setDate(
+                1 +
+                Math.floor(
+                    (
+                        (i + 1) *
+                        totalDays
+                    ) /
+                    5
+                )
+            );
+
+
+            points.push({
+
+                start: start,
+
+                end: end,
+
+                label:
+                    "Week " +
+                    (i + 1)
+
+            });
+
+        }
+
+    }
+
+
+    // ==========================================
+    // GET ATTENDANCE DATA
+    // ==========================================
+
+    let attendance = [];
+
+
+    if (
+        studentIds.length > 0
+    ) {
+
+        const firstDate =
+            points[0].start;
+
+        const lastDate =
+            points[
+                points.length - 1
+            ].end;
+
+
+        const formatDate =
+            function (date) {
+
+                return (
+                    date
+                        .toISOString()
+                        .split("T")[0]
+                );
+
+            };
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("attendance")
+                .select(
+                    `
+                    student_id,
+                    attendance_date,
+                    status
+                    `
+                )
+                .in(
+                    "student_id",
+                    studentIds
+                )
+                .gte(
+                    "attendance_date",
+                    formatDate(
+                        firstDate
+                    )
+                )
+                .lt(
+                    "attendance_date",
+                    formatDate(
+                        lastDate
+                    )
+                );
+
+
+        if (error) {
+
+            console.error(
+                "Teacher chart attendance error:",
+                error
+            );
+
+            return;
+        }
+
+
+        attendance =
+            data || [];
+
+    }
+
+
+    // ==========================================
+    // CALCULATE PRESENT / ABSENT
+    // ==========================================
+
+    points.forEach(
+        function (point) {
+
+            point.present = 0;
+
+            point.absent = 0;
+
+
+            attendance.forEach(
+                function (record) {
+
+                    const recordDate =
+                        new Date(
+                            record.attendance_date +
+                            "T00:00:00"
+                        );
+
+
+                    if (
+                        recordDate >=
+                            point.start &&
+                        recordDate <
+                            point.end
+                    ) {
+
+                        const status =
+                            String(
+                                record.status ||
+                                ""
+                            )
+                            .trim()
+                            .toLowerCase();
+
+
+                        if (
+                            status ===
+                                "present" ||
+                            status ===
+                                "p"
+                        ) {
+
+                            point.present++;
+
+                        }
+
+                        else if (
+                            status ===
+                                "absent" ||
+                            status ===
+                                "a"
+                        ) {
+
+                            point.absent++;
+
+                        }
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+    // ==========================================
+    // GET EXISTING BARS
+    // ==========================================
+
+    const presentBars =
+        chart.querySelectorAll(
+            ".teacher-present-bar"
+        );
+
+    const absentBars =
+        chart.querySelectorAll(
+            ".teacher-absent-bar"
+        );
+
+
+    const labels =
+        chart.querySelectorAll(
+            ".teacher-chart-column small"
+        );
+
+
+    // ==========================================
+    // UPDATE BARS
+    // ==========================================
+
+    points.forEach(
+        function (point, index) {
+
+            if (
+                !presentBars[index] ||
+                !absentBars[index]
+            ) {
+                return;
+            }
+
+
+            const total =
+                point.present +
+                point.absent;
+
+
+            let presentHeight = 0;
+
+            let absentHeight = 0;
+
+
+            if (total > 0) {
+
+                presentHeight =
+                    Math.round(
+                        (
+                            point.present /
+                            total
+                        ) * 100
+                    );
+
+                absentHeight =
+                    Math.round(
+                        (
+                            point.absent /
+                            total
+                        ) * 100
+                    );
+
+            }
+
+
+            presentBars[index].style.height =
+                presentHeight + "%";
+
+
+            absentBars[index].style.height =
+                absentHeight + "%";
+
+
+            presentBars[index].title =
+                "Present: " +
+                point.present;
+
+
+            absentBars[index].title =
+                "Absent: " +
+                point.absent;
+
+
+            if (labels[index]) {
+
+                labels[index].textContent =
+                    point.label;
+
+            }
+
+        }
+    );
+
+
+    // ==========================================
+    // CLEAR UNUSED BARS
+    // ==========================================
+
+    for (
+        let i = points.length;
+        i < presentBars.length;
+        i++
+    ) {
+
+        presentBars[i].style.height =
+            "0%";
+
+        absentBars[i].style.height =
+            "0%";
+
+    }
+
+}
+
+
+// =========================================================
+// TEACHER ATTENDANCE CHART INITIALIZATION
+// =========================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const periodSelect =
+            document.getElementById(
+                "teacherAttendancePeriod"
+            );
+
+
+        if (periodSelect) {
+
+            periodSelect.addEventListener(
+                "change",
+                function () {
+
+                    renderTeacherAttendanceOverview();
+
+                }
+            );
+
+        }
+
+    }
+);
+
+
+// =========================================================
+// REFRESH CHART WHEN TEACHER OPENS DASHBOARD
+// =========================================================
+
+document.addEventListener(
+    "click",
+    function (event) {
+
+        const dashboardMenu =
+            event.target.closest(
+                "#teacherDashboardMenu"
+            );
+
+
+        if (!dashboardMenu) {
+            return;
+        }
+
+
+        setTimeout(
+            function () {
+
+                renderTeacherAttendanceOverview();
+
+            },
+            150
+        );
+
+    }
+);
