@@ -40691,3 +40691,10 @@ table tbody tr:hover td {
 #teacherDashboard .teacher-search-box input::placeholder {
     color: #64748b !important;
 }
+/* ==========================================
+   FIX: FORCE-HIDE LOGIN CONTAINER
+   (overrides ".container { display:flex !important }")
+========================================== */
+.container.session-hidden {
+    display: none !important;
+}
