@@ -40438,7 +40438,7 @@ table tbody tr:hover td {
 ========================================================= */
 
 #teacherDashboard {
-    display: flex !important;
+    
     background: #0b1424 !important;
     color: #f8fafc !important;
 }
