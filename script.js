@@ -30243,43 +30243,6 @@ if (loginContainer) {
 }
 
 
-/* =========================================================
-   TEACHER LOGOUT BUTTON
-========================================================= */
-
-document.addEventListener(
-    "click",
-    function(event) {
-
-        const logoutButton =
-            event.target.closest(
-                "#teacherLogoutBtn"
-            );
-
-        if (!logoutButton) {
-            return;
-        }
-
-
-        event.preventDefault();
-        event.stopPropagation();
-
-
-        const confirmLogout =
-            confirm(
-                "Are you sure you want to logout?"
-            );
-
-
-        if (!confirmLogout) {
-            return;
-        }
-
-
-        logoutTeacher();
-
-    }
-);
 
 
 /* =========================================================
