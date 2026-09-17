@@ -3132,3 +3132,278 @@ p {
         min-width: 0;
     }
 }
+/* =========================================================
+   STEP 10 — PROFESSIONAL TEACHER DASHBOARD
+   ========================================================= */
+
+#teacherDashboard .dashboard-container {
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 24px 28px 40px;
+}
+
+/* Teacher dashboard heading */
+#teacherDashboard .dashboard-header,
+#teacherDashboard .page-header {
+    margin-bottom: 24px;
+}
+
+#teacherDashboard .dashboard-header h1,
+#teacherDashboard .page-header h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+#teacherDashboard .dashboard-header p,
+#teacherDashboard .page-header p {
+    margin: 7px 0 0;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+/* ---------------------------------------------------------
+   TEACHER STATISTICS
+   --------------------------------------------------------- */
+
+#teacherDashboard .stats-grid,
+#teacherDashboard .teacher-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+#teacherDashboard .stat-card,
+#teacherDashboard .teacher-stat-card {
+    position: relative;
+    min-width: 0;
+    min-height: 135px;
+    padding: 22px;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+#teacherDashboard .stat-card:hover,
+#teacherDashboard .teacher-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+#teacherDashboard .stat-card h3,
+#teacherDashboard .teacher-stat-card h3 {
+    margin: 0 0 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+#teacherDashboard .stat-card .stat-value,
+#teacherDashboard .teacher-stat-card .stat-value {
+    font-size: 30px;
+    font-weight: 750;
+    line-height: 1;
+    color: var(--text-primary);
+}
+
+#teacherDashboard .stat-card .stat-icon,
+#teacherDashboard .teacher-stat-card .stat-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 20px;
+}
+
+/* ---------------------------------------------------------
+   TEACHER ANALYTICS
+   --------------------------------------------------------- */
+
+#teacherDashboard .teacher-analytics-grid,
+#teacherDashboard .analytics-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(300px, 1fr);
+    gap: 20px;
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+#teacherDashboard .analytics-card {
+    min-width: 0;
+    padding: 22px;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    box-shadow: var(--shadow-sm);
+}
+
+#teacherDashboard .analytics-card .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+#teacherDashboard .analytics-card .card-header h3 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+#teacherDashboard .chart-container {
+    position: relative;
+    width: 100%;
+    min-height: 280px;
+}
+
+#teacherDashboard .chart-container canvas {
+    display: block;
+    width: 100% !important;
+    max-width: 100%;
+}
+
+/* ---------------------------------------------------------
+   ATTENDANCE SUMMARY
+   --------------------------------------------------------- */
+
+#teacherDashboard .attendance-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+#teacherDashboard .attendance-summary-item {
+    padding: 16px;
+    border-radius: 12px;
+    background: var(--surface-bg);
+    border: 1px solid var(--border-color);
+}
+
+#teacherDashboard .attendance-summary-item span {
+    display: block;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 7px;
+}
+
+#teacherDashboard .attendance-summary-item strong {
+    display: block;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* ---------------------------------------------------------
+   TEACHER DATA TABLE
+   --------------------------------------------------------- */
+
+#teacherDashboard .section-card {
+    width: 100%;
+    min-width: 0;
+    margin-bottom: 24px;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+#teacherDashboard .section-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 20px 22px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+#teacherDashboard .section-card-header h3 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+#teacherDashboard .section-card-body {
+    padding: 20px 22px;
+    min-width: 0;
+}
+
+/* ---------------------------------------------------------
+   RESPONSIVE
+   --------------------------------------------------------- */
+
+@media (max-width: 1200px) {
+
+    #teacherDashboard .stats-grid,
+    #teacherDashboard .teacher-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #teacherDashboard .teacher-analytics-grid,
+    #teacherDashboard .analytics-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 700px) {
+
+    #teacherDashboard .dashboard-container {
+        padding: 18px 14px 30px;
+    }
+
+    #teacherDashboard .stats-grid,
+    #teacherDashboard .teacher-stats-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    #teacherDashboard .stat-card,
+    #teacherDashboard .teacher-stat-card {
+        min-height: 120px;
+        padding: 18px;
+    }
+
+    #teacherDashboard .stat-card .stat-value,
+    #teacherDashboard .teacher-stat-card .stat-value {
+        font-size: 26px;
+    }
+
+    #teacherDashboard .attendance-summary {
+        grid-template-columns: 1fr;
+    }
+
+    #teacherDashboard .analytics-card {
+        padding: 17px;
+    }
+
+    #teacherDashboard .chart-container {
+        min-height: 230px;
+    }
+
+    #teacherDashboard .section-card-header {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 17px;
+    }
+
+    #teacherDashboard .section-card-body {
+        padding: 17px;
+    }
+}
