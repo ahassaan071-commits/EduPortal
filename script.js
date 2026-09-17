@@ -20660,22 +20660,11 @@ document.addEventListener(
 
 
 })();
-// ==========================================
-// TEACHER SIDEBAR - FINAL CLICK HANDLER (FIXED)
-// ==========================================
+// =========================================================
+// TEACHER SIDEBAR — FINAL NAVIGATION HANDLER
+// =========================================================
 
 document.addEventListener("click", function (event) {
-
-    const menuMap = {
-        teacherDashboardMenu: "teacherDashboard",
-        teacherStudentsMenu: "teacherStudentsSection",
-        teacherAttendanceMenu: "teacherAttendanceSection",
-        teacherAssignmentsMenu: "teacherAssignmentsSection",
-        teacherResultsMenu: "teacherResultsSection",
-        teacherNoticesMenu: "teacherNoticesSection",
-        teacherProfileMenu: "teacherProfileSection",
-        teacherSettingsMenu: "teacherSettingsSection"
-    };
 
     const menu = event.target.closest(
         "#teacherDashboardMenu, " +
@@ -20688,16 +20677,411 @@ document.addEventListener("click", function (event) {
         "#teacherSettingsMenu"
     );
 
-    if (!menu) return;
+    if (!menu) {
+        return;
+    }
 
-    const sectionId = menuMap[menu.id];
-    if (!sectionId) return;
+    const sectionId = menu.getAttribute("data-section");
+
+    if (!sectionId) {
+        return;
+    }
 
     if (typeof window.openTeacherPanel === "function") {
-        window.openTeacherPanel(sectionId, menu, event);
+
+        window.openTeacherPanel(
+            sectionId,
+            menu,
+            event
+        );
+
     }
+
 });
 
+
+// =========================================================
+// TEACHER SIDEBAR — OPEN PANEL
+// =========================================================
+
+window.openTeacherPanel = function (
+    sectionId,
+    menuElement,
+    event
+) {
+
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    const dashboard =
+        document.getElementById("teacherDashboard");
+
+    if (!dashboard) {
+        console.error(
+            "Teacher Dashboard not found."
+        );
+        return;
+    }
+
+
+    // =====================================================
+    // ALL TEACHER SECTIONS
+    // =====================================================
+
+    const sections = [
+        "teacherDashboardHome",
+        "teacherStudentsSection",
+        "teacherAttendanceSection",
+        "teacherAssignmentsSection",
+        "teacherResultsSection",
+        "teacherNoticesSection",
+        "teacherProfileSection",
+        "teacherSettingsSection"
+    ];
+
+
+    // =====================================================
+    // HIDE ALL SECTIONS
+    // =====================================================
+
+    sections.forEach(function (id) {
+
+        const section =
+            document.getElementById(id);
+
+        if (!section) {
+            return;
+        }
+
+        section.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+
+        section.style.setProperty(
+            "visibility",
+            "hidden",
+            "important"
+        );
+
+        section.style.setProperty(
+            "opacity",
+            "0",
+            "important"
+        );
+
+    });
+
+
+    // =====================================================
+    // REMOVE ACTIVE FROM ALL SIDEBAR ITEMS
+    // =====================================================
+
+    document.querySelectorAll(
+        "#teacherDashboardMenu, " +
+        "#teacherStudentsMenu, " +
+        "#teacherAttendanceMenu, " +
+        "#teacherAssignmentsMenu, " +
+        "#teacherResultsMenu, " +
+        "#teacherNoticesMenu, " +
+        "#teacherProfileMenu, " +
+        "#teacherSettingsMenu"
+    ).forEach(function (item) {
+
+        item.classList.remove("active");
+
+    });
+
+
+    // =====================================================
+    // SHOW SELECTED SECTION
+    // =====================================================
+
+    const selected =
+        document.getElementById(sectionId);
+
+    if (!selected) {
+
+        console.error(
+            "Teacher section not found:",
+            sectionId
+        );
+
+        return;
+    }
+
+
+    selected.style.setProperty(
+        "display",
+        "block",
+        "important"
+    );
+
+    selected.style.setProperty(
+        "visibility",
+        "visible",
+        "important"
+    );
+
+    selected.style.setProperty(
+        "opacity",
+        "1",
+        "important"
+    );
+
+    selected.style.setProperty(
+        "position",
+        "relative",
+        "important"
+    );
+
+    selected.style.setProperty(
+        "width",
+        "100%",
+        "important"
+    );
+
+    selected.style.setProperty(
+        "margin-left",
+        "0",
+        "important"
+    );
+
+    selected.style.setProperty(
+        "margin-right",
+        "0",
+        "important"
+    );
+
+    selected.style.setProperty(
+        "box-sizing",
+        "border-box",
+        "important"
+    );
+
+
+    // =====================================================
+    // ACTIVE SIDEBAR ITEM
+    // =====================================================
+
+    if (menuElement) {
+        menuElement.classList.add("active");
+    }
+
+
+    // =====================================================
+    // UPDATE PAGE TITLE
+    // =====================================================
+
+    const pageTitle =
+        document.getElementById(
+            "teacherPageTitle"
+        );
+
+    const titleMap = {
+
+        teacherDashboardHome:
+            "Dashboard",
+
+        teacherStudentsSection:
+            "My Students",
+
+        teacherAttendanceSection:
+            "Attendance",
+
+        teacherAssignmentsSection:
+            "Assignments",
+
+        teacherResultsSection:
+            "Results",
+
+        teacherNoticesSection:
+            "Notices",
+
+        teacherProfileSection:
+            "My Profile",
+
+        teacherSettingsSection:
+            "Settings"
+
+    };
+
+
+    if (pageTitle) {
+
+        pageTitle.textContent =
+            titleMap[sectionId] ||
+            "Teacher Portal";
+
+    }
+
+
+    // =====================================================
+    // LOAD SECTION DATA
+    // =====================================================
+
+    setTimeout(function () {
+
+        if (
+            sectionId ===
+            "teacherDashboardHome"
+        ) {
+
+            if (
+                typeof loadTeacherDashboardData ===
+                "function"
+            ) {
+
+                loadTeacherDashboardData();
+
+            }
+
+        }
+
+
+        if (
+            sectionId ===
+            "teacherStudentsSection"
+        ) {
+
+            if (
+                typeof loadTeacherMyStudents ===
+                "function"
+            ) {
+
+                loadTeacherMyStudents();
+
+            }
+
+        }
+
+
+        if (
+            sectionId ===
+            "teacherAttendanceSection"
+        ) {
+
+            if (
+                typeof setTeacherAttendanceDate ===
+                "function"
+            ) {
+
+                setTeacherAttendanceDate();
+
+            }
+
+            if (
+                typeof loadTeacherAttendanceSection ===
+                "function"
+            ) {
+
+                loadTeacherAttendanceSection();
+
+            }
+
+        }
+
+
+        if (
+            sectionId ===
+            "teacherAssignmentsSection"
+        ) {
+
+            if (
+                typeof loadTeacherAssignments ===
+                "function"
+            ) {
+
+                loadTeacherAssignments();
+
+            }
+
+        }
+
+
+        if (
+            sectionId ===
+            "teacherResultsSection"
+        ) {
+
+            if (
+                typeof loadTeacherResults ===
+                "function"
+            ) {
+
+                loadTeacherResults();
+
+            }
+
+        }
+
+
+        if (
+            sectionId ===
+            "teacherNoticesSection"
+        ) {
+
+            if (
+                typeof loadTeacherNotices ===
+                "function"
+            ) {
+
+                loadTeacherNotices();
+
+            }
+
+        }
+
+
+        if (
+            sectionId ===
+            "teacherProfileSection"
+        ) {
+
+            if (
+                typeof loadTeacherProfile ===
+                "function"
+            ) {
+
+                loadTeacherProfile();
+
+            }
+
+        }
+
+
+        if (
+            sectionId ===
+            "teacherSettingsSection"
+        ) {
+
+            if (
+                typeof loadTeacherSettings ===
+                "function"
+            ) {
+
+                loadTeacherSettings();
+
+            }
+
+        }
+
+    }, 50);
+
+
+    // =====================================================
+    // SCROLL TO TOP
+    // =====================================================
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+};
 
 // ==========================================
 // ADMIN USER MANAGEMENT
