@@ -4287,7 +4287,8 @@ body.dark-mode .login-side-panel {
 ============================== */
 
 body:not(.dark-mode) {
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .container {
@@ -4319,7 +4320,9 @@ body:not(.dark-mode) {
     margin: 0;
     padding: 20px !important;
     box-sizing: border-box;
-    overflow: hidden;
+    overflow-x: hidden;
+overflow-y: auto;
+height: auto;
 }
 
 /* Main split layout */
