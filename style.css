@@ -31182,110 +31182,193 @@ table tbody tr:hover td {
 }
 
 
-/* ---------------------------------------------------------
-   TOP HEADER
---------------------------------------------------------- */
+/* ---------- TOP HEADER ---------- */
 
 #teacherDashboard .top-header {
-    position: sticky !important;
+    width: auto !important;
+    min-height: 100px !important;
 
-    top: 0 !important;
-
-    z-index: 100 !important;
-
-    width: calc(100% + 76px) !important;
-
-    margin-left: -38px !important;
-    margin-right: -38px !important;
-
-    min-height: 145px !important;
-
-    padding: 28px 38px !important;
+    margin: -25px -35px 30px !important;
+    padding: 18px 35px !important;
 
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
 
-    background:
-        linear-gradient(
-            135deg,
-            #1e293b 0%,
-            #202d42 100%
-        ) !important;
+    background: linear-gradient(
+        135deg,
+        #dbe7ff 0%,
+        #eef4ff 100%
+    ) !important;
 
-    border-bottom:
-        1px solid rgba(255, 255, 255, 0.06) !important;
+    border-bottom: 1px solid rgba(37,99,235,.12) !important;
 
     box-shadow:
-        0 8px 30px rgba(15, 23, 42, 0.12) !important;
+        0 8px 25px rgba(15,23,42,.06) !important;
+
+    box-sizing: border-box !important;
 }
 
 
-/* Header Title */
+/* ---------- HEADER LEFT ---------- */
+
+#teacherDashboard .top-header > div:first-child {
+    flex: 1 !important;
+}
 
 #teacherDashboard .top-header h1 {
-    margin: 0 !important;
+    margin: 0 0 5px !important;
 
-    color: #ffffff !important;
+    color: #172554 !important;
 
-    font-size: 34px !important;
-    line-height: 1.15 !important;
+    font-family:
+        "Poppins",
+        "Segoe UI",
+        sans-serif !important;
 
+    font-size: 30px !important;
     font-weight: 700 !important;
 
-    letter-spacing: -0.8px !important;
+    line-height: 1.2 !important;
 }
-
-
-/* Header Subtitle */
 
 #teacherDashboard .top-header p {
-    margin: 8px 0 0 !important;
+    margin: 0 !important;
 
-    color: #cbd5e1 !important;
+    color: #64748b !important;
 
-    font-size: 15px !important;
+    font-family:
+        "Poppins",
+        "Segoe UI",
+        sans-serif !important;
 
-    font-weight: 500 !important;
+    font-size: 14px !important;
 }
 
 
+/* ---------- HEADER RIGHT ---------- */
 
-
-/* Keep Header Full Width */
-
-#teacherDashboard .main-content > .top-header {
-    max-width: none !important;
+#teacherDashboard .top-header .profile-box {
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
 }
 
 
-/* ---------------------------------------------------------
-   WELCOME / HERO CARD
---------------------------------------------------------- */
+/* ---------- NOTIFICATION ---------- */
 
-#teacherDashboard .welcome-banner,
-#teacherDashboard .teacher-welcome-banner {
-    margin-top: 30px !important;
-    margin-bottom: 26px !important;
+#teacherDashboard .teacher-notification-btn {
+    width: 50px !important;
+    height: 50px !important;
 
-    padding: 30px 34px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 
-    border-radius: 20px !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 50% !important;
+
+    background: #ffffff !important;
+    color: #334155 !important;
+
+    box-shadow:
+        0 6px 18px rgba(15,23,42,.06) !important;
+
+    font-size: 16px !important;
+}
+
+
+/* ---------- PROFILE ---------- */
+
+#teacherDashboard .profile-circle,
+#teacherDashboard .teacher-avatar {
+    width: 50px !important;
+    height: 50px !important;
+
+    min-width: 50px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border-radius: 50% !important;
 
     background:
         linear-gradient(
             135deg,
-            #2563eb 0%,
-            #3155c9 100%
+            #2563eb,
+            #3b82f6
         ) !important;
+
+    border: 3px solid #dbeafe !important;
 
     color: #ffffff !important;
 
+    font-size: 16px !important;
+    font-weight: 600 !important;
+
     box-shadow:
-        0 14px 35px rgba(37, 99, 235, 0.18) !important;
+        0 6px 18px rgba(37,99,235,.20) !important;
 }
 
 
+/* ---------- TEACHER INFO ---------- */
+
+#teacherDashboard .teacher-header-info strong {
+    display: block !important;
+
+    color: #172554 !important;
+
+    font-family:
+        "Poppins",
+        "Segoe UI",
+        sans-serif !important;
+
+    font-size: 14px !important;
+    font-weight: 700 !important;
+}
+
+#teacherDashboard .teacher-header-info small {
+    display: block !important;
+
+    margin-top: 2px !important;
+
+    color: #64748b !important;
+
+    font-size: 12px !important;
+}
+
+
+/* ---------- LOGOUT ---------- */
+
+#teacherDashboard .teacher-header-logout {
+    width: 50px !important;
+    height: 50px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border: 1px solid #fecaca !important;
+    border-radius: 12px !important;
+
+    background: #ffffff !important;
+
+    color: #64748b !important;
+
+    box-shadow:
+        0 6px 18px rgba(15,23,42,.05) !important;
+
+    cursor: pointer !important;
+}
+
+#teacherDashboard .teacher-header-logout:hover {
+    background: #fef2f2 !important;
+    color: #dc2626 !important;
+}
+
+
+/* ---------- DASHBOARD CARDS ---------- */
 /* ---------------------------------------------------------
    DASHBOARD CARDS
 --------------------------------------------------------- */
