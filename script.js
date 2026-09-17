@@ -31323,6 +31323,55 @@ if (attendanceElement) {
 
 }
 
+
+// ==========================================
+// UPDATE TEACHER DASHBOARD STATISTICS
+// ==========================================
+
+const teacherPresentCard =
+    document.getElementById("teacherTotalPresent");
+
+const teacherAbsentCard =
+    document.getElementById("teacherTotalAbsent");
+
+const teacherClassesCard =
+    document.getElementById("teacherTotalClasses");
+
+if (teacherPresentCard) {
+    teacherPresentCard.textContent =
+        presentStudents;
+}
+
+if (teacherAbsentCard) {
+    teacherAbsentCard.textContent =
+        Math.max(
+            0,
+            assignedStudents.length -
+            markedStudents
+        );
+}
+
+if (teacherClassesCard) {
+    const uniqueClasses =
+        new Set(
+            assignedStudents.map(function (student) {
+                return String(
+                    student.studentClass ||
+                    ""
+                )
+                .trim()
+                .toLowerCase();
+            })
+            .filter(function (className) {
+                return className !== "";
+            })
+        );
+
+    teacherClassesCard.textContent =
+        uniqueClasses.size;
+}
+
+
 }
 // ==========================================
 // USER MANAGEMENT - EDIT USER
