@@ -31435,10 +31435,28 @@ if (chartPeriod) {
 // TODAY'S ATTENDANCE - LIVE SUPABASE DATA
 // =====================================================
 
+const dashboardDateInput =
+    document.getElementById(
+        "teacherDashboardDateFilter"
+    );
+
 const today =
     new Date()
         .toISOString()
         .split("T")[0];
+
+if (
+    dashboardDateInput &&
+    !dashboardDateInput.value
+) {
+    dashboardDateInput.value = today;
+}
+
+const selectedDashboardDate =
+    dashboardDateInput &&
+    dashboardDateInput.value
+        ? dashboardDateInput.value
+        : today;
 
 let markedStudents = 0;
 let presentStudents = 0;
