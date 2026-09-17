@@ -1,0 +1,896 @@
+/* =========================================================
+   EDUPORTAL — UNIFIED DESIGN SYSTEM
+   STEP 1: GLOBAL FOUNDATION
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* =========================
+   ROOT VARIABLES
+   ========================= */
+
+:root {
+    /* Brand */
+    --ep-primary: #2563eb;
+    --ep-primary-dark: #1d4ed8;
+    --ep-primary-light: #eff6ff;
+
+    /* Background */
+    --ep-bg: #f5f7fb;
+    --ep-surface: #ffffff;
+    --ep-surface-soft: #f8fafc;
+
+    /* Text */
+    --ep-text: #111827;
+    --ep-text-secondary: #64748b;
+    --ep-text-muted: #94a3b8;
+
+    /* Border */
+    --ep-border: #e5e7eb;
+    --ep-border-light: #eef2f7;
+
+    /* Status */
+    --ep-success: #16a34a;
+    --ep-success-bg: #f0fdf4;
+
+    --ep-danger: #dc2626;
+    --ep-danger-bg: #fef2f2;
+
+    --ep-warning: #d97706;
+    --ep-warning-bg: #fffbeb;
+
+    --ep-info: #0284c7;
+    --ep-info-bg: #f0f9ff;
+
+    /* Sidebar */
+    --ep-sidebar-width: 260px;
+    --ep-sidebar-bg: #0f172a;
+    --ep-sidebar-hover: #1e293b;
+    --ep-sidebar-active: #2563eb;
+
+    /* Header */
+    --ep-header-height: 72px;
+
+    /* Radius */
+    --ep-radius-sm: 8px;
+    --ep-radius-md: 12px;
+    --ep-radius-lg: 16px;
+
+    /* Shadow */
+    --ep-shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+    --ep-shadow-md: 0 4px 16px rgba(15, 23, 42, 0.08);
+    --ep-shadow-lg: 0 10px 30px rgba(15, 23, 42, 0.10);
+
+    /* Transition */
+    --ep-transition: 0.2s ease;
+}
+
+
+/* =========================
+   RESET
+   ========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--ep-bg);
+    color: var(--ep-text);
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+
+/* =========================
+   TYPOGRAPHY
+   ========================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--ep-text);
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+h1 {
+    font-size: 28px;
+}
+
+h2 {
+    font-size: 22px;
+}
+
+h3 {
+    font-size: 18px;
+}
+
+h4 {
+    font-size: 16px;
+}
+
+p {
+    color: var(--ep-text-secondary);
+}
+
+
+/* =========================
+   COMMON CARD
+   ========================= */
+
+.ep-card {
+    background: var(--ep-surface);
+    border: 1px solid var(--ep-border);
+    border-radius: var(--ep-radius-lg);
+    box-shadow: var(--ep-shadow-sm);
+}
+
+
+/* =========================
+   COMMON BUTTON
+   ========================= */
+
+.ep-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    min-height: 40px;
+    padding: 0 16px;
+
+    border: 1px solid transparent;
+    border-radius: var(--ep-radius-sm);
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition:
+        background var(--ep-transition),
+        border-color var(--ep-transition),
+        color var(--ep-transition),
+        transform var(--ep-transition),
+        box-shadow var(--ep-transition);
+}
+
+.ep-btn:hover {
+    transform: translateY(-1px);
+}
+
+.ep-btn-primary {
+    background: var(--ep-primary);
+    color: #ffffff;
+}
+
+.ep-btn-primary:hover {
+    background: var(--ep-primary-dark);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.22);
+}
+
+.ep-btn-secondary {
+    background: #ffffff;
+    color: var(--ep-text);
+    border-color: var(--ep-border);
+}
+
+.ep-btn-secondary:hover {
+    background: var(--ep-surface-soft);
+}
+
+
+/* =========================
+   COMMON INPUTS
+   ========================= */
+
+.ep-input,
+.ep-select,
+.ep-textarea {
+    width: 100%;
+    border: 1px solid var(--ep-border);
+    background: #ffffff;
+    color: var(--ep-text);
+
+    border-radius: var(--ep-radius-sm);
+
+    outline: none;
+    font-size: 14px;
+
+    transition:
+        border-color var(--ep-transition),
+        box-shadow var(--ep-transition);
+}
+
+.ep-input,
+.ep-select {
+    height: 42px;
+    padding: 0 12px;
+}
+
+.ep-textarea {
+    min-height: 100px;
+    padding: 12px;
+    resize: vertical;
+}
+
+.ep-input:focus,
+.ep-select:focus,
+.ep-textarea:focus {
+    border-color: var(--ep-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+
+/* =========================
+   COMMON TABLE
+   ========================= */
+
+.ep-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    background: #ffffff;
+    border: 1px solid var(--ep-border);
+    border-radius: var(--ep-radius-lg);
+}
+
+.ep-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+
+.ep-table th {
+    background: #f8fafc;
+    color: #475569;
+
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--ep-border);
+    text-align: left;
+}
+
+.ep-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--ep-border-light);
+    color: var(--ep-text);
+    font-size: 14px;
+}
+
+.ep-table tbody tr {
+    transition: background var(--ep-transition);
+}
+
+.ep-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.ep-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* =========================
+   COMMON BADGES
+   ========================= */
+
+.ep-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 4px 9px;
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.ep-badge-success {
+    color: #15803d;
+    background: var(--ep-success-bg);
+}
+
+.ep-badge-danger {
+    color: #b91c1c;
+    background: var(--ep-danger-bg);
+}
+
+.ep-badge-warning {
+    color: #b45309;
+    background: var(--ep-warning-bg);
+}
+
+.ep-badge-info {
+    color: #0369a1;
+    background: var(--ep-info-bg);
+}
+
+
+/* =========================
+   COMMON PAGE AREA
+   ========================= */
+
+.ep-page-title {
+    margin-bottom: 20px;
+}
+
+.ep-page-title h1,
+.ep-page-title h2 {
+    margin-bottom: 5px;
+}
+
+.ep-page-title p {
+    font-size: 13px;
+}
+
+
+/* =========================
+   SCROLLBAR
+   ========================= */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+
+/* =========================
+   SELECTION
+   ========================= */
+
+::selection {
+    background: rgba(37, 99, 235, 0.18);
+}
+
+
+/* =========================
+   RESPONSIVE FOUNDATION
+   ========================= */
+
+@media (max-width: 1024px) {
+
+    :root {
+        --ep-sidebar-width: 240px;
+    }
+
+    h1 {
+        font-size: 25px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    body {
+        font-size: 13px;
+    }
+
+    h1 {
+        font-size: 23px;
+    }
+
+    h2 {
+        font-size: 19px;
+    }
+
+    .ep-card {
+        border-radius: var(--ep-radius-md);
+    }
+}
+
+
+@media (max-width: 480px) {
+
+    h1 {
+        font-size: 21px;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    .ep-btn {
+        min-height: 38px;
+        padding: 0 13px;
+    }
+}
+/* =========================================================
+   EDUPORTAL — STEP 2
+   UNIFIED SIDEBAR SYSTEM
+   ========================================================= */
+
+/* =========================
+   ALL DASHBOARD SIDEBARS
+   ========================= */
+
+.sidebar,
+.admin-sidebar,
+.teacher-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: var(--ep-sidebar-width);
+    height: 100vh;
+
+    background: var(--ep-sidebar-bg);
+    color: #ffffff;
+
+    z-index: 1000;
+
+    display: flex;
+    flex-direction: column;
+
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
+/* =========================
+   SIDEBAR BRAND
+   ========================= */
+
+.sidebar > h2,
+.admin-sidebar > h2,
+.teacher-sidebar-brand {
+    min-height: 72px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 22px;
+
+    color: #ffffff;
+
+    font-size: 18px;
+    font-weight: 800;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+
+    flex-shrink: 0;
+}
+
+
+/* Student / Admin Brand */
+
+.sidebar > h2,
+.admin-sidebar > h2 {
+    margin: 0;
+}
+
+
+/* Teacher Brand */
+
+.teacher-sidebar-brand {
+    gap: 12px;
+}
+
+.teacher-sidebar-brand > div:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.teacher-sidebar-brand h2 {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.teacher-sidebar-brand span {
+    color: #94a3b8;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+
+/* Teacher Brand Icon */
+
+.teacher-brand-icon {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: var(--ep-primary);
+    color: #ffffff;
+
+    flex-shrink: 0;
+}
+
+.teacher-brand-icon i {
+    font-size: 16px;
+}
+
+
+/* =========================
+   SIDEBAR NAV CONTAINERS
+   ========================= */
+
+.sidebar > ul,
+.admin-sidebar > ul,
+.teacher-sidebar-nav {
+    margin: 0;
+    padding: 16px 12px;
+}
+
+
+/* Teacher Navigation */
+
+.teacher-sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    min-height: calc(100vh - 72px);
+}
+
+.teacher-sidebar-nav > ul {
+    margin: 0;
+    padding: 0;
+}
+
+
+/* =========================
+   COMMON SIDEBAR ITEMS
+   ========================= */
+
+.sidebar li,
+.admin-sidebar li,
+.teacher-sidebar-nav li {
+    position: relative;
+
+    min-height: 44px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 4px;
+    padding: 0 14px;
+
+    border-radius: 9px;
+
+    color: #cbd5e1;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background var(--ep-transition),
+        color var(--ep-transition),
+        transform var(--ep-transition);
+}
+
+
+/* =========================
+   SIDEBAR ICONS
+   ========================= */
+
+.sidebar li,
+.admin-sidebar li {
+    font-size: 13px;
+}
+
+.teacher-sidebar-nav li i {
+    width: 18px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #94a3b8;
+
+    font-size: 14px;
+
+    flex-shrink: 0;
+
+    transition: color var(--ep-transition);
+}
+
+
+/* =========================
+   HOVER
+   ========================= */
+
+.sidebar li:hover,
+.admin-sidebar li:hover,
+.teacher-sidebar-nav li:hover {
+    background: var(--ep-sidebar-hover);
+    color: #ffffff;
+}
+
+.teacher-sidebar-nav li:hover i {
+    color: #ffffff;
+}
+
+
+/* =========================
+   ACTIVE ITEM
+   ========================= */
+
+.sidebar li.active,
+.admin-sidebar li.active,
+.teacher-sidebar-nav li.active {
+    background: var(--ep-sidebar-active);
+    color: #ffffff;
+
+    box-shadow:
+        0 4px 12px rgba(37, 99, 235, 0.18);
+}
+
+
+/* Active teacher icon */
+
+.teacher-sidebar-nav li.active i {
+    color: #ffffff;
+}
+
+
+/* =========================
+   ACTIVE LEFT INDICATOR
+   ========================= */
+
+.sidebar li.active::before,
+.admin-sidebar li.active::before,
+.teacher-sidebar-nav li.active::before {
+    content: "";
+
+    position: absolute;
+    left: 0;
+
+    width: 3px;
+    height: 22px;
+
+    background: #ffffff;
+
+    border-radius: 0 4px 4px 0;
+}
+
+
+/* =========================
+   SIDEBAR BOTTOM
+   ========================= */
+
+.teacher-sidebar-bottom {
+    margin-top: auto !important;
+    padding-top: 14px !important;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+
+/* =========================
+   LOGOUT
+   ========================= */
+
+#logoutBtn,
+#adminLogoutBtn,
+#teacherLogoutMenu {
+    color: #fca5a5;
+}
+
+#logoutBtn:hover,
+#adminLogoutBtn:hover,
+#teacherLogoutMenu:hover {
+    background: rgba(220, 38, 38, 0.12);
+    color: #fecaca;
+}
+
+#teacherLogoutMenu i {
+    color: #f87171;
+}
+
+
+/* =========================
+   SIDEBAR SCROLLBAR
+   ========================= */
+
+.sidebar::-webkit-scrollbar,
+.admin-sidebar::-webkit-scrollbar,
+.teacher-sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+
+.sidebar::-webkit-scrollbar-track,
+.admin-sidebar::-webkit-scrollbar-track,
+.teacher-sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb,
+.admin-sidebar::-webkit-scrollbar-thumb,
+.teacher-sidebar::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 20px;
+}
+
+
+/* =========================================================
+   MAIN CONTENT OFFSET
+   ========================================================= */
+
+/* Student */
+
+.main-content {
+    margin-left: var(--ep-sidebar-width);
+    min-height: 100vh;
+
+    background: var(--ep-bg);
+}
+
+
+/* Admin */
+
+.admin-main-content {
+    margin-left: var(--ep-sidebar-width);
+    min-height: 100vh;
+
+    background: var(--ep-bg);
+}
+
+
+/* Teacher */
+
+.teacher-main-content {
+    margin-left: var(--ep-sidebar-width);
+    min-height: 100vh;
+
+    background: var(--ep-bg);
+}
+
+
+/* =========================
+   SIDEBAR RESPONSIVE
+   ========================= */
+
+@media (max-width: 900px) {
+
+    .sidebar,
+    .admin-sidebar,
+    .teacher-sidebar {
+        width: 240px;
+    }
+
+    .main-content,
+    .admin-main-content,
+    .teacher-main-content {
+        margin-left: 240px;
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    .sidebar,
+    .admin-sidebar,
+    .teacher-sidebar {
+        width: 250px;
+
+        transform: translateX(-100%);
+
+        transition: transform 0.25s ease;
+    }
+
+    .main-content,
+    .admin-main-content,
+    .teacher-main-content {
+        margin-left: 0;
+    }
+
+    /*
+       Existing JavaScript can add its own open/active class.
+       These common selectors support the most common patterns.
+    */
+
+    .sidebar.open,
+    .admin-sidebar.open,
+    .teacher-sidebar.open,
+    .sidebar.active,
+    .admin-sidebar.active,
+    .teacher-sidebar.active {
+        transform: translateX(0);
+    }
+}
+
+
+/* =========================
+   VERY SMALL SCREENS
+   ========================= */
+
+@media (max-width: 480px) {
+
+    .sidebar,
+    .admin-sidebar,
+    .teacher-sidebar {
+        width: 235px;
+    }
+
+    .sidebar > h2,
+    .admin-sidebar > h2,
+    .teacher-sidebar-brand {
+        min-height: 64px;
+        padding: 0 17px;
+    }
+
+    .sidebar > ul,
+    .admin-sidebar > ul,
+    .teacher-sidebar-nav {
+        padding-left: 9px;
+        padding-right: 9px;
+    }
+
+    .sidebar li,
+    .admin-sidebar li,
+    .teacher-sidebar-nav li {
+        min-height: 42px;
+        padding: 0 12px;
+    }
+}
