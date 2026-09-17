@@ -3078,3 +3078,57 @@ p {
         flex-basis: 34px;
     }
 }
+/* =========================================================
+   STEP 9 — DASHBOARD ROLE CONTAINERS
+   Keeps Admin / Teacher / Student dashboards isolated
+   ========================================================= */
+
+#adminDashboard,
+#teacherDashboard,
+#studentDashboard {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/* Dashboard content should never create horizontal overflow */
+#adminDashboard *,
+#teacherDashboard *,
+#studentDashboard * {
+    box-sizing: border-box;
+}
+
+/* Main dashboard content areas */
+#adminDashboard .main-content,
+#teacherDashboard .main-content,
+#studentDashboard .main-content {
+    min-width: 0;
+    width: 100%;
+}
+
+/* Prevent hidden dashboard content from affecting layout */
+#adminDashboard[style*="display: none"],
+#teacherDashboard[style*="display: none"],
+#studentDashboard[style*="display: none"] {
+    display: none !important;
+}
+
+/* Mobile dashboard protection */
+@media (max-width: 768px) {
+
+    #adminDashboard,
+    #teacherDashboard,
+    #studentDashboard {
+        width: 100%;
+        min-width: 0;
+        overflow-x: hidden;
+    }
+
+    #adminDashboard .main-content,
+    #teacherDashboard .main-content,
+    #studentDashboard .main-content {
+        width: 100%;
+        min-width: 0;
+    }
+}
