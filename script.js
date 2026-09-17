@@ -40824,136 +40824,62 @@ setInterval(
     60000
 );
 // =========================================================
-// TEACHER HEADER PROFILE DROPDOWN
+// TEACHER HEADER PROFILE + LOGOUT
 // =========================================================
 
-document.addEventListener(
-    "click",
-    function (event) {
+document.addEventListener("click", function (event) {
 
-        const profileButton =
-            event.target.closest(
-                "#teacherHeaderProfileBtn"
-            );
-
-        const dropdown =
-            document.getElementById(
-                "teacherHeaderDropdown"
-            );
-
-        if (!dropdown) {
-            return;
-        }
-
-
-
-
-/* =========================================================
-   TEACHER LIVE DATE — SAFE INITIALIZATION
-========================================================= */
-
-function initializeTeacherLiveDate() {
-
-    updateTeacherLiveDate();
-
-    /*
-       If the header is not ready yet,
-       try again shortly.
-    */
-    setTimeout(function () {
-
-        updateTeacherLiveDate();
-
-    }, 300);
-
-    setTimeout(function () {
-
-        updateTeacherLiveDate();
-
-    }, 1000);
-}
-
-
-/* Run only after HTML/DOM is ready */
-
-if (document.readyState === "loading") {
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        initializeTeacherLiveDate
+    // PROFILE BUTTON
+    const profileButton = event.target.closest(
+        "#teacherHeaderProfileBtn"
     );
 
-} else {
+    const dropdown = document.getElementById(
+        "teacherHeaderDropdown"
+    );
 
-    initializeTeacherLiveDate();
+    // Open / close profile dropdown
+    if (profileButton) {
 
-}
+        event.preventDefault();
 
-
-/* Keep date updated every minute */
-
-setInterval(
-    updateTeacherLiveDate,
-    60000
-);
-        // ==========================================
-        // PROFILE ICON CLICK
-        // ==========================================
-
-        if (profileButton) {
-
-            event.preventDefault();
-
-            dropdown.classList.toggle(
-                "open"
-            );
-
-            return;
+        if (dropdown) {
+            dropdown.classList.toggle("open");
         }
 
-// ==========================================
-// LOGOUT CLICK
-// ==========================================
+        return;
+    }
 
-const logoutButton =
-    event.target.closest(
+
+    // LOGOUT BUTTONS
+    const logoutButton = event.target.closest(
         "#teacherHeaderLogoutBtn, #teacherLogoutMenu"
     );
 
-if (logoutButton) {
+    if (logoutButton) {
 
-    event.preventDefault();
+        event.preventDefault();
+        event.stopPropagation();
 
-    // Close profile dropdown if it is open
-    if (dropdown) {
-        dropdown.classList.remove(
-            "open"
-        );
-    }
-
-    logoutTeacher();
-
-    return;
-}
-
-        // ==========================================
-        // CLICK OUTSIDE
-        // ==========================================
-
-        if (
-            !event.target.closest(
-                ".teacher-header-profile"
-            )
-        ) {
-
-            dropdown.classList.remove(
-                "open"
-            );
-
+        if (dropdown) {
+            dropdown.classList.remove("open");
         }
 
+        logoutTeacher();
+
+        return;
     }
-);
+
+
+    // CLICK OUTSIDE DROPDOWN
+    if (
+        dropdown &&
+        !event.target.closest(".teacher-header-profile")
+    ) {
+        dropdown.classList.remove("open");
+    }
+
+});
 // ==========================================
 // ADMIN TEACHER MODAL - CLOSE / CANCEL FIX
 // ==========================================
