@@ -22332,21 +22332,28 @@ initializeTeacherAttendanceRealtime();
 }
 
 // =========================================================
-// ATTENDANCE COUNTS
+// TEACHER DASHBOARD — ATTENDANCE COUNTS
 // =========================================================
 
 function updateTeacherAttendanceCounts() {
+
+    const tableBody =
+        document.getElementById(
+            "teacherAttendanceTableBody"
+        );
 
     let present = 0;
     let absent = 0;
     let late = 0;
 
-    document
-        .querySelectorAll(
-            "#teacherAttendanceTableBody " +
-            ".teacher-attendance-status-badge"
-        )
-        .forEach(function(badge) {
+    if (tableBody) {
+
+        const badges =
+            tableBody.querySelectorAll(
+                ".teacher-attendance-status-badge"
+            );
+
+        badges.forEach(function (badge) {
 
             const status =
                 String(
@@ -22357,43 +22364,136 @@ function updateTeacherAttendanceCounts() {
                 .trim()
                 .toLowerCase();
 
-            if (status === "present") {
+            if (
+                status === "present" ||
+                status === "p"
+            ) {
                 present++;
             }
-            else if (status === "absent") {
+
+            else if (
+                status === "absent" ||
+                status === "a"
+            ) {
                 absent++;
             }
-            else if (status === "late") {
+
+            else if (
+                status === "late" ||
+                status === "l"
+            ) {
                 late++;
             }
 
         });
+    }
+
+
+    // =====================================================
+    // TOTAL MARKED
+    // =====================================================
+
+    const totalMarked =
+        present +
+        absent +
+        late;
+
+
+    // =====================================================
+    // ATTENDANCE PERCENTAGE
+    // =====================================================
+
+    const attendancePercentage =
+        totalMarked > 0
+            ? Math.round(
+                (
+                    present /
+                    totalMarked
+                ) * 100
+            )
+            : 0;
+
+
+    // =====================================================
+    // UPDATE PRESENT
+    // =====================================================
 
     const presentElement =
         document.getElementById(
             "teacherPresentCount"
         );
 
+    if (presentElement) {
+
+        presentElement.textContent =
+            present;
+    }
+
+
+    // =====================================================
+    // UPDATE ABSENT
+    // =====================================================
+
     const absentElement =
         document.getElementById(
             "teacherAbsentCount"
         );
+
+    if (absentElement) {
+
+        absentElement.textContent =
+            absent;
+    }
+
+
+    // =====================================================
+    // UPDATE LATE
+    // =====================================================
 
     const lateElement =
         document.getElementById(
             "teacherLateCount"
         );
 
-    if (presentElement) {
-        presentElement.textContent = present;
-    }
-
-    if (absentElement) {
-        absentElement.textContent = absent;
-    }
-
     if (lateElement) {
-        lateElement.textContent = late;
+
+        lateElement.textContent =
+            late;
+    }
+
+
+    // =====================================================
+    // UPDATE ATTENDANCE PERCENTAGE
+    // =====================================================
+
+    const percentageElement =
+        document.getElementById(
+            "teacherAttendanceToday"
+        );
+
+    if (percentageElement) {
+
+        percentageElement.textContent =
+            attendancePercentage + "%";
+    }
+
+
+    // =====================================================
+    // UPDATE OPTIONAL DASHBOARD ELEMENTS
+    // =====================================================
+
+    const percentageElement2 =
+        document.getElementById(
+            "teacherAttendancePercentage"
+        );
+
+    if (
+        percentageElement2 &&
+        percentageElement2 !== percentageElement
+    ) {
+
+        percentageElement2.textContent =
+            attendancePercentage + "%";
     }
 
 }
