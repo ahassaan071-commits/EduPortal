@@ -15,6 +15,43 @@ const supabaseClient =
     );
 
 console.log("EduPortal Supabase connected ✅");
+function eduPortalShowOnly(activeId) {
+    const allDashboards = ["studentDashboard", "adminDashboard", "teacherDashboard"];
+    const loginContainer = document.querySelector(".container");
+    if (loginContainer) {
+        loginContainer.classList.add("session-hidden");
+        loginContainer.style.setProperty("display", "none", "important");
+        loginContainer.style.setProperty("visibility", "hidden", "important");
+        loginContainer.style.setProperty("opacity", "0", "important");
+    }
+    allDashboards.forEach(function (id) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (id === activeId) {
+            el.style.setProperty("display", "block", "important");
+            el.style.setProperty("visibility", "visible", "important");
+            el.style.setProperty("opacity", "1", "important");
+        } else {
+            el.style.setProperty("display", "none", "important");
+            el.style.setProperty("visibility", "hidden", "important");
+            el.style.setProperty("opacity", "0", "important");
+        }
+    });
+}
+
+function eduPortalShowLogin() {
+    const loginContainer = document.querySelector(".container");
+    if (loginContainer) {
+        loginContainer.classList.remove("session-hidden");
+        loginContainer.style.setProperty("display", "flex", "important");
+        loginContainer.style.setProperty("visibility", "visible", "important");
+        loginContainer.style.setProperty("opacity", "1", "important");
+    }
+    ["studentDashboard", "adminDashboard", "teacherDashboard"].forEach(function (id) {
+        const el = document.getElementById(id);
+        if (el) el.style.setProperty("display", "none", "important");
+    });
+}
 // ===============================
 // EduPortal Student Portal
 // ===============================
@@ -516,7 +553,7 @@ if (selectedRole === "teacher") {
             login.style.display =
                 "none";
         }
-
+eduPortalShowOnly("teacherDashboard");
 
         // Hide Admin Dashboard
         const adminDashboard =
