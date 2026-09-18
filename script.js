@@ -30174,6 +30174,9 @@ document.addEventListener(
    TEACHER LOGOUT FUNCTION
 ========================================================= */
 function logoutTeacher() {
+    document.body.style.overflowY = "auto";
+document.body.style.overflowX = "hidden";
+document.body.style.height = "auto";
 
     // ==========================================
     // REMOVE TEACHER SESSION
