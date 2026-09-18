@@ -589,6 +589,26 @@ if (selectedRole === "teacher") {
 
         teacherDashboard.style.opacity =
             "1";
+
+            // Hide login screen when Teacher Dashboard opens
+const loginContainer =
+    document.querySelector(".container");
+
+if (loginContainer) {
+
+    loginContainer.classList.add(
+        "session-hidden"
+    );
+
+    loginContainer.style.display =
+        "none";
+
+    loginContainer.style.visibility =
+        "hidden";
+
+    loginContainer.style.opacity =
+        "0";
+}
 /* Refresh Teacher Dashboard header date */
 
 setTimeout(function () {
