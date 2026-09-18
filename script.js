@@ -1298,6 +1298,7 @@ const logoutBtn = document.getElementById("logoutBtn");
 
 logoutBtn.addEventListener("click", function () {
 localStorage.removeItem("isLoggedIn");
+eduPortalShowLogin();
 
 localStorage.removeItem("loggedInRole");
 localStorage.removeItem("loggedInStudent");
@@ -5409,7 +5410,7 @@ event.target.closest("#adminLogoutBtn");
 if (!logoutButton) {
 return;
 }
-
+eduPortalShowLogin();
 
 // ==========================================
 // CLEAR LOGIN SESSION
