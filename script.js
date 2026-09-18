@@ -380,6 +380,8 @@ else if (selectedRole === "teacher") {
 
         setTimeout(function () {
 
+                        eduPortalShowOnly("adminDashboard");
+
        const login =
     document.querySelector(".container");
 
@@ -954,6 +956,8 @@ if (selectedRole === "student") {
     // ==========================================
 
     setTimeout(function () {
+
+        eduPortalShowOnly("studentDashboard");
 
  // ==========================================
 // HIDE LOGIN SCREEN
