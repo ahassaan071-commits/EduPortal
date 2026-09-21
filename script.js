@@ -23524,9 +23524,11 @@ async function loadTeacherMyStudents() {
         );
 
     if (!tableBody && !grid) {
+
         console.warn(
             "Teacher students container not found"
         );
+
         return;
     }
 
@@ -23594,10 +23596,11 @@ async function loadTeacherMyStudents() {
         );
 
         if (tableBody) {
+
             tableBody.innerHTML = `
                 <tr>
                     <td
-                        colspan="6"
+                        colspan="8"
                         style="
                             text-align:center;
                             padding:40px;
@@ -23608,6 +23611,7 @@ async function loadTeacherMyStudents() {
                     </td>
                 </tr>
             `;
+
         }
 
         return;
@@ -23671,8 +23675,10 @@ async function loadTeacherMyStudents() {
         );
 
     if (totalElement) {
+
         totalElement.textContent =
             assignedStudents.length;
+
     }
 
     const totalElement2 =
@@ -23684,8 +23690,10 @@ async function loadTeacherMyStudents() {
         totalElement2 &&
         totalElement2 !== totalElement
     ) {
+
         totalElement2.textContent =
             assignedStudents.length;
+
     }
 
     // =========================================
@@ -23739,7 +23747,9 @@ async function loadTeacherMyStudents() {
     // =========================================
 
     if (tableBody) {
+
         tableBody.innerHTML = "";
+
     }
 
     // =========================================
@@ -23756,7 +23766,7 @@ async function loadTeacherMyStudents() {
             tableBody.innerHTML = `
                 <tr>
                     <td
-                        colspan="6"
+                        colspan="8"
                         style="
                             text-align:center;
                             padding:50px;
@@ -23798,7 +23808,9 @@ async function loadTeacherMyStudents() {
                     "Active";
 
                 const statusClass =
-                    status === "Active"
+                    String(status)
+                        .toLowerCase() ===
+                    "active"
                         ? "active"
                         : "disabled";
 
@@ -23809,16 +23821,16 @@ async function loadTeacherMyStudents() {
 
                     <td>
                         ${
-                            student.student_id ||
-                            student.id ||
+                            student.name ||
+                            student.full_name ||
                             "—"
                         }
                     </td>
 
                     <td>
                         ${
-                            student.name ||
-                            student.full_name ||
+                            student.student_id ||
+                            student.id ||
                             "—"
                         }
                     </td>
@@ -23838,24 +23850,25 @@ async function loadTeacherMyStudents() {
                     </td>
 
                     <td>
+                        ${
+                            student.roll_number ||
+                            "—"
+                        }
+                    </td>
+
+                    <td>
+                        ${
+                            student.mobile ||
+                            "—"
+                        }
+                    </td>
+
+                    <td>
                         <span
                             class="status-badge ${statusClass}"
                         >
                             ${status}
                         </span>
-                    </td>
-
-                    <td>
-                        <button
-                            type="button"
-                            class="teacher-view-student-btn"
-                            data-student-id="${
-                                student.id
-                            }"
-                            title="View Student"
-                        >
-                            👁️ View
-                        </button>
                     </td>
                 `;
 
