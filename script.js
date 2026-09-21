@@ -43102,13 +43102,12 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
 
-        if (pageTitle) {
+    if (pageTitle) {
 
-            pageTitle.textContent =
-                teacherTitles[sectionId] ||
-                "Teacher Portal";
+    pageTitle.textContent =
+        "Dashboard";
 
-        }
+}
 
 
         // -----------------------------------------------
