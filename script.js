@@ -22664,7 +22664,7 @@ async function loadTeacherAttendanceSection() {
         tableBody.innerHTML = `
             <tr>
                 <td
-                    colspan="5"
+                    colspan="6"
                     style="
                         text-align:center;
                         padding:50px;
