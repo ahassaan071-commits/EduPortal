@@ -25444,23 +25444,43 @@ document.addEventListener(
     }
 );
 // =========================================================
-// CREATE / UPDATE ASSIGNMENT
+// CREATE ASSIGNMENT - NEW FORM
 // =========================================================
 
 document.addEventListener(
-    "submit",
+    "click",
     async function(event) {
 
-        if (
-            event.target.id !==
-            "teacherAssignmentForm"
-        ) {
+        const button =
+            event.target.closest(
+                "#createTeacherAssignmentBtn"
+            );
+
+        if (!button) {
             return;
         }
 
 
-        event.preventDefault();
+        // =========================================
+        // SUPABASE CHECK
+        // =========================================
 
+        if (
+            typeof supabaseClient ===
+            "undefined"
+        ) {
+
+            alert(
+                "Supabase connection is missing."
+            );
+
+            return;
+        }
+
+
+        // =========================================
+        // GET LOGGED-IN TEACHER
+        // =========================================
 
         const teacher =
             JSON.parse(
@@ -25470,9 +25490,26 @@ document.addEventListener(
             ) || {};
 
 
-        const title =
+        const teacherId =
+            teacher.id ||
+            teacher.username ||
+            teacher.email ||
+            "";
+
+
+        // =========================================
+        // GET FORM VALUES
+        // =========================================
+
+        const className =
             document.getElementById(
-                "teacherAssignmentTitle"
+                "teacherAssignmentClass"
+            )?.value.trim();
+
+
+        const sectionName =
+            document.getElementById(
+                "teacherAssignmentSection"
             )?.value.trim();
 
 
@@ -25480,12 +25517,6 @@ document.addEventListener(
             document.getElementById(
                 "teacherAssignmentSubject"
             )?.value.trim();
-
-
-        const dueDate =
-            document.getElementById(
-                "teacherAssignmentDueDate"
-            )?.value;
 
 
         const marks =
@@ -25500,10 +25531,14 @@ document.addEventListener(
             )?.value.trim();
 
 
+        // =========================================
+        // VALIDATION
+        // =========================================
+
         if (
-            !title ||
+            !className ||
+            !sectionName ||
             !subject ||
-            !dueDate ||
             !marks ||
             !description
         ) {
@@ -25513,24 +25548,12 @@ document.addEventListener(
             );
 
             return;
-
         }
 
 
-               const teacherId =
-            teacher.id ||
-            teacher.username ||
-            teacher.email ||
-            "";
-
-        const teacherClass =
-            teacher.teacherClass ||
-            "Not Assigned";
-
-
-        // =====================================
-        // FIND TEACHER IN SUPABASE
-        // =====================================
+        // =========================================
+        // FIND TEACHER
+        // =========================================
 
         const {
             data: dbTeacher,
@@ -25574,191 +25597,166 @@ document.addEventListener(
         }
 
 
-       // =====================================
-// ASSIGNMENT ID
-// =====================================
+        // =========================================
+        // CREATE ASSIGNMENT DATA
+        // =========================================
 
-const assignmentId =
-    teacherEditingAssignmentId || null;
+        const assignmentRecord = {
+
+            teacher_id:
+                dbTeacher.id,
+
+            teacher_name:
+                dbTeacher.name ||
+                teacher.name ||
+                teacher.fullName ||
+                "Teacher",
+
+            title:
+                subject + " Assignment",
+
+            subject:
+                subject,
+
+            marks:
+                Number(marks),
+
+            description:
+                description,
+
+            class_name:
+                className,
+
+            status:
+                "Pending",
+
+            updated_at:
+                new Date().toISOString()
+
+        };
 
 
-// =====================================
-// SUPABASE ASSIGNMENT DATA
-// =====================================
+        // =========================================
+        // SAVE TO SUPABASE
+        // =========================================
 
-const assignmentRecord = {
+        const {
+            data: savedAssignment,
+            error: assignmentError
+        } =
+            await supabaseClient
+                .from("assignments")
+                .insert(
+                    assignmentRecord
+                )
+                .select()
+                .single();
 
-    ...(assignmentId
-        ? {
-            id:
-                Number(assignmentId)
+
+        // =========================================
+        // SAVE ERROR
+        // =========================================
+
+        if (assignmentError) {
+
+            console.error(
+                "SUPABASE ASSIGNMENT ERROR:",
+                assignmentError
+            );
+
+            alert(
+                "Assignment Save Error:\n\n" +
+                assignmentError.message
+            );
+
+            return;
         }
-        : {}
-    ),
-
-    teacher_id:
-        dbTeacher.id,
-
-    teacher_name:
-        dbTeacher.name ||
-        teacher.name ||
-        teacher.fullName ||
-        "Teacher",
-
-    title:
-        title,
-
-    subject:
-        subject,
-
-    due_date:
-        dueDate,
-
-    marks:
-        Number(marks),
-
-    description:
-        description,
-
-    class_name:
-        dbTeacher.teacher_class ||
-        teacherClass,
-
-    status:
-        "Pending",
-
-    updated_at:
-        new Date().toISOString()
-
-};
-
-const assignmentData =
-    assignmentRecord;
-
-// =====================================
-// CREATE OR UPDATE
-// =====================================
-
-let savedAssignment;
-let assignmentError;
 
 
-if (assignmentId) {
+        // =========================================
+        // SUCCESS
+        // =========================================
 
-    // =================================
-    // UPDATE EXISTING
-    // =================================
-
-    const result =
-        await supabaseClient
-            .from("assignments")
-            .update(
-                assignmentData
-            )
-            .eq(
-                "id",
-                Number(assignmentId)
-            )
-            .select()
-            .single();
-
-    savedAssignment =
-        result.data;
-
-    assignmentError =
-        result.error;
-
-} else {
-
-    // =================================
-    // CREATE NEW
-    // =================================
-
-    const result =
-        await supabaseClient
-            .from("assignments")
-            .insert(
-                assignmentData
-            )
-            .select()
-            .single();
-
-    savedAssignment =
-        result.data;
-
-    assignmentError =
-        result.error;
-
-}
+        console.log(
+            "ASSIGNMENT CREATED:",
+            savedAssignment
+        );
 
 
-// =====================================
-// SUPABASE ERROR
-// =====================================
-
-if (assignmentError) {
-
-    console.error(
-        "SUPABASE ASSIGNMENT ERROR:",
-        assignmentError
-    );
-
-    alert(
-        "Assignment Save Error:\n\n" +
-        assignmentError.message
-    );
-
-    return;
-}
-
-
-
-        // =====================================
+        // =========================================
         // RESET FORM
-        // =====================================
+        // =========================================
 
-        teacherEditingAssignmentId =
-            null;
-
-
-        event.target.reset();
-
-
-        const cancelButton =
+        const classInput =
             document.getElementById(
-                "teacherAssignmentCancelBtn"
+                "teacherAssignmentClass"
+            );
+
+        const sectionInput =
+            document.getElementById(
+                "teacherAssignmentSection"
+            );
+
+        const subjectInput =
+            document.getElementById(
+                "teacherAssignmentSubject"
+            );
+
+        const marksInput =
+            document.getElementById(
+                "teacherAssignmentMarks"
+            );
+
+        const descriptionInput =
+            document.getElementById(
+                "teacherAssignmentDescription"
             );
 
 
-        if (cancelButton) {
+        if (classInput) {
+            classInput.value = "";
+        }
 
-            cancelButton.style.display =
-                "none";
+        if (sectionInput) {
+            sectionInput.value = "";
+        }
+
+        if (subjectInput) {
+            subjectInput.value = "";
+        }
+
+        if (marksInput) {
+            marksInput.value = "";
+        }
+
+        if (descriptionInput) {
+            descriptionInput.value = "";
+        }
+
+
+        // =========================================
+        // REFRESH ASSIGNMENTS
+        // =========================================
+
+        if (
+            typeof loadTeacherAssignments ===
+            "function"
+        ) {
+
+            await loadTeacherAssignments();
 
         }
 
 
-        const saveButton =
-            document.getElementById(
-                "teacherAssignmentSaveBtn"
-            );
-
-
-        if (saveButton) {
-
-            saveButton.textContent =
-                "➕ Create Assignment";
-
-        }
-
-
-        loadTeacherAssignments();
-
+        // =========================================
+        // SUCCESS MESSAGE
+        // =========================================
 
         alert(
-            "Assignment saved successfully! ✅"
+            "Assignment created successfully! ✅"
         );
-}
+
+    }
 );
 // =========================================================
 // EDIT / DELETE ASSIGNMENT

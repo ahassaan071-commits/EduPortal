@@ -1036,60 +1036,215 @@ Login
 
 
 
-        <!-- =================================================
-             ASSIGNMENTS
-        ================================================== -->
+      <!-- =================================================
+     ASSIGNMENTS
+================================================== -->
 
-        <section
-            id="teacherAssignmentsSection"
-            class="teacher-section-page"
-            style="display:none;"
-        >
-
-            <div class="teacher-page-heading">
-
-                <div>
-
-                    <h2>
-                        Assignments
-                    </h2>
-
-                 
-
-                </div>
-
-            </div>
-
-
-            <div class="teacher-section-card">
-
-                <div class="teacher-card-heading">
-
-                    <div>
-
-                      
-
-                    </div>
-
-                </div>
-
-
-               <div
-    id="teacherAssignmentsList"
-    class="teacher-assignments-list"
+<section
+    id="teacherAssignmentsSection"
+    class="teacher-section-page"
+    style="display:none;"
 >
 
-    <div class="teacher-module-loading">
-        Loading assignments...
+    <!-- PAGE HEADING -->
+    <div class="teacher-page-heading">
+
+        <div>
+
+            <h2>
+                Assignments
+            </h2>
+
+        </div>
+
     </div>
 
-</div>
+
+    <!-- CREATE ASSIGNMENT CARD -->
+    <div class="teacher-section-card">
+
+        <div class="teacher-card-heading">
+
+            <div>
+
+                <h3>
+                    Create Assignment
+                </h3>
 
             </div>
 
-        </section>
+        </div>
 
 
+        <!-- ASSIGNMENT FORM -->
+        <div class="teacher-assignment-form">
+
+            <!-- CLASS -->
+            <div class="form-group">
+
+                <label for="teacherAssignmentClass">
+                    Class
+                </label>
+
+                <select
+                    id="teacherAssignmentClass"
+                    class="form-control"
+                >
+
+                    <option value="">
+                        Select Class
+                    </option>
+
+                    <option value="9th">
+                        9th
+                    </option>
+
+                    <option value="10th">
+                        10th
+                    </option>
+
+                    <option value="11th">
+                        11th
+                    </option>
+
+                    <option value="12th">
+                        12th
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- SECTION -->
+            <div class="form-group">
+
+                <label for="teacherAssignmentSection">
+                    Section
+                </label>
+
+                <input
+                    type="text"
+                    id="teacherAssignmentSection"
+                    class="form-control"
+                    placeholder="Enter Section"
+                >
+
+            </div>
+
+
+            <!-- SUBJECT -->
+            <div class="form-group">
+
+                <label for="teacherAssignmentSubject">
+                    Subject
+                </label>
+
+                <input
+                    type="text"
+                    id="teacherAssignmentSubject"
+                    class="form-control"
+                    placeholder="Enter Subject"
+                >
+
+            </div>
+
+
+            <!-- TOTAL MARKS -->
+            <div class="form-group">
+
+                <label for="teacherAssignmentMarks">
+                    Total Marks
+                </label>
+
+                <input
+                    type="number"
+                    id="teacherAssignmentMarks"
+                    class="form-control"
+                    placeholder="Enter Total Marks"
+                    min="1"
+                >
+
+            </div>
+
+
+            <!-- DESCRIPTION -->
+            <div
+                class="form-group"
+                style="grid-column: 1 / -1;"
+            >
+
+                <label for="teacherAssignmentDescription">
+                    Description
+                </label>
+
+                <textarea
+                    id="teacherAssignmentDescription"
+                    class="form-control"
+                    rows="5"
+                    placeholder="Enter assignment description..."
+                ></textarea>
+
+            </div>
+
+
+            <!-- CREATE BUTTON -->
+            <div
+                class="form-group"
+                style="grid-column: 1 / -1;"
+            >
+
+                <button
+                    type="button"
+                    id="createTeacherAssignmentBtn"
+                    class="teacher-primary-btn"
+                >
+
+                    <i class="fas fa-plus"></i>
+
+                    Create Assignment
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- MY ASSIGNMENTS -->
+    <div class="teacher-section-card">
+
+        <div class="teacher-card-heading">
+
+            <div>
+
+                <h3>
+                    My Assignments
+                </h3>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="teacherAssignmentsList"
+            class="teacher-assignments-list"
+        >
+
+            <div class="teacher-module-loading">
+
+                Loading assignments...
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 
         <!-- =================================================
              RESULTS
