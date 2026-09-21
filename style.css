@@ -45320,3 +45320,18 @@ table tbody tr:hover td {
     }
 
 }
+/* ==========================================
+   REMOVE STAT CARD COLOR BOXES
+========================================== */
+
+#teacherDashboard .teacher-stat-icon {
+    display: none !important;
+}
+
+#teacherDashboard .teacher-stat-card {
+    gap: 0 !important;
+}
+
+#teacherDashboard .teacher-stat-content {
+    width: 100% !important;
+}
