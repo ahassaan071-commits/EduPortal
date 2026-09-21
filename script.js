@@ -43544,3 +43544,123 @@ document.addEventListener(
 
     }
 );
+// =========================================================
+// TEACHER DASHBOARD
+// STUDENTS DISTRIBUTION - ASSIGNED CLASS ONLY
+// =========================================================
+
+function loadTeacherDashboardClassFilter() {
+
+    const classFilter =
+        document.getElementById(
+            "teacherClassFilter"
+        );
+
+    if (!classFilter) {
+        return;
+    }
+
+    let teacher = {};
+
+    try {
+
+        teacher =
+            JSON.parse(
+                localStorage.getItem(
+                    "loggedInTeacher"
+                )
+            ) || {};
+
+    } catch (error) {
+
+        console.error(
+            "TEACHER SESSION ERROR:",
+            error
+        );
+
+        classFilter.innerHTML =
+            '<option value="">Class Not Found</option>';
+
+        return;
+    }
+
+
+    const teacherClass =
+        teacher.teacherClass ||
+        teacher.teacher_class ||
+        teacher.class_name ||
+        teacher.class ||
+        "";
+
+
+    if (!teacherClass) {
+
+        classFilter.innerHTML =
+            '<option value="">Class Not Assigned</option>';
+
+        return;
+    }
+
+
+    classFilter.innerHTML =
+        `
+        <option value="${teacherClass}">
+            ${teacherClass}
+        </option>
+        `;
+
+    classFilter.value =
+        teacherClass;
+
+    // Teacher cannot change class
+    classFilter.disabled = true;
+
+    console.log(
+        "Dashboard Class Filter:",
+        teacherClass
+    );
+}
+
+
+// =========================================================
+// LOAD WHEN DASHBOARD OPENS
+// =========================================================
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        const dashboardMenu =
+            event.target.closest(
+                "#teacherDashboardMenu"
+            );
+
+        if (!dashboardMenu) {
+            return;
+        }
+
+        setTimeout(
+            function() {
+
+                loadTeacherDashboardClassFilter();
+
+            },
+            200
+        );
+
+    }
+);
+
+
+// =========================================================
+// ALSO LOAD AFTER PAGE LOAD
+// =========================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        loadTeacherDashboardClassFilter();
+
+    }
+);
