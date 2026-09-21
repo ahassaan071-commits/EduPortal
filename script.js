@@ -22646,6 +22646,83 @@ async function loadTeacherAttendanceSection() {
 
     }
 
+// =========================================
+// LOAD TODAY'S REAL ATTENDANCE
+// =========================================
+
+const today =
+    new Date().toLocaleDateString(
+        "en-CA"
+    );
+
+const assignedStudentIds =
+    assignedStudents.map(
+        function(student) {
+            return String(student.id);
+        }
+    );
+
+let todayAttendance = [];
+
+if (
+    assignedStudentIds.length > 0 &&
+    typeof supabaseClient !== "undefined"
+) {
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("attendance")
+            .select(`
+                student_id,
+                status,
+                check_in_time
+            `)
+            .eq(
+                "attendance_date",
+                today
+            )
+            .in(
+                "student_id",
+                assignedStudentIds
+            );
+
+    if (error) {
+
+        console.error(
+            "TODAY ATTENDANCE ERROR:",
+            error
+        );
+
+    } else {
+
+        todayAttendance =
+            data || [];
+
+    }
+}
+
+
+// =========================================
+// QUICK ATTENDANCE LOOKUP
+// =========================================
+
+const attendanceMap =
+    new Map();
+
+todayAttendance.forEach(
+    function(record) {
+
+        attendanceMap.set(
+            String(record.student_id),
+            record
+        );
+
+    }
+);
+
     // =========================================
     // CLEAR TABLE
     // =========================================
@@ -22740,12 +22817,38 @@ async function loadTeacherAttendanceSection() {
         }"
     >
 
+     ${(() => {
+
+    const attendance =
+        attendanceMap.get(
+            String(student.id)
+        );
+
+    const status =
+        attendance?.status ||
+        "Absent";
+
+    const normalizedStatus =
+        String(status)
+            .toLowerCase();
+
+    const statusClass =
+        normalizedStatus === "present"
+            ? "present"
+            : normalizedStatus === "late"
+                ? "late"
+                : "absent";
+
+    return `
         <span
-            class="teacher-attendance-status-badge not-marked"
-            data-status="Not Marked"
+            class="teacher-attendance-status-badge ${statusClass}"
+            data-status="${status}"
         >
-            Not Marked
+            ${status}
         </span>
+    `;
+
+})()}
 
     </div>
 
@@ -22753,9 +22856,32 @@ async function loadTeacherAttendanceSection() {
 
 <td class="teacher-check-in-cell">
 
-    <span class="teacher-check-in-time">
-        —
-    </span>
+  ${(() => {
+
+    const attendance =
+        attendanceMap.get(
+            String(student.id)
+        );
+
+    return `
+        <span class="teacher-check-in-time">
+            ${
+                attendance?.check_in_time
+                    ? new Date(
+                        attendance.check_in_time
+                    ).toLocaleTimeString(
+                        [],
+                        {
+                            hour: "2-digit",
+                            minute: "2-digit"
+                        }
+                    )
+                    : "—"
+            }
+        </span>
+    `;
+
+})()}
 
 </td>
             `;
