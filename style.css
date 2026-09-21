@@ -44532,3 +44532,110 @@ table tbody tr:hover td {
         flex-direction: column !important;
     }
 }
+/* =========================================================
+   MY STUDENTS - CLEAN COMPACT DESIGN
+========================================================= */
+
+#teacherDashboard #teacherStudentsSection .teacher-page-heading {
+    padding-bottom: 14px !important;
+}
+
+#teacherDashboard #teacherStudentsSection .teacher-page-heading h2 {
+    margin: 0 !important;
+}
+
+/* Student card compact */
+#teacherDashboard #teacherStudentsSection .teacher-section-card {
+    padding: 18px !important;
+    border-radius: 16px !important;
+}
+
+/* Header */
+#teacherDashboard #teacherStudentsSection .teacher-card-heading {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-bottom: 16px !important;
+}
+
+/* Students title */
+#teacherDashboard #teacherStudentsSection .teacher-card-heading h3 {
+    margin: 0 !important;
+    font-size: 18px !important;
+}
+
+/* Remove subtitle spacing */
+#teacherDashboard #teacherStudentsSection .teacher-card-heading p {
+    display: none !important;
+}
+
+/* Search box */
+#teacherDashboard #teacherStudentsSection .teacher-search-box {
+    width: 230px !important;
+    height: 38px !important;
+    padding: 0 12px !important;
+    background: #ffffff !important;
+    border: 1px solid #dbe3ef !important;
+    border-radius: 9px !important;
+    box-shadow: none !important;
+}
+
+#teacherDashboard #teacherStudentsSection .teacher-search-box i {
+    color: #64748b !important;
+    font-size: 12px !important;
+}
+
+#teacherDashboard #teacherStudentsSection .teacher-search-box input {
+    width: 100% !important;
+    color: #334155 !important;
+    background: transparent !important;
+    font-size: 12px !important;
+}
+
+#teacherDashboard #teacherStudentsSection .teacher-search-box input::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* Table */
+#teacherDashboard #teacherStudentsSection .teacher-table-wrapper {
+    overflow-x: auto !important;
+}
+
+#teacherDashboard #teacherStudentsSection .teacher-data-table {
+    min-width: 0 !important;
+    width: 100% !important;
+}
+
+/* Table heading */
+#teacherDashboard #teacherStudentsSection .teacher-data-table th {
+    padding: 11px 14px !important;
+    font-size: 10px !important;
+}
+
+/* Table rows */
+#teacherDashboard #teacherStudentsSection .teacher-data-table td {
+    padding: 12px 14px !important;
+    font-size: 12px !important;
+}
+
+/* Status */
+#teacherDashboard #teacherStudentsSection .teacher-data-table td:nth-child(6) {
+    font-weight: 600 !important;
+}
+
+/* View button */
+#teacherDashboard #teacherStudentsSection .teacher-data-table td:last-child button {
+    width: auto !important;
+    min-width: 78px !important;
+    height: 36px !important;
+    padding: 7px 16px !important;
+    margin: 0 !important;
+    border-radius: 8px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+}
+
+/* Keep table compact */
+#teacherDashboard #teacherStudentsSection .teacher-data-table tbody tr {
+    height: 58px !important;
+}
