@@ -29535,6 +29535,11 @@ function loadTeacherProfile() {
         teacher.joiningDate ||
         teacher.joining_date ||
         "—";
+        const teacherSession =
+    teacher.session ||
+    teacher.academic_session ||
+    teacher.academicSession ||
+    "—";
 
 
     const teacherUsername =
