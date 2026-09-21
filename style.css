@@ -44639,3 +44639,212 @@ table tbody tr:hover td {
 #teacherDashboard #teacherStudentsSection .teacher-data-table tbody tr {
     height: 58px !important;
 }
+/* =========================================================
+   TEACHER SETTINGS - PROFESSIONAL FORM
+   ========================================================= */
+
+#teacherSettingsSection {
+    width: 100% !important;
+}
+
+#teacherSettingsContent {
+    width: 100% !important;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Main settings cards */
+#teacherSettingsContent > .teacher-section-card {
+    width: 100% !important;
+    box-sizing: border-box;
+    padding: 28px !important;
+    border-radius: 20px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+/* Card heading */
+#teacherSettingsContent .teacher-card-header {
+    margin-bottom: 24px;
+}
+
+#teacherSettingsContent .teacher-card-header h3 {
+    margin: 0 0 6px;
+    font-size: 21px;
+    font-weight: 700;
+    color: #172554;
+}
+
+#teacherSettingsContent .teacher-card-header p {
+    margin: 0;
+    font-size: 14px;
+    color: #64748b;
+}
+
+/* =========================
+   ACCOUNT FORM
+   ========================= */
+
+#teacherSettingsContent .teacher-form-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 20px 24px !important;
+    width: 100%;
+}
+
+#teacherSettingsContent .teacher-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+#teacherSettingsContent .teacher-form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #334155;
+}
+
+#teacherSettingsContent .teacher-form-group input {
+    width: 100%;
+    height: 50px;
+    padding: 0 15px;
+    box-sizing: border-box;
+
+    border: 1px solid #dbe3ef;
+    border-radius: 12px;
+
+    background: #f8fafc;
+    color: #0f172a;
+
+    font-family: inherit;
+    font-size: 15px;
+
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+#teacherSettingsContent .teacher-form-group input:focus {
+    border-color: #2563eb;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+#teacherSettingsContent .teacher-form-group input[readonly] {
+    background: #f1f5f9;
+    color: #475569;
+    cursor: not-allowed;
+}
+
+/* =========================
+   NOTIFICATIONS
+   ========================= */
+
+#teacherSettingsContent .teacher-settings-options {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+#teacherSettingsContent .teacher-setting-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+
+    padding: 16px 18px;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+
+    background: #f8fafc;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#teacherSettingsContent .teacher-setting-option:hover {
+    border-color: #bfdbfe;
+    background: #f8fbff;
+}
+
+#teacherSettingsContent .teacher-setting-option input {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    flex-shrink: 0;
+    accent-color: #2563eb;
+}
+
+#teacherSettingsContent .teacher-setting-option strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 15px;
+    color: #172554;
+}
+
+#teacherSettingsContent .teacher-setting-option span {
+    display: block;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #64748b;
+}
+
+/* =========================
+   SAVE BUTTON
+   ========================= */
+
+#teacherSettingsContent .teacher-settings-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 22px;
+}
+
+#teacherSettingsContent #teacherSaveSettingsBtn {
+    min-width: 170px;
+    height: 46px;
+    padding: 0 22px;
+
+    border: none;
+    border-radius: 11px;
+
+    background: #2563eb;
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#teacherSettingsContent #teacherSaveSettingsBtn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.22);
+}
+
+/* =========================
+   MOBILE
+   ========================= */
+
+@media (max-width: 768px) {
+
+    #teacherSettingsContent .teacher-form-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    #teacherSettingsContent > .teacher-section-card {
+        padding: 20px !important;
+    }
+
+    #teacherSettingsContent .teacher-settings-actions {
+        justify-content: stretch;
+    }
+
+    #teacherSettingsContent #teacherSaveSettingsBtn {
+        width: 100%;
+    }
+
+}
