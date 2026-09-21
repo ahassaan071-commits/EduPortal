@@ -23339,6 +23339,13 @@ async function getLoggedInTeacherFromSupabase() {
             teacher.joining_date ||
             loggedInTeacher.joiningDate ||
             "",
+            academicSession:
+    teacher.academic_session ||
+    teacher.session ||
+    loggedInTeacher.academicSession ||
+    loggedInTeacher.academic_session ||
+    loggedInTeacher.session ||
+    "",
 
         username:
             teacher.username ||
@@ -29535,10 +29542,10 @@ function loadTeacherProfile() {
         teacher.joiningDate ||
         teacher.joining_date ||
         "—";
-        const teacherSession =
-    teacher.session ||
+  const teacherSession =
     teacher.academic_session ||
     teacher.academicSession ||
+    teacher.session ||
     "—";
 
 
