@@ -42323,192 +42323,267 @@ async function renderTeacherAttendanceOverview() {
             });
 
 
-    // ==========================================
-    // BUILD CHART PERIOD
-    // ==========================================
+   // ==========================================
+// BUILD CHART PERIOD
+// ==========================================
 
-    const selectedPeriod =
-        periodSelect
-            ? periodSelect.value
-            : "week";
+const selectedPeriod =
+    periodSelect
+        ? periodSelect.value
+        : "today";
 
-    const now =
-        new Date();
+const now =
+    new Date();
+
+now.setHours(
+    0,
+    0,
+    0,
+    0
+);
+
+let points = [];
 
 
-    let points = [];
+// ==========================================
+// TODAY
+// ==========================================
+
+if (
+    selectedPeriod ===
+    "today"
+) {
+
+    const start =
+        new Date(now);
+
+    const end =
+        new Date(now);
+
+    end.setDate(
+        end.getDate() + 1
+    );
+
+    points.push({
+
+        start: start,
+
+        end: end,
+
+        label: "Today"
+
+    });
+
+}
 
 
-    // ==========================================
-    // THIS WEEK
-    // ==========================================
+// ==========================================
+// YESTERDAY
+// ==========================================
 
-    if (
-        selectedPeriod ===
-        "week"
+else if (
+    selectedPeriod ===
+    "yesterday"
+) {
+
+    const start =
+        new Date(now);
+
+    start.setDate(
+        start.getDate() - 1
+    );
+
+    const end =
+        new Date(start);
+
+    end.setDate(
+        end.getDate() + 1
+    );
+
+    points.push({
+
+        start: start,
+
+        end: end,
+
+        label: "Yesterday"
+
+    });
+
+}
+
+
+// ==========================================
+// LAST 7 DAYS
+// ==========================================
+
+else if (
+    selectedPeriod ===
+    "last7"
+) {
+
+    for (
+        let i = 6;
+        i >= 0;
+        i--
     ) {
 
-        const day =
-            now.getDay();
-
-        const mondayOffset =
-            day === 0
-                ? -6
-                : 1 - day;
-
-        const monday =
+        const start =
             new Date(now);
 
-        monday.setDate(
-            now.getDate() +
-            mondayOffset
+        start.setDate(
+            start.getDate() - i
         );
 
-        monday.setHours(
-            0,
-            0,
-            0,
-            0
+        const end =
+            new Date(start);
+
+        end.setDate(
+            end.getDate() + 1
         );
 
+        points.push({
 
-        for (
-            let i = 0;
-            i < 5;
-            i++
-        ) {
+            start: start,
 
-            const start =
-                new Date(
-                    monday
-                );
+            end: end,
 
-            start.setDate(
-                monday.getDate() +
-                i
-            );
+            label:
+                start.toLocaleDateString(
+                    "en-US",
+                    {
+                        weekday: "short"
+                    }
+                )
 
-            const end =
-                new Date(
-                    start
-                );
-
-            end.setDate(
-                start.getDate() +
-                1
-            );
-
-            points.push({
-
-                start: start,
-
-                end: end,
-
-                label:
-                    start.toLocaleDateString(
-                        "en-US",
-                        {
-                            weekday:
-                                "short"
-                        }
-                    )
-
-            });
-
-        }
+        });
 
     }
 
+}
 
-    // ==========================================
-    // THIS MONTH
-    // ==========================================
 
-    else {
+// ==========================================
+// LAST MONTH
+// ==========================================
 
-        const monthStart =
+else if (
+    selectedPeriod ===
+    "month"
+) {
+
+    const monthStart =
+        new Date(
+            now.getFullYear(),
+            now.getMonth() - 1,
+            1
+        );
+
+    const monthEnd =
+        new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            1
+        );
+
+    const totalDays =
+        Math.ceil(
+            (
+                monthEnd -
+                monthStart
+            ) /
+            (
+                1000 *
+                60 *
+                60 *
+                24
+            )
+        );
+
+
+    for (
+        let i = 0;
+        i < 5;
+        i++
+    ) {
+
+        const start =
             new Date(
-                now.getFullYear(),
-                now.getMonth(),
-                1
+                monthStart
             );
 
-        const nextMonth =
+        start.setDate(
+            1 +
+            Math.floor(
+                (
+                    i *
+                    totalDays
+                ) / 5
+            )
+        );
+
+
+        const end =
             new Date(
-                now.getFullYear(),
-                now.getMonth() + 1,
-                1
+                monthStart
             );
 
-        const totalDays =
-            Math.ceil(
+        end.setDate(
+            1 +
+            Math.floor(
                 (
-                    nextMonth -
-                    monthStart
-                ) /
-                (
-                    1000 *
-                    60 *
-                    60 *
-                    24
-                )
-            );
+                    (i + 1) *
+                    totalDays
+                ) / 5
+            )
+        );
 
 
-        for (
-            let i = 0;
-            i < 5;
-            i++
-        ) {
+        points.push({
 
-            const start =
-                new Date(
-                    monthStart
-                );
+            start: start,
 
-            start.setDate(
-                1 +
-                Math.floor(
-                    (
-                        i *
-                        totalDays
-                    ) /
-                    5
-                )
-            );
+            end: end,
 
-            const end =
-                new Date(
-                    monthStart
-                );
+            label:
+                "Week " +
+                (i + 1)
 
-            end.setDate(
-                1 +
-                Math.floor(
-                    (
-                        (i + 1) *
-                        totalDays
-                    ) /
-                    5
-                )
-            );
-
-
-            points.push({
-
-                start: start,
-
-                end: end,
-
-                label:
-                    "Week " +
-                    (i + 1)
-
-            });
-
-        }
+        });
 
     }
+
+}
+
+
+// ==========================================
+// FALLBACK
+// ==========================================
+
+else {
+
+    const start =
+        new Date(now);
+
+    const end =
+        new Date(now);
+
+    end.setDate(
+        end.getDate() + 1
+    );
+
+    points.push({
+
+        start: start,
+
+        end: end,
+
+        label: "Today"
+
+    });
+
+}
+
 
 
     // ==========================================
@@ -42829,6 +42904,18 @@ document.addEventListener(
 
         setTimeout(
             function () {
+
+const periodSelect =
+    document.getElementById(
+        "teacherAttendancePeriod"
+    );
+
+if (periodSelect) {
+
+    periodSelect.value =
+        "today";
+
+}
 
                 renderTeacherAttendanceOverview();
 
