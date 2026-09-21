@@ -43501,3 +43501,46 @@ document.addEventListener(
 
     }
 );
+// ==========================================
+// TEACHER RESULTS - SEARCH STUDENT
+// ==========================================
+
+document.addEventListener(
+    "input",
+    function(event) {
+
+        if (
+            event.target.id !==
+            "teacherResultSearch"
+        ) {
+            return;
+        }
+
+        const search =
+            event.target.value
+                .trim()
+                .toLowerCase();
+
+        const rows =
+            document.querySelectorAll(
+                "#teacherResultsTableBody tr"
+            );
+
+        rows.forEach(
+            function(row) {
+
+                const studentName =
+                    row
+                        .textContent
+                        .toLowerCase();
+
+                row.style.display =
+                    studentName.includes(search)
+                        ? ""
+                        : "none";
+
+            }
+        );
+
+    }
+);

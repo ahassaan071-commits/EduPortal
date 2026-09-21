@@ -45142,3 +45142,65 @@ table tbody tr:hover td {
     opacity: 1 !important;
     cursor: not-allowed !important;
 }
+/* ==========================================
+   TEACHER RESULTS HEADER + SEARCH
+========================================== */
+
+#teacherDashboard .teacher-results-page-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+#teacherDashboard .teacher-results-search-box {
+    width: 280px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 13px;
+
+    background: #ffffff;
+    border: 1px solid #dbe3ef;
+    border-radius: 9px;
+
+    box-sizing: border-box;
+}
+
+#teacherDashboard .teacher-results-search-box i {
+    color: #64748b;
+    font-size: 14px;
+    margin-right: 9px;
+}
+
+#teacherDashboard .teacher-results-search-box input {
+    width: 100%;
+    height: 100%;
+
+    border: none;
+    outline: none;
+    background: transparent;
+
+    color: #172033;
+    font-family: inherit;
+    font-size: 13px;
+}
+
+#teacherDashboard .teacher-results-search-box input::placeholder {
+    color: #94a3b8;
+}
+
+@media (max-width: 700px) {
+
+    #teacherDashboard .teacher-results-page-heading {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #teacherDashboard .teacher-results-search-box {
+        width: 100%;
+    }
+
+}
