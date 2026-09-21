@@ -26246,6 +26246,7 @@ document.addEventListener(
 );
 
 
+
 // =========================================================
 // OPEN ASSIGNMENTS
 // =========================================================
@@ -26259,16 +26260,28 @@ document.addEventListener(
                 "#teacherAssignmentsMenu"
             );
 
-
         if (!menu) {
             return;
         }
 
-
         setTimeout(
-            function() {
+            async function() {
 
-                loadTeacherAssignments();
+                // Load teacher's actual assigned class
+                if (
+                    typeof loadTeacherAssignmentClass ===
+                    "function"
+                ) {
+                    await loadTeacherAssignmentClass();
+                }
+
+                // Load assignments
+                if (
+                    typeof loadTeacherAssignments ===
+                    "function"
+                ) {
+                    await loadTeacherAssignments();
+                }
 
             },
             50
