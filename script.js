@@ -25443,6 +25443,113 @@ document.addEventListener(
 
     }
 );
+// ==========================================
+// TEACHER ASSIGNMENT CLASS
+// SHOW ONLY LOGGED-IN TEACHER CLASS
+// ==========================================
+
+async function loadTeacherAssignmentClass() {
+
+    const classSelect =
+        document.getElementById(
+            "teacherAssignmentClass"
+        );
+
+    if (!classSelect) {
+        return;
+    }
+
+    const teacher =
+        JSON.parse(
+            localStorage.getItem(
+                "loggedInTeacher"
+            )
+        ) || {};
+
+    const teacherId =
+        teacher.teacher_id ||
+        teacher.teacherId ||
+        teacher.id ||
+        teacher.username ||
+        teacher.email ||
+        "";
+
+    if (!teacherId) {
+
+        classSelect.innerHTML =
+            '<option value="">Class Not Found</option>';
+
+        return;
+    }
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+
+        classSelect.innerHTML =
+            '<option value="">Supabase Error</option>';
+
+        return;
+    }
+
+    const {
+        data: dbTeacher,
+        error
+    } =
+        await supabaseClient
+            .from("teachers")
+            .select(
+                "id, teacher_id, teacher_class"
+            )
+            .or(
+                "teacher_id.eq." +
+                String(teacherId) +
+                ",id.eq." +
+                String(teacherId)
+            )
+            .maybeSingle();
+
+    if (error) {
+
+        console.error(
+            "TEACHER CLASS LOAD ERROR:",
+            error
+        );
+
+        classSelect.innerHTML =
+            '<option value="">Unable to Load Class</option>';
+
+        return;
+    }
+
+    const teacherClass =
+        dbTeacher?.teacher_class ||
+        teacher.teacher_class ||
+        teacher.teacherClass ||
+        "";
+
+    if (!teacherClass) {
+
+        classSelect.innerHTML =
+            '<option value="">Class Not Assigned</option>';
+
+        return;
+    }
+
+    classSelect.innerHTML =
+        `
+        <option value="${teacherClass}">
+            ${teacherClass}
+        </option>
+        `;
+
+    classSelect.value =
+        teacherClass;
+
+    // Teacher class cannot be changed manually
+    classSelect.disabled = true;
+}
 // =========================================================
 // CREATE ASSIGNMENT - NEW FORM
 // =========================================================
