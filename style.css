@@ -44532,32 +44532,3 @@ table tbody tr:hover td {
         flex-direction: column !important;
     }
 }
-/* =========================================================
-   EDUPORTAL - LOGIN / DASHBOARD VISIBILITY FIX
-   ========================================================= */
-
-/* Teacher dashboard hidden until teacher login */
-#teacherDashboard {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-}
-
-/* Teacher dashboard becomes visible only when JS activates it */
-#teacherDashboard[style*="display: flex"] {
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-/* Never show dashboard sidebar behind login */
-body:not(:has(#teacherDashboard[style*="display: flex"])) 
-#teacherDashboard {
-    display: none !important;
-}
-
-/* Login should stay in front when no dashboard is active */
-.container:not(.session-hidden) {
-    position: relative;
-    z-index: 999999 !important;
-}
