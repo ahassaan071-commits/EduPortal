@@ -735,7 +735,12 @@ setTimeout(function () {
             );
 
         }
-
+if (
+    typeof loadTeacherAssignmentClass ===
+    "function"
+) {
+    loadTeacherAssignmentClass();
+}
 
         // ------------------------------------------
         // LOAD TEACHER DASHBOARD DATA
@@ -25448,7 +25453,7 @@ document.addEventListener(
 // SHOW ONLY LOGGED-IN TEACHER CLASS
 // ==========================================
 
-async function loadTeacherAssignmentClass() {
+function loadTeacherAssignmentClass() {
 
     const classSelect =
         document.getElementById(
@@ -25459,22 +25464,27 @@ async function loadTeacherAssignmentClass() {
         return;
     }
 
-    const teacher =
-        JSON.parse(
-            localStorage.getItem(
-                "loggedInTeacher"
-            )
-        ) || {};
+    // ==========================================
+    // GET LOGGED-IN TEACHER
+    // ==========================================
 
-    const teacherId =
-        teacher.teacher_id ||
-        teacher.teacherId ||
-        teacher.id ||
-        teacher.username ||
-        teacher.email ||
-        "";
+    let teacher = {};
 
-    if (!teacherId) {
+    try {
+
+        teacher =
+            JSON.parse(
+                localStorage.getItem(
+                    "loggedInTeacher"
+                )
+            ) || {};
+
+    } catch (error) {
+
+        console.error(
+            "TEACHER SESSION ERROR:",
+            error
+        );
 
         classSelect.innerHTML =
             '<option value="">Class Not Found</option>';
@@ -25482,73 +25492,59 @@ async function loadTeacherAssignmentClass() {
         return;
     }
 
-    if (
-        typeof supabaseClient ===
-        "undefined"
-    ) {
 
-        classSelect.innerHTML =
-            '<option value="">Supabase Error</option>';
-
-        return;
-    }
-
-    const {
-        data: dbTeacher,
-        error
-    } =
-        await supabaseClient
-            .from("teachers")
-            .select(
-                "id, teacher_id, teacher_class"
-            )
-            .or(
-                "teacher_id.eq." +
-                String(teacherId) +
-                ",id.eq." +
-                String(teacherId)
-            )
-            .maybeSingle();
-
-    if (error) {
-
-        console.error(
-            "TEACHER CLASS LOAD ERROR:",
-            error
-        );
-
-        classSelect.innerHTML =
-            '<option value="">Unable to Load Class</option>';
-
-        return;
-    }
+    // ==========================================
+    // GET TEACHER CLASS
+    // DATABASE LOGIN RECORD FIRST
+    // ==========================================
 
     const teacherClass =
-        dbTeacher?.teacher_class ||
         teacher.teacher_class ||
         teacher.teacherClass ||
+        teacher.class_name ||
+        teacher.class ||
         "";
 
-    if (!teacherClass) {
+
+    // ==========================================
+    // IF CLASS FOUND
+    // ==========================================
+
+    if (teacherClass) {
 
         classSelect.innerHTML =
-            '<option value="">Class Not Assigned</option>';
+            `
+            <option value="${teacherClass}">
+                ${teacherClass}
+            </option>
+            `;
+
+        classSelect.value =
+            teacherClass;
+
+        // Teacher cannot change his assigned class
+        classSelect.disabled = true;
+
+        console.log(
+            "Teacher Assigned Class:",
+            teacherClass
+        );
 
         return;
     }
 
+
+    // ==========================================
+    // CLASS NOT FOUND
+    // ==========================================
+
     classSelect.innerHTML =
-        `
-        <option value="${teacherClass}">
-            ${teacherClass}
-        </option>
-        `;
+        '<option value="">Class Not Assigned</option>';
 
-    classSelect.value =
-        teacherClass;
-
-    // Teacher class cannot be changed manually
-    classSelect.disabled = true;
+    console.warn(
+        "Teacher class not found:",
+        teacher
+    );
 }
 // =========================================================
 // CREATE ASSIGNMENT - NEW FORM
