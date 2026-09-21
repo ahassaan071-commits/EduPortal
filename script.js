@@ -29679,7 +29679,16 @@ setProfileValue(
         ],
         teacherUsername
     );
+// ==========================================
+// SESSION
+// ==========================================
 
+setProfileValue(
+    [
+        "teacherProfileSession"
+    ],
+    teacherSession
+);
 
     // ==========================================
     // STATUS
