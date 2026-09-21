@@ -45116,3 +45116,29 @@ table tbody tr:hover td {
     }
 
 }
+/* ==========================================
+   TEACHER ASSIGNMENT CLASS - LOCKED
+   ========================================== */
+
+#teacherDashboard #teacherAssignmentClass {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+
+    pointer-events: none !important;
+    cursor: not-allowed !important;
+
+    background-image: none !important;
+    padding-right: 12px !important;
+
+    color: #172033 !important;
+    opacity: 1 !important;
+}
+
+/* Keep locked class looking normal */
+#teacherDashboard #teacherAssignmentClass:disabled {
+    background-color: #f8fafc !important;
+    color: #172033 !important;
+    opacity: 1 !important;
+    cursor: not-allowed !important;
+}

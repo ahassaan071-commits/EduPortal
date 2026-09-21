@@ -25450,10 +25450,10 @@ document.addEventListener(
 );
 // ==========================================
 // TEACHER ASSIGNMENT CLASS
-// LOAD ACTUAL LOGGED-IN TEACHER CLASS
+// USE SAME CLASS AS TEACHER PROFILE
 // ==========================================
 
-async function loadTeacherAssignmentClass() {
+function loadTeacherAssignmentClass() {
 
     const classSelect =
         document.getElementById(
@@ -25464,21 +25464,28 @@ async function loadTeacherAssignmentClass() {
         return;
     }
 
-    // Show loading while fetching
-    classSelect.innerHTML =
-        '<option value="">Loading Class...</option>';
 
     // ==========================================
-    // GET ACTUAL TEACHER FROM SUPABASE
+    // GET LOGGED-IN TEACHER
+    // SAME DATA USED BY TEACHER PROFILE
     // ==========================================
 
-    if (
-        typeof getLoggedInTeacherFromSupabase !==
-        "function"
-    ) {
+    let teacher = null;
+
+    try {
+
+        teacher =
+            JSON.parse(
+                localStorage.getItem(
+                    "loggedInTeacher"
+                )
+            ) || {};
+
+    } catch (error) {
 
         console.error(
-            "getLoggedInTeacherFromSupabase() not found."
+            "ASSIGNMENT TEACHER SESSION ERROR:",
+            error
         );
 
         classSelect.innerHTML =
@@ -25487,24 +25494,18 @@ async function loadTeacherAssignmentClass() {
         return;
     }
 
-    const teacher =
-        await getLoggedInTeacherFromSupabase();
-
-    console.log(
-        "ASSIGNMENT TEACHER:",
-        teacher
-    );
 
     // ==========================================
-    // GET ASSIGNED CLASS
+    // GET TEACHER CLASS
     // ==========================================
 
     const teacherClass =
-        teacher?.teacher_class ||
-        teacher?.teacherClass ||
-        teacher?.class_name ||
-        teacher?.class ||
+        teacher.teacherClass ||
+        teacher.teacher_class ||
+        teacher.class_name ||
+        teacher.class ||
         "";
+
 
     // ==========================================
     // CLASS FOUND
@@ -25526,12 +25527,13 @@ async function loadTeacherAssignmentClass() {
         classSelect.disabled = true;
 
         console.log(
-            "ASSIGNED TEACHER CLASS:",
+            "ASSIGNMENT CLASS:",
             teacherClass
         );
 
         return;
     }
+
 
     // ==========================================
     // CLASS NOT FOUND
@@ -25541,7 +25543,7 @@ async function loadTeacherAssignmentClass() {
         '<option value="">Class Not Assigned</option>';
 
     console.warn(
-        "Teacher class not found.",
+        "Teacher class is missing from loggedInTeacher:",
         teacher
     );
 }
