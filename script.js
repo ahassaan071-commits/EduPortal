@@ -42918,6 +42918,7 @@ if (periodSelect) {
 }
 
                 renderTeacherAttendanceOverview();
+loadTeacherStudentsDistribution();
 
             },
             150
