@@ -25636,21 +25636,83 @@ document.addEventListener(
         };
 
 
-        // =========================================
-        // SAVE TO SUPABASE
-        // =========================================
+  // =========================================
+// CREATE OR UPDATE ASSIGNMENT
+// =========================================
 
-        const {
-            data: savedAssignment,
-            error: assignmentError
-        } =
-            await supabaseClient
-                .from("assignments")
-                .insert(
-                    assignmentRecord
+let savedAssignment;
+let assignmentError;
+
+
+if (teacherEditingAssignmentId) {
+
+    // =====================================
+    // UPDATE EXISTING ASSIGNMENT
+    // =====================================
+
+    const result =
+        await supabaseClient
+            .from("assignments")
+            .update({
+
+                subject:
+                    subject,
+
+                marks:
+                    Number(marks),
+
+                description:
+                    description,
+
+                class_name:
+                    className,
+
+                title:
+                    subject + " Assignment",
+
+                updated_at:
+                    new Date().toISOString()
+
+            })
+            .eq(
+                "id",
+                Number(
+                    teacherEditingAssignmentId
                 )
-                .select()
-                .single();
+            )
+            .select()
+            .single();
+
+
+    savedAssignment =
+        result.data;
+
+    assignmentError =
+        result.error;
+
+} else {
+
+    // =====================================
+    // CREATE NEW ASSIGNMENT
+    // =====================================
+
+    const result =
+        await supabaseClient
+            .from("assignments")
+            .insert(
+                assignmentRecord
+            )
+            .select()
+            .single();
+
+
+    savedAssignment =
+        result.data;
+
+    assignmentError =
+        result.error;
+
+}
 
 
         // =========================================
@@ -25747,7 +25809,35 @@ document.addEventListener(
 
         }
 
+// =========================================
+// RESET EDIT MODE
+// =========================================
 
+teacherEditingAssignmentId = null;
+
+const createButtonAfterSave =
+    document.getElementById(
+        "createTeacherAssignmentBtn"
+    );
+
+if (createButtonAfterSave) {
+
+    createButtonAfterSave.innerHTML =
+        '<i class="fas fa-plus"></i> Create Assignment';
+
+}
+
+const editButtonAfterSave =
+    document.getElementById(
+        "teacherAssignmentEditBtn"
+    );
+
+if (editButtonAfterSave) {
+
+    editButtonAfterSave.innerHTML =
+        '<i class="fas fa-edit"></i> Edit Assignment';
+
+}
         // =========================================
         // SUCCESS MESSAGE
         // =========================================
@@ -25758,42 +25848,42 @@ document.addEventListener(
 
     }
 );
-// =========================================================
+// =========================================
 // EDIT / DELETE ASSIGNMENT
-// =========================================================
+// =========================================
 
 document.addEventListener(
     "click",
     async function(event) {
 
-        // =========================================
+        // =====================================
         // EDIT
-        // =========================================
+        // =====================================
 
         const editButton =
             event.target.closest(
                 ".teacher-assignment-edit"
             );
 
-
         if (editButton) {
 
             const assignmentId =
                 editButton.dataset.id;
 
+            if (!assignmentId) {
+                alert("Assignment ID is missing.");
+                return;
+            }
 
             if (
                 typeof supabaseClient ===
                 "undefined"
             ) {
-
                 alert(
                     "Supabase connection is missing."
                 );
-
                 return;
             }
-
 
             const {
                 data: assignment,
@@ -25808,9 +25898,7 @@ document.addEventListener(
                     )
                     .maybeSingle();
 
-
             if (error) {
-
                 console.error(
                     "ASSIGNMENT EDIT LOAD ERROR:",
                     error
@@ -25824,143 +25912,135 @@ document.addEventListener(
                 return;
             }
 
-
             if (!assignment) {
-
                 alert(
                     "Assignment not found."
                 );
-
                 return;
             }
 
+            const classInput =
+                document.getElementById(
+                    "teacherAssignmentClass"
+                );
 
-            // =====================================
-            // FILL FORM
-            // =====================================
+            const sectionInput =
+                document.getElementById(
+                    "teacherAssignmentSection"
+                );
 
-            document.getElementById(
-                "teacherAssignmentTitle"
-            ).value =
-                assignment.title || "";
+            const subjectInput =
+                document.getElementById(
+                    "teacherAssignmentSubject"
+                );
 
+            const marksInput =
+                document.getElementById(
+                    "teacherAssignmentMarks"
+                );
 
-            document.getElementById(
-                "teacherAssignmentSubject"
-            ).value =
-                assignment.subject || "";
+            const descriptionInput =
+                document.getElementById(
+                    "teacherAssignmentDescription"
+                );
 
+            if (classInput) {
+                classInput.value =
+                    assignment.class_name || "";
+            }
 
-            document.getElementById(
-                "teacherAssignmentDueDate"
-            ).value =
-                assignment.due_date || "";
+            if (sectionInput) {
+                sectionInput.value = "";
+            }
 
+            if (subjectInput) {
+                subjectInput.value =
+                    assignment.subject || "";
+            }
 
-            document.getElementById(
-                "teacherAssignmentMarks"
-            ).value =
-                assignment.marks ?? "";
+            if (marksInput) {
+                marksInput.value =
+                    assignment.marks ?? "";
+            }
 
-
-            document.getElementById(
-                "teacherAssignmentDescription"
-            ).value =
-                assignment.description || "";
-
-
-            // =====================================
-            // EDIT MODE
-            // =====================================
+            if (descriptionInput) {
+                descriptionInput.value =
+                    assignment.description || "";
+            }
 
             teacherEditingAssignmentId =
                 assignment.id;
 
-
-            const saveButton =
+            const createButton =
                 document.getElementById(
-                    "teacherAssignmentSaveBtn"
+                    "createTeacherAssignmentBtn"
                 );
 
-
-            if (saveButton) {
-
-                saveButton.textContent =
-                    "💾 Update Assignment";
-
+            if (createButton) {
+                createButton.innerHTML =
+                    '<i class="fas fa-save"></i> Update Assignment';
             }
 
-
-            const cancelButton =
+            const editFormButton =
                 document.getElementById(
-                    "teacherAssignmentCancelBtn"
+                    "teacherAssignmentEditBtn"
                 );
 
-
-            if (cancelButton) {
-
-                cancelButton.style.display =
-                    "inline-block";
-
+            if (editFormButton) {
+                editFormButton.innerHTML =
+                    '<i class="fas fa-times"></i> Cancel Edit';
             }
 
+            const assignmentSection =
+                document.getElementById(
+                    "teacherAssignmentsSection"
+                );
 
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-
+            if (assignmentSection) {
+                assignmentSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }
 
             return;
         }
 
 
-        // =========================================
+        // =====================================
         // DELETE
-        // =========================================
+        // =====================================
 
         const deleteButton =
             event.target.closest(
                 ".teacher-assignment-delete"
             );
 
-
         if (!deleteButton) {
             return;
         }
 
-
         const assignmentId =
             deleteButton.dataset.id;
-
 
         if (
             typeof supabaseClient ===
             "undefined"
         ) {
-
             alert(
                 "Supabase connection is missing."
             );
-
             return;
         }
-
 
         const confirmDelete =
             confirm(
                 "Are you sure you want to delete this assignment?"
             );
 
-
         if (!confirmDelete) {
             return;
         }
-
-
-        // =====================================
-        // DELETE FROM SUPABASE
-        // =====================================
 
         const {
             error: deleteError
@@ -25988,47 +26068,12 @@ document.addEventListener(
             return;
         }
 
-
-        // =====================================
-        // REMOVE LOCAL COPY
-        // =====================================
-
-        let assignments =
-            JSON.parse(
-                localStorage.getItem(
-                    "teacherAssignments"
-                )
-            ) || [];
-
-
-        assignments =
-            assignments.filter(
-                function(item) {
-
-                    return String(
-                        item.id
-                    ) !== String(
-                        assignmentId
-                    );
-
-                }
-            );
-
-
-        localStorage.setItem(
-            "teacherAssignments",
-            JSON.stringify(
-                assignments
-            )
-        );
-
-
-        // =====================================
-        // REFRESH
-        // =====================================
-
-        await loadTeacherAssignments();
-
+        if (
+            typeof loadTeacherAssignments ===
+            "function"
+        ) {
+            await loadTeacherAssignments();
+        }
 
         alert(
             "Assignment deleted successfully! ✅"
@@ -43232,3 +43277,110 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 });
+// =========================================================
+// TEACHER ASSIGNMENT FORM - EDIT / CANCEL BUTTON
+// =========================================================
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        const button =
+            event.target.closest(
+                "#teacherAssignmentEditBtn"
+            );
+
+        if (!button) {
+            return;
+        }
+
+
+        // =====================================
+        // CANCEL EDIT
+        // =====================================
+
+        if (teacherEditingAssignmentId) {
+
+            teacherEditingAssignmentId =
+                null;
+
+
+            const classInput =
+                document.getElementById(
+                    "teacherAssignmentClass"
+                );
+
+            const sectionInput =
+                document.getElementById(
+                    "teacherAssignmentSection"
+                );
+
+            const subjectInput =
+                document.getElementById(
+                    "teacherAssignmentSubject"
+                );
+
+            const marksInput =
+                document.getElementById(
+                    "teacherAssignmentMarks"
+                );
+
+            const descriptionInput =
+                document.getElementById(
+                    "teacherAssignmentDescription"
+                );
+
+
+            if (classInput) {
+                classInput.value = "";
+            }
+
+            if (sectionInput) {
+                sectionInput.value = "";
+            }
+
+            if (subjectInput) {
+                subjectInput.value = "";
+            }
+
+            if (marksInput) {
+                marksInput.value = "";
+            }
+
+            if (descriptionInput) {
+                descriptionInput.value = "";
+            }
+
+
+            const createButton =
+                document.getElementById(
+                    "createTeacherAssignmentBtn"
+                );
+
+
+            if (createButton) {
+
+                createButton.innerHTML =
+                    '<i class="fas fa-plus"></i> Create Assignment';
+
+            }
+
+
+            button.innerHTML =
+                '<i class="fas fa-edit"></i> Edit Assignment';
+
+
+            return;
+        }
+
+
+        // =====================================
+        // NO ASSIGNMENT SELECTED
+        // =====================================
+
+        alert(
+            "Please click the Edit button on an assignment below first."
+        );
+
+    }
+);
