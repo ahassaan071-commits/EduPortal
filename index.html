@@ -2926,40 +2926,73 @@ Fee Status Section
 
 </div>
 <!-- ==========================
-Settings Section
+     Settings Section
 ========================== -->
 
 <div id="settingsSection" style="display:none;">
 
-<div class="profile-card">
+    <div class="profile-card">
 
-<h2>⚙️ Settings</h2>
+        <h2>⚙️ Settings</h2>
 
-<hr>
-
-<div class="input-group">
-
-<label>Username</label>
-
-<input type="text" id="settingsUsername">
-
-</div>
+        <hr>
 
 
-<div class="input-group">
+        <!-- USERNAME -->
 
-<label>Change Password</label>
+        <div class="input-group">
 
-<input type="password" id="settingsPassword" placeholder="Enter new password">
+            <label>Username</label>
 
-</div>
+            <input
+                type="text"
+                id="settingsUsername"
+                readonly
+            >
+
+        </div>
 
 
-<button id="saveSettingsBtn">
-Save Settings
-</button>
+        <!-- CURRENT PASSWORD -->
 
-</div>
+        <div class="input-group">
+
+            <label>Current Password</label>
+
+            <input
+                type="text"
+                id="settingsCurrentPassword"
+                readonly
+            >
+
+        </div>
+
+
+        <!-- NEW PASSWORD -->
+
+        <div class="input-group">
+
+            <label>New Password</label>
+
+            <input
+                type="password"
+                id="settingsPassword"
+                placeholder="Enter new password"
+            >
+
+        </div>
+
+
+        <!-- SAVE -->
+
+        <button
+            id="saveSettingsBtn"
+            type="button"
+        >
+            Save Settings
+        </button>
+
+    </div>
 
 </div>
 
