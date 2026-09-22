@@ -45482,3 +45482,47 @@ strong {
     line-height: 1.2 !important;
     letter-spacing: -0.5px !important;
 }
+/* =========================================================
+   TEACHER PORTAL - SAME STYLE AS DASHBOARD
+   ========================================================= */
+
+#teacherDashboard .teacher-portal-title {
+    margin: 0 !important;
+    color: #172554 !important;
+    font-family: "Poppins", sans-serif !important;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0 !important;
+}
+/* =========================================================
+   TEACHER BRAND ICON
+   ========================================================= */
+
+#teacherDashboard .teacher-brand-icon {
+    width: 52px !important;
+    height: 52px !important;
+    min-width: 52px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    background: linear-gradient(
+        135deg,
+        #3b82f6,
+        #2563eb
+    ) !important;
+
+    border-radius: 14px !important;
+
+    box-shadow:
+        0 8px 20px rgba(37, 99, 235, 0.30) !important;
+
+    overflow: hidden !important;
+}
+
+#teacherDashboard .teacher-brand-icon i {
+    font-size: 27px !important;
+    color: #ffffff !important;
+}
