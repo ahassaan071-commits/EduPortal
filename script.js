@@ -42191,7 +42191,7 @@ document.addEventListener(
     }
 );
 // =========================================================
-// TEACHER DASHBOARD - LIVE ATTENDANCE OVERVIEW CHART
+// TEACHER DASHBOARD - REAL TIME ATTENDANCE OVERVIEW
 // =========================================================
 
 async function renderTeacherAttendanceOverview() {
@@ -42215,14 +42215,15 @@ async function renderTeacherAttendanceOverview() {
         "undefined"
     ) {
         console.error(
-            "Supabase client not available for teacher attendance chart."
+            "Supabase client not available."
         );
         return;
     }
 
-    // ==========================================
-    // GET LOGGED-IN TEACHER
-    // ==========================================
+
+    // =========================================
+    // LOGGED-IN TEACHER
+    // =========================================
 
     let teacher = {};
 
@@ -42245,18 +42246,39 @@ async function renderTeacherAttendanceOverview() {
         return;
     }
 
+
+    // =========================================
+    // TEACHER CLASS
+    // =========================================
+
     const teacherClass =
         String(
             teacher.teacherClass ||
+            teacher.teacher_class ||
+            teacher.class ||
             ""
         )
         .trim()
-        .toLowerCase();
+        .toLowerCase()
+        .replace(
+            /^class\s+/,
+            ""
+        );
 
 
-    // ==========================================
-    // GET STUDENTS
-    // ==========================================
+    if (!teacherClass) {
+
+        console.warn(
+            "Teacher class not found."
+        );
+
+        return;
+    }
+
+
+    // =========================================
+    // GET REAL STUDENTS
+    // =========================================
 
     const {
         data: students,
@@ -42264,12 +42286,15 @@ async function renderTeacherAttendanceOverview() {
     } =
         await supabaseClient
             .from("students")
-            .select("*");
+            .select(
+                "id, student_class"
+            );
+
 
     if (studentsError) {
 
         console.error(
-            "Teacher chart students error:",
+            "Attendance chart students error:",
             studentsError
         );
 
@@ -42277,320 +42302,256 @@ async function renderTeacherAttendanceOverview() {
     }
 
 
-    // ==========================================
-    // FILTER ASSIGNED STUDENTS
-    // ==========================================
+    // =========================================
+    // ONLY TEACHER'S CLASS
+    // =========================================
 
     const assignedStudents =
         (students || []).filter(
-            function (student) {
+            function(student) {
 
                 const studentClass =
                     String(
-                        student.studentClass ||
+                        student.student_class ||
                         ""
                     )
                     .trim()
-                    .toLowerCase();
-
-                if (
-                    !teacherClass ||
-                    teacherClass ===
-                    "not assigned"
-                ) {
-                    return true;
-                }
+                    .toLowerCase()
+                    .replace(
+                        /^class\s+/,
+                        ""
+                    );
 
                 return (
                     studentClass ===
-                    teacherClass ||
-                    studentClass ===
-                    "class " +
                     teacherClass
                 );
+
             }
         );
 
 
     const studentIds =
-        assignedStudents
-            .map(function (student) {
+        assignedStudents.map(
+            function(student) {
+
                 return student.id;
-            })
-            .filter(function (id) {
-                return id !== null &&
-                       id !== undefined;
-            });
+
+            }
+        );
 
 
-   // ==========================================
-// BUILD CHART PERIOD
-// ==========================================
-
-const selectedPeriod =
-    periodSelect
-        ? periodSelect.value
-        : "today";
-
-const now =
-    new Date();
-
-now.setHours(
-    0,
-    0,
-    0,
-    0
-);
-
-let points = [];
+    const totalStudents =
+        assignedStudents.length;
 
 
-// ==========================================
-// TODAY
-// ==========================================
+    // =========================================
+    // SELECT PERIOD
+    // =========================================
 
-if (
-    selectedPeriod ===
-    "today"
-) {
-
-    const start =
-        new Date(now);
-
-    const end =
-        new Date(now);
-
-    end.setDate(
-        end.getDate() + 1
-    );
-
-    points.push({
-
-        start: start,
-
-        end: end,
-
-        label: "Today"
-
-    });
-
-}
+    const selectedPeriod =
+        periodSelect &&
+        periodSelect.value
+            ? periodSelect.value
+            : "week";
 
 
-// ==========================================
-// YESTERDAY
-// ==========================================
-
-else if (
-    selectedPeriod ===
-    "yesterday"
-) {
-
-    const start =
-        new Date(now);
-
-    start.setDate(
-        start.getDate() - 1
-    );
-
-    const end =
-        new Date(start);
-
-    end.setDate(
-        end.getDate() + 1
-    );
-
-    points.push({
-
-        start: start,
-
-        end: end,
-
-        label: "Yesterday"
-
-    });
-
-}
+    const now =
+        new Date();
 
 
-// ==========================================
-// LAST 7 DAYS
-// ==========================================
+    let points = [];
 
-else if (
-    selectedPeriod ===
-    "last7"
-) {
 
-    for (
-        let i = 6;
-        i >= 0;
-        i--
+    // =========================================
+    // THIS WEEK
+    // MONDAY - FRIDAY
+    // =========================================
+
+    if (
+        selectedPeriod ===
+        "week"
     ) {
 
-        const start =
+        const day =
+            now.getDay();
+
+        const mondayOffset =
+            day === 0
+                ? -6
+                : 1 - day;
+
+
+        const monday =
             new Date(now);
 
-        start.setDate(
-            start.getDate() - i
+        monday.setDate(
+            now.getDate() +
+            mondayOffset
         );
 
-        const end =
-            new Date(start);
-
-        end.setDate(
-            end.getDate() + 1
+        monday.setHours(
+            0,
+            0,
+            0,
+            0
         );
 
-        points.push({
 
-            start: start,
+        for (
+            let i = 0;
+            i < 5;
+            i++
+        ) {
 
-            end: end,
+            const start =
+                new Date(
+                    monday
+                );
 
-            label:
-                start.toLocaleDateString(
-                    "en-US",
-                    {
-                        weekday: "short"
-                    }
+            start.setDate(
+                monday.getDate() +
+                i
+            );
+
+
+            const end =
+                new Date(
+                    start
+                );
+
+            end.setDate(
+                start.getDate() +
+                1
+            );
+
+
+            points.push({
+
+                start:
+                    start,
+
+                end:
+                    end,
+
+                label:
+                    start.toLocaleDateString(
+                        "en-US",
+                        {
+                            weekday:
+                                "short"
+                        }
+                    )
+
+            });
+
+        }
+
+    }
+
+
+    // =========================================
+    // THIS MONTH
+    // =========================================
+
+    else {
+
+        const monthStart =
+            new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                1
+            );
+
+
+        const nextMonth =
+            new Date(
+                now.getFullYear(),
+                now.getMonth() + 1,
+                1
+            );
+
+
+        const totalDays =
+            Math.ceil(
+                (
+                    nextMonth -
+                    monthStart
+                ) /
+                (
+                    1000 *
+                    60 *
+                    60 *
+                    24
                 )
+            );
 
-        });
+
+        for (
+            let i = 0;
+            i < 5;
+            i++
+        ) {
+
+            const start =
+                new Date(
+                    monthStart
+                );
+
+            start.setDate(
+                1 +
+                Math.floor(
+                    (
+                        i *
+                        totalDays
+                    ) /
+                    5
+                )
+            );
+
+
+            const end =
+                new Date(
+                    monthStart
+                );
+
+            end.setDate(
+                1 +
+                Math.floor(
+                    (
+                        (i + 1) *
+                        totalDays
+                    ) /
+                    5
+                )
+            );
+
+
+            points.push({
+
+                start:
+                    start,
+
+                end:
+                    end,
+
+                label:
+                    "Week " +
+                    (i + 1)
+
+            });
+
+        }
 
     }
 
-}
 
+    // =========================================
+    // GET ATTENDANCE
+    // =========================================
 
-// ==========================================
-// LAST MONTH
-// ==========================================
-
-else if (
-    selectedPeriod ===
-    "month"
-) {
-
-    const monthStart =
-        new Date(
-            now.getFullYear(),
-            now.getMonth() - 1,
-            1
-        );
-
-    const monthEnd =
-        new Date(
-            now.getFullYear(),
-            now.getMonth(),
-            1
-        );
-
-    const totalDays =
-        Math.ceil(
-            (
-                monthEnd -
-                monthStart
-            ) /
-            (
-                1000 *
-                60 *
-                60 *
-                24
-            )
-        );
-
-
-    for (
-        let i = 0;
-        i < 5;
-        i++
-    ) {
-
-        const start =
-            new Date(
-                monthStart
-            );
-
-        start.setDate(
-            1 +
-            Math.floor(
-                (
-                    i *
-                    totalDays
-                ) / 5
-            )
-        );
-
-
-        const end =
-            new Date(
-                monthStart
-            );
-
-        end.setDate(
-            1 +
-            Math.floor(
-                (
-                    (i + 1) *
-                    totalDays
-                ) / 5
-            )
-        );
-
-
-        points.push({
-
-            start: start,
-
-            end: end,
-
-            label:
-                "Week " +
-                (i + 1)
-
-        });
-
-    }
-
-}
-
-
-// ==========================================
-// FALLBACK
-// ==========================================
-
-else {
-
-    const start =
-        new Date(now);
-
-    const end =
-        new Date(now);
-
-    end.setDate(
-        end.getDate() + 1
-    );
-
-    points.push({
-
-        start: start,
-
-        end: end,
-
-        label: "Today"
-
-    });
-
-}
-
-
-
-    // ==========================================
-    // GET ATTENDANCE DATA
-    // ==========================================
-
-    let attendance = [];
+    let attendance =
+        [];
 
 
     if (
@@ -42606,16 +42567,36 @@ else {
             ].end;
 
 
-        const formatDate =
-            function (date) {
+        function formatDate(date) {
 
-                return (
-                    date
-                        .toISOString()
-                        .split("T")[0]
+            const year =
+                date.getFullYear();
+
+            const month =
+                String(
+                    date.getMonth() + 1
+                ).padStart(
+                    2,
+                    "0"
                 );
 
-            };
+            const day =
+                String(
+                    date.getDate()
+                ).padStart(
+                    2,
+                    "0"
+                );
+
+            return (
+                year +
+                "-" +
+                month +
+                "-" +
+                day
+            );
+
+        }
 
 
         const {
@@ -42625,11 +42606,7 @@ else {
             await supabaseClient
                 .from("attendance")
                 .select(
-                    `
-                    student_id,
-                    attendance_date,
-                    status
-                    `
+                    "student_id, attendance_date, status"
                 )
                 .in(
                     "student_id",
@@ -42652,7 +42629,7 @@ else {
         if (error) {
 
             console.error(
-                "Teacher chart attendance error:",
+                "Attendance chart error:",
                 error
             );
 
@@ -42666,78 +42643,124 @@ else {
     }
 
 
-    // ==========================================
-    // CALCULATE PRESENT / ABSENT
-    // ==========================================
+    // =========================================
+    // CALCULATE EACH DAY
+    // =========================================
 
     points.forEach(
-        function (point) {
+        function(point) {
 
-            point.present = 0;
+            point.present =
+                0;
 
-            point.absent = 0;
+            point.absent =
+                0;
 
 
-            attendance.forEach(
-                function (record) {
+            // ---------------------------------
+            // FIND ATTENDANCE FOR THIS DAY
+            // ---------------------------------
 
-                    const recordDate =
-                        new Date(
-                            record.attendance_date +
-                            "T00:00:00"
+            const dayRecords =
+                attendance.filter(
+                    function(record) {
+
+                        const recordDate =
+                            String(
+                                record.attendance_date ||
+                                ""
+                            );
+
+                        const year =
+                            point.start
+                                .getFullYear();
+
+                        const month =
+                            String(
+                                point.start
+                                    .getMonth() + 1
+                            ).padStart(
+                                2,
+                                "0"
+                            );
+
+                        const day =
+                            String(
+                                point.start
+                                    .getDate()
+                            ).padStart(
+                                2,
+                                "0"
+                            );
+
+                        const pointDate =
+                            year +
+                            "-" +
+                            month +
+                            "-" +
+                            day;
+
+                        return (
+                            recordDate ===
+                            pointDate
                         );
+
+                    }
+                );
+
+
+            // ---------------------------------
+            // COUNT PRESENT
+            // ---------------------------------
+
+            dayRecords.forEach(
+                function(record) {
+
+                    const status =
+                        String(
+                            record.status ||
+                            ""
+                        )
+                        .trim()
+                        .toLowerCase();
 
 
                     if (
-                        recordDate >=
-                            point.start &&
-                        recordDate <
-                            point.end
+                        status ===
+                            "present" ||
+                        status ===
+                            "late" ||
+                        status ===
+                            "p"
                     ) {
 
-                        const status =
-                            String(
-                                record.status ||
-                                ""
-                            )
-                            .trim()
-                            .toLowerCase();
-
-
-                        if (
-                            status ===
-                                "present" ||
-                            status ===
-                                "p"
-                        ) {
-
-                            point.present++;
-
-                        }
-
-                        else if (
-                            status ===
-                                "absent" ||
-                            status ===
-                                "a"
-                        ) {
-
-                            point.absent++;
-
-                        }
+                        point.present++;
 
                     }
 
                 }
             );
 
+
+            // ---------------------------------
+            // IMPORTANT:
+            // NO RECORD = ABSENT
+            // ---------------------------------
+
+            point.absent =
+                Math.max(
+                    0,
+                    totalStudents -
+                    point.present
+                );
+
         }
     );
 
 
-    // ==========================================
-    // GET EXISTING BARS
-    // ==========================================
+    // =========================================
+    // GET GRAPH BARS
+    // =========================================
 
     const presentBars =
         chart.querySelectorAll(
@@ -42749,19 +42772,18 @@ else {
             ".teacher-absent-bar"
         );
 
-
     const labels =
         chart.querySelectorAll(
             ".teacher-chart-column small"
         );
 
 
-    // ==========================================
-    // UPDATE BARS
-    // ==========================================
+    // =========================================
+    // UPDATE GRAPH
+    // =========================================
 
     points.forEach(
-        function (point, index) {
+        function(point, index) {
 
             if (
                 !presentBars[index] ||
@@ -42776,39 +42798,48 @@ else {
                 point.absent;
 
 
-            let presentHeight = 0;
+            let presentHeight =
+                0;
 
-            let absentHeight = 0;
+            let absentHeight =
+                0;
 
 
-            if (total > 0) {
+            if (
+                total > 0
+            ) {
 
                 presentHeight =
-                    Math.round(
-                        (
-                            point.present /
-                            total
-                        ) * 100
-                    );
+                    (
+                        point.present /
+                        total
+                    ) * 100;
+
 
                 absentHeight =
-                    Math.round(
-                        (
-                            point.absent /
-                            total
-                        ) * 100
-                    );
+                    (
+                        point.absent /
+                        total
+                    ) * 100;
 
             }
 
 
-            presentBars[index].style.height =
-                presentHeight + "%";
+            presentBars[index]
+                .style.height =
+                    presentHeight +
+                    "%";
 
 
-            absentBars[index].style.height =
-                absentHeight + "%";
+            absentBars[index]
+                .style.height =
+                    absentHeight +
+                    "%";
 
+
+            // =================================
+            // TOOLTIP
+            // =================================
 
             presentBars[index].title =
                 "Present: " +
@@ -42819,6 +42850,10 @@ else {
                 "Absent: " +
                 point.absent;
 
+
+            // =================================
+            // DAY LABEL
+            // =================================
 
             if (labels[index]) {
 
@@ -42831,9 +42866,9 @@ else {
     );
 
 
-    // ==========================================
-    // CLEAR UNUSED BARS
-    // ==========================================
+    // =========================================
+    // CLEAR EXTRA BARS
+    // =========================================
 
     for (
         let i = points.length;
@@ -42841,16 +42876,27 @@ else {
         i++
     ) {
 
-        presentBars[i].style.height =
-            "0%";
+        presentBars[i]
+            .style.height =
+                "0%";
 
-        absentBars[i].style.height =
-            "0%";
+        absentBars[i]
+            .style.height =
+                "0%";
 
     }
 
-}
 
+    console.log(
+        "TEACHER ATTENDANCE OVERVIEW LIVE:",
+        {
+            teacherClass,
+            totalStudents,
+            points
+        }
+    );
+
+}
 
 // =========================================================
 // TEACHER ATTENDANCE CHART INITIALIZATION
