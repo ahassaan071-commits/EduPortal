@@ -1680,15 +1680,13 @@ adminDashboard.style.display = "none";
 }
 
 // Show Student Dashboard
-const studentDashboard =
-document.getElementById("studentDashboard");
-
-if (studentDashboard) {
-studentDashboard.style.setProperty(
-    "display",
-    "block",
-    "important"
-);
+if (
+    typeof eduPortalShowOnly ===
+    "function"
+) {
+    eduPortalShowOnly(
+        "studentDashboard"
+    );
 }
 // Student Name
 const studentName =
