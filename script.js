@@ -43752,3 +43752,460 @@ document.addEventListener(
 
     }
 );
+// =========================================================
+// TEACHER STUDENTS DISTRIBUTION
+// REAL SUPABASE DATA + REALTIME
+// =========================================================
+
+async function loadTeacherStudentsDistribution() {
+
+    const totalEl =
+        document.getElementById(
+            "teacherDistributionTotal"
+        );
+
+    const presentEl =
+        document.getElementById(
+            "teacherDistributionPresent"
+        );
+
+    const absentEl =
+        document.getElementById(
+            "teacherDistributionAbsent"
+        );
+
+    const donut =
+        document.getElementById(
+            "teacherStudentsDonut"
+        );
+
+    if (
+        !totalEl ||
+        !presentEl ||
+        !absentEl
+    ) {
+        return;
+    }
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+        console.error(
+            "Supabase connection missing."
+        );
+        return;
+    }
+
+
+    // =========================================
+    // LOGGED-IN TEACHER
+    // =========================================
+
+    let teacher = {};
+
+    try {
+
+        teacher =
+            JSON.parse(
+                localStorage.getItem(
+                    "loggedInTeacher"
+                )
+            ) || {};
+
+    } catch (error) {
+
+        console.error(
+            "Teacher session error:",
+            error
+        );
+
+        return;
+    }
+
+
+    // =========================================
+    // TEACHER CLASS
+    // =========================================
+
+    const teacherClass =
+        String(
+            teacher.teacherClass ||
+            teacher.teacher_class ||
+            teacher.class ||
+            ""
+        )
+        .trim()
+        .toLowerCase()
+        .replace(
+            /^class\s+/,
+            ""
+        );
+
+
+    if (!teacherClass) {
+
+        totalEl.textContent = "0";
+        presentEl.textContent = "0";
+        absentEl.textContent = "0";
+
+        if (donut) {
+            donut.style.background =
+                "#e2e8f0";
+        }
+
+        console.warn(
+            "Teacher class not found."
+        );
+
+        return;
+    }
+
+
+    // =========================================
+    // LOAD REAL STUDENTS FROM SUPABASE
+    // =========================================
+
+    const {
+        data: students,
+        error: studentsError
+    } =
+        await supabaseClient
+            .from("students")
+            .select(
+                "id, student_class"
+            );
+
+
+    if (studentsError) {
+
+        console.error(
+            "Students distribution error:",
+            studentsError
+        );
+
+        return;
+    }
+
+
+    // =========================================
+    // ONLY TEACHER'S CLASS
+    // =========================================
+
+    const assignedStudents =
+        (students || []).filter(
+            function(student) {
+
+                const studentClass =
+                    String(
+                        student.student_class ||
+                        ""
+                    )
+                    .trim()
+                    .toLowerCase()
+                    .replace(
+                        /^class\s+/,
+                        ""
+                    );
+
+                return (
+                    studentClass ===
+                    teacherClass
+                );
+
+            }
+        );
+
+
+    const total =
+        assignedStudents.length;
+
+
+    // =========================================
+    // TODAY DATE
+    // =========================================
+
+    const today =
+        new Date();
+
+    const todayDate =
+        today.getFullYear() +
+        "-" +
+        String(
+            today.getMonth() + 1
+        ).padStart(2, "0") +
+        "-" +
+        String(
+            today.getDate()
+        ).padStart(2, "0");
+
+
+    // =========================================
+    // TODAY ATTENDANCE
+    // =========================================
+
+    const {
+        data: attendance,
+        error: attendanceError
+    } =
+        await supabaseClient
+            .from("attendance")
+            .select(
+                "student_id, attendance_date, status"
+            )
+            .eq(
+                "attendance_date",
+                todayDate
+            );
+
+
+    if (attendanceError) {
+
+        console.error(
+            "Attendance distribution error:",
+            attendanceError
+        );
+
+        return;
+    }
+
+
+    // =========================================
+    // COUNT PRESENT / ABSENT
+    // =========================================
+
+    let present = 0;
+    let absent = 0;
+
+
+    assignedStudents.forEach(
+        function(student) {
+
+            const record =
+                (attendance || []).find(
+                    function(item) {
+
+                        return (
+                            String(
+                                item.student_id
+                            ) ===
+                            String(
+                                student.id
+                            )
+                        );
+
+                    }
+                );
+
+
+            // No attendance record = Absent
+            if (!record) {
+
+                absent++;
+
+                return;
+            }
+
+
+            const status =
+                String(
+                    record.status ||
+                    ""
+                )
+                .trim()
+                .toLowerCase();
+
+
+            if (
+                status === "present" ||
+                status === "late"
+            ) {
+
+                present++;
+
+            } else {
+
+                absent++;
+
+            }
+
+        }
+    );
+
+
+    // =========================================
+    // UPDATE COUNTS
+    // =========================================
+
+    totalEl.textContent =
+        total;
+
+    presentEl.textContent =
+        present;
+
+    absentEl.textContent =
+        absent;
+
+
+    // =========================================
+    // UPDATE DONUT
+    // =========================================
+
+    if (donut) {
+
+        if (total > 0) {
+
+            const presentPercentage =
+                (
+                    present /
+                    total
+                ) * 100;
+
+            donut.style.background =
+                "conic-gradient(" +
+                "#3b82f6 0% " +
+                presentPercentage +
+                "%, " +
+                "#ef4444 " +
+                presentPercentage +
+                "% 100%)";
+
+        } else {
+
+            donut.style.background =
+                "#e2e8f0";
+
+        }
+
+    }
+
+
+    console.log(
+        "STUDENTS DISTRIBUTION LIVE DATA:",
+        {
+            teacherClass,
+            total,
+            present,
+            absent
+        }
+    );
+}
+
+
+
+// =========================================================
+// REALTIME STUDENTS DISTRIBUTION
+// =========================================================
+
+let teacherDistributionRealtimeChannel =
+    null;
+
+
+function initializeTeacherDistributionRealtime() {
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+        return;
+    }
+
+
+    if (
+        teacherDistributionRealtimeChannel
+    ) {
+        return;
+    }
+
+
+    teacherDistributionRealtimeChannel =
+        supabaseClient
+            .channel(
+                "teacher-students-distribution-live"
+            )
+
+
+            // =====================================
+            // STUDENTS TABLE
+            // =====================================
+
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "students"
+                },
+                async function(payload) {
+
+                    console.log(
+                        "STUDENTS REALTIME UPDATE:",
+                        payload
+                    );
+
+                    await loadTeacherStudentsDistribution();
+
+                }
+            )
+
+
+            // =====================================
+            // ATTENDANCE TABLE
+            // =====================================
+
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "attendance"
+                },
+                async function(payload) {
+
+                    console.log(
+                        "ATTENDANCE REALTIME UPDATE:",
+                        payload
+                    );
+
+                    await loadTeacherStudentsDistribution();
+
+                }
+            )
+
+
+            .subscribe(
+                function(status) {
+
+                    console.log(
+                        "DISTRIBUTION REALTIME STATUS:",
+                        status
+                    );
+
+                }
+            );
+
+}
+
+
+
+// =========================================================
+// INITIAL LOAD
+// =========================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        setTimeout(
+            async function() {
+
+                await loadTeacherStudentsDistribution();
+
+                initializeTeacherDistributionRealtime();
+
+            },
+            500
+        );
+
+    }
+);
