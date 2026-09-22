@@ -5429,7 +5429,139 @@ statusField.value = "Active";
 }
 
 }
+// ==========================================================
+// AUTO LOAD SUBJECTS WHEN CLASS IS SELECTED
+// ==========================================================
 
+document.addEventListener("change", async function (event) {
+
+    if (event.target.id !== "adminNewStudentClass") {
+        return;
+    }
+
+    const selectedClass =
+        String(event.target.value || "").trim();
+
+    const subjectsGroup =
+        document.getElementById("adminStudentSubjectsGroup");
+
+    const subjectsContainer =
+        document.getElementById("adminStudentSubjects");
+
+    if (!selectedClass) {
+
+        if (subjectsGroup) {
+            subjectsGroup.style.display = "none";
+        }
+
+        if (subjectsContainer) {
+            subjectsContainer.innerHTML = "";
+        }
+
+        return;
+    }
+
+    if (subjectsGroup) {
+        subjectsGroup.style.display = "block";
+    }
+
+    if (!subjectsContainer) {
+        return;
+    }
+
+    subjectsContainer.innerHTML = `
+        <div style="
+            padding:10px;
+            color:#64748b;
+            grid-column:1/-1;
+        ">
+            Loading subjects...
+        </div>
+    `;
+
+    const {
+        data: subjects,
+        error
+    } = await supabaseClient
+        .from("subjects")
+        .select("*")
+        .order("id", { ascending: true });
+
+    if (error) {
+
+        console.error(
+            "SUBJECT LOAD ERROR:",
+            error
+        );
+
+        subjectsContainer.innerHTML = `
+            <div style="
+                padding:10px;
+                color:#dc2626;
+                grid-column:1/-1;
+            ">
+                Unable to load subjects.
+            </div>
+        `;
+
+        return;
+    }
+
+    if (!subjects || subjects.length === 0) {
+
+        subjectsContainer.innerHTML = `
+            <div style="
+                padding:10px;
+                color:#64748b;
+                grid-column:1/-1;
+            ">
+                No subjects available.
+            </div>
+        `;
+
+        return;
+    }
+
+    subjectsContainer.innerHTML = "";
+
+    subjects.forEach(function (subject) {
+
+        const subjectName =
+            subject.name ||
+            subject.subject_name ||
+            subject.title ||
+            "Unnamed Subject";
+
+        const label =
+            document.createElement("label");
+
+        label.style.cssText = `
+            display:flex;
+            align-items:center;
+            gap:9px;
+            padding:11px 12px;
+            border:1px solid #e2e8f0;
+            border-radius:10px;
+            background:#f8fafc;
+            cursor:pointer;
+        `;
+
+        label.innerHTML = `
+            <input
+                type="checkbox"
+                class="admin-student-subject"
+                value="${subject.id}"
+                data-subject-name="${subjectName}"
+            >
+
+            <span>${subjectName}</span>
+        `;
+
+        subjectsContainer.appendChild(label);
+
+    });
+
+});
 
 // ==========================================
 // LOAD ADMIN STUDENTS
