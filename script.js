@@ -17323,12 +17323,14 @@ const noticeId =
     // SAVE TO SUPABASE
     // ==========================================
 
-     const noticeRecord = {
+const noticeRecord = {
     title: title,
 
     message: description,
 
     target_role: audience,
+
+    expiry_date: date,
 
     created_at: new Date().toISOString()
 };
@@ -18511,16 +18513,20 @@ async function loadLatestAdminNotice() {
    } =
        await supabaseClient
            .from("notices")
-           .select(
-               "id, title, message, target_role, created_at"
-           )
-           .order(
-               "created_at",
-               {
-                   ascending: false
-               }
-           )
-           .limit(1);
+       .select(
+    "id, title, message, target_role, expiry_date, created_at"
+)
+.gte(
+    "expiry_date",
+    new Date().toISOString().slice(0, 10)
+)
+.order(
+    "created_at",
+    {
+        ascending: false
+    }
+)
+.limit(1);
 
 
     // ==========================================
