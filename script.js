@@ -42899,6 +42899,108 @@ async function renderTeacherAttendanceOverview() {
 }
 
 // =========================================================
+// TEACHER ATTENDANCE OVERVIEW - REALTIME
+// =========================================================
+
+let teacherAttendanceOverviewRealtime =
+    null;
+
+function initializeTeacherAttendanceOverviewRealtime() {
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+        return;
+    }
+
+    if (
+        teacherAttendanceOverviewRealtime
+    ) {
+        return;
+    }
+
+    teacherAttendanceOverviewRealtime =
+        supabaseClient
+            .channel(
+                "teacher-attendance-overview-live"
+            )
+
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "attendance"
+                },
+                async function(payload) {
+
+                    console.log(
+                        "ATTENDANCE OVERVIEW REALTIME:",
+                        payload
+                    );
+
+                    await renderTeacherAttendanceOverview();
+
+                }
+            )
+
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "students"
+                },
+                async function(payload) {
+
+                    console.log(
+                        "STUDENT OVERVIEW REALTIME:",
+                        payload
+                    );
+
+                    await renderTeacherAttendanceOverview();
+
+                }
+            )
+
+            .subscribe(
+                function(status) {
+
+                    console.log(
+                        "ATTENDANCE OVERVIEW REALTIME STATUS:",
+                        status
+                    );
+
+                }
+            );
+
+}
+
+
+// =========================================================
+// INITIALIZE REALTIME
+// =========================================================
+
+setTimeout(
+    function() {
+
+        if (
+            typeof renderTeacherAttendanceOverview ===
+            "function"
+        ) {
+
+            renderTeacherAttendanceOverview();
+
+        }
+
+        initializeTeacherAttendanceOverviewRealtime();
+
+    },
+    1000
+);
+
+// =========================================================
 // TEACHER ATTENDANCE CHART INITIALIZATION
 // =========================================================
 
