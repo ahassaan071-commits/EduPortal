@@ -45648,3 +45648,16 @@ strong {
     background: #fee2e2;
     color: #b91c1c;
 }
+/* =========================================================
+   NOTICE HISTORY - ACTIVE / EXPIRED STATUS
+   ========================================================= */
+
+#studentDashboard .notice-history-status.active {
+    background: #dcfce7 !important;
+    color: #15803d !important;
+}
+
+#studentDashboard .notice-history-status.expired {
+    background: #fee2e2 !important;
+    color: #dc2626 !important;
+}
