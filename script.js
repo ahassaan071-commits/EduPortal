@@ -15043,6 +15043,8 @@ async function studentCheckIn() {
 
     updateStudentAttendanceSummary();
 
+    await loadRealStudentAttendance();
+
 
     // ==========================================
     // RELOAD STUDENT DASHBOARD
@@ -15322,6 +15324,7 @@ studentCheckIn
 updateStudentAttendanceUI();
 
 updateStudentAttendanceSummary();
+
 
 }
 );
@@ -44706,6 +44709,229 @@ async function loadRealStudentAttendance() {
 
         const records =
             attendanceRows || [];
+
+            // =========================================================
+// UPDATE ATTENDANCE OVERVIEW DONUT
+// =========================================================
+
+const presentDays =
+    document.getElementById(
+        "chartPresentDays"
+    );
+
+const absentDays =
+    document.getElementById(
+        "chartAbsentDays"
+    );
+
+const leaveDays =
+    document.getElementById(
+        "chartLeaveDays"
+    );
+
+const donut =
+    document.getElementById(
+        "studentAttendanceDonut"
+    );
+
+const donutPercentage =
+    document.getElementById(
+        "studentAttendancePercentage"
+    );
+
+
+// =========================================
+// COUNT REAL ATTENDANCE
+// =========================================
+
+const totalAttendance =
+    records.length;
+
+const presentCount =
+    records.filter(function(record) {
+
+        return String(
+            record.status || ""
+        )
+        .trim()
+        .toLowerCase() === "present";
+
+    }).length;
+
+const absentCount =
+    records.filter(function(record) {
+
+        return String(
+            record.status || ""
+        )
+        .trim()
+        .toLowerCase() === "absent";
+
+    }).length;
+
+const leaveCount =
+    records.filter(function(record) {
+
+        return String(
+            record.status || ""
+        )
+        .trim()
+        .toLowerCase() === "leave";
+
+    }).length;
+
+
+// =========================================
+// ATTENDANCE PERCENTAGE
+// =========================================
+
+const livePercentage =
+    totalAttendance > 0
+        ? Math.round(
+            (
+                presentCount /
+                totalAttendance
+            ) * 100
+        )
+        : 0;
+
+
+// =========================================
+// UPDATE TEXT
+// =========================================
+
+if (presentDays) {
+
+    presentDays.textContent =
+        presentCount +
+        (
+            presentCount === 1
+                ? " Day"
+                : " Days"
+        );
+
+}
+
+if (absentDays) {
+
+    absentDays.textContent =
+        absentCount +
+        (
+            absentCount === 1
+                ? " Day"
+                : " Days"
+        );
+
+}
+
+if (leaveDays) {
+
+    leaveDays.textContent =
+        leaveCount +
+        (
+            leaveCount === 1
+                ? " Day"
+                : " Days"
+        );
+
+}
+
+if (donutPercentage) {
+
+    donutPercentage.textContent =
+        livePercentage + "%";
+
+}
+
+
+// =========================================
+// UPDATE DONUT
+// =========================================
+
+if (donut) {
+
+    if (totalAttendance > 0) {
+
+        const presentDegree =
+            (
+                presentCount /
+                totalAttendance
+            ) * 360;
+
+        const absentDegree =
+            (
+                absentCount /
+                totalAttendance
+            ) * 360;
+
+        const leaveDegree =
+            (
+                leaveCount /
+                totalAttendance
+            ) * 360;
+
+        const absentStart =
+            presentDegree;
+
+        const leaveStart =
+            presentDegree +
+            absentDegree;
+
+        donut.style.background =
+            "conic-gradient(" +
+
+            "#16a34a 0deg " +
+            presentDegree +
+            "deg, " +
+
+            "#ef4444 " +
+            presentDegree +
+            "deg " +
+            leaveStart +
+            "deg, " +
+
+            "#f59e0b " +
+            leaveStart +
+            "deg 360deg" +
+
+            ")";
+
+    }
+    else {
+
+        donut.style.background =
+            "#e2e8f0";
+
+    }
+
+}
+
+
+// =========================================
+// INITIALIZE REALTIME
+// =========================================
+
+if (
+    typeof initializeStudentAttendanceRealtime ===
+    "function"
+) {
+
+    initializeStudentAttendanceRealtime(
+        dbStudent.id
+    );
+
+}
+
+console.log(
+    "STUDENT ATTENDANCE OVERVIEW LIVE:",
+    {
+        total: totalAttendance,
+        present: presentCount,
+        absent: absentCount,
+        leave: leaveCount,
+        percentage: livePercentage
+    }
+);
 
         // =========================================
         // UPDATE TODAY'S BUTTON
