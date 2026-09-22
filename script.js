@@ -4147,44 +4147,223 @@ settingsMenu.onclick = function(event) {
     );
 
 };
-// ===============================
-// Save Settings
-// ===============================
+// ==========================================
+// STUDENT SETTINGS
+// ==========================================
 
-const saveSettingsBtn = document.getElementById("saveSettingsBtn");
+function loadStudentSettings() {
+
+    let savedStudent = null;
+
+    try {
+
+        savedStudent =
+            JSON.parse(
+                localStorage.getItem(
+                    "studentAccount"
+                )
+            ) ||
+            JSON.parse(
+                localStorage.getItem(
+                    "loggedInStudent"
+                )
+            );
+
+    } catch (error) {
+
+        console.error(
+            "Student settings load error:",
+            error
+        );
+
+        return;
+    }
+
+
+    if (!savedStudent) {
+
+        console.warn(
+            "Student account not found."
+        );
+
+        return;
+    }
+
+
+    const usernameInput =
+        document.getElementById(
+            "settingsUsername"
+        );
+
+    const currentPasswordInput =
+        document.getElementById(
+            "settingsCurrentPassword"
+        );
+
+
+    if (usernameInput) {
+
+        usernameInput.value =
+            savedStudent.username ||
+            "";
+
+    }
+
+
+    if (currentPasswordInput) {
+
+        currentPasswordInput.value =
+            savedStudent.password ||
+            "";
+
+    }
+
+}
+
+
+// ==========================================
+// LOAD SETTINGS WHEN SETTINGS OPENS
+// ==========================================
+
+if (
+    typeof settingsMenu !==
+    "undefined"
+) {
+
+    settingsMenu.addEventListener(
+        "click",
+        function() {
+
+            setTimeout(
+                function() {
+
+                    loadStudentSettings();
+
+                },
+                100
+            );
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// SAVE NEW PASSWORD
+// ==========================================
+
+const saveSettingsBtn =
+    document.getElementById(
+        "saveSettingsBtn"
+    );
+
 
 if (saveSettingsBtn) {
 
-saveSettingsBtn.addEventListener("click", function () {
+    saveSettingsBtn.addEventListener(
+        "click",
+        function() {
 
-const savedStudent =
-JSON.parse(localStorage.getItem("studentAccount"));
+            let savedStudent = null;
 
-if (!savedStudent) {
-alert("No student account found.");
-return;
-}
+            try {
 
-const newPassword =
-document.getElementById("settingsPassword").value.trim();
+                savedStudent =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "studentAccount"
+                        )
+                    );
 
-if (newPassword === "") {
-alert("Please enter a new password.");
-return;
-}
+            } catch (error) {
 
-savedStudent.password = newPassword;
+                console.error(
+                    "Student account error:",
+                    error
+                );
 
-localStorage.setItem(
-"studentAccount",
-JSON.stringify(savedStudent)
-);
+            }
 
-document.getElementById("settingsPassword").value = "";
 
-alert("Settings Saved Successfully ✅");
+            if (!savedStudent) {
 
-});
+                alert(
+                    "No student account found."
+                );
+
+                return;
+            }
+
+
+            const newPassword =
+                document.getElementById(
+                    "settingsPassword"
+                ).value.trim();
+
+
+            if (newPassword === "") {
+
+                alert(
+                    "Please enter a new password."
+                );
+
+                return;
+            }
+
+
+            // Update password
+
+            savedStudent.password =
+                newPassword;
+
+
+            // Save updated account
+
+            localStorage.setItem(
+                "studentAccount",
+                JSON.stringify(
+                    savedStudent
+                )
+            );
+
+
+            localStorage.setItem(
+                "loggedInStudent",
+                JSON.stringify(
+                    savedStudent
+                )
+            );
+
+
+            // Update current password field
+
+            const currentPasswordInput =
+                document.getElementById(
+                    "settingsCurrentPassword"
+                );
+
+            if (currentPasswordInput) {
+
+                currentPasswordInput.value =
+                    newPassword;
+
+            }
+
+
+            // Clear new password
+
+            document.getElementById(
+                "settingsPassword"
+            ).value = "";
+
+
+            alert(
+                "Password updated successfully! ✅"
+            );
+
+        }
+    );
 
 }
 // =========================================
