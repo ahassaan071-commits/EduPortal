@@ -35350,13 +35350,84 @@ this.setText(
 
 const statusElement =
     document.getElementById(
-        "feeStatus"
+        "studentFeeStatus"
     );
 
 if (statusElement) {
 
     statusElement.textContent =
         status;
+
+}
+
+// ==========================================
+// DUE DATE
+// ==========================================
+
+const latestFeeRecord =
+    records.length > 0
+        ? records[0]
+        : null;
+
+
+const dueDateElement =
+    document.getElementById(
+        "feeDueDate"
+    );
+
+
+if (dueDateElement) {
+
+    if (
+        latestFeeRecord &&
+        latestFeeRecord.due_date
+    ) {
+
+        const dueDate =
+            new Date(
+                latestFeeRecord.due_date
+            );
+
+        dueDateElement.textContent =
+            dueDate.toLocaleDateString(
+                "en-GB",
+                {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                }
+            );
+
+    }
+    else {
+
+        dueDateElement.textContent =
+            "-";
+
+    }
+
+}
+
+
+// ==========================================
+// PAYMENT METHOD
+// ==========================================
+
+const paymentMethodElement =
+    document.getElementById(
+        "paymentMethod"
+    );
+
+
+if (paymentMethodElement) {
+
+    paymentMethodElement.textContent =
+        (
+            latestFeeRecord &&
+            latestFeeRecord.payment_method
+        )
+            ? latestFeeRecord.payment_method
+            : "Cash";
 
 }
 
