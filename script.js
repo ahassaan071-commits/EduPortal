@@ -44357,3 +44357,186 @@ document.addEventListener(
 
     }
 );
+// =========================================================
+// STUDENT DASHBOARD - FINAL REAL ATTENDANCE HISTORY
+// =========================================================
+
+async function loadRealStudentAttendance() {
+
+    const loggedInStudent =
+        JSON.parse(
+            localStorage.getItem(
+                "loggedInStudent"
+            )
+        );
+
+    if (!loggedInStudent) {
+        return;
+    }
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+        console.error(
+            "Supabase connection missing."
+        );
+        return;
+    }
+
+    try {
+
+        // =========================================
+        // FIND REAL DATABASE STUDENT
+        // =========================================
+
+        let dbStudent = null;
+
+        // First try database ID
+        if (loggedInStudent.id) {
+
+            const result =
+                await supabaseClient
+                    .from("students")
+                    .select(
+                        "id, student_id"
+                    )
+                    .eq(
+                        "id",
+                        loggedInStudent.id
+                    )
+                    .maybeSingle();
+
+            if (
+                !result.error &&
+                result.data
+            ) {
+                dbStudent =
+                    result.data;
+            }
+        }
+
+        // Fallback: Student ID
+        if (
+            !dbStudent &&
+            loggedInStudent.studentId
+        ) {
+
+            const result =
+                await supabaseClient
+                    .from("students")
+                    .select(
+                        "id, student_id"
+                    )
+                    .eq(
+                        "student_id",
+                        loggedInStudent.studentId
+                    )
+                    .maybeSingle();
+
+            if (
+                !result.error &&
+                result.data
+            ) {
+                dbStudent =
+                    result.data;
+            }
+        }
+
+        if (!dbStudent) {
+
+            console.error(
+                "Student database record not found."
+            );
+
+            return;
+        }
+
+        // =========================================
+        // GET ALL REAL ATTENDANCE
+        // =========================================
+
+        const {
+            data: attendanceRows,
+            error
+        } =
+            await supabaseClient
+                .from("attendance")
+                .select(
+                    "id, student_id, attendance_date, status, check_in_time, check_out_time"
+                )
+                .eq(
+                    "student_id",
+                    dbStudent.id
+                )
+                .order(
+                    "attendance_date",
+                    {
+                        ascending: false
+                    }
+                );
+
+        if (error) {
+
+            console.error(
+                "STUDENT ATTENDANCE HISTORY ERROR:",
+                error
+            );
+
+            return;
+        }
+
+        const records =
+            attendanceRows || [];
+
+        // =========================================
+        // UPDATE TODAY'S BUTTON
+        // =========================================
+
+        if (
+            typeof updateStudentAttendanceUI ===
+            "function"
+        ) {
+            await updateStudentAttendanceUI();
+        }
+
+        // =========================================
+        // UPDATE SUMMARY
+        // =========================================
+
+        if (
+            typeof updateStudentAttendanceSummary ===
+            "function"
+        ) {
+            await updateStudentAttendanceSummary();
+        }
+
+        // =========================================
+        // SHOW DAILY HISTORY
+        // =========================================
+
+        if (
+            typeof loadStudentTodayAttendanceTable ===
+            "function"
+        ) {
+
+            await loadStudentTodayAttendanceTable(
+                records
+            );
+        }
+
+        console.log(
+            "STUDENT ATTENDANCE HISTORY:",
+            records
+        );
+
+    }
+    catch (error) {
+
+        console.error(
+            "FINAL STUDENT ATTENDANCE ERROR:",
+            error
+        );
+
+    }
+}

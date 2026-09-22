@@ -45518,3 +45518,57 @@ strong {
     font-size: 38px !important;
     line-height: 1 !important;
 }
+/* =========================================================
+   STUDENT ATTENDANCE - SMALL VIEW MORE BUTTON
+   ========================================================= */
+
+#attendanceHistoryViewMoreWrapper {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+
+    padding: 18px 20px !important;
+}
+
+#attendanceHistoryViewMoreBtn {
+    width: auto !important;
+    min-width: 125px !important;
+
+    height: 40px !important;
+
+    padding: 0 20px !important;
+
+    border: none !important;
+    border-radius: 8px !important;
+
+    background: #2563eb !important;
+    color: #ffffff !important;
+
+    font-size: 13px !important;
+    font-weight: 600 !important;
+
+    cursor: pointer !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 7px !important;
+
+    box-shadow:
+        0 5px 12px
+        rgba(37, 99, 235, 0.18) !important;
+}
+
+#attendanceHistoryViewMoreBtn:hover {
+    background: #1d4ed8 !important;
+}
+
+#attendanceHistoryViewMoreBtn span {
+    font-size: 14px !important;
+}
+#studentCheckInBtn:disabled {
+    opacity: 0.65 !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+}
