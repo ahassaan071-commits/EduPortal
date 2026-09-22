@@ -45462,3 +45462,11 @@ strong {
     font-weight: 800 !important;
     line-height: 1 !important;
 }
+/* Teacher Portal - Dashboard Heading Style */
+.teacher-portal-title {
+    font-family: inherit !important;
+    font-size: 30px !important;
+    font-weight: 800 !important;
+    color: #172554 !important;
+    line-height: 1.2 !important;
+}
