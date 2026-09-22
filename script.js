@@ -1652,13 +1652,16 @@ if (loggedInRole === "student") {
 
 const savedStudent =
 JSON.parse(
-localStorage.getItem("loggedInStudent")
+    localStorage.getItem("loggedInStudent")
+) || JSON.parse(
+    localStorage.getItem("studentAccount")
 );
 
 if (!savedStudent) {
-localStorage.removeItem("isLoggedIn");
-localStorage.removeItem("loggedInRole");
-return;
+    console.warn(
+        "Student session data not found."
+    );
+    return;
 }
 
 const loginContainer =
