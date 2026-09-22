@@ -35206,9 +35206,9 @@ const {
 } =
     await supabaseClient
         .from("fee_records")
-        .select(
-            "fee_amount, paid_amount, remaining_amount, status, month, due_date"
-        )
+      .select(
+    "fee_amount, paid_amount, remaining_amount, status, month, due_date, payment_method"
+)
         .eq(
             "student_id",
             Number(studentDbId)
