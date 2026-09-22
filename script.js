@@ -33733,47 +33733,217 @@ const normalizedStudentClass =
 
 
 // ==========================================
-// FILTER SUBJECTS
+// AUTOMATIC SUBJECT → CLASS LINKING
 // ==========================================
 
-const matchingSubjects =
-    (subjects || []).filter(
-        function(subject) {
+// Load teachers so the system can automatically
+// identify which class a subject belongs to.
 
-            const normalizedSubjectClass =
-                normalizeClass(
-                    subject.student_class ||
-                    subject.class_name ||
-                    subject.className ||
-                    subject.class ||
-                    subject.grade ||
-                    ""
-                );
+const {
+    data: teachersForSubjects,
+    error: teachersSubjectError
+} =
+    await supabaseClient
+        .from("teachers")
+        .select(
+            "id, teacher_id, name, subject, teacher_class"
+        );
 
-            console.log(
-                "SUBJECT CLASS CHECK:",
-                {
-                    subject:
-                        subject.name ||
-                        subject.subject_name ||
-                        subject.title,
+if (teachersSubjectError) {
 
-                    subjectClass:
-                        normalizedSubjectClass,
-
-                    studentClass:
-                        normalizedStudentClass
-                }
-            );
-
-            return (
-                normalizedSubjectClass ===
-                normalizedStudentClass
-            );
-
-        }
+    console.error(
+        "SUBJECT TEACHER LOAD ERROR:",
+        teachersSubjectError
     );
 
+}
+
+
+// ==========================================
+// FIND MATCHING SUBJECTS
+// ==========================================
+
+const matchingSubjects = [];
+
+
+// Check every subject
+for (
+    const subject of (subjects || [])
+) {
+
+    const subjectName =
+        String(
+            subject.name ||
+            subject.subject_name ||
+            subject.title ||
+            ""
+        )
+        .trim();
+
+
+    const normalizedSubjectName =
+        subjectName
+            .toLowerCase();
+
+
+    // ------------------------------------------
+    // FIRST: CHECK EXISTING CLASS
+    // ------------------------------------------
+
+    const existingSubjectClass =
+        normalizeClass(
+            subject.student_class ||
+            subject.class_name ||
+            subject.className ||
+            subject.class ||
+            subject.grade ||
+            ""
+        );
+
+
+    // ------------------------------------------
+    // IF CLASS IS ALREADY LINKED
+    // ------------------------------------------
+
+    if (
+        existingSubjectClass &&
+        existingSubjectClass ===
+        normalizedStudentClass
+    ) {
+
+        matchingSubjects.push(
+            subject
+        );
+
+        continue;
+    }
+
+
+    // ------------------------------------------
+    // AUTOMATIC TEACHER → SUBJECT → CLASS
+    // ------------------------------------------
+
+    const matchingTeacher =
+        (
+            teachersForSubjects ||
+            []
+        ).find(
+            function(teacher) {
+
+                const teacherSubject =
+                    String(
+                        teacher.subject ||
+                        ""
+                    )
+                    .trim()
+                    .toLowerCase();
+
+
+                const teacherClass =
+                    normalizeClass(
+                        teacher.teacher_class ||
+                        ""
+                    );
+
+
+                return (
+                    teacherSubject ===
+                    normalizedSubjectName
+                    &&
+                    teacherClass ===
+                    normalizedStudentClass
+                );
+
+            }
+        );
+
+
+    // ------------------------------------------
+    // AUTOMATICALLY LINK SUBJECT
+    // ------------------------------------------
+
+    if (matchingTeacher) {
+
+        console.log(
+            "AUTO SUBJECT LINK:",
+            {
+                subject:
+                    subjectName,
+
+                studentClass:
+                    student.studentClass ||
+                    dbStudent.student_class,
+
+                teacher:
+                    matchingTeacher.name,
+
+                teacherClass:
+                    matchingTeacher.teacher_class
+            }
+        );
+
+
+        // Automatically save class + teacher
+        // into the subjects table.
+
+        if (
+            !subject.class_name ||
+            !subject.teacher_id
+        ) {
+
+            const {
+                error: linkError
+            } =
+                await supabaseClient
+                    .from("subjects")
+                    .update({
+
+                        class_name:
+                            matchingTeacher.teacher_class,
+
+                        teacher_id:
+                            matchingTeacher.id
+
+                    })
+                    .eq(
+                        "id",
+                        subject.id
+                    );
+
+
+            if (linkError) {
+
+                console.warn(
+                    "AUTO SUBJECT LINK SAVE ERROR:",
+                    linkError
+                );
+
+            }
+            else {
+
+                // Update local object immediately
+
+                subject.class_name =
+                    matchingTeacher.teacher_class;
+
+                subject.teacher_id =
+                    matchingTeacher.id;
+
+                subject.teacher_name =
+                    matchingTeacher.name;
+
+            }
+
+        }
+
+
+        matchingSubjects.push(
+            subject
+        );
+
+    }
+
+}
 
 // ==========================================
 // NO MATCHING SUBJECTS
