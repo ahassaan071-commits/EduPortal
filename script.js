@@ -33685,74 +33685,141 @@ async loadSubjects(student) {
         return;
     }
 
-    // ==========================================
-    // DISPLAY SUBJECTS
-    // ==========================================
+ // ==========================================
+// FILTER SUBJECTS BY STUDENT CLASS
+// ==========================================
 
-    subjects.forEach(
+const studentClass =
+    String(
+        dbStudent.student_class ||
+        student.studentClass ||
+        ""
+    )
+    .trim()
+    .toLowerCase()
+    .replace(/^class\s*/i, "")
+    .trim();
+
+
+const matchingSubjects =
+    (subjects || []).filter(
         function(subject) {
 
-            const name =
-                subject.name ||
-                subject.subject_name ||
-                subject.title ||
-                "Subject";
+            const subjectClass =
+                String(
+                    subject.student_class ||
+                    subject.class_name ||
+                    subject.className ||
+                    subject.class ||
+                    ""
+                )
+                .trim()
+                .toLowerCase()
+                .replace(/^class\s*/i, "")
+                .trim();
 
-            const code =
-                subject.code ||
-                "";
 
-            const teacher =
-                subject.teacher_name ||
-                subject.teacher ||
-                "";
-
-            const item =
-                document.createElement(
-                    "div"
-                );
-
-            item.className =
-                "student-data-item";
-
-            item.innerHTML = `
-                <div>
-
-                    <strong>
-                        📚 ${name}
-                    </strong>
-
-                    ${
-                        code
-                            ? `
-                                <small>
-                                    Code:
-                                    ${code}
-                                </small>
-                            `
-                            : ""
-                    }
-
-                    ${
-                        teacher
-                            ? `
-                                <small>
-                                    Teacher:
-                                    ${teacher}
-                                </small>
-                            `
-                            : ""
-                    }
-
-                </div>
-            `;
-
-            container.appendChild(
-                item
+            return (
+                subjectClass ===
+                studentClass
             );
 
         }
     );
+
+
+// ==========================================
+// NO MATCHING SUBJECTS
+// ==========================================
+
+if (
+    matchingSubjects.length === 0
+) {
+
+    container.innerHTML = `
+        <div class="empty-state">
+            No subjects available for your class.
+        </div>
+    `;
+
+    return;
+}
+
+
+// ==========================================
+// DISPLAY CLASS SUBJECTS
+// ==========================================
+
+matchingSubjects.forEach(
+    function(subject) {
+
+        const name =
+            subject.name ||
+            subject.subject_name ||
+            subject.title ||
+            "Subject";
+
+
+        const code =
+            subject.code ||
+            "";
+
+
+        const teacher =
+            subject.teacher_name ||
+            subject.teacher ||
+            "";
+
+
+        const item =
+            document.createElement(
+                "div"
+            );
+
+
+        item.className =
+            "student-data-item";
+
+
+        item.innerHTML = `
+            <div>
+
+                <strong>
+                    📚 ${name}
+                </strong>
+
+                ${
+                    code
+                        ? `
+                            <small>
+                                Code:
+                                ${code}
+                            </small>
+                        `
+                        : ""
+                }
+
+                ${
+                    teacher
+                        ? `
+                            <small>
+                                Teacher:
+                                ${teacher}
+                            </small>
+                        `
+                        : ""
+                }
+
+            </div>
+        `;
+
+
+        container.appendChild(
+            item
+        );
+
+    }
+);
 
 },
 /* -------------------------
