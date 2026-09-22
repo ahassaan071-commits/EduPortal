@@ -45518,3 +45518,33 @@ strong {
     font-size: 38px !important;
     line-height: 1 !important;
 }
+/* =========================================================
+   EDUPORTAL - HIDE ALL DASHBOARDS BEFORE LOGIN
+   ========================================================= */
+
+/* Student dashboard hidden by default */
+#studentDashboard {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+/* Admin dashboard hidden by default */
+#adminDashboard {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+/* Teacher dashboard hidden by default */
+#teacherDashboard {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+/* Login screen visible */
+.container {
+    visibility: visible;
+    opacity: 1;
+}

@@ -44540,3 +44540,119 @@ async function loadRealStudentAttendance() {
 
     }
 }
+// =========================================================
+// EDUPORTAL - INITIAL LOGIN SCREEN FIX
+// =========================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        const isLoggedIn =
+            localStorage.getItem(
+                "isLoggedIn"
+            );
+
+        const role =
+            localStorage.getItem(
+                "loggedInRole"
+            );
+
+        // =========================================
+        // NO LOGIN = SHOW LOGIN ONLY
+        // =========================================
+
+        if (
+            isLoggedIn !== "true"
+        ) {
+
+            const loginContainer =
+                document.querySelector(
+                    ".container"
+                );
+
+            if (loginContainer) {
+
+                loginContainer.style.setProperty(
+                    "display",
+                    "flex",
+                    "important"
+                );
+
+                loginContainer.style.setProperty(
+                    "visibility",
+                    "visible",
+                    "important"
+                );
+
+                loginContainer.style.setProperty(
+                    "opacity",
+                    "1",
+                    "important"
+                );
+            }
+
+
+            // Hide Student
+            const studentDashboard =
+                document.getElementById(
+                    "studentDashboard"
+                );
+
+            if (studentDashboard) {
+
+                studentDashboard.style.setProperty(
+                    "display",
+                    "none",
+                    "important"
+                );
+
+                studentDashboard.style.setProperty(
+                    "visibility",
+                    "hidden",
+                    "important"
+                );
+
+                studentDashboard.style.setProperty(
+                    "opacity",
+                    "0",
+                    "important"
+                );
+            }
+
+
+            // Hide Teacher
+            const teacherDashboard =
+                document.getElementById(
+                    "teacherDashboard"
+                );
+
+            if (teacherDashboard) {
+
+                teacherDashboard.style.setProperty(
+                    "display",
+                    "none",
+                    "important"
+                );
+            }
+
+
+            // Hide Admin
+            const adminDashboard =
+                document.getElementById(
+                    "adminDashboard"
+                );
+
+            if (adminDashboard) {
+
+                adminDashboard.style.setProperty(
+                    "display",
+                    "none",
+                    "important"
+                );
+            }
+
+        }
+
+    }
+);
