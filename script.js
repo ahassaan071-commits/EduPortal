@@ -33701,27 +33701,74 @@ const studentClass =
     .trim();
 
 
+// ==========================================
+// NORMALIZE CLASS
+// ==========================================
+
+function normalizeClass(value) {
+
+    return String(value || "")
+        .trim()
+        .toLowerCase()
+        .replace(/^class\s*/i, "")
+        .replace(/th$/i, "")
+        .replace(/st$/i, "")
+        .replace(/nd$/i, "")
+        .replace(/rd$/i, "")
+        .trim();
+
+}
+
+
+// ==========================================
+// STUDENT CLASS
+// ==========================================
+
+const normalizedStudentClass =
+    normalizeClass(
+        dbStudent.student_class ||
+        student.studentClass ||
+        ""
+    );
+
+
+// ==========================================
+// FILTER SUBJECTS
+// ==========================================
+
 const matchingSubjects =
     (subjects || []).filter(
         function(subject) {
 
-            const subjectClass =
-                String(
+            const normalizedSubjectClass =
+                normalizeClass(
                     subject.student_class ||
                     subject.class_name ||
                     subject.className ||
                     subject.class ||
+                    subject.grade ||
                     ""
-                )
-                .trim()
-                .toLowerCase()
-                .replace(/^class\s*/i, "")
-                .trim();
+                );
 
+            console.log(
+                "SUBJECT CLASS CHECK:",
+                {
+                    subject:
+                        subject.name ||
+                        subject.subject_name ||
+                        subject.title,
+
+                    subjectClass:
+                        normalizedSubjectClass,
+
+                    studentClass:
+                        normalizedStudentClass
+                }
+            );
 
             return (
-                subjectClass ===
-                studentClass
+                normalizedSubjectClass ===
+                normalizedStudentClass
             );
 
         }
