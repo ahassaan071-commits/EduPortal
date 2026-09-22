@@ -5996,18 +5996,36 @@ CHANGE PASSWORD MODAL
         </select>
 
     </div>
-    <div class="input-group" id="adminStudentSubjectsGroup" style="display:none;">
+<div class="input-group" id="adminStudentSubjectsGroup">
 
     <label>Subjects</label>
 
-    <div id="adminStudentSubjects"
+    <select id="adminStudentSubjects" multiple
         style="
-            display:grid;
-            grid-template-columns:repeat(2, minmax(0, 1fr));
-            gap:10px;
-            margin-top:8px;
+            width:100%;
+            min-height:120px;
+            padding:10px;
+            border:1px solid #cbd5e1;
+            border-radius:11px;
+            background:#f8fafc;
+            color:#0f172a;
+            font-family:inherit;
+            font-size:14px;
         ">
-    </div>
+
+        <option value="" disabled>
+            Select Class First
+        </option>
+
+    </select>
+
+    <small style="
+        display:block;
+        margin-top:6px;
+        color:#64748b;
+    ">
+        Ctrl + Click se multiple subjects select kar sakte hain.
+    </small>
 
 </div>
 
