@@ -33582,7 +33582,7 @@ async loadSubjects(student) {
         const result =
             await supabaseClient
                 .from("students")
-                .select("id, student_id")
+                .select("id, student_id, student_class, section")
                 .eq(
                     "id",
                     student.id
@@ -33606,7 +33606,7 @@ async loadSubjects(student) {
         const result =
             await supabaseClient
                 .from("students")
-                .select("id, student_id")
+                .select("id, student_id, student_class, section")
                 .eq(
                     "student_id",
                     student.studentId
