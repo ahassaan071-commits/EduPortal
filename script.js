@@ -37509,11 +37509,9 @@ document.addEventListener(
     // -----------------------------------------------------
     // SIDEBAR CLICK
     // -----------------------------------------------------
-
-    dashboard.addEventListener(
-        "click",
-        function (event) {
-
+dashboard.addEventListener(
+    "click",
+async function (event) {
             const menu =
                 event.target.closest(
                     ".sidebar ul li"
@@ -37625,19 +37623,232 @@ document.addEventListener(
 
 
             // Notices
-            if (menu.id === "noticesMenu") {
+     if (menu.id === "noticesMenu") {
 
-                event.preventDefault();
-                event.stopPropagation();
+    event.preventDefault();
+    event.stopPropagation();
 
-                showModule(
-                    "noticeBoard",
-                    "noticesMenu"
+    showModule(
+        "noticeBoard",
+        "noticesMenu"
+    );
+
+    // =========================================
+    // LOAD NOTICE HISTORY
+    // =========================================
+
+    const noticeBoard =
+        document.getElementById(
+            "noticeBoard"
+        );
+
+    if (
+        noticeBoard &&
+        typeof supabaseClient !== "undefined"
+    ) {
+
+        const {
+            data: notices,
+            error
+        } =
+            await supabaseClient
+                .from("notices")
+                .select(
+                    "id, title, message, target_role, expiry_date, created_at"
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
                 );
 
-                return;
-            }
+        if (error) {
 
+            console.error(
+                "NOTICE HISTORY ERROR:",
+                error
+            );
+
+            noticeBoard.innerHTML = `
+                <div class="notice-content">
+                    <h3>Notice History</h3>
+                    <p>Unable to load notice history.</p>
+                </div>
+            `;
+
+            return;
+        }
+
+        if (
+            !notices ||
+            notices.length === 0
+        ) {
+
+            noticeBoard.innerHTML = `
+                <div class="notice-content">
+                    <h3>Notice History</h3>
+                    <p>No notices available.</p>
+                </div>
+            `;
+
+            return;
+        }
+
+        // =========================================
+        // NOTICE HISTORY HTML
+        // =========================================
+
+        noticeBoard.innerHTML = `
+            <div
+                class="notice-history-wrapper"
+            >
+
+                <div
+                    class="notice-history-header"
+                >
+                    <div>
+                        <div
+                            class="notice-history-icon"
+                        >
+                            📢
+                        </div>
+                    </div>
+
+                    <div>
+                        <h2>
+                            Notice History
+                        </h2>
+
+                        <p>
+                            All previous and current notices
+                        </p>
+                    </div>
+                </div>
+
+                <div
+                    class="notice-history-list"
+                >
+
+                    ${
+                        notices.map(
+                            function(notice) {
+
+                                const today =
+                                    new Date()
+                                        .toISOString()
+                                        .slice(
+                                            0,
+                                            10
+                                        );
+
+                                const expiry =
+                                    notice.expiry_date ||
+                                    "";
+
+                                const expired =
+                                    expiry &&
+                                    expiry < today;
+
+                                const noticeDate =
+                                    notice.created_at
+                                        ? new Date(
+                                            notice.created_at
+                                        ).toLocaleString(
+                                            "en-PK",
+                                            {
+                                                day: "2-digit",
+                                                month: "short",
+                                                year: "numeric",
+                                                hour: "2-digit",
+                                                minute: "2-digit",
+                                                hour12: true
+                                            }
+                                        )
+                                        : "—";
+
+                                return `
+                                    <div
+                                        class="notice-history-item"
+                                    >
+
+                                        <div
+                                            class="notice-history-item-top"
+                                        >
+
+                                            <h3>
+                                                📢
+                                                ${
+                                                    notice.title ||
+                                                    "Notice"
+                                                }
+                                            </h3>
+
+                                            <span
+                                                class="
+                                                    notice-history-status
+                                                    ${
+                                                        expired
+                                                            ? "expired"
+                                                            : "active"
+                                                    }
+                                                "
+                                            >
+                                                ${
+                                                    expired
+                                                        ? "Expired"
+                                                        : "Active"
+                                                }
+                                            </span>
+
+                                        </div>
+
+                                        <p>
+                                            ${
+                                                notice.message ||
+                                                ""
+                                            }
+                                        </p>
+
+                                        <div
+                                            class="notice-history-meta"
+                                        >
+
+                                            <span>
+                                                📅
+                                                ${noticeDate}
+                                            </span>
+
+                                            ${
+                                                expiry
+                                                    ? `
+                                                        <span>
+                                                            ⏳
+                                                            Expiry:
+                                                            ${expiry}
+                                                        </span>
+                                                    `
+                                                    : ""
+                                            }
+
+                                        </div>
+
+                                    </div>
+                                `;
+
+                            }
+                        ).join("")
+                    }
+
+                </div>
+
+            </div>
+        `;
+
+    }
+
+    return;
+}
 
             // Settings
             if (menu.id === "settingsMenu") {

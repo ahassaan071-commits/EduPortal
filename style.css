@@ -45548,3 +45548,103 @@ strong {
     visibility: visible;
     opacity: 1;
 }
+/* =========================================================
+   STUDENT NOTICE HISTORY
+   ========================================================= */
+
+#studentDashboard .notice-history-wrapper {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 30px;
+}
+
+#studentDashboard .notice-history-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 25px;
+}
+
+#studentDashboard .notice-history-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: #f59e0b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+
+#studentDashboard .notice-history-header h2 {
+    margin: 0;
+    color: #172554;
+    font-size: 24px;
+    font-weight: 800;
+}
+
+#studentDashboard .notice-history-header p {
+    margin: 5px 0 0;
+    color: #64748b;
+    font-size: 13px;
+}
+
+#studentDashboard .notice-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+#studentDashboard .notice-history-item {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: 0 5px 16px rgba(15, 23, 42, 0.05);
+}
+
+#studentDashboard .notice-history-item-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+#studentDashboard .notice-history-item h3 {
+    margin: 0;
+    color: #172554;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+#studentDashboard .notice-history-item p {
+    margin: 10px 0;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+#studentDashboard .notice-history-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    color: #64748b;
+    font-size: 12px;
+}
+
+#studentDashboard .notice-history-status {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+#studentDashboard .notice-history-status.active {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+#studentDashboard .notice-history-status.expired {
+    background: #fee2e2;
+    color: #b91c1c;
+}
