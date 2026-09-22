@@ -538,6 +538,9 @@ if (selectedRole === "teacher") {
     // OPEN TEACHER DASHBOARD
     // ------------------------------------------
 
+// SHOW TEACHER DASHBOARD IMMEDIATELY
+eduPortalShowOnly("teacherDashboard");
+
     setTimeout(function () {
 
         // Hide Login

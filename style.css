@@ -45538,9 +45538,9 @@ strong {
 
 /* Teacher dashboard hidden by default */
 #teacherDashboard {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
+    display: none;
+    visibility: hidden;
+    opacity: 0;
 }
 
 /* Login screen visible */
