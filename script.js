@@ -24476,23 +24476,7 @@ async function loadTeacherMyStudents() {
         }
     }
 }
-// ==========================================
-// TEACHER MUST HAVE AN ASSIGNED CLASS
-// ==========================================
 
-if (!teacherClass) {
-
-    console.warn(
-        "No class assigned to teacher:",
-        dbTeacher
-    );
-
-    alert(
-        "No class is assigned to this teacher."
-    );
-
-    return;
-}
 // =========================================================
 // OPEN TEACHER MY STUDENTS
 // =========================================================
