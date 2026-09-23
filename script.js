@@ -32118,7 +32118,7 @@ document.addEventListener(
 
         if (
             newPassword &&
-            !/^[0-9]{6,8}$/.test(
+            !/^[0-9]{8,12}$/.test(
                 newPassword
             )
         ) {
