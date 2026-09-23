@@ -26850,66 +26850,138 @@ async function loadTeacherResults() {
 
 
     // =========================================
-    // FIND TEACHER IN SUPABASE
-    // =========================================
+// FIND CURRENT TEACHER IN SUPABASE
+// =========================================
 
-    let teacherQuery =
-        null;
+let dbTeacher = null;
+
+// 1. Try database ID
+if (teacher.id) {
+
+    const result =
+        await supabaseClient
+            .from("teachers")
+            .select(
+                "id, teacher_id, name, username, teacher_class, section, status"
+            )
+            .eq(
+                "id",
+                teacher.id
+            )
+            .maybeSingle();
+
+    if (!result.error && result.data) {
+        dbTeacher = result.data;
+    }
+}
 
 
-    if (
+// 2. Try teacher_id
+if (
+    !dbTeacher &&
+    (
         teacher.teacherId ||
-        teacher.id
-    ) {
+        teacher.teacher_id
+    )
+) {
 
-        teacherQuery =
-            await supabaseClient
-                .from("teachers")
-                .select(
-                    "id, teacher_id, name, teacher_class"
+    const result =
+        await supabaseClient
+            .from("teachers")
+            .select(
+                "id, teacher_id, name, username, teacher_class, section, status"
+            )
+            .eq(
+                "teacher_id",
+                String(
+                    teacher.teacherId ||
+                    teacher.teacher_id
                 )
-                .eq(
-                    "teacher_id",
-                    String(
-                        teacher.teacherId ||
-                        teacher.id
-                    )
-                )
-                .maybeSingle();
+            )
+            .maybeSingle();
 
+    if (!result.error && result.data) {
+        dbTeacher = result.data;
     }
+}
 
 
-    if (
-        teacherQuery &&
-        teacherQuery.error
-    ) {
+// 3. Try username
+if (
+    !dbTeacher &&
+    teacher.username
+) {
 
-        console.error(
-            "Teacher lookup error:",
-            teacherQuery.error
-        );
+    const result =
+        await supabaseClient
+            .from("teachers")
+            .select(
+                "id, teacher_id, name, username, teacher_class, section, status"
+            )
+            .ilike(
+                "username",
+                teacher.username
+            )
+            .maybeSingle();
 
+    if (!result.error && result.data) {
+        dbTeacher = result.data;
     }
+}
 
 
-    const dbTeacher =
-        teacherQuery?.data ||
-        null;
+// =========================================
+// TEACHER CLASS
+// =========================================
 
+const teacherClass =
+    String(
+        dbTeacher?.teacher_class ||
+        teacher.teacherClass ||
+        teacher.teacher_class ||
+        teacher.class ||
+        ""
+    )
+    .trim()
+    .toLowerCase()
+    .replace(
+        /^class\s*/i,
+        ""
+    );
+
+
+// IMPORTANT:
+// Never show all students if class is missing.
+
+if (!teacherClass) {
+
+    console.error(
+        "Teacher class not found."
+    );
+
+    tableBody.innerHTML = `
+        <tr>
+            <td
+                colspan="7"
+                style="
+                    text-align:center;
+                    padding:50px;
+                    color:#dc2626;
+                "
+            >
+                Teacher class is not assigned.
+            </td>
+        </tr>
+    `;
+
+    return;
+}
 
     // =========================================
     // GET TEACHER CLASS
     // =========================================
 
-    const teacherClass =
-        String(
-            dbTeacher?.teacher_class ||
-            teacher.teacherClass ||
-            ""
-        )
-        .trim()
-        .toLowerCase();
+  
 
 
     const classElement =
@@ -26980,30 +27052,30 @@ async function loadTeacherResults() {
     // =========================================
 
     const assignedStudents =
-        (students || []).filter(
-            function(student) {
+    (students || []).filter(
+        function(student) {
 
-                const studentClass =
-                    String(
-                        student.student_class ||
-                        student.class ||
-                        ""
-                    )
-                    .trim()
-                    .toLowerCase();
-
-
-                return (
-                    !teacherClass ||
-                    studentClass ===
-                        teacherClass ||
-                    studentClass ===
-                        "class " +
-                        teacherClass
+            const studentClass =
+                String(
+                    student.student_class ||
+                    student.studentClass ||
+                    student.class ||
+                    ""
+                )
+                .trim()
+                .toLowerCase()
+                .replace(
+                    /^class\s*/i,
+                    ""
                 );
 
-            }
-        );
+            return (
+                studentClass ===
+                teacherClass
+            );
+
+        }
+    );
 // =========================================
 // REMOVE DUPLICATE STUDENTS
 // =========================================
