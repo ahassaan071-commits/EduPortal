@@ -22849,54 +22849,56 @@ async function loadTeacherAttendanceSection() {
         return;
     }
 
-    // =========================================
-    // TEACHER CLASS
-    // =========================================
+// =========================================
+// TEACHER CLASS
+// =========================================
 
-    const teacherClass =
-        String(
-            teacher.teacherClass ||
-            teacher.class ||
-            teacher.assigned_class ||
-            teacher.student_class ||
-            ""
-        )
-        .trim()
-        .toLowerCase()
-        .replace(
-            "class ",
-            ""
-        );
+const teacherClass =
+    String(
+        teacher.teacherClass ||
+        teacher.teacher_class ||
+        teacher.class ||
+        teacher.assigned_class ||
+        teacher.student_class ||
+        ""
+    )
+    .trim()
+    .toLowerCase()
+    .replace(/^class\s*/i, "");
 
-    // =========================================
-    // FILTER ASSIGNED STUDENTS
-    // =========================================
 
-    const assignedStudents =
-        (students || []).filter(
-            function (student) {
+// =========================================
+// FILTER STUDENTS BY TEACHER CLASS
+// =========================================
 
-                const studentClass =
-                    String(
-                        student.student_class ||
-                        ""
-                    )
-                    .trim()
-                    .toLowerCase()
-                    .replace(
-                        "class ",
-                        ""
-                    );
+const assignedStudents =
+    (students || []).filter(
+        function (student) {
 
-                return (
-                    !teacherClass ||
-                    studentClass ===
-                    teacherClass
-                );
+            const studentClass =
+                String(
+                    student.student_class ||
+                    ""
+                )
+                .trim()
+                .toLowerCase()
+                .replace(/^class\s*/i, "");
 
+            // IMPORTANT:
+            // If teacher class is not available,
+            // show NO students — never all students.
+
+            if (!teacherClass) {
+                return false;
             }
-        );
 
+            return (
+                studentClass ===
+                teacherClass
+            );
+
+        }
+    );
     // =========================================
     // CLASS NAME
     // =========================================
