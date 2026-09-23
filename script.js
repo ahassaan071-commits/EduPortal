@@ -31368,7 +31368,7 @@ function checkTeacherSession() {
 
 
     const tenMinutes =
-        30 * 60 * 1000;
+        10 * 60 * 1000;
 
 
     const sessionExpired =
