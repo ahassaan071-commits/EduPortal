@@ -5212,18 +5212,23 @@ subjectsContainer.appendChild(
                     );
 
 
-                wrapper.style.cssText = `
-                    display:flex;
-                    align-items:center;
-                    gap:10px;
-                    padding:10px 12px;
-                    margin-bottom:6px;
-                    border:1px solid #e2e8f0;
-                    border-radius:8px;
-                    background:#ffffff;
-                    cursor:pointer;
-                    transition:0.2s;
-                `;
+         wrapper.style.cssText = `
+    display:flex !important;
+    flex-direction:row !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    gap:10px !important;
+    width:100%;
+    min-height:42px;
+    box-sizing:border-box;
+    padding:8px 12px !important;
+    margin:0 0 6px 0 !important;
+    border:1px solid #e2e8f0;
+    border-radius:8px;
+    background:#ffffff;
+    cursor:pointer;
+    transition:all 0.2s ease;
+`;
 
 
                 const checkbox =
