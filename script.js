@@ -538,6 +538,9 @@ if (selectedRole === "teacher") {
     // OPEN TEACHER DASHBOARD
     // ------------------------------------------
 
+// START TEACHER SESSION
+startTeacherSession();
+
 // SHOW TEACHER DASHBOARD IMMEDIATELY
 eduPortalShowOnly("teacherDashboard");
 
