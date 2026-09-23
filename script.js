@@ -31568,7 +31568,7 @@ if (studentsError) {
        FILTER STUDENTS BY TEACHER CLASS
     ===================================================== */
 
-   const normalizedTeacherClass =
+  const normalizedTeacherClass =
     String(
         teacherClass
     )
@@ -31600,17 +31600,14 @@ const assignedStudents =
 
 
             return (
-                normalizedTeacherClass !==
-                "" &&
-                normalizedTeacherClass !==
-                "not assigned" &&
+                normalizedTeacherClass !== "" &&
+                normalizedTeacherClass !== "not assigned" &&
                 studentClass ===
                 normalizedTeacherClass
             );
 
         }
     );
-
     /* =====================================================
        TOTAL STUDENTS
     ===================================================== */
