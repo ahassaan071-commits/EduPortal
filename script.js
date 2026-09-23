@@ -23948,38 +23948,36 @@ async function loadTeacherMyStudents() {
         );
 
     if (!tableBody && !grid) {
-
         console.warn(
             "Teacher students container not found"
+        );
+        return;
+    }
+
+    // =========================================
+    // GET LOGGED-IN TEACHER
+    // =========================================
+
+    let teacher = {};
+
+    try {
+
+        teacher =
+            JSON.parse(
+                localStorage.getItem(
+                    "loggedInTeacher"
+                )
+            ) || {};
+
+    } catch (error) {
+
+        console.error(
+            "Teacher session error:",
+            error
         );
 
         return;
     }
-
-// ==========================================
-// GET LOGGED-IN TEACHER
-// ==========================================
-
-let teacher = {};
-
-try {
-
-    teacher =
-        JSON.parse(
-            localStorage.getItem(
-                "loggedInTeacher"
-            )
-        ) || {};
-
-} catch (error) {
-
-    console.error(
-        "Teacher session error:",
-        error
-    );
-
-    return;
-}
 
     // =========================================
     // SUPABASE CHECK
@@ -23998,101 +23996,191 @@ try {
     }
 
     // =========================================
-    // LOAD STUDENTS FROM SUPABASE
+    // GET CURRENT TEACHER FROM SUPABASE
+    // =========================================
+
+    let dbTeacher = null;
+
+    // Find by database ID
+    if (teacher.id) {
+
+        const result =
+            await supabaseClient
+                .from("teachers")
+                .select(
+                    "id, teacher_id, name, username, teacher_class, section, status"
+                )
+                .eq(
+                    "id",
+                    teacher.id
+                )
+                .maybeSingle();
+
+        if (
+            !result.error &&
+            result.data
+        ) {
+
+            dbTeacher =
+                result.data;
+        }
+    }
+
+    // Find by teacher_id
+    if (
+        !dbTeacher &&
+        (
+            teacher.teacherId ||
+            teacher.teacher_id
+        )
+    ) {
+
+        const teacherId =
+            String(
+                teacher.teacherId ||
+                teacher.teacher_id
+            ).trim();
+
+        const result =
+            await supabaseClient
+                .from("teachers")
+                .select(
+                    "id, teacher_id, name, username, teacher_class, section, status"
+                )
+                .eq(
+                    "teacher_id",
+                    teacherId
+                )
+                .maybeSingle();
+
+        if (
+            !result.error &&
+            result.data
+        ) {
+
+            dbTeacher =
+                result.data;
+        }
+    }
+
+    // Find by username
+    if (
+        !dbTeacher &&
+        teacher.username
+    ) {
+
+        const result =
+            await supabaseClient
+                .from("teachers")
+                .select(
+                    "id, teacher_id, name, username, teacher_class, section, status"
+                )
+                .ilike(
+                    "username",
+                    String(
+                        teacher.username
+                    ).trim()
+                )
+                .limit(1);
+
+        if (
+            !result.error &&
+            result.data &&
+            result.data.length > 0
+        ) {
+
+            dbTeacher =
+                result.data[0];
+        }
+    }
+
+    // Teacher not found
+    if (!dbTeacher) {
+
+        console.error(
+            "Teacher not found in Supabase:",
+            teacher
+        );
+
+        if (tableBody) {
+
+            tableBody.innerHTML = `
+                <tr>
+                    <td
+                        colspan="8"
+                        style="
+                            text-align:center;
+                            padding:40px;
+                            color:#ef4444;
+                        "
+                    >
+                        Teacher account could not be verified.
+                    </td>
+                </tr>
+            `;
+        }
+
+        return;
+    }
+
+    // =========================================
+    // GET TEACHER CLASS
+    // =========================================
+
+    const teacherClass =
+        String(
+            dbTeacher.teacher_class ||
+            teacher.teacherClass ||
+            teacher.teacher_class ||
+            ""
+        )
+        .trim()
+        .toLowerCase()
+        .replace(
+            /^class\s*/i,
+            ""
+        );
+
+    // =========================================
+    // CLASS MUST EXIST
+    // =========================================
+
+    if (!teacherClass) {
+
+        console.error(
+            "No class assigned to teacher:",
+            dbTeacher
+        );
+
+        if (tableBody) {
+
+            tableBody.innerHTML = `
+                <tr>
+                    <td
+                        colspan="8"
+                        style="
+                            text-align:center;
+                            padding:50px;
+                            color:#64748b;
+                        "
+                    >
+                        No class is assigned to this teacher.
+                    </td>
+                </tr>
+            `;
+        }
+
+        return;
+    }
+
+    // =========================================
+    // LOAD STUDENTS
     // =========================================
 
     const {
         data: students,
         error
     } =
-
-    // ==========================================
-// GET CURRENT TEACHER FROM SUPABASE
-// ==========================================
-
-let dbTeacher = null;
-
-// 1. Find by teacher ID
-if (teacher.id) {
-
-    const { data } = await supabaseClient
-        .from("teachers")
-        .select(`
-            id,
-            teacher_id,
-            name,
-            username,
-            teacher_class,
-            section,
-            status
-        `)
-        .eq("id", teacher.id)
-        .maybeSingle();
-
-    dbTeacher = data;
-}
-
-// 2. Fallback: Find by teacher_id
-if (!dbTeacher && (teacher.teacherId || teacher.teacher_id)) {
-
-    const teacherId =
-        teacher.teacherId ||
-        teacher.teacher_id;
-
-    const { data } = await supabaseClient
-        .from("teachers")
-        .select(`
-            id,
-            teacher_id,
-            name,
-            username,
-            teacher_class,
-            section,
-            status
-        `)
-        .eq("teacher_id", teacherId)
-        .maybeSingle();
-
-    dbTeacher = data;
-}
-
-// 3. Fallback: Find by username
-if (!dbTeacher && teacher.username) {
-
-    const { data } = await supabaseClient
-        .from("teachers")
-        .select(`
-            id,
-            teacher_id,
-            name,
-            username,
-            teacher_class,
-            section,
-            status
-        `)
-        .ilike(
-            "username",
-            teacher.username
-        )
-        .maybeSingle();
-
-    dbTeacher = data;
-}
-
-// Teacher not found
-if (!dbTeacher) {
-
-    console.error(
-        "Teacher not found in Supabase:",
-        teacher
-    );
-
-    alert(
-        "Teacher account could not be verified."
-    );
-
-    return;
-}
         await supabaseClient
             .from("students")
             .select(`
@@ -24137,61 +24225,62 @@ if (!dbTeacher) {
                     </td>
                 </tr>
             `;
-
         }
 
         return;
     }
 
     // =========================================
-    // TEACHER CLASS
-    // =========================================
-
-const teacherClass =
-    String(
-        teacher.teacherClass ||
-        teacher.teacher_class ||
-        teacher.class ||
-        teacher.assigned_class ||
-        teacher.student_class ||
-        ""
-    )
-    .trim()
-    .toLowerCase()
-    .replace(
-        /^class\s*/i,
-        ""
-    );
-
-    // =========================================
-    // FILTER ASSIGNED STUDENTS
+    // FILTER STUDENTS BY TEACHER CLASS
     // =========================================
 
     const assignedStudents =
-    (students || []).filter(
-        function (student) {
+        (students || []).filter(
+            function (student) {
 
-            const studentClass =
-                String(
-                    student.student_class ||
-                    student.studentClass ||
-                    student.class ||
-                    ""
-                )
-                .trim()
-                .toLowerCase()
-                .replace(
-                    /^class\s*/i,
-                    ""
+                const studentClass =
+                    String(
+                        student.student_class ||
+                        ""
+                    )
+                    .trim()
+                    .toLowerCase()
+                    .replace(
+                        /^class\s*/i,
+                        ""
+                    );
+
+                return (
+                    studentClass ===
+                    teacherClass
                 );
+            }
+        );
 
-            return (
-                teacherClass !== "" &&
-                studentClass ===
-                teacherClass
-            );
+    // =========================================
+    // DEBUG
+    // =========================================
+
+    console.log(
+        "TEACHER MY STUDENTS:",
+        {
+            teacher:
+                dbTeacher.name,
+
+            teacherId:
+                dbTeacher.teacher_id,
+
+            teacherClass:
+                dbTeacher.teacher_class,
+
+            normalizedClass:
+                teacherClass,
+
+            totalStudents:
+                assignedStudents.length
         }
     );
+
     // =========================================
     // TOTAL STUDENTS
     // =========================================
@@ -24205,90 +24294,18 @@ const teacherClass =
 
         totalElement.textContent =
             assignedStudents.length;
-
-    }
-
-    const totalElement2 =
-        document.getElementById(
-            "teacherTotalStudents"
-        );
-
-    if (
-        totalElement2 &&
-        totalElement2 !== totalElement
-    ) {
-
-        totalElement2.textContent =
-            assignedStudents.length;
-
     }
 
     // =========================================
-    // SHOW CLASS
-    // =========================================
-
-    const classElement =
-        document.getElementById(
-            "teacherStudentsClass"
-        );
-
-    if (classElement) {
-
-        classElement.textContent =
-            teacher.teacherClass ||
-            "Not Assigned";
-
-    }
-
-    // =========================================
-    // ACTIVE STUDENTS
-    // =========================================
-
-    const activeStudents =
-        assignedStudents.filter(
-            function (student) {
-
-                return (
-                    !student.status ||
-                    student.status ===
-                    "Active"
-                );
-
-            }
-        );
-
-    const activeElement =
-        document.getElementById(
-            "teacherStudentsActive"
-        );
-
-    if (activeElement) {
-
-        activeElement.textContent =
-            activeStudents.length;
-
-    }
-
-    // =========================================
-    // CLEAR TABLE
+    // RENDER TABLE
     // =========================================
 
     if (tableBody) {
 
-        tableBody.innerHTML = "";
-
-    }
-
-    // =========================================
-    // NO STUDENTS
-    // =========================================
-
-    if (
-        assignedStudents.length ===
-        0
-    ) {
-
-        if (tableBody) {
+        if (
+            assignedStudents.length ===
+            0
+        ) {
 
             tableBody.innerHTML = `
                 <tr>
@@ -24300,114 +24317,181 @@ const teacherClass =
                             color:#64748b;
                         "
                     >
-                        🎓
-                        <br><br>
-                        No students found
-                        for your assigned class.
+                        No students found for Class
+                        ${teacherClass}.
                     </td>
                 </tr>
             `;
 
+        } else {
+
+            tableBody.innerHTML =
+                assignedStudents
+                    .map(
+                        function (student, index) {
+
+                            return `
+                                <tr>
+
+                                    <td>
+                                        ${index + 1}
+                                    </td>
+
+                                    <td>
+                                        ${
+                                            student.student_id ||
+                                            "-"
+                                        }
+                                    </td>
+
+                                    <td>
+                                        ${
+                                            student.name ||
+                                            "-"
+                                        }
+                                    </td>
+
+                                    <td>
+                                        ${
+                                            student.student_class ||
+                                            "-"
+                                        }
+                                    </td>
+
+                                    <td>
+                                        ${
+                                            student.section ||
+                                            "-"
+                                        }
+                                    </td>
+
+                                    <td>
+                                        ${
+                                            student.roll_number ||
+                                            "-"
+                                        }
+                                    </td>
+
+                                    <td>
+                                        ${
+                                            student.mobile ||
+                                            "-"
+                                        }
+                                    </td>
+
+                                    <td>
+                                        ${
+                                            student.status ||
+                                            "-"
+                                        }
+                                    </td>
+
+                                </tr>
+                            `;
+                        }
+                    )
+                    .join("");
         }
-
-        return;
     }
 
     // =========================================
-    // RENDER STUDENTS
+    // GRID RENDER
     // =========================================
 
-    if (tableBody) {
+    if (grid) {
 
-        assignedStudents.forEach(
-            function (
-                student,
-                index
-            ) {
+        if (
+            assignedStudents.length ===
+            0
+        ) {
 
-                const row =
-                    document.createElement(
-                        "tr"
-                    );
+            grid.innerHTML = `
+                <div
+                    style="
+                        text-align:center;
+                        padding:50px;
+                        color:#64748b;
+                        width:100%;
+                    "
+                >
+                    No students found for Class
+                    ${teacherClass}.
+                </div>
+            `;
 
-                const status =
-                    student.status ||
-                    "Active";
+        } else {
 
-                const statusClass =
-                    String(status)
-                        .toLowerCase() ===
-                    "active"
-                        ? "active"
-                        : "disabled";
+            grid.innerHTML =
+                assignedStudents
+                    .map(
+                        function (student) {
 
-                row.innerHTML = `
-                    <td>
-                        ${index + 1}
-                    </td>
+                            return `
+                                <div class="student-card">
 
-                    <td>
-                        ${
-                            student.name ||
-                            student.full_name ||
-                            "—"
+                                    <div class="student-card-name">
+                                        ${
+                                            student.name ||
+                                            "-"
+                                        }
+                                    </div>
+
+                                    <div class="student-card-info">
+                                        Student ID:
+                                        ${
+                                            student.student_id ||
+                                            "-"
+                                        }
+                                    </div>
+
+                                    <div class="student-card-info">
+                                        Class:
+                                        ${
+                                            student.student_class ||
+                                            "-"
+                                        }
+                                    </div>
+
+                                    <div class="student-card-info">
+                                        Section:
+                                        ${
+                                            student.section ||
+                                            "-"
+                                        }
+                                    </div>
+
+                                    <div class="student-card-info">
+                                        Roll No:
+                                        ${
+                                            student.roll_number ||
+                                            "-"
+                                        }
+                                    </div>
+
+                                </div>
+                            `;
                         }
-                    </td>
-
-                    <td>
-                        ${
-                            student.student_id ||
-                            student.id ||
-                            "—"
-                        }
-                    </td>
-
-                    <td>
-                        ${
-                            student.student_class ||
-                            "—"
-                        }
-                    </td>
-
-                    <td>
-                        ${
-                            student.section ||
-                            "—"
-                        }
-                    </td>
-
-                    <td>
-                        ${
-                            student.roll_number ||
-                            "—"
-                        }
-                    </td>
-
-                    <td>
-                        ${
-                            student.mobile ||
-                            "—"
-                        }
-                    </td>
-
-                    <td>
-                        <span
-                            class="status-badge ${statusClass}"
-                        >
-                            ${status}
-                        </span>
-                    </td>
-                `;
-
-                tableBody.appendChild(
-                    row
-                );
-
-            }
-        );
-
+                    )
+                    .join("");
+        }
     }
+}
+// ==========================================
+// TEACHER MUST HAVE AN ASSIGNED CLASS
+// ==========================================
 
+if (!teacherClass) {
+
+    console.warn(
+        "No class assigned to teacher:",
+        dbTeacher
+    );
+
+    alert(
+        "No class is assigned to this teacher."
+    );
+
+    return;
 }
 // =========================================================
 // OPEN TEACHER MY STUDENTS
