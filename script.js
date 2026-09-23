@@ -31402,44 +31402,6 @@ setInterval(
 );
 
 
-/* =========================================================
-   START SESSION AFTER TEACHER LOGIN
-========================================================= */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function() {
-
-        const isLoggedIn =
-            localStorage.getItem(
-                "isLoggedIn"
-            );
-
-        const role =
-            localStorage.getItem(
-                "loggedInRole"
-            );
-
-
-        if (
-            isLoggedIn === "true" &&
-            role === "teacher"
-        ) {
-
-            if (
-                !localStorage.getItem(
-                    "teacherSessionStart"
-                )
-            ) {
-
-                startTeacherSession();
-
-            }
-
-        }
-
-    }
-);
 
 
 /* =========================================================
