@@ -367,147 +367,53 @@ else if (selectedRole === "teacher") {
         selectedRole
     );
 
-    // ==========================================
-    // ADMIN SESSION
-    // ==========================================
+// ==========================================
+// ADMIN SESSION
+// ==========================================
 
-    if (selectedRole === "administrator") {
+if (selectedRole === "administrator") {
 
-        localStorage.setItem(
-            "adminAccount",
-            JSON.stringify(account)
-        );
-
-        setTimeout(function () {
-
-                        eduPortalShowOnly("adminDashboard");
-
-       const login =
-    document.querySelector(".container");
-
-if (login) {
-    login.classList.add("session-hidden");
-    login.style.display = "none";
-}
-
-            const studentDashboard =
-                document.getElementById(
-                    "studentDashboard"
-                );
-
-         if (studentDashboard) {
-    studentDashboard.style.setProperty(
-        "display",
-        "none",
-        "important"
-    );
-}
-
-            const adminDashboard =
-                document.getElementById(
-                    "adminDashboard"
-                );
-
-            if (adminDashboard) {
-    adminDashboard.style.setProperty(
-        "display",
-        "block",
-        "important"
+    localStorage.setItem(
+        "adminAccount",
+        JSON.stringify(account)
     );
 
-    adminDashboard.style.setProperty(
-        "visibility",
-        "visible",
-        "important"
-    );
+    eduPortalShowOnly("adminDashboard");
 
-    adminDashboard.style.setProperty(
-        "opacity",
-        "1",
-        "important"
-    );
+    const adminName =
+        document.getElementById("adminName");
 
-    adminDashboard.style.setProperty(
-        "position",
-        "fixed",
-        "important"
-    );
-
-    adminDashboard.style.setProperty(
-        "top",
-        "0",
-        "important"
-    );
-
-    adminDashboard.style.setProperty(
-        "left",
-        "0",
-        "important"
-    );
-
-    adminDashboard.style.setProperty(
-        "width",
-        "100vw",
-        "important"
-    );
-
-    adminDashboard.style.setProperty(
-        "height",
-        "100vh",
-        "important"
-    );
-
-    adminDashboard.style.setProperty(
-        "z-index",
-        "999999",
-        "important"
-    );
-
-    adminDashboard.style.setProperty(
-        "overflow",
-        "auto",
-        "important"
-    );
-}
-
-            const adminName =
-                document.getElementById(
-                    "adminName"
-                );
-
-            if (adminName) {
-
-                adminName.textContent =
-                    "Welcome, " +
-                    (
-                        account.fullName ||
-                        account.full_name ||
-                        account.name ||
-                        "Administrator"
-                    ) +
-                    " 👋";
-            }
-
-            if (
-                typeof syncFinalAdminDashboard ===
-                "function"
-            ) {
-                syncFinalAdminDashboard();
-            }
-
-// Fresh Admin data after login
-setTimeout(
-    function () {
-        refreshActiveDashboardData();
-    },
-    100
-);
-
-        }, 500);
-
-        return;
+    if (adminName) {
+        adminName.textContent =
+            "Welcome, " +
+            (
+                account.fullName ||
+                account.full_name ||
+                account.name ||
+                "Administrator"
+            ) +
+            " 👋";
     }
 
+    if (
+        typeof syncFinalAdminDashboard ===
+        "function"
+    ) {
+        syncFinalAdminDashboard();
+    }
+
+    if (
+        typeof refreshActiveDashboardData ===
+        "function"
+    ) {
+        setTimeout(
+            refreshActiveDashboardData,
+            100
+        );
+    }
+
+    return;
+}
  // ==========================================
 // TEACHER SESSION
 // ==========================================
