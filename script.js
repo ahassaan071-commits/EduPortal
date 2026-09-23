@@ -5017,150 +5017,249 @@ statusField.value = "Active";
 
 }
 // ==========================================================
-// AUTO LOAD SUBJECTS IN DROPDOWN WHEN CLASS IS SELECTED
+// LOAD SUBJECTS IN STUDENT SUBJECT FORM
 // ==========================================================
 
-document.addEventListener("change", async function (event) {
+document.addEventListener(
+    "change",
+    async function (event) {
 
-    if (event.target.id !== "adminNewStudentClass") {
-        return;
-    }
-
-    const selectedClass =
-        String(event.target.value || "").trim();
-
-    const subjectsGroup =
-        document.getElementById(
-            "adminStudentSubjectsGroup"
-        );
-
-    const subjectsDropdown =
-        document.getElementById(
-            "adminStudentSubjects"
-        );
-
-    if (!subjectsDropdown) {
-        return;
-    }
-
-    // No class selected
-    if (!selectedClass) {
-
-        if (subjectsGroup) {
-            subjectsGroup.style.display = "none";
+        if (
+            event.target.id !==
+            "adminNewStudentClass"
+        ) {
+            return;
         }
 
-        subjectsDropdown.innerHTML = `
-            <option value="" disabled>
-                Select Class First
-            </option>
-        `;
 
-        return;
-    }
-
-    // Show subjects
-    if (subjectsGroup) {
-        subjectsGroup.style.display = "block";
-    }
-
-    subjectsDropdown.innerHTML = `
-        <option value="">
-            Loading subjects...
-        </option>
-    `;
-
-    // Load subjects from Supabase
-    const {
-        data: subjects,
-        error
-    } = await supabaseClient
-        .from("subjects")
-        .select("*")
-        .order("id", {
-            ascending: true
-        });
-
-    if (error) {
-
-        console.error(
-            "ADMIN SUBJECT LOAD ERROR:",
-            error
-        );
-
-        subjectsDropdown.innerHTML = `
-            <option value="">
-                Unable to load subjects
-            </option>
-        `;
-
-        return;
-    }
-
-    // Clear dropdown
-    subjectsDropdown.innerHTML = "";
-
-    // Default option
-    const defaultOption =
-        document.createElement("option");
-
-    defaultOption.value = "";
-    defaultOption.textContent =
-        "Select Subjects";
-
-    defaultOption.disabled = true;
-
-    subjectsDropdown.appendChild(
-        defaultOption
-    );
-
-
-    // Add all subjects
-    (subjects || []).forEach(
-        function (subject) {
-
-            const subjectName =
-                subject.name ||
-                subject.subject_name ||
-                subject.title ||
-                "Unnamed Subject";
-
-            const option =
-                document.createElement("option");
-
-            option.value =
-                subject.id;
-
-            option.textContent =
-                subjectName;
-
-            option.dataset.subjectName =
-                subjectName;
-
-            subjectsDropdown.appendChild(
-                option
+        const subjectsGroup =
+            document.getElementById(
+                "adminStudentSubjectsGroup"
             );
+
+
+        const subjectsContainer =
+            document.getElementById(
+                "adminStudentSubjects"
+            );
+
+
+        if (!subjectsContainer) {
+            return;
         }
-    );
 
 
-    if (
-        !subjects ||
-        subjects.length === 0
-    ) {
+        // ==========================================
+        // LOAD SUBJECTS
+        // ==========================================
 
-        subjectsDropdown.innerHTML = `
-            <option value="">
-                No subjects available
-            </option>
+        subjectsContainer.innerHTML = `
+            <div
+                style="
+                    color:#64748b;
+                    padding:8px;
+                    text-align:center;
+                "
+            >
+                Loading subjects...
+            </div>
         `;
 
-        return;
+
+        if (
+            typeof supabaseClient ===
+            "undefined"
+        ) {
+
+            subjectsContainer.innerHTML = `
+                <div
+                    style="
+                        color:#ef4444;
+                        padding:8px;
+                    "
+                >
+                    Unable to connect to database.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        const {
+            data: subjects,
+            error
+        } =
+            await supabaseClient
+                .from("subjects")
+                .select("*")
+                .order(
+                    "id",
+                    {
+                        ascending: true
+                    }
+                );
+
+
+        // ==========================================
+        // ERROR
+        // ==========================================
+
+        if (error) {
+
+            console.error(
+                "ADMIN SUBJECT LOAD ERROR:",
+                error
+            );
+
+
+            subjectsContainer.innerHTML = `
+                <div
+                    style="
+                        color:#ef4444;
+                        padding:8px;
+                    "
+                >
+                    Unable to load subjects.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        // ==========================================
+        // CLEAR OLD SUBJECTS
+        // ==========================================
+
+        subjectsContainer.innerHTML = "";
+
+
+        // ==========================================
+        // NO SUBJECTS
+        // ==========================================
+
+        if (
+            !subjects ||
+            subjects.length === 0
+        ) {
+
+            subjectsContainer.innerHTML = `
+                <div
+                    style="
+                        color:#64748b;
+                        padding:8px;
+                        text-align:center;
+                    "
+                >
+                    No subjects available.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        // ==========================================
+        // CREATE CHECKBOXES
+        // ==========================================
+
+        subjects.forEach(
+            function (subject) {
+
+                const subjectName =
+                    subject.name ||
+                    subject.subject_name ||
+                    subject.title ||
+                    "Unnamed Subject";
+
+
+                const wrapper =
+                    document.createElement(
+                        "label"
+                    );
+
+
+                wrapper.style.cssText = `
+                    display:flex;
+                    align-items:center;
+                    gap:10px;
+                    padding:10px 12px;
+                    margin-bottom:6px;
+                    border:1px solid #e2e8f0;
+                    border-radius:8px;
+                    background:#ffffff;
+                    cursor:pointer;
+                    transition:0.2s;
+                `;
+
+
+                const checkbox =
+                    document.createElement(
+                        "input"
+                    );
+
+
+                checkbox.type =
+                    "checkbox";
+
+
+                checkbox.value =
+                    subject.id;
+
+
+                checkbox.dataset.subjectId =
+                    subject.id;
+
+
+                checkbox.dataset.subjectName =
+                    subjectName;
+
+
+                checkbox.style.cssText = `
+                    width:17px;
+                    height:17px;
+                    cursor:pointer;
+                    accent-color:#2563eb;
+                `;
+
+
+                const name =
+                    document.createElement(
+                        "span"
+                    );
+
+
+                name.textContent =
+                    subjectName;
+
+
+                name.style.cssText = `
+                    font-size:14px;
+                    color:#0f172a;
+                    font-weight:500;
+                `;
+
+
+                wrapper.appendChild(
+                    checkbox
+                );
+
+
+                wrapper.appendChild(
+                    name
+                );
+
+
+                subjectsContainer.appendChild(
+                    wrapper
+                );
+
+            }
+        );
+
     }
-
-});
-
-
+);
 
 // ==========================================
 // LOAD ADMIN STUDENTS
