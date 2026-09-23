@@ -26052,11 +26052,12 @@ document.addEventListener(
 
 
         const teacherId =
-            teacher.id ||
-            teacher.username ||
-            teacher.email ||
-            "";
-
+    teacher.teacherId ||
+    teacher.teacher_id ||
+    teacher.id ||
+    teacher.username ||
+    teacher.email ||
+    "";
 
         // =========================================
         // GET FORM VALUES
