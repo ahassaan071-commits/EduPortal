@@ -4624,18 +4624,28 @@ Fee Month <span>*</span>
 </div>
 
 
-<!-- MONTHLY FEE -->
+<!-- TOTAL FEE -->
 
 <div class="fee-input-group">
 
 <label>
-Monthly Fee <span>*</span>
+Total Fee
 </label>
 
-<input type="number" id="monthlyFeeAmount" min="0" placeholder="Enter monthly fee">
+<input
+    type="number"
+    id="monthlyFeeAmount"
+    min="0"
+    placeholder="Automatically fetched"
+    readonly
+    style="
+        background:#f8fafc;
+        color:#334155;
+        font-weight:600;
+    "
+>
 
 </div>
-
 
 <!-- DUE DATE -->
 
@@ -4663,48 +4673,9 @@ Paid Amount
 </div>
 
 
-<!-- PAYMENT DATE -->
-
-<div class="fee-input-group">
-
-<label>
-Payment Date
-</label>
-
-<input type="date" id="feePaymentDate">
-
-</div>
 
 
-<!-- STATUS -->
 
-<div class="fee-input-group">
-
-<label>
-Status
-</label>
-
-<select id="feeStatus">
-
-<option value="Pending">
-    Pending
-</option>
-
-<option value="Partial">
-    Partial
-</option>
-
-<option value="Paid">
-    Paid
-</option>
-
-<option value="Overdue">
-    Overdue
-</option>
-
-</select>
-
-</div>
 
 </div>
 
