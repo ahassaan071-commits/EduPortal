@@ -5248,12 +5248,20 @@ subjectsContainer.appendChild(
                     subjectName;
 
 
-                checkbox.style.cssText = `
-                    width:17px;
-                    height:17px;
-                    cursor:pointer;
-                    accent-color:#2563eb;
-                `;
+          checkbox.style.cssText = `
+    appearance: auto !important;
+    width: 17px !important;
+    height: 17px !important;
+    min-width: 17px !important;
+    min-height: 17px !important;
+    max-width: 17px !important;
+    max-height: 17px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    flex: 0 0 17px !important;
+    cursor: pointer;
+    accent-color: #2563eb;
+`;
 
 
                 const name =
