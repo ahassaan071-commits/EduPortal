@@ -439,6 +439,57 @@ if (selectedRole === "teacher") {
         "true"
     );
 
+    // ------------------------------------------
+// SHOW TEACHER DASHBOARD
+// ------------------------------------------
+
+eduPortalShowOnly(
+    "teacherDashboard"
+);
+
+const teacherDashboard =
+    document.getElementById(
+        "teacherDashboard"
+    );
+
+if (teacherDashboard) {
+
+    teacherDashboard.style.setProperty(
+        "display",
+        "flex",
+        "important"
+    );
+
+    teacherDashboard.style.setProperty(
+        "visibility",
+        "visible",
+        "important"
+    );
+
+    teacherDashboard.style.setProperty(
+        "opacity",
+        "1",
+        "important"
+    );
+
+    teacherDashboard.style.setProperty(
+        "position",
+        "relative",
+        "important"
+    );
+
+    teacherDashboard.style.setProperty(
+        "width",
+        "100%",
+        "important"
+    );
+
+    teacherDashboard.style.setProperty(
+        "min-height",
+        "100vh",
+        "important"
+    );
+}
 
    setTimeout(function () {
 
