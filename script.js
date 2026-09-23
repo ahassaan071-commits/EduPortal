@@ -4472,16 +4472,24 @@ document.addEventListener(
             student_class:
                 studentClass,
 
-                subject_ids:
-        Array.from(
-            document.getElementById("adminStudentSubjects")?.selectedOptions || []
+   subject_ids:
+    Array.from(
+        document.querySelectorAll(
+            "#adminStudentSubjects input[type='checkbox']:checked"
         )
-        .map(function(option) {
-            return Number(option.value);
-        })
-        .filter(function(id) {
-            return !isNaN(id);
-        }),
+    )
+    .map(function (checkbox) {
+
+        return Number(
+            checkbox.value
+        );
+
+    })
+    .filter(function (id) {
+
+        return !isNaN(id);
+
+    }),
 
             section:
                 section,
@@ -5159,6 +5167,63 @@ document.addEventListener(
             return;
         }
 
+
+// ==========================================
+// SELECTED SUBJECT COUNT
+// ==========================================
+
+const selectedCount =
+    document.createElement("div");
+
+selectedCount.id =
+    "adminSelectedSubjectsCount";
+
+selectedCount.textContent =
+    "Selected: 0";
+
+selectedCount.style.cssText = `
+    font-size:13px;
+    font-weight:600;
+    color:#2563eb;
+    margin-bottom:10px;
+`;
+
+subjectsContainer.appendChild(
+    selectedCount
+);
+checkbox.addEventListener(
+    "change",
+    function () {
+
+        const checkedSubjects =
+            subjectsContainer.querySelectorAll(
+                "input[type='checkbox']:checked"
+            );
+
+        selectedCount.textContent =
+            "Selected: " +
+            checkedSubjects.length;
+
+        if (checkbox.checked) {
+
+            wrapper.style.background =
+                "#eff6ff";
+
+            wrapper.style.borderColor =
+                "#2563eb";
+
+        } else {
+
+            wrapper.style.background =
+                "#ffffff";
+
+            wrapper.style.borderColor =
+                "#e2e8f0";
+
+        }
+
+    }
+);
 
         // ==========================================
         // CREATE CHECKBOXES
