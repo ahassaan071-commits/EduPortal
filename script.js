@@ -4344,24 +4344,23 @@ const monthlyFee =
             return;
         }
 
+// ==========================================
+// PASSWORD VALIDATION
+// ==========================================
 
-        // ==========================================
-        // PASSWORD VALIDATION
-        // ==========================================
 
-        if (
-            !/^[0-9]{6,8}$/.test(
-                password
-            )
-        ) {
+     if (
+    !/^[0-9]{8,12}$/.test(
+        password
+    )
+) {
 
-            alert(
-                "Password must contain 6 to 8 digits only."
-            );
+    alert(
+        "Password must contain 8 to 12 digits only."
+    );
 
-            return;
-        }
-
+    return;
+}
 
         // ==========================================
         // CHECK DUPLICATE STUDENT ID
