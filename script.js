@@ -2510,39 +2510,64 @@ async function updateDashboardStats() {
     }
 
 
-    // ==========================================
-    // SUBJECT COUNT FROM SUPABASE
-    // ==========================================
+// ==========================================
+// SUBJECT COUNT - ASSIGNED SUBJECTS ONLY
+// ==========================================
 
-    const {
-        data: subjects
-    } =
-        await supabaseClient
-            .from("subjects")
-            .select("id");
+let assignedSubjectIds = [];
+
+if (dbStudent) {
+
+    try {
+
+        assignedSubjectIds =
+            Array.isArray(dbStudent.subject_ids)
+                ? dbStudent.subject_ids
+                : JSON.parse(
+                    dbStudent.subject_ids || "[]"
+                );
+
+    } catch (error) {
+
+        assignedSubjectIds = [];
+
+    }
+
+}
 
 
-    const subjectCount =
-        (
-            subjects ||
-            []
-        ).length;
+// ==========================================
+// SUBJECT COUNT DISPLAY
+// ==========================================
 
+const subjectCountElement =
+    document.getElementById(
+        "subjectsCount"
+    );
 
-    const subjectCountElement =
-        document.getElementById(
-            "subjectsCount"
-        );
+if (subjectCountElement) {
 
+    // Jab tak subjects assign nahi hain
+    // kuch bhi display nahi hoga
 
-    if (subjectCountElement) {
+    if (
+        !assignedSubjectIds ||
+        assignedSubjectIds.length === 0
+    ) {
+
+        subjectCountElement.textContent = "";
+
+    }
+
+    else {
 
         subjectCountElement.textContent =
-            subjectCount +
+            assignedSubjectIds.length +
             " Subjects";
 
     }
 
+}
 
     // ==========================================
     // OVERALL RESULT
