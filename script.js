@@ -24005,6 +24005,94 @@ try {
         data: students,
         error
     } =
+
+    // ==========================================
+// GET CURRENT TEACHER FROM SUPABASE
+// ==========================================
+
+let dbTeacher = null;
+
+// 1. Find by teacher ID
+if (teacher.id) {
+
+    const { data } = await supabaseClient
+        .from("teachers")
+        .select(`
+            id,
+            teacher_id,
+            name,
+            username,
+            teacher_class,
+            section,
+            status
+        `)
+        .eq("id", teacher.id)
+        .maybeSingle();
+
+    dbTeacher = data;
+}
+
+// 2. Fallback: Find by teacher_id
+if (!dbTeacher && (teacher.teacherId || teacher.teacher_id)) {
+
+    const teacherId =
+        teacher.teacherId ||
+        teacher.teacher_id;
+
+    const { data } = await supabaseClient
+        .from("teachers")
+        .select(`
+            id,
+            teacher_id,
+            name,
+            username,
+            teacher_class,
+            section,
+            status
+        `)
+        .eq("teacher_id", teacherId)
+        .maybeSingle();
+
+    dbTeacher = data;
+}
+
+// 3. Fallback: Find by username
+if (!dbTeacher && teacher.username) {
+
+    const { data } = await supabaseClient
+        .from("teachers")
+        .select(`
+            id,
+            teacher_id,
+            name,
+            username,
+            teacher_class,
+            section,
+            status
+        `)
+        .ilike(
+            "username",
+            teacher.username
+        )
+        .maybeSingle();
+
+    dbTeacher = data;
+}
+
+// Teacher not found
+if (!dbTeacher) {
+
+    console.error(
+        "Teacher not found in Supabase:",
+        teacher
+    );
+
+    alert(
+        "Teacher account could not be verified."
+    );
+
+    return;
+}
         await supabaseClient
             .from("students")
             .select(`
@@ -24080,30 +24168,30 @@ const teacherClass =
     // =========================================
 
     const assignedStudents =
-        (students || []).filter(
-            function (student) {
+    (students || []).filter(
+        function (student) {
 
-                const studentClass =
-                    String(
-                        student.student_class ||
-                        ""
-                    )
-                    .trim()
-                    .toLowerCase()
-                    .replace(
-                        "class ",
-                        ""
-                    );
-
-                return (
-                    !teacherClass ||
-                    studentClass ===
-                    teacherClass
+            const studentClass =
+                String(
+                    student.student_class ||
+                    student.studentClass ||
+                    student.class ||
+                    ""
+                )
+                .trim()
+                .toLowerCase()
+                .replace(
+                    /^class\s*/i,
+                    ""
                 );
 
-            }
-        );
-
+            return (
+                teacherClass !== "" &&
+                studentClass ===
+                teacherClass
+            );
+        }
+    );
     // =========================================
     // TOTAL STUDENTS
     // =========================================
