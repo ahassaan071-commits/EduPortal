@@ -16761,7 +16761,6 @@ const fields = [
 "monthlyFeeAmount",
 "feeDueDate",
 "feePaidAmount",
-"feePaymentDate",
 "feeRemarks"
 
 ];
