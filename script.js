@@ -10036,6 +10036,12 @@ if (action === "edit") {
 
         if (action === "delete") {
 
+            console.log("DELETE BUTTON CLICKED:", {
+    action: action,
+    userType: userType,
+    recordId: recordId
+});
+
             const confirmDelete = confirm(
                 "Are you sure you want to permanently delete this " +
                 userType +
