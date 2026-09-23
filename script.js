@@ -5191,39 +5191,6 @@ selectedCount.style.cssText = `
 subjectsContainer.appendChild(
     selectedCount
 );
-checkbox.addEventListener(
-    "change",
-    function () {
-
-        const checkedSubjects =
-            subjectsContainer.querySelectorAll(
-                "input[type='checkbox']:checked"
-            );
-
-        selectedCount.textContent =
-            "Selected: " +
-            checkedSubjects.length;
-
-        if (checkbox.checked) {
-
-            wrapper.style.background =
-                "#eff6ff";
-
-            wrapper.style.borderColor =
-                "#2563eb";
-
-        } else {
-
-            wrapper.style.background =
-                "#ffffff";
-
-            wrapper.style.borderColor =
-                "#e2e8f0";
-
-        }
-
-    }
-);
 
         // ==========================================
         // CREATE CHECKBOXES
@@ -5319,6 +5286,40 @@ checkbox.addEventListener(
                 subjectsContainer.appendChild(
                     wrapper
                 );
+
+checkbox.addEventListener(
+    "change",
+    function () {
+
+        const checkedSubjects =
+            subjectsContainer.querySelectorAll(
+                "input[type='checkbox']:checked"
+            );
+
+        selectedCount.textContent =
+            "Selected: " +
+            checkedSubjects.length;
+
+        if (checkbox.checked) {
+
+            wrapper.style.background =
+                "#eff6ff";
+
+            wrapper.style.borderColor =
+                "#2563eb";
+
+        } else {
+
+            wrapper.style.background =
+                "#ffffff";
+
+            wrapper.style.borderColor =
+                "#e2e8f0";
+
+        }
+
+    }
+);
 
             }
         );
