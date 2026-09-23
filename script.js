@@ -31568,50 +31568,48 @@ if (studentsError) {
        FILTER STUDENTS BY TEACHER CLASS
     ===================================================== */
 
-    const normalizedTeacherClass =
-        String(
-            teacherClass
-        )
-        .trim()
-        .toLowerCase();
+   const normalizedTeacherClass =
+    String(
+        teacherClass
+    )
+    .trim()
+    .toLowerCase()
+    .replace(
+        /^class\s*/i,
+        ""
+    );
 
 
-    const assignedStudents =
-        students.filter(
-            function(student) {
+const assignedStudents =
+    (students || []).filter(
+        function(student) {
 
-                const studentClass =
-                    String(
-                        student.studentClass ||
-                        ""
-                    )
-                    .trim()
-                    .toLowerCase();
-
-
-                if (
-                    !normalizedTeacherClass ||
-                    normalizedTeacherClass ===
-                    "not assigned"
-                ) {
-
-                    return true;
-
-                }
-
-
-                return (
-                    studentClass ===
-                    normalizedTeacherClass ||
-
-                    studentClass ===
-                    "class " +
-                    normalizedTeacherClass
+            const studentClass =
+                String(
+                    student.student_class ||
+                    student.studentClass ||
+                    student.class ||
+                    ""
+                )
+                .trim()
+                .toLowerCase()
+                .replace(
+                    /^class\s*/i,
+                    ""
                 );
 
-            }
-        );
 
+            return (
+                normalizedTeacherClass !==
+                "" &&
+                normalizedTeacherClass !==
+                "not assigned" &&
+                studentClass ===
+                normalizedTeacherClass
+            );
+
+        }
+    );
 
     /* =====================================================
        TOTAL STUDENTS
@@ -44579,11 +44577,19 @@ function loadTeacherDashboardClassFilter() {
 
 
     const teacherClass =
+    String(
         teacher.teacherClass ||
         teacher.teacher_class ||
         teacher.class_name ||
         teacher.class ||
-        "";
+        ""
+    )
+    .trim()
+    .toLowerCase()
+    .replace(
+        /^class\s*/i,
+        ""
+    );
 
 
     if (!teacherClass) {
