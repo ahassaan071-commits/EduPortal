@@ -1577,11 +1577,13 @@ if (loggedInRole === "administrator") {
             error
         );
 
-        localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("loggedInRole");
-        localStorage.removeItem("adminAccount");
+      localStorage.removeItem("isLoggedIn");
+localStorage.removeItem("loggedInRole");
+localStorage.removeItem("adminAccount");
 
-        return;
+eduPortalShowLogin();
+
+return;
     }
 
 
@@ -1665,9 +1667,14 @@ JSON.parse(
 );
 
 if (!savedStudent) {
-    console.warn(
-        "Student session data not found."
-    );
+
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("loggedInRole");
+    localStorage.removeItem("loggedInStudent");
+    localStorage.removeItem("studentAccount");
+
+    eduPortalShowLogin();
+
     return;
 }
 
