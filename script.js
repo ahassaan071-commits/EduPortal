@@ -5142,6 +5142,17 @@ document.addEventListener(
 
         subjectsContainer.innerHTML = "";
 
+        subjectsContainer.style.minHeight =
+    "90px";
+
+subjectsContainer.style.maxHeight =
+    "160px";
+
+subjectsContainer.style.overflowY =
+    "auto";
+
+subjectsContainer.style.boxSizing =
+    "border-box";
 
         // ==========================================
         // NO SUBJECTS
