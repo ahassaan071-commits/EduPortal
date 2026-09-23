@@ -4325,19 +4325,20 @@ const monthlyFee =
         // VALIDATION
         // ==========================================
 
-        if (
-            !name ||
-            !fatherName ||
-            !studentId ||
-            !studentClass ||
-            !section ||
-            !rollNumber ||
-            !username ||
-            !password
-        ) {
+      if (
+    !name ||
+    !fatherName ||
+    !studentId ||
+    !studentClass ||
+    !section ||
+    !rollNumber ||
+    !username ||
+    !password ||
+    monthlyFee <= 0
+) {
 
             alert(
-                "Please fill all required fields. ⚠️"
+                "Please fill all required fields including Total Monthly Fee. ⚠️"
             );
 
             return;
@@ -4516,11 +4517,14 @@ const monthlyFee =
             password:
                 password,
 
-            mobile:
-                mobile || null,
+          mobile:
+    mobile || null,
 
-            status:
-                "Active"
+monthly_fee:
+    monthlyFee,
+
+status:
+    "Active"
         };
 
 
