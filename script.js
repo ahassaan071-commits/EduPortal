@@ -4313,7 +4313,14 @@ document.addEventListener(
                 .value
                 .trim();
 
-
+const monthlyFee =
+    Number(
+        document
+            .getElementById(
+                "adminNewStudentMonthlyFee"
+            )
+            .value
+    ) || 0;
         // ==========================================
         // VALIDATION
         // ==========================================
