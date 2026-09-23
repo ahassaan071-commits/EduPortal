@@ -26117,20 +26117,25 @@ document.addEventListener(
         // FIND TEACHER
         // =========================================
 
-        const {
-            data: dbTeacher,
-            error: teacherError
-        } =
-            await supabaseClient
-                .from("teachers")
-                .select(
-                    "id, teacher_id, name, teacher_class"
-                )
-                .eq(
-                    "teacher_id",
-                    String(teacherId)
-                )
-                .maybeSingle();
+     const {
+    data: dbTeacher,
+    error: teacherError
+} =
+    await supabaseClient
+        .from("teachers")
+        .select(
+            "id, teacher_id, name, username, teacher_class"
+        )
+        .or(
+            "id.eq." +
+            String(teacherId) +
+            ",teacher_id.eq." +
+            String(teacherId) +
+            ",username.eq." +
+            String(teacherId)
+        )
+        .limit(1)
+        .maybeSingle();
 
 
         if (teacherError) {
