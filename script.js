@@ -16118,10 +16118,16 @@ dueDate:
 dueDate,
 
 paymentDate:
-paymentDate,
+paidAmount > 0
+    ? new Date().toISOString().split("T")[0]
+    : null,
 
 status:
-status,
+paidAmount >= feeAmount
+    ? "Paid"
+    : paidAmount > 0
+        ? "Partial"
+        : "Unpaid",
 
 createdAt:
 new Date().toISOString()
