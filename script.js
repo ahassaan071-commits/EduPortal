@@ -16367,7 +16367,7 @@ async function renderFeeRecords() {
         tableBody.innerHTML = `
             <tr>
                 <td
-                    colspan="10"
+                    colspan="11"
                     style="
                         text-align:center;
                         padding:40px;
@@ -16399,7 +16399,7 @@ async function renderFeeRecords() {
 
         tableBody.innerHTML = `
             <tr>
-                <td colspan="10">
+                <td colspan="11">
 
                     <div class="fee-empty-state">
 
@@ -16936,38 +16936,28 @@ async function deleteFeeRecord(
 
 }
 // ==========================================
-// MARK FEE AS PAID - SUPABASE
+// RECORD FEE PAYMENT - FULL / PARTIAL
 // ==========================================
 
 async function markFeeAsPaid(recordId) {
 
     if (!recordId) {
-
-        alert(
-            "Fee record ID is missing."
-        );
-
+        alert("Fee record ID is missing.");
         return;
     }
-
-    // ==========================================
-    // SUPABASE CHECK
-    // ==========================================
 
     if (
         typeof supabaseClient ===
         "undefined"
     ) {
-
         alert(
             "Supabase connection is missing."
         );
-
         return;
     }
 
     // ==========================================
-    // GET CURRENT FEE
+    // LOAD CURRENT FEE RECORD
     // ==========================================
 
     const {
@@ -17001,49 +16991,118 @@ async function markFeeAsPaid(recordId) {
     }
 
     // ==========================================
-    // ALREADY PAID CHECK
+    // CURRENT VALUES
     // ==========================================
 
-    if (
-        String(
-            feeRecord.status || ""
-        ).toLowerCase() === "paid"
-    ) {
-
-        alert(
-            "This fee is already marked as Paid. ✅"
-        );
-
-        return;
-    }
-
-    // ==========================================
-    // CONFIRM PAYMENT
-    // ==========================================
-
-    const feeAmount =
+    const totalFee =
         Number(
             feeRecord.fee_amount || 0
         );
 
-    const confirmed =
-        confirm(
-            "Confirm receiving cash payment of Rs. " +
-            feeAmount.toLocaleString() +
-            " from " +
-            (
-                feeRecord.student_name ||
-                "student"
-            ) +
-            "?"
+    const alreadyPaid =
+        Number(
+            feeRecord.paid_amount || 0
         );
 
-    if (!confirmed) {
+    const remaining =
+        Math.max(
+            totalFee - alreadyPaid,
+            0
+        );
+
+    // ==========================================
+    // ALREADY PAID
+    // ==========================================
+
+    if (remaining <= 0) {
+
+        alert(
+            "This fee is already fully Paid. ✅"
+        );
+
         return;
     }
 
     // ==========================================
-    // MARK AS PAID
+    // ASK PAYMENT AMOUNT
+    // ==========================================
+
+    const paymentInput =
+        prompt(
+            "Enter payment amount.\n\n" +
+            "Total Fee: Rs. " +
+            totalFee.toLocaleString() +
+            "\nAlready Paid: Rs. " +
+            alreadyPaid.toLocaleString() +
+            "\nRemaining: Rs. " +
+            remaining.toLocaleString()
+        );
+
+    if (
+        paymentInput === null
+    ) {
+        return;
+    }
+
+    const paymentAmount =
+        Number(paymentInput);
+
+    // ==========================================
+    // VALIDATION
+    // ==========================================
+
+    if (
+        !Number.isFinite(paymentAmount) ||
+        paymentAmount <= 0
+    ) {
+
+        alert(
+            "Please enter a valid payment amount."
+        );
+
+        return;
+    }
+
+    if (
+        paymentAmount > remaining
+    ) {
+
+        alert(
+            "Payment cannot be greater than remaining amount.\n\n" +
+            "Remaining: Rs. " +
+            remaining.toLocaleString()
+        );
+
+        return;
+    }
+
+    // ==========================================
+    // NEW TOTALS
+    // ==========================================
+
+    const newPaidAmount =
+        alreadyPaid +
+        paymentAmount;
+
+    const newRemainingAmount =
+        Math.max(
+            totalFee -
+            newPaidAmount,
+            0
+        );
+
+    const newStatus =
+        newRemainingAmount === 0
+            ? "Paid"
+            : "Partial";
+
+    const paymentDate =
+        new Date()
+            .toISOString()
+            .split("T")[0];
+
+    // ==========================================
+    // SAVE PAYMENT
     // ==========================================
 
     const {
@@ -17054,31 +17113,25 @@ async function markFeeAsPaid(recordId) {
             .update({
 
                 paid_amount:
-                    feeAmount,
+                    newPaidAmount,
 
                 remaining_amount:
-                    0,
+                    newRemainingAmount,
 
                 status:
-                    "Paid",
+                    newStatus,
 
                 payment_method:
                     "Cash",
 
                 payment_date:
-                    new Date()
-                        .toISOString()
-                        .split("T")[0]
+                    paymentDate
 
             })
             .eq(
                 "id",
                 String(recordId)
             );
-
-    // ==========================================
-    // ERROR
-    // ==========================================
 
     if (updateError) {
 
@@ -17088,7 +17141,7 @@ async function markFeeAsPaid(recordId) {
         );
 
         alert(
-            "Fee could not be marked as Paid.\n\n" +
+            "Fee payment could not be saved.\n\n" +
             updateError.message
         );
 
@@ -17096,7 +17149,7 @@ async function markFeeAsPaid(recordId) {
     }
 
     // ==========================================
-    // REFRESH ADMIN FEES
+    // REFRESH RECORDS
     // ==========================================
 
     await renderFeeRecords();
@@ -17106,12 +17159,15 @@ async function markFeeAsPaid(recordId) {
     // ==========================================
 
     alert(
-        "Fee marked as Paid successfully! ✅\n\n" +
-        "Payment Method: Cash\n" +
-        "Payment Date: " +
-        new Date()
-            .toISOString()
-            .split("T")[0]
+        "Payment recorded successfully! ✅\n\n" +
+        "Paid Now: Rs. " +
+        paymentAmount.toLocaleString() +
+        "\nTotal Paid: Rs. " +
+        newPaidAmount.toLocaleString() +
+        "\nRemaining: Rs. " +
+        newRemainingAmount.toLocaleString() +
+        "\nStatus: " +
+        newStatus
     );
 }
 // ==========================================
