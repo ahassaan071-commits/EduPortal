@@ -26086,6 +26086,10 @@ document.addEventListener(
                 "teacherAssignmentMarks"
             )?.value;
 
+const dueDate =
+    document.getElementById(
+        "teacherAssignmentDueDate"
+    )?.value;
 
         const description =
             document.getElementById(
@@ -26097,13 +26101,14 @@ document.addEventListener(
         // VALIDATION
         // =========================================
 
-        if (
-            !className ||
-            !sectionName ||
-            !subject ||
-            !marks ||
-            !description
-        ) {
+     if (
+    !className ||
+    !sectionName ||
+    !subject ||
+    !marks ||
+    !dueDate ||
+    !description
+) {
 
             alert(
                 "Please complete all assignment fields."
@@ -26266,6 +26271,9 @@ if (
 
             class_name:
                 className,
+
+                due_date:
+    dueDate,
 
             status:
                 "Pending",
