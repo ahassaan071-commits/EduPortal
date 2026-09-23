@@ -4994,7 +4994,8 @@ const fields = [
 "adminNewStudentRoll",
 "adminNewStudentDOB",
 "adminNewStudentEmail",
-"adminNewStudentMobile"
+"adminNewStudentMobile",
+"adminNewStudentMonthlyFee"
 
 ];
 
@@ -15764,42 +15765,7 @@ remaining.toLocaleString();
 }
 
 
-// Automatic Status
 
-const statusField =
-document.getElementById(
-"feeStatus"
-);
-
-
-if (statusField) {
-
-if (feeAmount <= 0) {
-
-statusField.value =
-"Pending";
-
-}
-else if (paidAmount >= feeAmount) {
-
-statusField.value =
-"Paid";
-
-}
-else if (paidAmount > 0) {
-
-statusField.value =
-"Partial";
-
-}
-else {
-
-statusField.value =
-"Pending";
-
-}
-
-}
 
 }
 
@@ -15894,16 +15860,7 @@ document.getElementById(
 ).value;
 
 
-const paymentDate =
-document.getElementById(
-"feePaymentDate"
-).value;
 
-
-const status =
-document.getElementById(
-"feeStatus"
-).value;
 
 // Validation
 
