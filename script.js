@@ -10960,11 +10960,7 @@ async function renderAdminAssignments() {
                     📚 No Assignments Yet
                 </h3>
 
-                <p>
-                    Click
-                    <strong>Add Assignment</strong>
-                    to create a new assignment.
-                </p>
+              
 
             </div>
         `;
