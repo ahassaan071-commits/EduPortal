@@ -4472,6 +4472,17 @@ document.addEventListener(
             student_class:
                 studentClass,
 
+                subject_ids:
+        Array.from(
+            document.getElementById("adminStudentSubjects")?.selectedOptions || []
+        )
+        .map(function(option) {
+            return Number(option.value);
+        })
+        .filter(function(id) {
+            return !isNaN(id);
+        }),
+
             section:
                 section,
 
