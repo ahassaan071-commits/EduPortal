@@ -26585,7 +26585,13 @@ document.addEventListener(
             const marksInput =
                 document.getElementById(
                     "teacherAssignmentMarks"
+
                 );
+
+const dueDateInput =
+    document.getElementById(
+        "teacherAssignmentDueDate"
+    );
 
             const descriptionInput =
                 document.getElementById(
@@ -26610,6 +26616,11 @@ document.addEventListener(
                 marksInput.value =
                     assignment.marks ?? "";
             }
+
+            if (dueDateInput) {
+    dueDateInput.value =
+        assignment.due_date || "";
+}
 
             if (descriptionInput) {
                 descriptionInput.value =
