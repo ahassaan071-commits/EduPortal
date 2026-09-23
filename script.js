@@ -1520,14 +1520,16 @@ if (loggedInRole === "administrator") {
                 localStorage.getItem("adminAccount")
             );
 
-        if (!localAdmin || !localAdmin.id) {
+  if (!localAdmin || !localAdmin.id) {
 
-            localStorage.removeItem("isLoggedIn");
-            localStorage.removeItem("loggedInRole");
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("loggedInRole");
+    localStorage.removeItem("adminAccount");
 
-            return;
-        }
+    eduPortalShowLogin();
 
+    return;
+}
 
         const { data: latestAdmin, error } =
             await supabaseClient
@@ -1537,18 +1539,20 @@ if (loggedInRole === "administrator") {
                 .limit(1);
 
 
-        if (
-            error ||
-            !latestAdmin ||
-            latestAdmin.length === 0
-        ) {
+   if (
+    error ||
+    !latestAdmin ||
+    latestAdmin.length === 0
+) {
 
-            localStorage.removeItem("isLoggedIn");
-            localStorage.removeItem("loggedInRole");
-            localStorage.removeItem("adminAccount");
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("loggedInRole");
+    localStorage.removeItem("adminAccount");
 
-            return;
-        }
+    eduPortalShowLogin();
+
+    return;
+}
 
 
         // Use latest Supabase Administrator data
