@@ -26117,42 +26117,115 @@ document.addEventListener(
         // FIND TEACHER
         // =========================================
 
-     const {
-    data: dbTeacher,
-    error: teacherError
-} =
-    await supabaseClient
-        .from("teachers")
-        .select(
-            "id, teacher_id, name, username, teacher_class"
-        )
-        .or(
-            "id.eq." +
-            String(teacherId) +
-            ",teacher_id.eq." +
-            String(teacherId) +
-            ",username.eq." +
-            String(teacherId)
-        )
-        .limit(1)
-        .maybeSingle();
+  let dbTeacher = null;
+let teacherError = null;
+
+// =========================================
+// 1. FIND BY SUPABASE DATABASE ID
+// =========================================
+
+if (
+    teacher.id &&
+    !isNaN(Number(teacher.id))
+) {
+
+    const result =
+        await supabaseClient
+            .from("teachers")
+            .select(
+                "id, teacher_id, name, username, teacher_class"
+            )
+            .eq(
+                "id",
+                Number(teacher.id)
+            )
+            .maybeSingle();
+
+    if (
+        !result.error &&
+        result.data
+    ) {
+        dbTeacher =
+            result.data;
+    }
+}
 
 
-        if (teacherError) {
+// =========================================
+// 2. FIND BY TEACHER ID
+// Example: TCH-0001
+// =========================================
 
-            console.error(
-                "ASSIGNMENT TEACHER ERROR:",
-                teacherError
-            );
+if (
+    !dbTeacher &&
+    (
+        teacher.teacherId ||
+        teacher.teacher_id
+    )
+) {
 
-            alert(
-                "Teacher could not be verified:\n\n" +
-                teacherError.message
-            );
+    const teacherCode =
+        String(
+            teacher.teacherId ||
+            teacher.teacher_id
+        ).trim();
 
-            return;
-        }
+    const result =
+        await supabaseClient
+            .from("teachers")
+            .select(
+                "id, teacher_id, name, username, teacher_class"
+            )
+            .eq(
+                "teacher_id",
+                teacherCode
+            )
+            .maybeSingle();
 
+    if (
+        !result.error &&
+        result.data
+    ) {
+        dbTeacher =
+            result.data;
+    }
+}
+
+
+// =========================================
+// 3. FIND BY USERNAME
+// =========================================
+
+if (
+    !dbTeacher &&
+    teacher.username
+) {
+
+    const result =
+        await supabaseClient
+            .from("teachers")
+            .select(
+                "id, teacher_id, name, username, teacher_class"
+            )
+            .ilike(
+                "username",
+                String(
+                    teacher.username
+                ).trim()
+            )
+            .maybeSingle();
+
+    if (
+        !result.error &&
+        result.data
+    ) {
+        dbTeacher =
+            result.data;
+    }
+}
+
+
+     
 
         if (!dbTeacher) {
 
