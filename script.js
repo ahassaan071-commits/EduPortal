@@ -32104,6 +32104,28 @@ document.addEventListener(
                 ? "students"
                 : "teachers";
 
+// ==========================================
+// GET SELECTED STUDENT SUBJECTS
+// ==========================================
+
+let selectedSubjectIds = [];
+
+if (editingUserType === "student") {
+
+    selectedSubjectIds =
+        Array.from(
+            document.querySelectorAll(
+                "#editUserSubjects input[type='checkbox']:checked"
+            )
+        )
+        .map(function (checkbox) {
+            return Number(checkbox.value);
+        })
+        .filter(function (id) {
+            return !isNaN(id);
+        });
+
+}
 
         // ==========================================
         // CHECK DUPLICATE USERNAME
