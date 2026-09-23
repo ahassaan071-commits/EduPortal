@@ -23956,16 +23956,30 @@ async function loadTeacherMyStudents() {
         return;
     }
 
-    // =========================================
-    // GET LOGGED-IN TEACHER
-    // =========================================
+// ==========================================
+// GET LOGGED-IN TEACHER
+// ==========================================
 
-    const teacher =
+let teacher = {};
+
+try {
+
+    teacher =
         JSON.parse(
             localStorage.getItem(
                 "loggedInTeacher"
             )
         ) || {};
+
+} catch (error) {
+
+    console.error(
+        "Teacher session error:",
+        error
+    );
+
+    return;
+}
 
     // =========================================
     // SUPABASE CHECK
@@ -24045,20 +24059,21 @@ async function loadTeacherMyStudents() {
     // TEACHER CLASS
     // =========================================
 
-    const teacherClass =
-        String(
-            teacher.teacherClass ||
-            teacher.class ||
-            teacher.assigned_class ||
-            teacher.student_class ||
-            ""
-        )
-        .trim()
-        .toLowerCase()
-        .replace(
-            "class ",
-            ""
-        );
+const teacherClass =
+    String(
+        teacher.teacherClass ||
+        teacher.teacher_class ||
+        teacher.class ||
+        teacher.assigned_class ||
+        teacher.student_class ||
+        ""
+    )
+    .trim()
+    .toLowerCase()
+    .replace(
+        /^class\s*/i,
+        ""
+    );
 
     // =========================================
     // FILTER ASSIGNED STUDENTS
