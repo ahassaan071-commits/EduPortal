@@ -4348,8 +4348,7 @@ const monthlyFee =
 // PASSWORD VALIDATION
 // ==========================================
 
-
-     if (
+if (
     !/^[0-9]{8,12}$/.test(
         password
     )
@@ -4361,7 +4360,6 @@ const monthlyFee =
 
     return;
 }
-
         // ==========================================
         // CHECK DUPLICATE STUDENT ID
         // ==========================================
@@ -32124,7 +32122,7 @@ document.addEventListener(
         ) {
 
             alert(
-                "Password must contain 6 to 8 digits only."
+                "Password must contain 8 to 12 digits only."
             );
 
             newPasswordField.focus();
