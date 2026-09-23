@@ -9972,7 +9972,23 @@ if (action === "edit") {
         editingUserType = userType;
         editingUserId = recordId;
 
+// -------------------------------
+// USER TYPE
+// -------------------------------
 
+const editUserType =
+    document.getElementById(
+        "editUserType"
+    );
+
+if (editUserType) {
+
+    editUserType.value =
+        userType === "student"
+            ? "Student"
+            : "Teacher";
+
+}
         // -------------------------------
         // NAME
         // -------------------------------
