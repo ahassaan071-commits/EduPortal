@@ -1490,314 +1490,579 @@ async function toggleTeacherPassword(
         "🙈";
 
 }
-// ===============================
-// ROLE-BASED AUTO LOGIN
-// ===============================
+// =====================================================
+// EDUPORTAL - SINGLE SESSION RESTORE CONTROLLER
+// =====================================================
 
-window.addEventListener("load", async function () {
+document.addEventListener("DOMContentLoaded", async function () {
 
-const isLoggedIn = localStorage.getItem("isLoggedIn");
-const loggedInRole = localStorage.getItem("loggedInRole");
+    const isLoggedIn =
+        localStorage.getItem("isLoggedIn");
 
-if (isLoggedIn !== "true") {
-return;
-}
-
-// ==========================================
-// ADMINISTRATOR AUTO LOGIN
-// ==========================================
-
-if (loggedInRole === "administrator") {
-
-    let savedAdmin = null;
+    const role =
+        localStorage.getItem("loggedInRole");
 
 
-    // Verify Administrator session from Supabase
-    try {
+    // =================================================
+    // NO ACTIVE LOGIN
+    // =================================================
 
-        const localAdmin =
+    if (isLoggedIn !== "true" || !role) {
+
+        eduPortalShowLogin();
+
+        return;
+    }
+
+
+    // =================================================
+    // ADMINISTRATOR
+    // =================================================
+
+    if (role === "administrator") {
+
+        let admin =
             JSON.parse(
                 localStorage.getItem("adminAccount")
-            );
+            ) || null;
 
-  if (!localAdmin || !localAdmin.id) {
 
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("loggedInRole");
-    localStorage.removeItem("adminAccount");
+        if (!admin || !admin.id) {
 
-    eduPortalShowLogin();
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("loggedInRole");
+            localStorage.removeItem("adminAccount");
 
-    return;
-}
+            eduPortalShowLogin();
 
-        const { data: latestAdmin, error } =
-            await supabaseClient
+            return;
+        }
+
+
+        // ---------------------------------------------
+        // Verify Admin from Supabase
+        // ---------------------------------------------
+
+        try {
+
+            const {
+                data,
+                error
+            } = await supabaseClient
                 .from("admins")
                 .select("*")
-                .eq("id", localAdmin.id)
+                .eq("id", admin.id)
                 .limit(1);
 
 
-   if (
-    error ||
-    !latestAdmin ||
-    latestAdmin.length === 0
-) {
+            if (
+                error ||
+                !data ||
+                data.length === 0
+            ) {
+
+                localStorage.removeItem("isLoggedIn");
+                localStorage.removeItem("loggedInRole");
+                localStorage.removeItem("adminAccount");
+
+                eduPortalShowLogin();
+
+                return;
+            }
+
+
+            admin = data[0];
+
+
+            localStorage.setItem(
+                "adminAccount",
+                JSON.stringify(admin)
+            );
+
+
+            // -----------------------------------------
+            // SHOW ADMIN
+            // -----------------------------------------
+
+            eduPortalShowOnly(
+                "adminDashboard"
+            );
+
+
+            const adminDashboard =
+                document.getElementById(
+                    "adminDashboard"
+                );
+
+
+            if (adminDashboard) {
+
+                adminDashboard.style.setProperty(
+                    "position",
+                    "relative",
+                    "important"
+                );
+
+                adminDashboard.style.setProperty(
+                    "width",
+                    "100%",
+                    "important"
+                );
+
+                adminDashboard.style.setProperty(
+                    "min-height",
+                    "100vh",
+                    "important"
+                );
+
+                adminDashboard.style.setProperty(
+                    "overflow",
+                    "auto",
+                    "important"
+                );
+            }
+
+
+            const adminName =
+                document.getElementById(
+                    "adminName"
+                );
+
+
+            if (adminName) {
+
+                adminName.textContent =
+                    "Welcome, " +
+                    (
+                        admin.fullName ||
+                        admin.full_name ||
+                        admin.name ||
+                        "Administrator"
+                    ) +
+                    " 👋";
+            }
+
+
+            if (
+                typeof syncFinalAdminDashboard ===
+                "function"
+            ) {
+
+                syncFinalAdminDashboard();
+            }
+
+
+            if (
+                typeof refreshActiveDashboardData ===
+                "function"
+            ) {
+
+                setTimeout(
+                    refreshActiveDashboardData,
+                    100
+                );
+            }
+
+
+        } catch (error) {
+
+            console.error(
+                "ADMIN SESSION RESTORE ERROR:",
+                error
+            );
+
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("loggedInRole");
+            localStorage.removeItem("adminAccount");
+
+            eduPortalShowLogin();
+
+        }
+
+
+        return;
+    }
+
+
+    // =================================================
+    // TEACHER
+    // =================================================
+
+    if (role === "teacher") {
+
+        const teacher =
+            JSON.parse(
+                localStorage.getItem(
+                    "loggedInTeacher"
+                )
+            ) || null;
+
+
+        if (!teacher) {
+
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("loggedInRole");
+            localStorage.removeItem("loggedInTeacher");
+
+            eduPortalShowLogin();
+
+            return;
+        }
+
+
+        // ---------------------------------------------
+        // SHOW TEACHER
+        // ---------------------------------------------
+
+        eduPortalShowOnly(
+            "teacherDashboard"
+        );
+
+
+        const teacherDashboard =
+            document.getElementById(
+                "teacherDashboard"
+            );
+
+
+        if (teacherDashboard) {
+
+            teacherDashboard.style.setProperty(
+                "display",
+                "flex",
+                "important"
+            );
+
+            teacherDashboard.style.setProperty(
+                "visibility",
+                "visible",
+                "important"
+            );
+
+            teacherDashboard.style.setProperty(
+                "opacity",
+                "1",
+                "important"
+            );
+
+            teacherDashboard.style.setProperty(
+                "position",
+                "relative",
+                "important"
+            );
+
+            teacherDashboard.style.setProperty(
+                "width",
+                "100%",
+                "important"
+            );
+
+            teacherDashboard.style.setProperty(
+                "min-height",
+                "100vh",
+                "important"
+            );
+        }
+
+
+        // ---------------------------------------------
+        // LOAD TEACHER DATA
+        // ---------------------------------------------
+
+        if (
+            typeof loadTeacherProfile ===
+            "function"
+        ) {
+
+            loadTeacherProfile();
+        }
+
+
+        if (
+            typeof loadTeacherAssignmentClass ===
+            "function"
+        ) {
+
+            loadTeacherAssignmentClass();
+        }
+
+
+        if (
+            typeof loadTeacherDashboardData ===
+            "function"
+        ) {
+
+            loadTeacherDashboardData();
+        }
+
+
+        if (
+            typeof refreshActiveDashboardData ===
+            "function"
+        ) {
+
+            setTimeout(
+                refreshActiveDashboardData,
+                100
+            );
+        }
+
+
+        return;
+    }
+
+
+    // =================================================
+    // STUDENT
+    // =================================================
+
+    if (role === "student") {
+
+        const student =
+            JSON.parse(
+                localStorage.getItem(
+                    "loggedInStudent"
+                )
+            ) ||
+            JSON.parse(
+                localStorage.getItem(
+                    "studentAccount"
+                )
+            ) ||
+            null;
+
+
+        if (!student) {
+
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("loggedInRole");
+            localStorage.removeItem("loggedInStudent");
+            localStorage.removeItem("studentAccount");
+
+            eduPortalShowLogin();
+
+            return;
+        }
+
+
+        // ---------------------------------------------
+        // SHOW STUDENT
+        // ---------------------------------------------
+
+        eduPortalShowOnly(
+            "studentDashboard"
+        );
+
+
+        // ---------------------------------------------
+        // UPDATE STUDENT NAME
+        // ---------------------------------------------
+
+        const studentName =
+            document.getElementById(
+                "studentName"
+            );
+
+
+        if (studentName) {
+
+            studentName.textContent =
+                "Welcome, " +
+                (
+                    student.fullName ||
+                    student.name ||
+                    "Student"
+                ) +
+                " 👋";
+        }
+
+
+        // ---------------------------------------------
+        // UPDATE ID CARD
+        // ---------------------------------------------
+
+        const idCardName =
+            document.getElementById(
+                "idCardName"
+            );
+
+        if (idCardName) {
+
+            idCardName.textContent =
+                student.fullName ||
+                student.name ||
+                "Student";
+        }
+
+
+        const idCardClass =
+            document.getElementById(
+                "idCardClass"
+            );
+
+        if (idCardClass) {
+
+            idCardClass.textContent =
+                student.studentClass ||
+                "Not Assigned";
+        }
+
+
+        const studentIdElement =
+            document.getElementById(
+                "studentId"
+            );
+
+        if (studentIdElement) {
+
+            studentIdElement.textContent =
+                student.studentId ||
+                "";
+        }
+
+
+        // ---------------------------------------------
+        // UPDATE PROFILE
+        // ---------------------------------------------
+
+        const profileFullName =
+            document.getElementById(
+                "profileFullName"
+            );
+
+        if (profileFullName) {
+
+            profileFullName.textContent =
+                student.fullName ||
+                student.name ||
+                "Student";
+        }
+
+
+        const profileFatherName =
+            document.getElementById(
+                "profileFatherName"
+            );
+
+        if (profileFatherName) {
+
+            profileFatherName.textContent =
+                student.fatherName ||
+                "—";
+        }
+
+
+        const profileStudentClass =
+            document.getElementById(
+                "profileStudentClass"
+            );
+
+        if (profileStudentClass) {
+
+            profileStudentClass.textContent =
+                student.studentClass ||
+                "Not Assigned";
+        }
+
+
+        const profileSectionName =
+            document.getElementById(
+                "profileSectionName"
+            );
+
+        if (profileSectionName) {
+
+            profileSectionName.textContent =
+                student.section ||
+                "—";
+        }
+
+
+        const profileRollNumber =
+            document.getElementById(
+                "profileRollNumber"
+            );
+
+        if (profileRollNumber) {
+
+            profileRollNumber.textContent =
+                student.rollNumber ||
+                "—";
+        }
+
+
+        const profileDOB =
+            document.getElementById(
+                "profileDOB"
+            );
+
+        if (profileDOB) {
+
+            profileDOB.textContent =
+                student.dob ||
+                "—";
+        }
+
+
+        const profileEmail =
+            document.getElementById(
+                "profileEmail"
+            );
+
+        if (profileEmail) {
+
+            profileEmail.textContent =
+                student.email ||
+                "—";
+        }
+
+
+        const profileMobile =
+            document.getElementById(
+                "profileMobile"
+            );
+
+        if (profileMobile) {
+
+            profileMobile.textContent =
+                student.mobile ||
+                "—";
+        }
+
+
+        if (
+            typeof updateDashboardStats ===
+            "function"
+        ) {
+
+            updateDashboardStats();
+        }
+
+
+        if (
+            typeof refreshActiveDashboardData ===
+            "function"
+        ) {
+
+            setTimeout(
+                refreshActiveDashboardData,
+                100
+            );
+        }
+
+
+        return;
+    }
+
+
+    // =================================================
+    // UNKNOWN ROLE
+    // =================================================
 
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("loggedInRole");
-    localStorage.removeItem("adminAccount");
 
     eduPortalShowLogin();
-
-    return;
-}
-
-
-        // Use latest Supabase Administrator data
-        savedAdmin = latestAdmin[0];
-
-
-        // Update local session with latest data
-        localStorage.setItem(
-            "adminAccount",
-            JSON.stringify(savedAdmin)
-        );
-
-        localStorage.setItem(
-            "adminPassword",
-            String(savedAdmin.password || "")
-        );
-
-    } catch (error) {
-
-        console.error(
-            "Administrator auto-login verification error:",
-            error
-        );
-
-      localStorage.removeItem("isLoggedIn");
-localStorage.removeItem("loggedInRole");
-localStorage.removeItem("adminAccount");
-
-eduPortalShowLogin();
-
-return;
-    }
-
-
-    const loginContainer =
-        document.querySelector(".container");
-
-    if (loginContainer) {
-
-        loginContainer.style.setProperty(
-            "display",
-            "none",
-            "important"
-        );
-
-    }
-
-
-    // Keep Student Dashboard hidden
-    const studentDashboard =
-        document.getElementById("studentDashboard");
-
-    if (studentDashboard) {
-
-        studentDashboard.style.setProperty(
-            "display",
-            "none",
-            "important"
-        );
-
-    }
-
-
-    // Show Admin Dashboard
-    const adminDashboard =
-        document.getElementById("adminDashboard");
-
-    if (adminDashboard) {
-
-        adminDashboard.style.display = "block";
-        adminDashboard.style.visibility = "visible";
-        adminDashboard.style.opacity = "1";
-        adminDashboard.style.position = "fixed";
-        adminDashboard.style.top = "0";
-        adminDashboard.style.left = "0";
-        adminDashboard.style.width = "100vw";
-        adminDashboard.style.height = "100vh";
-        adminDashboard.style.minHeight = "100vh";
-        adminDashboard.style.zIndex = "999999";
-        adminDashboard.style.overflow = "auto";
-
-    }
-
-
-    const adminName =
-        document.getElementById("adminName");
-
-    if (adminName) {
-
-        adminName.textContent =
-            "Welcome, " +
-            (savedAdmin.fullName || "Administrator") +
-            " 👋";
-
-    }
-
-    return;
-
-}
-
-// ==========================================
-// STUDENT AUTO LOGIN
-// ==========================================
-
-if (loggedInRole === "student") {
-
-const savedStudent =
-JSON.parse(
-    localStorage.getItem("loggedInStudent")
-) || JSON.parse(
-    localStorage.getItem("studentAccount")
-);
-
-if (!savedStudent) {
-
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("loggedInRole");
-    localStorage.removeItem("loggedInStudent");
-    localStorage.removeItem("studentAccount");
-
-    eduPortalShowLogin();
-
-    return;
-}
-
-const loginContainer =
-document.querySelector(".container");
-
-if (loginContainer) {
-loginContainer.style.display = "none";
-}
-
-// Hide Admin Dashboard
-const adminDashboard =
-document.getElementById("adminDashboard");
-
-if (adminDashboard) {
-adminDashboard.style.display = "none";
-}
-
-// Show Student Dashboard
-if (
-    typeof eduPortalShowOnly ===
-    "function"
-) {
-    eduPortalShowOnly(
-        "studentDashboard"
-    );
-}
-// Student Name
-const studentName =
-document.getElementById("studentName");
-
-if (studentName) {
-studentName.textContent =
-"Welcome, " +
-savedStudent.fullName +
-" 👋";
-}
-
-// Student ID Card
-if (typeof idCardName !== "undefined") {
-idCardName.textContent =
-savedStudent.fullName;
-}
-
-if (typeof idCardClass !== "undefined") {
-idCardClass.textContent =
-savedStudent.studentClass;
-}
-
-if (typeof studentId !== "undefined") {
-studentId.textContent =
-savedStudent.studentId;
-}
-
-// Profile
-const profileFullName =
-document.getElementById("profileFullName");
-
-if (profileFullName) {
-profileFullName.textContent =
-savedStudent.fullName;
-}
-
-const profileFatherName =
-document.getElementById("profileFatherName");
-
-if (profileFatherName) {
-profileFatherName.textContent =
-savedStudent.fatherName;
-}
-
-const profileStudentClass =
-document.getElementById("profileStudentClass");
-
-if (profileStudentClass) {
-profileStudentClass.textContent =
-savedStudent.studentClass;
-}
-
-const profileSectionName =
-document.getElementById("profileSectionName");
-
-if (profileSectionName) {
-profileSectionName.textContent =
-savedStudent.section;
-}
-
-const profileRollNumber =
-document.getElementById("profileRollNumber");
-
-if (profileRollNumber) {
-profileRollNumber.textContent =
-savedStudent.rollNumber;
-}
-
-const profileDOB =
-document.getElementById("profileDOB");
-
-if (profileDOB) {
-profileDOB.textContent =
-savedStudent.dob;
-}
-
-const profileEmail =
-document.getElementById("profileEmail");
-
-if (profileEmail) {
-profileEmail.textContent =
-savedStudent.email;
-}
-
-const profileMobile =
-document.getElementById("profileMobile");
-
-if (profileMobile) {
-profileMobile.textContent =
-savedStudent.mobile;
-}
-
-if (typeof updateDashboardStats === "function") {
-updateDashboardStats();
-}
-}
 
 });
 // ===============================
