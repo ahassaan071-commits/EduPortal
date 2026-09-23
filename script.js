@@ -16492,18 +16492,27 @@ async function renderFeeRecords() {
                     }
                 </td>
 
-                <td>
-                    Rs.
-                    ${
-                        Number(
-                            record.remaining_amount
-                        ).toLocaleString()
-                    }
-                </td>
+         <td>
+    Rs.
+    ${
+        Number(
+            record.remaining_amount
+        ).toLocaleString()
+    }
+</td>
 
-                <td>
-                    ${record.status || ""}
-                </td>
+<td>
+    ${
+        record.payment_date
+            ? new Date(record.payment_date)
+                .toLocaleDateString("en-GB")
+            : "—"
+    }
+</td>
+
+<td>
+    ${record.status || "Unpaid"}
+</td>
 
           <td>
 
