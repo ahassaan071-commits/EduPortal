@@ -33239,217 +33239,154 @@ const normalizedStudentClass =
 
 
 // ==========================================
-// AUTOMATIC SUBJECT → CLASS LINKING
+// LOAD ONLY STUDENT'S ASSIGNED SUBJECTS
 // ==========================================
 
-// Load teachers so the system can automatically
-// identify which class a subject belongs to.
+let assignedSubjectIds = [];
 
-const {
-    data: teachersForSubjects,
-    error: teachersSubjectError
-} =
-    await supabaseClient
-        .from("teachers")
-        .select(
-            "id, teacher_id, name, subject, teacher_class"
-        );
+try {
 
-if (teachersSubjectError) {
+    assignedSubjectIds =
+        Array.isArray(dbStudent.subject_ids)
+            ? dbStudent.subject_ids
+            : JSON.parse(
+                dbStudent.subject_ids || "[]"
+            );
 
-    console.error(
-        "SUBJECT TEACHER LOAD ERROR:",
-        teachersSubjectError
+} catch (error) {
+
+    console.warn(
+        "SUBJECT IDS PARSE ERROR:",
+        error
     );
+
+    assignedSubjectIds = [];
 
 }
 
 
 // ==========================================
-// FIND MATCHING SUBJECTS
+// NORMALIZE SUBJECT IDS
 // ==========================================
 
-const matchingSubjects = [];
+assignedSubjectIds =
+    assignedSubjectIds
+        .map(function(id) {
+            return Number(id);
+        })
+        .filter(function(id) {
+            return !isNaN(id);
+        });
 
 
-// Check every subject
-for (
-    const subject of (subjects || [])
+// ==========================================
+// FILTER MANUALLY ASSIGNED SUBJECTS
+// ==========================================
+
+const matchingSubjects =
+    (subjects || []).filter(
+        function(subject) {
+
+            return assignedSubjectIds.includes(
+                Number(subject.id)
+            );
+
+        }
+    );
+
+
+// ==========================================
+// NO ASSIGNED SUBJECTS
+// ==========================================
+
+if (
+    matchingSubjects.length === 0
 ) {
 
-    const subjectName =
-        String(
+    container.innerHTML = `
+        <div class="empty-state">
+            No subjects assigned to you yet.
+        </div>
+    `;
+
+    return;
+}
+
+
+// ==========================================
+// DISPLAY ASSIGNED SUBJECTS
+// ==========================================
+
+matchingSubjects.forEach(
+    function(subject) {
+
+        const name =
             subject.name ||
             subject.subject_name ||
             subject.title ||
-            ""
-        )
-        .trim();
+            "Subject";
 
 
-    const normalizedSubjectName =
-        subjectName
-            .toLowerCase();
+        const code =
+            subject.code ||
+            "";
 
 
-    // ------------------------------------------
-    // FIRST: CHECK EXISTING CLASS
-    // ------------------------------------------
-
-    const existingSubjectClass =
-        normalizeClass(
-            subject.student_class ||
-            subject.class_name ||
-            subject.className ||
-            subject.class ||
-            subject.grade ||
-            ""
-        );
+        const teacher =
+            subject.teacher_name ||
+            subject.teacher ||
+            "";
 
 
-    // ------------------------------------------
-    // IF CLASS IS ALREADY LINKED
-    // ------------------------------------------
-
-    if (
-        existingSubjectClass &&
-        existingSubjectClass ===
-        normalizedStudentClass
-    ) {
-
-        matchingSubjects.push(
-            subject
-        );
-
-        continue;
-    }
+        const item =
+            document.createElement(
+                "div"
+            );
 
 
-    // ------------------------------------------
-    // AUTOMATIC TEACHER → SUBJECT → CLASS
-    // ------------------------------------------
-
-    const matchingTeacher =
-        (
-            teachersForSubjects ||
-            []
-        ).find(
-            function(teacher) {
-
-                const teacherSubject =
-                    String(
-                        teacher.subject ||
-                        ""
-                    )
-                    .trim()
-                    .toLowerCase();
+        item.className =
+            "student-data-item";
 
 
-                const teacherClass =
-                    normalizeClass(
-                        teacher.teacher_class ||
-                        ""
-                    );
+        item.innerHTML = `
+            <div>
+
+                <strong>
+                    📚 ${name}
+                </strong>
+
+                ${
+                    code
+                        ? `
+                            <small>
+                                Code:
+                                ${code}
+                            </small>
+                        `
+                        : ""
+                }
+
+                ${
+                    teacher
+                        ? `
+                            <small>
+                                Teacher:
+                                ${teacher}
+                            </small>
+                        `
+                        : ""
+                }
+
+            </div>
+        `;
 
 
-                return (
-                    teacherSubject ===
-                    normalizedSubjectName
-                    &&
-                    teacherClass ===
-                    normalizedStudentClass
-                );
-
-            }
-        );
-
-
-    // ------------------------------------------
-    // AUTOMATICALLY LINK SUBJECT
-    // ------------------------------------------
-
-    if (matchingTeacher) {
-
-        console.log(
-            "AUTO SUBJECT LINK:",
-            {
-                subject:
-                    subjectName,
-
-                studentClass:
-                    student.studentClass ||
-                    dbStudent.student_class,
-
-                teacher:
-                    matchingTeacher.name,
-
-                teacherClass:
-                    matchingTeacher.teacher_class
-            }
-        );
-
-
-        // Automatically save class + teacher
-        // into the subjects table.
-
-        if (
-            !subject.class_name ||
-            !subject.teacher_id
-        ) {
-
-            const {
-                error: linkError
-            } =
-                await supabaseClient
-                    .from("subjects")
-                    .update({
-
-                        class_name:
-                            matchingTeacher.teacher_class,
-
-                        teacher_id:
-                            matchingTeacher.id
-
-                    })
-                    .eq(
-                        "id",
-                        subject.id
-                    );
-
-
-            if (linkError) {
-
-                console.warn(
-                    "AUTO SUBJECT LINK SAVE ERROR:",
-                    linkError
-                );
-
-            }
-            else {
-
-                // Update local object immediately
-
-                subject.class_name =
-                    matchingTeacher.teacher_class;
-
-                subject.teacher_id =
-                    matchingTeacher.id;
-
-                subject.teacher_name =
-                    matchingTeacher.name;
-
-            }
-
-        }
-
-
-        matchingSubjects.push(
-            subject
+        container.appendChild(
+            item
         );
 
     }
-
-}
+);
 
 // ==========================================
 // NO MATCHING SUBJECTS
