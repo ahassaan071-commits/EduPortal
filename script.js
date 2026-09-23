@@ -22165,38 +22165,46 @@ return {
     );
 
 
-    // Teacher class
-    const teacherClass =
-        String(
-            teacher.teacherClass ||
-            teacher.class ||
-            ""
-        )
-        .trim()
-        .toLowerCase();
+   // ==========================================
+// TEACHER CLASS FILTER
+// ==========================================
+
+const teacherClass =
+    String(
+        teacher.teacherClass ||
+        teacher.teacher_class ||
+        teacher.class ||
+        ""
+    )
+    .trim()
+    .toLowerCase()
+    .replace(/^class\s*/i, "");
 
 
-    // Filter students according to teacher class
-    const assignedStudents =
-        teacherClass
-            ? students.filter(function(student) {
+// ==========================================
+// SHOW ONLY STUDENTS OF TEACHER CLASS
+// ==========================================
 
-                const studentClass =
-                    String(
-                        student.studentClass ||
-                        ""
-                    )
-                    .trim()
-                    .toLowerCase();
+const assignedStudents =
+    students.filter(function(student) {
 
-                return (
-                    studentClass === teacherClass ||
-                    studentClass ===
-                    "class " + teacherClass
-                );
+        const studentClass =
+            String(
+                student.studentClass ||
+                student.student_class ||
+                student.class ||
+                ""
+            )
+            .trim()
+            .toLowerCase()
+            .replace(/^class\s*/i, "");
 
-            })
-            : [];
+        return (
+            teacherClass !== "" &&
+            studentClass === teacherClass
+        );
+
+    });
 
 
     // Build section
