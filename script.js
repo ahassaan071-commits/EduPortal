@@ -21393,7 +21393,11 @@ document.addEventListener(
 
         if (addStudentButton) {
 
+closeAllAdminUserModals();
+
             const studentModal =
+
+            
                 document.getElementById(
                     "adminAddStudentModal"
                 );
@@ -21533,7 +21537,10 @@ document.addEventListener(
 
         if (addTeacherButton) {
 
+             closeAllAdminUserModals();
             const teacherModal =
+
+           
                 document.getElementById(
                     "adminTeacherModal"
                 );
