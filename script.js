@@ -9742,6 +9742,32 @@ menu.classList.remove("show");
 }
 
 });
+
+// ==========================================
+// CLOSE ALL ADMIN USER MODALS
+// ==========================================
+
+function closeAllAdminUserModals() {
+
+    const modalIds = [
+        "adminAddStudentModal",
+        "adminTeacherModal",
+        "editUserManagementModal",
+        "adminEditUserModal"
+    ];
+
+    modalIds.forEach(function (id) {
+
+        const modal =
+            document.getElementById(id);
+
+        if (modal) {
+            modal.style.display = "none";
+        }
+
+    });
+
+}
 // ==========================================
 // USER MANAGEMENT ACTIONS
 // SUPABASE - VIEW / EDIT / DELETE
@@ -10010,6 +10036,11 @@ if (action === "edit") {
                 "Active";
         }
 
+        // -------------------------------
+// CLOSE OTHER MODALS
+// -------------------------------
+
+closeAllAdminUserModals();
 
         // -------------------------------
         // OPEN EDIT MODAL
