@@ -36221,10 +36221,68 @@ document.addEventListener(
             return;
         }
 
-        const submissionText =
-            prompt(
-                "Enter your assignment submission:"
-            );
+       // ==========================================
+// CHECK IF STUDENT ALREADY SUBMITTED
+// ==========================================
+
+const {
+    data: existingSubmission,
+    error: existingSubmissionError
+} = await supabaseClient
+    .from("assignment_submissions")
+    .select("id, status")
+    .eq(
+        "assignment_id",
+        Number(assignmentId)
+    )
+    .eq(
+        "student_id",
+        Number(studentId)
+    )
+    .limit(1);
+
+if (existingSubmissionError) {
+
+    console.error(
+        "SUBMISSION CHECK ERROR:",
+        existingSubmissionError
+    );
+
+    alert(
+        "Unable to check previous submission.\n\n" +
+        existingSubmissionError.message
+    );
+
+    return;
+}
+
+
+// ==========================================
+// ALREADY SUBMITTED
+// ==========================================
+
+if (
+    existingSubmission &&
+    existingSubmission.length > 0
+) {
+
+    alert(
+        "You have already submitted this assignment. ❌\n\n" +
+        "You cannot submit it again."
+    );
+
+    return;
+}
+
+
+// ==========================================
+// NEW SUBMISSION
+// ==========================================
+
+const submissionText =
+    prompt(
+        "Enter your assignment submission:"
+    );
 
         if (submissionText === null) {
             return;
