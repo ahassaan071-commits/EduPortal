@@ -34668,10 +34668,14 @@ cleanResults.forEach(
     }
 
 
-    const status =
-        percentage >= 50
-            ? "Passed"
-            : "Failed";
+   const status =
+    totalMarks === 0
+        ? "No Result"
+        : (
+            percentage >= 50
+                ? "Passed"
+                : "Failed"
+        );
 
 
 // ==========================================
@@ -34714,9 +34718,13 @@ this.setText(
 
 this.setText(
     "resultStatus",
-    status === "Passed"
-        ? "Pass ✅"
-        : "Failed ❌"
+    status === "No Result"
+        ? "No Result"
+        : (
+            status === "Passed"
+                ? "Pass ✅"
+                : "Failed ❌"
+        )
 );
 // ==========================================
 // DISPLAY RESULTS
