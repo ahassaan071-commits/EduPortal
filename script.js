@@ -26110,7 +26110,7 @@ document.addEventListener(
 
 const dueDate =
     document.getElementById(
-        "teacherAssignmentDueDate"
+        "assignmentDueDate"
     )?.value;
 
         const description =
