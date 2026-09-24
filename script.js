@@ -3915,19 +3915,19 @@ async function loadStudentSettings() {
         savedStudent =
             JSON.parse(
                 localStorage.getItem(
-                    "studentAccount"
+                    "loggedInStudent"
                 )
             ) ||
             JSON.parse(
                 localStorage.getItem(
-                    "loggedInStudent"
+                    "studentAccount"
                 )
             );
 
     } catch (error) {
 
         console.error(
-            "Student settings load error:",
+            "Student settings error:",
             error
         );
 
@@ -3936,7 +3936,6 @@ async function loadStudentSettings() {
 
 
     if (!savedStudent) {
-        console.warn("Student account not found.");
         return;
     }
 
@@ -3953,83 +3952,7 @@ async function loadStudentSettings() {
 
 
     // ==========================================
-    // LOAD LATEST STUDENT ACCOUNT FROM SUPABASE
-    // ==========================================
-
-    if (
-        typeof supabaseClient !==
-        "undefined"
-    ) {
-
-        try {
-
-            const studentId =
-                savedStudent.student_id ||
-                savedStudent.studentId ||
-                savedStudent.id;
-
-            if (studentId) {
-
-                const {
-                    data: dbStudent,
-                    error
-                } =
-                    await supabaseClient
-                        .from("students")
-                        .select(
-                            "username, password"
-                        )
-                        .eq(
-                            "student_id",
-                            studentId
-                        )
-                        .maybeSingle();
-
-
-                if (
-                    !error &&
-                    dbStudent
-                ) {
-
-                    if (usernameInput) {
-
-                        usernameInput.value =
-                            dbStudent.username ||
-                            "";
-
-                        usernameInput.readOnly =
-                            true;
-
-                    }
-
-
-                    if (currentPasswordInput) {
-
-                        currentPasswordInput.value =
-                            dbStudent.password ||
-                            "";
-
-                    }
-
-                    return;
-                }
-
-            }
-
-        } catch (error) {
-
-            console.error(
-                "Supabase settings load error:",
-                error
-            );
-
-        }
-
-    }
-
-
-    // ==========================================
-    // FALLBACK
+    // LOAD FROM LOCAL SESSION FIRST
     // ==========================================
 
     if (usernameInput) {
@@ -4040,7 +3963,6 @@ async function loadStudentSettings() {
 
         usernameInput.readOnly =
             true;
-
     }
 
 
@@ -4049,6 +3971,116 @@ async function loadStudentSettings() {
         currentPasswordInput.value =
             savedStudent.password ||
             "";
+
+    }
+
+
+    // ==========================================
+    // LOAD LATEST DATA FROM SUPABASE
+    // ==========================================
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+        return;
+    }
+
+
+    try {
+
+        let dbStudent = null;
+
+
+        // Search by database ID
+        if (savedStudent.id) {
+
+            const result =
+                await supabaseClient
+                    .from("students")
+                    .select(
+                        "username, password"
+                    )
+                    .eq(
+                        "id",
+                        savedStudent.id
+                    )
+                    .maybeSingle();
+
+            if (!result.error) {
+
+                dbStudent =
+                    result.data;
+
+            }
+
+        }
+
+
+        // Search by Student ID if needed
+        if (
+            !dbStudent &&
+            savedStudent.studentId
+        ) {
+
+            const result =
+                await supabaseClient
+                    .from("students")
+                    .select(
+                        "username, password"
+                    )
+                    .eq(
+                        "student_id",
+                        savedStudent.studentId
+                    )
+                    .maybeSingle();
+
+            if (!result.error) {
+
+                dbStudent =
+                    result.data;
+
+            }
+
+        }
+
+
+        // ==========================================
+        // PUT DATABASE DATA INTO SETTINGS
+        // ==========================================
+
+        if (dbStudent) {
+
+            if (usernameInput) {
+
+                usernameInput.value =
+                    dbStudent.username ||
+                    savedStudent.username ||
+                    "";
+
+                usernameInput.readOnly =
+                    true;
+
+            }
+
+
+            if (currentPasswordInput) {
+
+                currentPasswordInput.value =
+                    dbStudent.password ||
+                    savedStudent.password ||
+                    "";
+
+            }
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Settings Supabase error:",
+            error
+        );
 
     }
 
@@ -37141,14 +37173,38 @@ document.addEventListener("click", function (event) {
    USERNAME + PASSWORD SYNC WITH ADMIN
    ========================================================= */
 
-function loadStudentAccountSettings() {
+async function loadStudentAccountSettings() {
 
-    const student =
-        JSON.parse(
-            localStorage.getItem("loggedInStudent")
+    let student = null;
+
+    try {
+
+        student =
+            JSON.parse(
+                localStorage.getItem(
+                    "loggedInStudent"
+                )
+            ) ||
+            JSON.parse(
+                localStorage.getItem(
+                    "studentAccount"
+                )
+            );
+
+    } catch (error) {
+
+        console.error(
+            "Student settings error:",
+            error
         );
 
-    if (!student) return;
+        return;
+    }
+
+
+    if (!student) {
+        return;
+    }
 
 
     const usernameInput =
@@ -37156,26 +37212,136 @@ function loadStudentAccountSettings() {
             "settingsUsername"
         );
 
-    const passwordInput =
+    const currentPasswordInput =
         document.getElementById(
-            "settingsPassword"
+            "settingsCurrentPassword"
         );
 
+
+    // ==========================================
+    // FIRST: SHOW SAVED LOCAL ACCOUNT DATA
+    // ==========================================
 
     if (usernameInput) {
 
         usernameInput.value =
-            student.username || "";
+            student.username ||
+            student.userName ||
+            "";
+
+        usernameInput.readOnly =
+            true;
+    }
+
+
+    if (currentPasswordInput) {
+
+        currentPasswordInput.value =
+            student.password ||
+            "";
 
     }
 
-    if (passwordInput) {
 
-        passwordInput.value = "";
+    // ==========================================
+    // THEN: GET LATEST DATA FROM SUPABASE
+    // ==========================================
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+        return;
+    }
+
+
+    try {
+
+        let dbStudent = null;
+
+
+        // Search by database ID
+        if (student.id) {
+
+            const result =
+                await supabaseClient
+                    .from("students")
+                    .select(
+                        "username, password"
+                    )
+                    .eq(
+                        "id",
+                        student.id
+                    )
+                    .maybeSingle();
+
+            dbStudent =
+                result.data || null;
+        }
+
+
+        // If not found, search by Student ID
+        if (
+            !dbStudent &&
+            student.student_id
+        ) {
+
+            const result =
+                await supabaseClient
+                    .from("students")
+                    .select(
+                        "username, password"
+                    )
+                    .eq(
+                        "student_id",
+                        student.student_id
+                    )
+                    .maybeSingle();
+
+            dbStudent =
+                result.data || null;
+        }
+
+
+        // ==========================================
+        // UPDATE SETTINGS WITH DATABASE DATA
+        // ==========================================
+
+        if (dbStudent) {
+
+            if (usernameInput) {
+
+                usernameInput.value =
+                    dbStudent.username ||
+                    student.username ||
+                    "";
+
+                usernameInput.readOnly =
+                    true;
+            }
+
+
+            if (currentPasswordInput) {
+
+                currentPasswordInput.value =
+                    dbStudent.password ||
+                    student.password ||
+                    "";
+
+            }
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Supabase student settings error:",
+            error
+        );
 
     }
+
 }
-
 
 /* =========================================================
    SAVE STUDENT ACCOUNT SETTINGS
