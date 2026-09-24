@@ -368,6 +368,15 @@ else if (selectedRole === "teacher") {
     );
 
 // ==========================================
+// 30 MINUTE SESSION START
+// ==========================================
+
+localStorage.setItem(
+    "sessionStartedAt",
+    String(Date.now())
+);
+
+// ==========================================
 // ADMIN SESSION
 // ==========================================
 
@@ -840,6 +849,97 @@ async function toggleTeacherPassword(
         "🙈";
 
 }
+
+// =====================================================
+// EDUPORTAL - 30 MINUTE SESSION TIMEOUT
+// ADMIN + TEACHER + STUDENT
+// =====================================================
+
+(function () {
+
+    const SESSION_LIMIT =
+        30 * 60 * 1000;
+
+    function checkSessionTimeout() {
+
+        const isLoggedIn =
+            localStorage.getItem(
+                "isLoggedIn"
+            );
+
+        const sessionStartedAt =
+            Number(
+                localStorage.getItem(
+                    "sessionStartedAt"
+                )
+            );
+
+        if (
+            isLoggedIn !== "true" ||
+            !sessionStartedAt
+        ) {
+            return;
+        }
+
+        const sessionAge =
+            Date.now() -
+            sessionStartedAt;
+
+        if (
+            sessionAge >=
+            SESSION_LIMIT
+        ) {
+
+            // Logout all roles
+            localStorage.removeItem(
+                "isLoggedIn"
+            );
+
+            localStorage.removeItem(
+                "loggedInRole"
+            );
+
+            localStorage.removeItem(
+                "adminAccount"
+            );
+
+            localStorage.removeItem(
+                "loggedInTeacher"
+            );
+
+            localStorage.removeItem(
+                "loggedInStudent"
+            );
+
+            localStorage.removeItem(
+                "studentAccount"
+            );
+
+            localStorage.removeItem(
+                "sessionStartedAt"
+            );
+
+            // Show login page
+            if (
+                typeof eduPortalShowLogin ===
+                "function"
+            ) {
+                eduPortalShowLogin();
+            }
+
+            alert(
+                "Your session has expired. Please login again. ⏰"
+            );
+        }
+    }
+
+    // Check every 10 seconds
+    setInterval(
+        checkSessionTimeout,
+        10000
+    );
+
+})();
 // =====================================================
 // EDUPORTAL - SINGLE SESSION RESTORE CONTROLLER
 // =====================================================
