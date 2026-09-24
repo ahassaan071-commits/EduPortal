@@ -41164,19 +41164,19 @@ async function loadRealAdminAttendance() {
 
             row.innerHTML = `
 
+    <td></td>
 
-                <td>
-                    ${index + 1}
-                </td>
+    <td>
+        ${index + 1}
+    </td>
 
-
-                <td>
-                    ${
-                        student.roll_number ||
-                        student.student_id ||
-                        "—"
-                    }
-                </td>
+    <td>
+        ${
+            student.roll_number ||
+            student.student_id ||
+            "—"
+        }
+    </td>
 
 
                 <td>
