@@ -10109,27 +10109,31 @@ closeAllAdminUserModals();
         // OPEN EDIT MODAL
         // -------------------------------
 
-        const editModal =
-            document.getElementById(
-                "editUserManagementModal"
-            ) ||
-            document.getElementById(
-                "adminEditUserModal"
-            );
+      const editModal =
+    document.getElementById(
+        "editUserManagementModal"
+    ) ||
+    document.getElementById(
+        "adminEditUserModal"
+    );
 
-        if (!editModal) {
+if (!editModal) {
 
-            console.error(
-                "Edit User modal not found."
-            );
+    console.error(
+        "Edit User modal not found."
+    );
 
-            alert(
-                "Edit User modal not found."
-            );
+    alert(
+        "Edit User modal not found."
+    );
 
-            return;
-        }
+    return;
+}
 
+// Same fix as Add Teacher
+if (editModal.parentElement !== document.body) {
+    document.body.appendChild(editModal);
+}
 
         editModal.style.setProperty(
     "display",
@@ -32473,13 +32477,28 @@ document.addEventListener(
     "click",
     function (event) {
 
-        if (
+        const closeButton =
             event.target.closest(
                 "#closeEditUserManagementModal"
             ) ||
             event.target.closest(
                 "#cancelEditUserManagement"
-            )
+            ) ||
+            event.target.closest(
+                "#editUserManagementModal button"
+            );
+
+        if (!closeButton) {
+            return;
+        }
+
+        // Agar Edit User modal ka koi bhi button
+        // close button hai to modal close karo
+        if (
+            closeButton.id ===
+                "closeEditUserManagementModal" ||
+            closeButton.id ===
+                "cancelEditUserManagement"
         ) {
 
             closeEditUserManagementModal();
