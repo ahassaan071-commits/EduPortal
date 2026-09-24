@@ -16759,7 +16759,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
         100%;
 
     min-width:
-        850px;
+        0px;
 
     border-collapse:
         separate;
