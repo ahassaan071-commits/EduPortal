@@ -32446,7 +32446,14 @@ function closeEditUserManagementModal() {
         document.getElementById(
             "editUserManagementModal"
         );
-
+if (
+    editModal &&
+    editModal.parentElement !== document.body
+) {
+    document.body.appendChild(
+        editModal
+    );
+}
 
     if (modal) {
 
