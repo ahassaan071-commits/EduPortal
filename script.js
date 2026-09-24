@@ -3956,13 +3956,16 @@ function loadStudentSettings() {
         );
 
 
-    if (usernameInput) {
+  if (usernameInput) {
 
-        usernameInput.value =
-            savedStudent.username ||
-            "";
+    usernameInput.value =
+        savedStudent.username ||
+        savedStudent.userName ||
+        savedStudent.username_id ||
+        savedStudent.student_id ||
+        "";
 
-    }
+}
 
 
     if (currentPasswordInput) {
@@ -9807,14 +9810,16 @@ cleanName;
 
 document.addEventListener("input", function (event) {
 
-if (
-event.target.id ===
-"adminNewStudentName"
-) {
+    if (
+        event.target.id ===
+        "adminNewStudentName" ||
+        event.target.id ===
+        "adminNewStudentId"
+    ) {
 
-generateAdminStudentUsername();
+        generateAdminStudentUsername();
 
-}
+    }
 
 });
 // ==========================================
