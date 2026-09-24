@@ -32450,28 +32450,7 @@ let editingUserType = "";
 let editingUserId = null;
 
 
-// ==========================================
-// OPEN EDIT USER MODAL
-// ==========================================
 
-document.addEventListener(
-    "click",
-    function (event) {
-
-        const editButton =
-            event.target.closest(
-                ".user-edit-btn"
-            );
-
-        if (!editButton) {
-            return;
-        }
-
-        // Edit is handled by the
-        // main User Management handler.
-        return;
-    }
-);
 
 // ==========================================
 // CLOSE EDIT USER MODAL
