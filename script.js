@@ -34668,11 +34668,11 @@ cleanResults.forEach(
     }
 
 
-   const status =
+ const status =
     totalMarks === 0
         ? "No Result"
         : (
-            percentage >= 50
+            percentage >= 40
                 ? "Passed"
                 : "Failed"
         );
