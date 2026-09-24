@@ -16257,62 +16257,62 @@ async function loadFeeStudents() {
         return;
     }
 
-    if (
-        typeof supabaseClient ===
-        "undefined"
-    ) {
+    if (typeof supabaseClient === "undefined") {
         alert("Supabase connection is missing.");
         return;
     }
 
-    const {
-        data: students,
-        error
-    } =
-        await supabaseClient
-            .from("students")
-            .select(
-                "id, student_id, name,  student_class, section"
-            )
-            .order(
-                "created_at",
-                {
-                    ascending: false
-                }
+    try {
+
+        const result =
+            await supabaseClient
+                .from("students")
+                .select("*");
+
+        if (result.error) {
+
+            console.error(
+                "FEE STUDENTS LOAD ERROR:",
+                result.error
             );
 
-    if (error) {
+            alert(
+                "Students could not be loaded.\n\n" +
+                result.error.message
+            );
 
-        console.error(
-            "FEE STUDENTS LOAD ERROR:",
-            error
+            return;
+        }
+
+        const students =
+            result.data || [];
+
+        console.log(
+            "MONTHLY FEE STUDENTS:",
+            students
         );
 
-        alert(
-            "Students could not be loaded.\n\n" +
-            error.message
-        );
 
-        return;
-    }
+        // RESET DROPDOWN
 
-    studentDropdown.innerHTML = `
-        <option value="">
-            Select Student
-        </option>
-    `;
+        studentDropdown.innerHTML = `
+            <option value="">
+                Select Student
+            </option>
+        `;
 
-    (students || []).forEach(
-        function (student) {
+
+        // ADD STUDENTS
+
+        students.forEach(function (student) {
 
             const option =
-                document.createElement(
-                    "option"
-                );
+                document.createElement("option");
+
 
             option.value =
-                student.student_id ||
                 student.id;
+
 
             option.textContent =
                 (
@@ -16320,29 +16320,51 @@ async function loadFeeStudents() {
                     student.full_name ||
                     "Unnamed Student"
                 ) +
-                " — " +
+                " — Roll No: " +
                 (
+                    student.roll_number ||
                     student.student_id ||
                     student.id
                 );
 
+
             option.dataset.databaseId =
                 student.id;
 
+
             option.dataset.studentClass =
-                student.student_class ||
-                "";
+                student.student_class || "";
+
 
             option.dataset.section =
-                student.section ||
-                "";
+                student.section || "";
+
 
             studentDropdown.appendChild(
                 option
             );
 
-        }
-    );
+        });
+
+
+        console.log(
+            "Students added to dropdown:",
+            studentDropdown.options.length - 1
+        );
+
+    } catch (error) {
+
+        console.error(
+            "FEE STUDENT LOAD EXCEPTION:",
+            error
+        );
+
+        alert(
+            "Unable to load students.\n\n" +
+            error.message
+        );
+
+    }
 }
 
 
@@ -16359,17 +16381,17 @@ document.getElementById("monthlyFeeForm");
 
 if (addMonthlyFeeBtn) {
 
-addMonthlyFeeBtn.addEventListener(
-"click",
-function () {
+    addMonthlyFeeBtn.addEventListener(
+        "click",
+        async function () {
 
-loadFeeStudents();
+            monthlyFeeForm.style.display =
+                "block";
 
-monthlyFeeForm.style.display =
-"block";
+            await loadFeeStudents();
 
-}
-);
+        }
+    );
 
 }
 
