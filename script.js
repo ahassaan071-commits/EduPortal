@@ -1654,6 +1654,24 @@ if (editProfileBtn) {
                 "editMobile"
             ).value =
                 savedStudent.mobile || "";
+                const editMobileInput =
+    document.getElementById("editMobile");
+
+if (editMobileInput) {
+
+    editMobileInput.addEventListener(
+        "input",
+        function () {
+
+            this.value =
+                this.value
+                    .replace(/\D/g, "")
+                    .slice(0, 11);
+
+        }
+    );
+
+}
 
             if (editProfileForm) {
 
