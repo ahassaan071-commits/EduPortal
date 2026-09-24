@@ -21551,7 +21551,7 @@ document.addEventListener(
                 },
                 function () {
 
-                    AdminDashboard.loadData();
+                    queueEduPortalRealtimeRefresh();
 
                 }
             )
@@ -21570,7 +21570,7 @@ document.addEventListener(
                 },
                 function () {
 
-                    AdminDashboard.loadData();
+                    queueEduPortalRealtimeRefresh();
 
                 }
             )
@@ -21589,7 +21589,7 @@ document.addEventListener(
                 },
                 function () {
 
-                    AdminDashboard.loadData();
+                    queueEduPortalRealtimeRefresh();
 
                 }
             )
@@ -21608,7 +21608,7 @@ document.addEventListener(
                 },
                 function () {
 
-                    AdminDashboard.loadData();
+                    queueEduPortalRealtimeRefresh();
 
                 }
             )
@@ -21627,7 +21627,7 @@ document.addEventListener(
                 },
                 function () {
 
-                    AdminDashboard.loadData();
+                    queueEduPortalRealtimeRefresh();
 
                 }
             )
@@ -21650,7 +21650,7 @@ document.addEventListener(
             "Admin Dashboard Fees changed — refreshing..."
         );
 
-        AdminDashboard.loadData();
+        queueEduPortalRealtimeRefresh();
 
     }
 )
@@ -21668,7 +21668,7 @@ document.addEventListener(
                 },
                 function () {
 
-                    AdminDashboard.loadData();
+                    queueEduPortalRealtimeRefresh();
 
                 }
             )
@@ -21687,7 +21687,7 @@ document.addEventListener(
                 },
                 function () {
 
-                    AdminDashboard.loadData();
+                    queueEduPortalRealtimeRefresh();
 
                 }
             )
