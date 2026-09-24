@@ -14604,16 +14604,7 @@ const records =
                 </td>
 
 
-                <td>
-
-                    ${
-                        attendanceRecord &&
-                        attendanceRecord.checkOut
-                            ? attendanceRecord.checkOut
-                            : "-"
-                    }
-
-                </td>
+                
 
             `;
 
