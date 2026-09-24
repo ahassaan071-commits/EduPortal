@@ -648,9 +648,7 @@ setTimeout(async function () {
         );
     }
 
-    if (typeof refreshActiveDashboardData === "function") {
-        await refreshActiveDashboardData();
-    }
+  
 
 }, 300);
 
@@ -33489,20 +33487,21 @@ const StudentDashboard = {
         return;
     }
 
-    this.loadProfile(student);
-    this.loadDashboard(student);
-    this.loadAttendance(student);
-    this.loadSubjects(student);
-    this.loadResults(student);
+   await Promise.all([
 
-    // First load assignments
-    await this.loadAssignments(student);
+    this.loadProfile(student),
+    this.loadDashboard(student),
+    this.loadAttendance(student),
+    this.loadSubjects(student),
+    this.loadResults(student),
+    this.loadFees(student),
+    this.loadNotices(student)
 
-    // Then load submitted/graded results
-    await this.loadAssignmentResults(student);
+]);
 
-    this.loadFees(student);
-    this.loadNotices(student);
+await this.loadAssignments(student);
+
+await this.loadAssignmentResults(student);
 },
 
 /* -------------------------
