@@ -32737,17 +32737,24 @@ if (editingUserType === "student") {
         // UPDATE DATA
         // ==========================================
 
-        const updateData = {
+       const updateData = {
 
-            name:
-                newName,
+    name:
+        newName,
 
-            username:
-                newUsername,
+    username:
+        newUsername,
 
-            status:
-                newStatus
-        };
+    status:
+        newStatus
+};
+
+if (editingUserType === "student") {
+
+    updateData.subject_ids =
+        selectedSubjectIds;
+
+}
 
 
         if (newPassword) {
