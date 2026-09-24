@@ -844,8 +844,15 @@ async function toggleTeacherPassword(
 
 document.addEventListener("DOMContentLoaded", async function () {
 
-    
+    const isLoggedIn =
+        localStorage.getItem(
+            "isLoggedIn"
+        );
 
+    const role =
+        localStorage.getItem(
+            "loggedInRole"
+        );
 
     // =================================================
     // NO ACTIVE LOGIN
