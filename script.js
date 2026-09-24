@@ -45815,6 +45815,17 @@ function openAdminTeacherModalDirect() {
             "adminTeacherModal"
         );
 
+        // Move modal to BODY so dashboard containers
+    // cannot hide or clip it
+    if (
+        modal.parentElement !==
+        document.body
+    ) {
+        document.body.appendChild(
+            modal
+        );
+    }
+
     if (!modal) {
 
         alert(
