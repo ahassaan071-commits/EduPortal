@@ -10147,13 +10147,21 @@ closeAllAdminUserModals();
         }
 
 
-        editModal.style.display = "flex";
+        editModal.style.setProperty(
+    "display",
+    "flex",
+    "important"
+);
 
         editModal.style.position = "fixed";
         editModal.style.inset = "0";
         editModal.style.width = "100vw";
         editModal.style.height = "100vh";
-        editModal.style.zIndex = "9999999";
+        editModal.style.setProperty(
+    "z-index",
+    "99999999",
+    "important"
+);
         editModal.style.alignItems = "center";
         editModal.style.justifyContent = "center";
 
