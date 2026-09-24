@@ -14305,6 +14305,8 @@ async function renderAttendanceTable() {
             "attendanceTableBody"
         );
 
+        await autoMarkAbsentAfterNoon();
+
     if (!tableBody) {
         return;
     }
