@@ -14523,15 +14523,7 @@ const records =
 
             row.innerHTML = `
 
-                <td>
-                    <input
-                        type="checkbox"
-                        class="attendance-row-checkbox"
-                        data-student-id="${student.id}"
-                    >
-                </td>
-
-
+        
                 <td>
                     ${index + 1}
                 </td>
