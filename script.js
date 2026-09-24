@@ -898,21 +898,19 @@ document.addEventListener("DOMContentLoaded", async function () {
                 .eq("id", admin.id)
                 .limit(1);
 
+if (
+    error ||
+    !data ||
+    data.length === 0
+) {
 
-            if (
-                error ||
-                !data ||
-                data.length === 0
-            ) {
+    console.warn(
+        "Admin Supabase verification failed. Keeping existing login session."
+    );
 
-                localStorage.removeItem("isLoggedIn");
-                localStorage.removeItem("loggedInRole");
-                localStorage.removeItem("adminAccount");
-
-                eduPortalShowLogin();
-
-                return;
-            }
+    // Keep existing localStorage session
+    // Do NOT logout the administrator
+}
 
 
             admin = data[0];
@@ -32450,14 +32448,6 @@ function closeEditUserManagementModal() {
         document.getElementById(
             "editUserManagementModal"
         );
-if (
-    editModal &&
-    editModal.parentElement !== document.body
-) {
-    document.body.appendChild(
-        editModal
-    );
-}
 
     if (modal) {
 
