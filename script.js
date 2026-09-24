@@ -32438,6 +32438,7 @@ const selectedDashboardDate =
 
 let markedStudents = 0;
 let presentStudents = 0;
+let absentStudents = 0;
 
 
 // ==========================================
@@ -32580,23 +32581,28 @@ if (teacherAbsentCard) {
 }
 
 if (teacherClassesCard) {
-    const uniqueClasses =
-        new Set(
-            assignedStudents.map(function (student) {
-                return String(
-                    student.studentClass ||
-                    ""
-                )
-                .trim()
-                .toLowerCase();
-            })
-            .filter(function (className) {
-                return className !== "";
-            })
-        );
+  const uniqueClasses =
+    new Set(
+        assignedStudents.map(function (student) {
 
-    teacherClassesCard.textContent =
-        uniqueClasses.size;
+            return String(
+                student.student_class ||
+                student.studentClass ||
+                student.class ||
+                ""
+            )
+            .trim()
+            .toLowerCase()
+            .replace(/^class\s*/i, "");
+
+        })
+        .filter(function (className) {
+            return className !== "";
+        })
+    );
+
+teacherClassesCard.textContent =
+    uniqueClasses.size;
 }
 
 
