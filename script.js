@@ -42662,35 +42662,74 @@ document.addEventListener(
     }
 );
 // =========================================================
-// EDUPORTAL - UNIVERSAL FRESH DASHBOARD DATA SYSTEM
-// STUDENT + TEACHER + ADMINISTRATOR
+// EDUPORTAL - FAST + SAFE LIVE DATA SYSTEM
+// REALTIME PRIMARY + 60 SECOND SAFETY SYNC
 // =========================================================
 
 let eduPortalRefreshRunning = false;
+let eduPortalRefreshTimer = null;
+let eduPortalLastRefresh = 0;
 
-async function refreshActiveDashboardData() {
+const EDUPORTAL_SAFETY_REFRESH = 60000;
+const EDUPORTAL_REALTIME_DEBOUNCE = 500;
+
+
+// =========================================================
+// GET CURRENT LOGIN ROLE
+// =========================================================
+
+function getEduPortalRole() {
+
+    const loggedIn =
+        localStorage.getItem("isLoggedIn");
+
+    const role =
+        localStorage.getItem("loggedInRole");
+
+    if (loggedIn !== "true") {
+        return null;
+    }
+
+    return role || null;
+}
+
+
+// =========================================================
+// DASHBOARD REFRESH
+// =========================================================
+
+async function refreshActiveDashboardData(force = false) {
 
     if (eduPortalRefreshRunning) {
         return;
     }
 
+    const role = getEduPortalRole();
+
+    if (!role) {
+        return;
+    }
+
+    if (
+        !force &&
+        document.visibilityState !== "visible"
+    ) {
+        return;
+    }
+
+    const now = Date.now();
+
+    if (
+        !force &&
+        now - eduPortalLastRefresh < 3000
+    ) {
+        return;
+    }
+
     eduPortalRefreshRunning = true;
+    eduPortalLastRefresh = now;
 
     try {
-
-        const loggedIn =
-            localStorage.getItem("isLoggedIn");
-
-        const role =
-            localStorage.getItem("loggedInRole");
-
-        if (loggedIn !== "true") {
-            return;
-        }
-
-        // ==========================================
-        // ADMINISTRATOR
-        // ==========================================
 
         if (role === "administrator") {
 
@@ -42701,18 +42740,11 @@ async function refreshActiveDashboardData() {
 
                 await AdminDashboard.loadData();
 
-                console.log(
-                    "EduPortal Admin Dashboard refreshed ✅"
-                );
             }
 
             return;
         }
 
-
-        // ==========================================
-        // TEACHER
-        // ==========================================
 
         if (role === "teacher") {
 
@@ -42723,18 +42755,11 @@ async function refreshActiveDashboardData() {
 
                 await loadTeacherDashboardData();
 
-                console.log(
-                    "EduPortal Teacher Dashboard refreshed ✅"
-                );
             }
 
             return;
         }
 
-
-        // ==========================================
-        // STUDENT
-        // ==========================================
 
         if (role === "student") {
 
@@ -42758,32 +42783,53 @@ async function refreshActiveDashboardData() {
                     await StudentDashboard.loadDashboard(
                         student
                     );
-
-                    console.log(
-                        "EduPortal Student Dashboard refreshed ✅"
-                    );
                 }
             }
 
             return;
         }
 
-    } catch (error) {
+    }
+    catch (error) {
 
         console.error(
-            "EduPortal Dashboard Refresh Error:",
+            "EduPortal Safety Sync Error:",
             error
         );
 
-    } finally {
+    }
+    finally {
 
         eduPortalRefreshRunning = false;
+
     }
 }
 
 
 // =========================================================
-// FRESH DATA WHEN PAGE / SESSION OPENS
+// REALTIME DEBOUNCED REFRESH
+// =========================================================
+
+function queueEduPortalRealtimeRefresh() {
+
+    clearTimeout(
+        eduPortalRefreshTimer
+    );
+
+    eduPortalRefreshTimer =
+        setTimeout(
+            function () {
+
+                refreshActiveDashboardData(true);
+
+            },
+            EDUPORTAL_REALTIME_DEBOUNCE
+        );
+}
+
+
+// =========================================================
+// INITIAL LOAD
 // =========================================================
 
 window.addEventListener(
@@ -42793,7 +42839,7 @@ window.addEventListener(
         setTimeout(
             function () {
 
-                refreshActiveDashboardData();
+                refreshActiveDashboardData(true);
 
             },
             800
@@ -42804,21 +42850,28 @@ window.addEventListener(
 
 
 // =========================================================
-// AUTO REFRESH EVERY 30 SECONDS
+// 60 SECOND SAFETY REFRESH
 // =========================================================
 
 setInterval(
     function () {
 
-        refreshActiveDashboardData();
+        if (
+            document.visibilityState ===
+            "visible"
+        ) {
+
+            refreshActiveDashboardData(false);
+
+        }
 
     },
-    30000
+    EDUPORTAL_SAFETY_REFRESH
 );
 
 
 // =========================================================
-// REFRESH WHEN USER RETURNS TO TAB
+// TAB RETURN
 // =========================================================
 
 document.addEventListener(
@@ -42830,7 +42883,7 @@ document.addEventListener(
             "visible"
         ) {
 
-            refreshActiveDashboardData();
+            refreshActiveDashboardData(true);
 
         }
 
@@ -42839,24 +42892,21 @@ document.addEventListener(
 
 
 // =========================================================
-// REFRESH WHEN INTERNET CONNECTION RETURNS
+// INTERNET RETURN
 // =========================================================
 
 window.addEventListener(
     "online",
     function () {
 
-        console.log(
-            "Internet connection restored — refreshing EduPortal..."
-        );
-
-        refreshActiveDashboardData();
+        refreshActiveDashboardData(true);
 
     }
 );
 
+
 console.log(
-    "EduPortal Universal Dashboard Refresh System Loaded ✅"
+    "EduPortal Fast + Safe Live Data System Loaded."
 );
 // =========================================================
 // EDUPORTAL - ADMIN FORGOT PASSWORD
