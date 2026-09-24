@@ -45672,3 +45672,56 @@ input[type="number"] {
     -moz-appearance: textfield;
     appearance: textfield;
 }
+/* ==========================================
+   ADMIN ATTENDANCE TABLE - PROPER ALIGNMENT
+   ========================================== */
+
+.attendance-table {
+    width: 100% !important;
+    table-layout: fixed !important;
+    border-collapse: collapse !important;
+}
+
+.attendance-table th,
+.attendance-table td {
+    box-sizing: border-box !important;
+    text-align: left !important;
+    vertical-align: middle !important;
+    padding: 18px 20px !important;
+    white-space: nowrap !important;
+}
+
+.attendance-table th:nth-child(1),
+.attendance-table td:nth-child(1) {
+    width: 6% !important;
+}
+
+.attendance-table th:nth-child(2),
+.attendance-table td:nth-child(2) {
+    width: 12% !important;
+}
+
+.attendance-table th:nth-child(3),
+.attendance-table td:nth-child(3) {
+    width: 22% !important;
+}
+
+.attendance-table th:nth-child(4),
+.attendance-table td:nth-child(4) {
+    width: 10% !important;
+}
+
+.attendance-table th:nth-child(5),
+.attendance-table td:nth-child(5) {
+    width: 12% !important;
+}
+
+.attendance-table th:nth-child(6),
+.attendance-table td:nth-child(6) {
+    width: 18% !important;
+}
+
+.attendance-table th:nth-child(7),
+.attendance-table td:nth-child(7) {
+    width: 20% !important;
+}
