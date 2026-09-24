@@ -4428,13 +4428,13 @@ const monthlyFee =
 // ==========================================
 
 if (
-    !/^[0-9]{8,12}$/.test(
+    !/^.{8,12}$/.test(
         password
     )
 ) {
 
     alert(
-        "Password must contain 8 to 12 digits only."
+        "Password must contain 8 to 12 characters."
     );
 
     return;
