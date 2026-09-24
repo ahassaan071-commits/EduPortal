@@ -34437,10 +34437,60 @@ if (subjectsError) {
 }
 
 
+// ==========================================
+// SHOW ONLY STUDENT'S ASSIGNED SUBJECTS
+// ==========================================
+
+let assignedSubjectIds = [];
+
+try {
+
+    assignedSubjectIds =
+        Array.isArray(dbStudent.subject_ids)
+            ? dbStudent.subject_ids
+            : JSON.parse(
+                dbStudent.subject_ids || "[]"
+            );
+
+} catch (error) {
+
+    console.warn(
+        "ASSIGNED SUBJECT IDS ERROR:",
+        error
+    );
+
+    assignedSubjectIds = [];
+
+}
+
+
+// Normalize IDs
+assignedSubjectIds =
+    assignedSubjectIds
+        .map(function(id) {
+            return Number(id);
+        })
+        .filter(function(id) {
+            return !isNaN(id);
+        });
+
+
+// Filter subjects
 const subjects =
-    allSubjects || [];
+    (allSubjects || []).filter(
+        function(subject) {
 
+            return assignedSubjectIds.includes(
+                Number(subject.id)
+            );
 
+        }
+    );
+
+console.log(
+    "Student Assigned Result Subjects:",
+    subjects
+);
 // ==========================================
 // MAP LATEST RESULT WITH SUBJECT
 // ==========================================
