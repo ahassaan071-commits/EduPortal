@@ -514,9 +514,7 @@ if (teacherDashboard) {
         loadTeacherDashboardData();
     }
 
-    if (typeof refreshActiveDashboardData === "function") {
-        refreshActiveDashboardData();
-    }
+   
 
 }, 300);
 
