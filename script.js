@@ -33612,12 +33612,15 @@ async loadProfile(student) {
 
 
     this.setText(
-        "profileRollNumber",
-        data.rollNumber ||
-        data.roll_no ||
-        data.rollNo ||
-        "Not Assigned"
-    );
+    "profileRollNumber",
+    data.rollNumber ||
+    data.roll_no ||
+    data.rollNo ||
+    data.roll_number ||
+    data.studentId ||
+    data.student_id ||
+    "Not Assigned"
+);
 
 
     this.setText(
