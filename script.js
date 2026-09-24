@@ -11157,40 +11157,6 @@ async function renderAdminAssignments() {
 
                         </div>
 
-
-                        <div
-                            class="
-                                admin-assignment-actions
-                            "
-                        >
-
-                            <button
-                                type="button"
-                                class="
-                                    admin-edit-assignment
-                                "
-                                data-id="
-                                    ${assignment.id}
-                                "
-                            >
-                                ✏️ Edit
-                            </button>
-
-
-                            <button
-                                type="button"
-                                class="
-                                    admin-delete-assignment
-                                "
-                                data-id="
-                                    ${assignment.id}
-                                "
-                            >
-                                🗑️ Delete
-                            </button>
-
-                        </div>
-
                     </div>
                 `;
 
