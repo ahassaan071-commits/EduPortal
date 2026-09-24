@@ -34222,7 +34222,7 @@ if (student.id) {
     const studentById =
         await supabaseClient
             .from("students")
-            .select("id, student_id")
+            .select("id, student_id, subject_ids")
             .eq(
                 "id",
                 student.id
@@ -34247,7 +34247,7 @@ if (
     const studentByCode =
         await supabaseClient
             .from("students")
-            .select("id, student_id")
+           .select("id, student_id, subject_ids")
             .eq(
                 "student_id",
                 student.studentId
