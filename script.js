@@ -23185,16 +23185,16 @@ async function loadTeacherAttendanceSection() {
     }
 
     // =========================================
-    // LOAD STUDENTS FROM SUPABASE
+    // LOAD STUDENTS
     // =========================================
 
- const {
-    data: students,
-    error
-} =
-    await supabaseClient
-        .from("students")
-        .select("*");
+    const {
+        data: students,
+        error
+    } =
+        await supabaseClient
+            .from("students")
+            .select("*");
 
     if (error) {
 
@@ -23206,7 +23206,7 @@ async function loadTeacherAttendanceSection() {
         tableBody.innerHTML = `
             <tr>
                 <td
-                    colspan="5"
+                    colspan="6"
                     style="
                         text-align:center;
                         padding:40px;
@@ -23221,58 +23221,54 @@ async function loadTeacherAttendanceSection() {
         return;
     }
 
-// =========================================
-// TEACHER CLASS
-// =========================================
-
-const teacherClass =
-    String(
-        teacher.teacherClass ||
-        teacher.teacher_class ||
-        teacher.class ||
-        teacher.assigned_class ||
-        teacher.student_class ||
-        ""
-    )
-    .trim()
-    .toLowerCase()
-    .replace(/^class\s*/i, "");
-
-
-// =========================================
-// FILTER STUDENTS BY TEACHER CLASS
-// =========================================
-
-const assignedStudents =
-    (students || []).filter(
-        function (student) {
-
-            const studentClass =
-                String(
-                    student.student_class ||
-                    ""
-                )
-                .trim()
-                .toLowerCase()
-                .replace(/^class\s*/i, "");
-
-            // IMPORTANT:
-            // If teacher class is not available,
-            // show NO students — never all students.
-
-            if (!teacherClass) {
-                return false;
-            }
-
-            return (
-                studentClass ===
-                teacherClass
-            );
-
-        }
-    );
     // =========================================
-    // CLASS NAME
+    // TEACHER CLASS
+    // =========================================
+
+    const teacherClass =
+        String(
+            teacher.teacherClass ||
+            teacher.teacher_class ||
+            teacher.class ||
+            teacher.assigned_class ||
+            teacher.student_class ||
+            ""
+        )
+        .trim()
+        .toLowerCase()
+        .replace(/^class\s*/i, "");
+
+    // =========================================
+    // ONLY TEACHER'S CLASS STUDENTS
+    // =========================================
+
+    const assignedStudents =
+        (students || []).filter(
+            function (student) {
+
+                const studentClass =
+                    String(
+                        student.student_class ||
+                        ""
+                    )
+                    .trim()
+                    .toLowerCase()
+                    .replace(/^class\s*/i, "");
+
+                if (!teacherClass) {
+                    return false;
+                }
+
+                return (
+                    studentClass ===
+                    teacherClass
+                );
+
+            }
+        );
+
+    // =========================================
+    // SHOW CLASS
     // =========================================
 
     const classElement =
@@ -23309,82 +23305,90 @@ const assignedStudents =
 
     }
 
-// =========================================
-// LOAD TODAY'S REAL ATTENDANCE
-// =========================================
+    // =========================================
+    // TODAY
+    // =========================================
 
-const today =
-    new Date().toLocaleDateString(
-        "en-CA"
-    );
+    const today =
+        new Date().toLocaleDateString(
+            "en-CA"
+        );
 
-const assignedStudentIds =
-    assignedStudents.map(
-        function(student) {
-            return String(student.id);
-        }
-    );
+    // =========================================
+    // STUDENT IDS
+    // =========================================
 
-let todayAttendance = [];
+    const assignedStudentIds =
+        assignedStudents.map(
+            function(student) {
+                return String(student.id);
+            }
+        );
 
-if (
-    assignedStudentIds.length > 0 &&
-    typeof supabaseClient !== "undefined"
-) {
+    // =========================================
+    // LOAD TODAY ATTENDANCE
+    // =========================================
 
-    const {
-        data,
-        error
-    } =
-        await supabaseClient
-            .from("attendance")
-            .select(`
-                student_id,
-                status,
-                check_in_time
-            `)
-            .eq(
-                "attendance_date",
-                today
-            )
-            .in(
-                "student_id",
-                assignedStudentIds
+    let todayAttendance = [];
+
+    if (
+        assignedStudentIds.length > 0
+    ) {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("attendance")
+                .select(`
+                    student_id,
+                    status,
+                    check_in_time,
+                    check_out_time
+                `)
+                .eq(
+                    "attendance_date",
+                    today
+                )
+                .in(
+                    "student_id",
+                    assignedStudentIds
+                );
+
+        if (error) {
+
+            console.error(
+                "TODAY ATTENDANCE ERROR:",
+                error
             );
 
-    if (error) {
+        } else {
 
-        console.error(
-            "TODAY ATTENDANCE ERROR:",
-            error
-        );
+            todayAttendance =
+                data || [];
 
-    } else {
-
-        todayAttendance =
-            data || [];
+        }
 
     }
-}
 
+    // =========================================
+    // ATTENDANCE MAP
+    // =========================================
 
-// =========================================
-// QUICK ATTENDANCE LOOKUP
-// =========================================
+    const attendanceMap =
+        new Map();
 
-const attendanceMap =
-    new Map();
+    todayAttendance.forEach(
+        function(record) {
 
-todayAttendance.forEach(
-    function(record) {
+            attendanceMap.set(
+                String(record.student_id),
+                record
+            );
 
-        attendanceMap.set(
-            String(record.student_id),
-            record
-        );
-
-    }
-);
+        }
+    );
 
     // =========================================
     // CLEAR TABLE
@@ -23429,10 +23433,59 @@ todayAttendance.forEach(
     // =========================================
 
     assignedStudents.forEach(
-        function (
+        function(
             student,
             index
         ) {
+
+            const attendance =
+                attendanceMap.get(
+                    String(student.id)
+                );
+
+            const status =
+                attendance?.status ||
+                "Absent";
+
+            const normalizedStatus =
+                String(status)
+                    .trim()
+                    .toLowerCase();
+
+            const statusClass =
+                normalizedStatus ===
+                "present"
+                    ? "present"
+                    : normalizedStatus ===
+                      "late"
+                        ? "late"
+                        : "absent";
+
+            const checkInTime =
+                attendance?.check_in_time
+                    ? new Date(
+                        attendance.check_in_time
+                    ).toLocaleTimeString(
+                        [],
+                        {
+                            hour: "2-digit",
+                            minute: "2-digit"
+                        }
+                    )
+                    : "—";
+
+            const checkOutTime =
+                attendance?.check_out_time
+                    ? new Date(
+                        attendance.check_out_time
+                    ).toLocaleTimeString(
+                        [],
+                        {
+                            hour: "2-digit",
+                            minute: "2-digit"
+                        }
+                    )
+                    : "—";
 
             const row =
                 document.createElement(
@@ -23440,6 +23493,7 @@ todayAttendance.forEach(
                 );
 
             row.innerHTML = `
+
                 <td>
                     ${index + 1}
                 </td>
@@ -23471,82 +23525,48 @@ todayAttendance.forEach(
                     }
                 </td>
 
-                            <td>
+                <td>
 
-    <div
-        class="teacher-attendance-buttons"
-        data-student-id="${
-            student.id
-        }"
-    >
+                    <span
+                        class="
+                            teacher-attendance-status-badge
+                            ${statusClass}
+                        "
+                        data-status="${status}"
+                    >
+                        ${status}
+                    </span>
 
-     ${(() => {
+                </td>
 
-    const attendance =
-        attendanceMap.get(
-            String(student.id)
-        );
+                <td
+                    class="teacher-check-in-cell"
+                >
 
-    const status =
-        attendance?.status ||
-        "Absent";
+                    <strong>
+                        ${checkInTime}
+                    </strong>
 
-    const normalizedStatus =
-        String(status)
-            .toLowerCase();
+                    ${
+                        checkOutTime !==
+                        "—"
+                            ? `
+                                <small
+                                    style="
+                                        display:block;
+                                        margin-top:4px;
+                                        opacity:.65;
+                                    "
+                                >
+                                    Out:
+                                    ${checkOutTime}
+                                </small>
+                              `
+                            : ""
+                    }
 
-    const statusClass =
-        normalizedStatus === "present"
-            ? "present"
-            : normalizedStatus === "late"
-                ? "late"
-                : "absent";
+                </td>
 
-    return `
-        <span
-            class="teacher-attendance-status-badge ${statusClass}"
-            data-status="${status}"
-        >
-            ${status}
-        </span>
-    `;
-
-})()}
-
-    </div>
-
-</td>
-
-<td class="teacher-check-in-cell">
-
-  ${(() => {
-
-    const attendance =
-        attendanceMap.get(
-            String(student.id)
-        );
-
-    return `
-        <span class="teacher-check-in-time">
-            ${
-                attendance?.check_in_time
-                    ? new Date(
-                        attendance.check_in_time
-                    ).toLocaleTimeString(
-                        [],
-                        {
-                            hour: "2-digit",
-                            minute: "2-digit"
-                        }
-                    )
-                    : "—"
-            }
-        </span>
-    `;
-
-})()}
-
-</td>
             `;
 
             tableBody.appendChild(
@@ -23556,13 +23576,17 @@ todayAttendance.forEach(
         }
     );
 
-// =========================================
-// LOAD SAVED ATTENDANCE
-// =========================================
+    // =========================================
+    // LOAD SAVED ATTENDANCE
+    // =========================================
 
-loadSavedTeacherAttendance();
+    loadSavedTeacherAttendance();
 
-initializeTeacherAttendanceRealtime();
+    // =========================================
+    // REALTIME
+    // =========================================
+
+    initializeTeacherAttendanceRealtime();
 
 }
 
