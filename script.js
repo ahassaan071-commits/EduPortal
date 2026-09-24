@@ -622,7 +622,7 @@ if (selectedRole === "student") {
     );
 
 
-setTimeout(function () {
+setTimeout(async function () {
 
     eduPortalShowOnly("studentDashboard");
 
@@ -634,11 +634,13 @@ setTimeout(function () {
         typeof StudentDashboard !== "undefined" &&
         typeof StudentDashboard.loadDashboard === "function"
     ) {
-        StudentDashboard.loadDashboard(studentSession);
+        await StudentDashboard.loadDashboard(
+            studentSession
+        );
     }
 
     if (typeof refreshActiveDashboardData === "function") {
-        refreshActiveDashboardData();
+        await refreshActiveDashboardData();
     }
 
 }, 300);
@@ -25641,7 +25643,15 @@ document.addEventListener(
 
             button.textContent =
                 "✅ Saved";
+// Close Student Submissions modal after successful save
+const submissionModal =
+    document.getElementById("teacherSubmissionModal");
 
+if (submissionModal) {
+    setTimeout(function () {
+        submissionModal.remove();
+    }, 500);
+}
 
             button.style.opacity =
                 "0.7";
