@@ -16645,10 +16645,17 @@ saveMonthlyFeeBtn.addEventListener(
     "click",
     async function () {
 
+const feeStudentSelect =
+    document.getElementById("feeStudent");
+
+const selectedOption =
+    feeStudentSelect.options[
+        feeStudentSelect.selectedIndex
+    ];
+
 const studentId =
-document.getElementById(
-"feeStudent"
-).value;
+    selectedOption.dataset.databaseId ||
+    feeStudentSelect.value;
 
 
 const month =
@@ -16755,10 +16762,10 @@ const {
     student_class,
     section
 `)
-        .eq(
-            "student_id",
-            String(studentId)
-        )
+      .eq(
+    "id",
+    String(studentId)
+)
         .maybeSingle();
 
 if (studentError) {
