@@ -31828,9 +31828,12 @@ async function loadTeacherDashboardData() {
         teacher.subject ||
         "Not Assigned";
 
-    const teacherClass =
-        teacher.teacherClass ||
-        "Not Assigned";
+  const teacherClass =
+    teacher.teacherClass ||
+    teacher.teacher_class ||
+    teacher.class ||
+    teacher.assigned_class ||
+    "";
 
     const teacherEmail =
         teacher.email ||
