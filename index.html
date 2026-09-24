@@ -2983,17 +2983,45 @@ Fee Status Section
 
         <!-- CURRENT PASSWORD -->
 
-        <div class="input-group">
+   <div class="input-group">
 
-            <label>Current Password</label>
+    <label>Current Password</label>
 
-            <input
-                type="text"
-                id="settingsCurrentPassword"
-                readonly
-            >
+    <div style="
+        position:relative;
+        width:100%;
+    ">
 
-        </div>
+        <input
+            type="password"
+            id="settingsCurrentPassword"
+            readonly
+            style="
+                width:100%;
+                padding-right:55px;
+            "
+        >
+
+        <button
+            type="button"
+            id="toggleCurrentPassword"
+            aria-label="Show password"
+            style="
+                position:absolute;
+                right:12px;
+                top:50%;
+                transform:translateY(-50%);
+                border:none;
+                background:transparent;
+                cursor:pointer;
+                font-size:22px;
+                padding:5px 8px;
+            "
+        >👁️</button>
+
+    </div>
+
+</div>
 
 
         <!-- NEW PASSWORD -->
