@@ -25134,7 +25134,8 @@ document.addEventListener(
                     await supabaseClient
                         .from("students")
                         .select(
-                            "id, name, full_name, student_name, student_id"
+                                "id, name, full_name, student_name, student_id, roll_number"
+
                         )
                         .in(
                             "id",
@@ -25313,12 +25314,18 @@ document.addEventListener(
                         );
 
 
-                    const studentName =
-                        student?.name ||
-                        student?.full_name ||
-                        student?.student_name ||
-                        student?.student_id ||
-                        "Unknown Student";
+                  const studentName =
+    student?.name ||
+    student?.full_name ||
+    student?.student_name ||
+    submission?.student_name ||
+    student?.student_id ||
+    "Unknown Student";
+
+const rollNumber =
+    student?.roll_number ||
+    student?.rollNumber ||
+    "—";
 
 
                     html += `
@@ -25339,10 +25346,22 @@ document.addEventListener(
                                 margin-bottom:15px;
                             ">
 
-                                <strong>
-                                    ${index + 1}.
-                                    ${studentName}
-                                </strong>
+                               <div>
+    <strong style="
+        display:block;
+        font-size:18px;
+        margin-bottom:5px;
+    ">
+        ${index + 1}. ${studentName}
+    </strong>
+
+    <span style="
+        font-size:13px;
+        color:#64748b;
+    ">
+        Roll No: ${rollNumber}
+    </span>
+</div>
 
                                 <span>
                                     ${
