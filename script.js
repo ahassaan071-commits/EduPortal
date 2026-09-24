@@ -4081,7 +4081,60 @@ if (
 
 }
 
+// ==========================================
+// SHOW / HIDE CURRENT PASSWORD
+// ==========================================
 
+const toggleCurrentPassword =
+    document.getElementById(
+        "toggleCurrentPassword"
+    );
+
+const currentPasswordField =
+    document.getElementById(
+        "settingsCurrentPassword"
+    );
+
+if (
+    toggleCurrentPassword &&
+    currentPasswordField
+) {
+
+    toggleCurrentPassword.addEventListener(
+        "click",
+        function() {
+
+            if (
+                currentPasswordField.type ===
+                "password"
+            ) {
+
+                currentPasswordField.type =
+                    "text";
+
+                toggleCurrentPassword.textContent =
+                    "🙈";
+
+                toggleCurrentPassword.title =
+                    "Hide Password";
+
+            } else {
+
+                currentPasswordField.type =
+                    "password";
+
+                toggleCurrentPassword.textContent =
+                    "👁️";
+
+                toggleCurrentPassword.title =
+                    "Show Password";
+
+            }
+
+        }
+    );
+
+}
 // ==========================================
 // SAVE NEW PASSWORD
 // ==========================================

@@ -2988,8 +2988,8 @@ Fee Status Section
     <label>Current Password</label>
 
     <div style="
-        position:relative;
-        width:100%;
+        position:relative !important;
+        width:100% !important;
     ">
 
         <input
@@ -2997,32 +2997,40 @@ Fee Status Section
             id="settingsCurrentPassword"
             readonly
             style="
-                width:100%;
-                padding-right:55px;
+                width:100% !important;
+                box-sizing:border-box !important;
+                padding-right:60px !important;
             "
         >
 
         <button
             type="button"
             id="toggleCurrentPassword"
-            aria-label="Show password"
+            title="Show/Hide Password"
             style="
-                position:absolute;
-                right:12px;
-                top:50%;
-                transform:translateY(-50%);
-                border:none;
-                background:transparent;
-                cursor:pointer;
-                font-size:22px;
-                padding:5px 8px;
+                position:absolute !important;
+                right:10px !important;
+                left:auto !important;
+                top:50% !important;
+                transform:translateY(-50%) !important;
+                width:42px !important;
+                height:42px !important;
+                display:flex !important;
+                align-items:center !important;
+                justify-content:center !important;
+                border:none !important;
+                background:transparent !important;
+                cursor:pointer !important;
+                padding:0 !important;
+                margin:0 !important;
+                font-size:22px !important;
+                z-index:10 !important;
             "
         >👁️</button>
 
     </div>
 
 </div>
-
 
         <!-- NEW PASSWORD -->
 
