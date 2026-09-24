@@ -16187,6 +16187,39 @@ updateStudentAttendanceUI();
 updateStudentAttendanceSummary();
 
 
+// ==========================================
+// AUTO ABSENT CHECK EVERY MINUTE
+// ==========================================
+
+autoMarkAbsentAfterNoon();
+
+setInterval(
+    async function() {
+
+        await autoMarkAbsentAfterNoon();
+
+        // Refresh Admin Attendance table
+        if (
+            typeof renderAttendanceTable ===
+            "function"
+        ) {
+
+            const attendanceTable =
+                document.getElementById(
+                    "attendanceTableBody"
+                );
+
+            if (attendanceTable) {
+
+                await renderAttendanceTable();
+
+            }
+        }
+
+    },
+    60 * 1000
+);
+
 }
 );
 
