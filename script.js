@@ -14523,83 +14523,72 @@ const records =
 
             row.innerHTML = `
 
-        
-                <td>
-                    ${index + 1}
-                </td>
+    <td>
+        ${index + 1}
+    </td>
 
+    <td>
+        ${student.rollNumber || "—"}
+    </td>
 
-                <td>
-                    ${student.rollNumber || "—"}
-                </td>
+    <td>
+        <strong>
+            ${
+                student.fullName ||
+                student.name ||
+                "—"
+            }
+        </strong>
+    </td>
 
+    <td>
+        ${
+            student.studentClass ||
+            "—"
+        }
+    </td>
 
-                <td>
-                    <strong>
-                        ${
-                            student.fullName ||
-                            student.name ||
-                            "—"
-                        }
-                    </strong>
-                </td>
+    <td>
+        ${
+            student.section ||
+            "—"
+        }
+    </td>
 
+    <td>
 
-                <td>
-                    ${
-                        student.studentClass ||
-                        "—"
-                    }
-                </td>
+        ${
+            attendanceRecord &&
+            attendanceRecord.status
+                ? `
+                    <span
+                        class="attendance-status-badge
+                        ${attendanceRecord.status.toLowerCase()}">
+                        ${attendanceRecord.status}
+                    </span>
+                  `
+                : `
+                    <span
+                        class="attendance-status-badge pending">
+                        — Not Marked
+                    </span>
+                  `
+        }
 
+    </td>
 
-                <td>
-                    ${
-                        student.section ||
-                        "—"
-                    }
-                </td>
+    <td>
 
+        ${
+            attendanceRecord &&
+            attendanceRecord.checkIn
+                ? attendanceRecord.checkIn
+                : "-"
+        }
 
-                <td>
+    </td>
 
-                    ${
-                        attendanceRecord &&
-                        attendanceRecord.status
-                            ? `
-                                <span
-                                    class="attendance-status-badge
-                                    ${attendanceRecord.status.toLowerCase()}">
-                                    ${attendanceRecord.status}
-                                </span>
-                              `
-                            : `
-                                <span
-                                    class="attendance-status-badge pending">
-                                    — Not Marked
-                                </span>
-                              `
-                    }
-
-                </td>
-
-
-                <td>
-
-                    ${
-                        attendanceRecord &&
-                        attendanceRecord.checkIn
-                            ? attendanceRecord.checkIn
-                            : "-"
-                    }
-
-                </td>
-
-
-                
-
-            `;
-
+`;
 
             tableBody.appendChild(row);
 
