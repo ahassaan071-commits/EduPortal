@@ -14111,7 +14111,7 @@ async function renderAttendanceTable() {
 
     tableBody.innerHTML = `
         <tr>
-            <td colspan="8"
+            <td colspan="7"
                 style="text-align:center;padding:35px;">
                 Loading attendance...
             </td>
@@ -14595,7 +14595,7 @@ const records =
                 : `
                     <span
                         class="attendance-status-badge pending">
-                        — Not Marked
+                         Not Marked
                     </span>
                   `
         }
