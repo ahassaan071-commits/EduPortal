@@ -21675,11 +21675,17 @@ closeAllAdminUserModals();
             // OPEN TEACHER MODAL
             // ==========================================
 
-            teacherModal.style.display =
-                "flex";
+            teacherModal.style.setProperty(
+    "display",
+    "flex",
+    "important"
+);
 
-            teacherModal.style.position =
-                "fixed";
+           teacherModal.style.setProperty(
+    "position",
+    "fixed",
+    "important"
+);
 
             teacherModal.style.inset =
                 "0";
@@ -21690,8 +21696,11 @@ closeAllAdminUserModals();
             teacherModal.style.height =
                 "100vh";
 
-            teacherModal.style.zIndex =
-                "9999999";
+           teacherModal.style.setProperty(
+    "z-index",
+    "99999999",
+    "important"
+);
 
             teacherModal.style.alignItems =
                 "center";
