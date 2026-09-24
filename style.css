@@ -16781,7 +16781,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
         48px;
 
     padding:
-        0 15px;
+        0 7px;
 
     background:
         #f8fafc;
@@ -16815,7 +16815,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
         52px;
 
     padding:
-        7px 15px;
+        7px 7px;
 
     background:
         #ffffff;
