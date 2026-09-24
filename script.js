@@ -14089,6 +14089,210 @@ function initializeAdminAttendanceRealtime() {
 // =========================================================
 
 initializeAdminAttendanceRealtime();
+
+// =========================================================
+// AUTO ABSENT AFTER 12:00 PM
+// =========================================================
+
+async function autoMarkAbsentAfterNoon() {
+
+    try {
+
+        if (
+            typeof supabaseClient ===
+            "undefined"
+        ) {
+            return;
+        }
+
+        // -----------------------------------------
+        // CURRENT PAKISTAN TIME
+        // -----------------------------------------
+
+        const pakistanTime =
+            new Date().toLocaleString(
+                "en-US",
+                {
+                    timeZone: "Asia/Karachi"
+                }
+            );
+
+        const now =
+            new Date(pakistanTime);
+
+        const currentHour =
+            now.getHours();
+
+        const currentMinute =
+            now.getMinutes();
+
+        // -----------------------------------------
+        // BEFORE 12:00 PM
+        // -----------------------------------------
+
+        if (
+            currentHour < 12
+        ) {
+            return;
+        }
+
+        // -----------------------------------------
+        // TODAY DATE
+        // -----------------------------------------
+
+        const today =
+            getStudentAttendanceDate();
+
+        // -----------------------------------------
+        // GET ALL REGISTERED STUDENTS
+        // -----------------------------------------
+
+        const {
+            data: students,
+            error: studentsError
+        } =
+            await supabaseClient
+                .from("students")
+                .select("id");
+
+        if (studentsError) {
+
+            console.error(
+                "AUTO ABSENT - STUDENTS ERROR:",
+                studentsError
+            );
+
+            return;
+        }
+
+        if (
+            !students ||
+            students.length === 0
+        ) {
+            return;
+        }
+
+        // -----------------------------------------
+        // GET TODAY'S ATTENDANCE
+        // -----------------------------------------
+
+        const {
+            data: todayAttendance,
+            error: attendanceError
+        } =
+            await supabaseClient
+                .from("attendance")
+                .select(
+                    "student_id, status"
+                )
+                .eq(
+                    "attendance_date",
+                    today
+                );
+
+        if (attendanceError) {
+
+            console.error(
+                "AUTO ABSENT - ATTENDANCE ERROR:",
+                attendanceError
+            );
+
+            return;
+        }
+
+        // -----------------------------------------
+        // FIND STUDENTS WITHOUT ATTENDANCE
+        // -----------------------------------------
+
+        const markedStudentIds =
+            new Set(
+                (todayAttendance || [])
+                    .map(
+                        record =>
+                            String(
+                                record.student_id
+                            )
+                    )
+            );
+
+        const absentRecords =
+            students
+                .filter(
+                    student =>
+                        !markedStudentIds.has(
+                            String(student.id)
+                        )
+                )
+                .map(
+                    student => ({
+
+                        student_id:
+                            student.id,
+
+                        attendance_date:
+                            today,
+
+                        status:
+                            "Absent",
+
+                        check_in_time:
+                            null,
+
+                        check_out_time:
+                            null
+
+                    })
+                );
+
+        // -----------------------------------------
+        // SAVE ABSENT RECORDS
+        // -----------------------------------------
+
+        if (
+            absentRecords.length > 0
+        ) {
+
+            const {
+                error: insertError
+            } =
+                await supabaseClient
+                    .from("attendance")
+                    .upsert(
+                        absentRecords,
+                        {
+                            onConflict:
+                                "student_id,attendance_date",
+                            ignoreDuplicates:
+                                true
+                        }
+                    );
+
+            if (insertError) {
+
+                console.error(
+                    "AUTO ABSENT INSERT ERROR:",
+                    insertError
+                );
+
+                return;
+            }
+
+            console.log(
+                "Auto Absent completed:",
+                absentRecords.length,
+                "students"
+            );
+        }
+
+    } catch (error) {
+
+        console.error(
+            "AUTO ABSENT ERROR:",
+            error
+        );
+
+    }
+}
 // ==========================================
 // ATTENDANCE TABLE RENDER
 // SUPABASE STUDENTS - FINAL SYNC
