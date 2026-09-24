@@ -10206,6 +10206,151 @@ if (editUserType) {
                 "Active";
         }
 
+// ==========================================
+// LOAD STUDENT SUBJECTS FOR EDIT USER
+// ==========================================
+
+const subjectsGroup =
+    document.getElementById(
+        "editUserSubjectsGroup"
+    );
+
+const subjectsContainer =
+    document.getElementById(
+        "editUserSubjects"
+    );
+
+if (
+    userType === "student" &&
+    subjectsGroup &&
+    subjectsContainer
+) {
+
+    subjectsGroup.style.display = "block";
+
+    subjectsContainer.innerHTML = `
+        <div style="
+            padding:10px;
+            text-align:center;
+            color:#64748b;
+        ">
+            Loading subjects...
+        </div>
+    `;
+
+    const {
+        data: allEditSubjects,
+        error: editSubjectsError
+    } = await supabaseClient
+        .from("subjects")
+        .select("*")
+        .order("id", {
+            ascending: true
+        });
+
+    if (editSubjectsError) {
+
+        console.error(
+            "EDIT USER SUBJECTS ERROR:",
+            editSubjectsError
+        );
+
+        subjectsContainer.innerHTML = `
+            <div style="
+                padding:10px;
+                color:#dc2626;
+            ">
+                Unable to load subjects.
+            </div>
+        `;
+
+    } else {
+
+        const assignedSubjectIds =
+            Array.isArray(data.subject_ids)
+                ? data.subject_ids.map(Number)
+                : [];
+
+        if (
+            !allEditSubjects ||
+            allEditSubjects.length === 0
+        ) {
+
+            subjectsContainer.innerHTML = `
+                <div style="
+                    padding:10px;
+                    text-align:center;
+                    color:#64748b;
+                ">
+                    No subjects available.
+                </div>
+            `;
+
+        } else {
+
+            subjectsContainer.innerHTML =
+                allEditSubjects
+                    .map(function(subject) {
+
+                        const subjectId =
+                            Number(subject.id);
+
+                        const subjectName =
+                            subject.name ||
+                            subject.subject_name ||
+                            subject.title ||
+                            "Subject";
+
+                        const isChecked =
+                            assignedSubjectIds.includes(
+                                subjectId
+                            );
+
+                        return `
+                            <label style="
+                                display:flex;
+                                align-items:center;
+                                gap:10px;
+                                padding:10px;
+                                margin-bottom:6px;
+                                background:#ffffff;
+                                border:1px solid #e2e8f0;
+                                border-radius:9px;
+                                cursor:pointer;
+                            ">
+
+                                <input
+                                    type="checkbox"
+                                    value="${subjectId}"
+                                    ${isChecked ? "checked" : ""}
+                                    style="
+                                        width:17px;
+                                        height:17px;
+                                        cursor:pointer;
+                                    "
+                                >
+
+                                <span style="
+                                    font-weight:500;
+                                    color:#1e293b;
+                                ">
+                                    ${subjectName}
+                                </span>
+
+                            </label>
+                        `;
+
+                    })
+                    .join("");
+        }
+    }
+
+} else if (subjectsGroup) {
+
+    subjectsGroup.style.display = "none";
+
+}
+
         // -------------------------------
 // CLOSE OTHER MODALS
 // -------------------------------
