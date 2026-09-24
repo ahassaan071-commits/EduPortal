@@ -4376,13 +4376,13 @@ document.addEventListener(
                 .value
                 .trim();
 
-        const password =
-            document
-                .getElementById(
-                    "adminNewStudentPassword"
-                )
-                .value
-                .trim();
+      const password =
+    document
+        .getElementById(
+            "adminNewStudentPassword"
+        )
+        .value
+        .replace(/\s/g, "");
 
         const mobile =
             document
