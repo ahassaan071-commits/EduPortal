@@ -26101,6 +26101,13 @@ const dueDate =
         // VALIDATION
         // =========================================
 
+console.log("CLASS:", className);
+console.log("SECTION:", sectionName);
+console.log("SUBJECT:", subject);
+console.log("MARKS:", marks);
+console.log("DUE DATE:", dueDate);
+console.log("DESCRIPTION:", description);
+
      if (
     !className ||
     !sectionName ||
