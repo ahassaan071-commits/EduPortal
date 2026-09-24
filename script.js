@@ -8429,28 +8429,53 @@ async function updateResultsStatistics() {
         return;
     }
 
-    const {
-        data: results,
-        error
-    } =
-        await supabaseClient
-            .from("results")
-            .select(
-                "id, student_id, total_marks, marks"
-            );
-
-    if (error) {
-
-        console.error(
-            "RESULT STATISTICS LOAD ERROR:",
-            error
+  const {
+    data: results,
+    error
+} =
+    await supabaseClient
+        .from("results")
+        .select(
+            "id, student_id, total_marks, marks"
         );
 
-        return;
-    }
+if (error) {
 
-    const resultRecords =
-        results || [];
+    console.error(
+        "RESULT STATISTICS LOAD ERROR:",
+        error
+    );
+
+    return;
+}
+
+const resultRecords =
+    results || [];
+
+
+// ==========================================
+// LOAD TOTAL STUDENTS
+// ==========================================
+
+const {
+    data: students,
+    error: studentsError
+} =
+    await supabaseClient
+        .from("students")
+        .select("id");
+
+if (studentsError) {
+
+    console.error(
+        "TOTAL STUDENTS LOAD ERROR:",
+        studentsError
+    );
+
+}
+
+const totalStudents =
+    (students || []).length;
 
     const totalResults =
         resultRecords.length;
@@ -8549,10 +8574,10 @@ async function updateResultsStatistics() {
         );
 
 
-    if (totalElement) {
-        totalElement.textContent =
-            totalResults;
-    }
+   if (totalElement) {
+    totalElement.textContent =
+        totalStudents;
+}
 
     if (averageElement) {
         averageElement.textContent =
