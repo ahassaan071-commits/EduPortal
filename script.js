@@ -1408,12 +1408,13 @@ if (
                 "profileStudentClass"
             );
 
-        if (profileStudentClass) {
+       if (profileStudentClass) {
 
-            profileStudentClass.textContent =
-                student.studentClass ||
-                "Not Assigned";
-        }
+    profileStudentClass.textContent =
+        student.student_class ||
+        student.studentClass ||
+        "Not Assigned";
+}
 
 
         const profileSectionName =
