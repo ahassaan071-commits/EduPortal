@@ -41222,13 +41222,6 @@ async function loadRealAdminAttendance() {
                     }
                 </td>
 
-
-                <td>
-                    ${
-                        checkOut
-                    }
-                </td>
-
             `;
 
 
