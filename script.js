@@ -7853,10 +7853,10 @@ if (resultStudentField) {
                 .select(
                     "id, student_id, name, student_class, section"
                 )
-                .eq(
-                    "student_id",
-                    String(selectedStudentId)
-                )
+             .eq(
+    "id",
+    String(selectedStudentId)
+)
                 .maybeSingle();
 
             if (studentError) {
