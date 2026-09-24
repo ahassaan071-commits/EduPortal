@@ -32953,7 +32953,7 @@ const StudentDashboard = {
        Dashboard Initialization
     ------------------------- */
 
-   init() {
+  async init() {
 
     const student = this.getStudent();
 
@@ -32967,11 +32967,18 @@ const StudentDashboard = {
     this.loadAttendance(student);
     this.loadSubjects(student);
     this.loadResults(student);
-    this.loadAssignments(student);
-    this.loadAssignmentResults(student);
+
+    // First load assignments
+    await this.loadAssignments(student);
+
+    // Then load submitted/graded results
+    await this.loadAssignmentResults(student);
+
     this.loadFees(student);
     this.loadNotices(student);
-},/* -------------------------
+},
+
+/* -------------------------
    Profile - SUPABASE
 ------------------------- */
 
