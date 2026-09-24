@@ -36229,9 +36229,16 @@ document.addEventListener(
             "";
 
         const studentName =
-            student.name ||
-            student.studentName ||
-            "Student";
+    student.name ||
+    student.full_name ||
+    student.studentName ||
+    student.student_name ||
+    "Student";
+
+const studentRollNumber =
+    student.rollNumber ||
+    student.roll_number ||
+    "";
 
         if (!studentId) {
             alert(
@@ -36344,11 +36351,14 @@ const submissionText =
                                 studentId
                             ),
 
-                        student_name:
-                            studentName,
+                       student_name:
+    studentName,
 
-                        submission_text:
-                            submissionText,
+roll_number:
+    studentRollNumber,
+
+submission_text:
+    submissionText,
 
                         status:
                             "Submitted"
