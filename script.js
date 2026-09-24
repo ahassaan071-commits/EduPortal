@@ -45808,3 +45808,29 @@ document.addEventListener(
 
     }
 );
+function openAdminTeacherModalDirect() {
+
+    const modal =
+        document.getElementById(
+            "adminTeacherModal"
+        );
+
+    if (!modal) {
+
+        alert(
+            "Teacher form not found."
+        );
+
+        return;
+    }
+
+    modal.style.display = "flex";
+    modal.style.position = "fixed";
+    modal.style.inset = "0";
+    modal.style.width = "100vw";
+    modal.style.height = "100vh";
+    modal.style.zIndex = "99999999";
+    modal.style.alignItems = "center";
+    modal.style.justifyContent = "center";
+
+}
