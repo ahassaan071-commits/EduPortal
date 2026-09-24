@@ -33598,12 +33598,13 @@ async loadProfile(student) {
     );
 
 
-    this.setText(
-        "profileStudentClass",
-        data.studentClass ||
-        data.class ||
-        "Not Assigned"
-    );
+  this.setText(
+    "profileStudentClass",
+    data.student_class ||
+    data.studentClass ||
+    data.class ||
+    "Not Assigned"
+);
 
 
     this.setText(
