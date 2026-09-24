@@ -15737,6 +15737,40 @@ async function studentCheckIn() {
     const today =
         getStudentAttendanceDate();
 
+        // ==========================================
+// 12:00 PM ATTENDANCE CUTOFF
+// ==========================================
+
+const pakistanTime =
+    new Date().toLocaleString(
+        "en-US",
+        {
+            timeZone: "Asia/Karachi"
+        }
+    );
+
+const pakistanNow =
+    new Date(pakistanTime);
+
+const currentHour =
+    pakistanNow.getHours();
+
+if (
+    currentHour >= 12
+) {
+
+    await autoMarkAbsentAfterNoon();
+
+    await updateStudentAttendanceUI();
+
+    alert(
+        "Attendance time is over. " +
+        "Attendance is automatically marked Absent after 12:00 PM."
+    );
+
+    return;
+}
+
 
     // ==========================================
     // CHECK IF ALREADY CHECKED IN
