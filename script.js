@@ -1436,9 +1436,10 @@ if (
 
         if (profileRollNumber) {
 
-            profileRollNumber.textContent =
-                student.rollNumber ||
-                "—";
+           profileRollNumber.textContent =
+    student.roll_number ||
+    student.rollNumber ||
+    "—";
         }
 
 
