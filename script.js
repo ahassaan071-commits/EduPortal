@@ -3906,7 +3906,7 @@ settingsMenu.onclick = function(event) {
 // STUDENT SETTINGS
 // ==========================================
 
-function loadStudentSettings() {
+async function loadStudentSettings() {
 
     let savedStudent = null;
 
@@ -3936,11 +3936,7 @@ function loadStudentSettings() {
 
 
     if (!savedStudent) {
-
-        console.warn(
-            "Student account not found."
-        );
-
+        console.warn("Student account not found.");
         return;
     }
 
@@ -3956,16 +3952,96 @@ function loadStudentSettings() {
         );
 
 
-  if (usernameInput) {
+    // ==========================================
+    // LOAD LATEST STUDENT ACCOUNT FROM SUPABASE
+    // ==========================================
 
-    usernameInput.value =
-        savedStudent.username ||
-        savedStudent.userName ||
-        savedStudent.username_id ||
-        savedStudent.student_id ||
-        "";
+    if (
+        typeof supabaseClient !==
+        "undefined"
+    ) {
 
-}
+        try {
+
+            const studentId =
+                savedStudent.student_id ||
+                savedStudent.studentId ||
+                savedStudent.id;
+
+            if (studentId) {
+
+                const {
+                    data: dbStudent,
+                    error
+                } =
+                    await supabaseClient
+                        .from("students")
+                        .select(
+                            "username, password"
+                        )
+                        .eq(
+                            "student_id",
+                            studentId
+                        )
+                        .maybeSingle();
+
+
+                if (
+                    !error &&
+                    dbStudent
+                ) {
+
+                    if (usernameInput) {
+
+                        usernameInput.value =
+                            dbStudent.username ||
+                            "";
+
+                        usernameInput.readOnly =
+                            true;
+
+                    }
+
+
+                    if (currentPasswordInput) {
+
+                        currentPasswordInput.value =
+                            dbStudent.password ||
+                            "";
+
+                    }
+
+                    return;
+                }
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Supabase settings load error:",
+                error
+            );
+
+        }
+
+    }
+
+
+    // ==========================================
+    // FALLBACK
+    // ==========================================
+
+    if (usernameInput) {
+
+        usernameInput.value =
+            savedStudent.username ||
+            "";
+
+        usernameInput.readOnly =
+            true;
+
+    }
 
 
     if (currentPasswordInput) {
@@ -3977,7 +4053,6 @@ function loadStudentSettings() {
     }
 
 }
-
 
 // ==========================================
 // LOAD SETTINGS WHEN SETTINGS OPENS
