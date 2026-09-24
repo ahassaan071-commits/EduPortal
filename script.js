@@ -844,11 +844,23 @@ async function toggleTeacherPassword(
 
 document.addEventListener("DOMContentLoaded", async function () {
 
-    const isLoggedIn =
-        localStorage.getItem("isLoggedIn");
+    // ==========================================
+    // ALWAYS START FROM LOGIN PAGE
+    // ==========================================
 
-    const role =
-        localStorage.getItem("loggedInRole");
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("loggedInRole");
+
+    localStorage.removeItem("adminAccount");
+    localStorage.removeItem("loggedInTeacher");
+
+    localStorage.removeItem("loggedInStudent");
+    localStorage.removeItem("studentAccount");
+
+    // Always show Login Page on fresh page load
+    eduPortalShowLogin();
+
+    return;
 
 
     // =================================================
