@@ -32510,6 +32510,20 @@ if (assignedStudents.length > 0) {
                     }
                 ).length;
 
+absentStudents =
+    records.filter(
+        function (record) {
+
+            return String(
+                record.status || ""
+            )
+            .trim()
+            .toLowerCase() ===
+            "absent";
+
+        }
+    ).length;
+
         }
 
     }
@@ -32573,11 +32587,7 @@ if (teacherPresentCard) {
 
 if (teacherAbsentCard) {
     teacherAbsentCard.textContent =
-        Math.max(
-            0,
-            assignedStudents.length -
-            markedStudents
-        );
+        absentStudents;
 }
 
 if (teacherClassesCard) {
