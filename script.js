@@ -25045,9 +25045,9 @@ document.addEventListener(
                     .from(
                         "assignment_submissions"
                     )
-                    .select(
-                        "id, assignment_id, student_id, marks, teacher_feedback, status, submitted_at"
-                    )
+                   .select(
+    "id, assignment_id, student_id, student_name, marks, teacher_feedback, status, submitted_at"
+)
                     .eq(
                         "assignment_id",
                         assignmentId
