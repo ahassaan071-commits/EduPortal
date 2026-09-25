@@ -43820,189 +43820,206 @@ async function renderTeacherAttendanceOverview() {
     let points = [];
 
 
-    // =========================================
-    // THIS WEEK
-    // MONDAY - FRIDAY
-    // =========================================
+ // =========================================
+// BUILD ATTENDANCE PERIODS
+// =========================================
 
-    if (
-        selectedPeriod ===
-        "week"
+if (
+    selectedPeriod === "today"
+) {
+
+    const start =
+        new Date(now);
+
+    start.setHours(
+        0, 0, 0, 0
+    );
+
+    const end =
+        new Date(start);
+
+    end.setDate(
+        end.getDate() + 1
+    );
+
+    points.push({
+
+        start: start,
+
+        end: end,
+
+        label: "Today"
+
+    });
+
+}
+
+else if (
+    selectedPeriod === "yesterday"
+) {
+
+    const end =
+        new Date(now);
+
+    end.setHours(
+        0, 0, 0, 0
+    );
+
+    const start =
+        new Date(end);
+
+    start.setDate(
+        start.getDate() - 1
+    );
+
+    points.push({
+
+        start: start,
+
+        end: end,
+
+        label: "Yesterday"
+
+    });
+
+}
+
+else if (
+    selectedPeriod === "last7"
+) {
+
+    for (
+        let i = 6;
+        i >= 0;
+        i--
     ) {
 
-        const day =
-            now.getDay();
-
-        const mondayOffset =
-            day === 0
-                ? -6
-                : 1 - day;
-
-
-        const monday =
+        const start =
             new Date(now);
 
-        monday.setDate(
-            now.getDate() +
-            mondayOffset
+        start.setDate(
+            now.getDate() - i
         );
 
-        monday.setHours(
-            0,
-            0,
-            0,
-            0
+        start.setHours(
+            0, 0, 0, 0
         );
 
+        const end =
+            new Date(start);
 
-        for (
-            let i = 0;
-            i < 5;
-            i++
-        ) {
+        end.setDate(
+            start.getDate() + 1
+        );
 
-            const start =
-                new Date(
-                    monday
-                );
+        points.push({
 
-            start.setDate(
-                monday.getDate() +
-                i
-            );
+            start: start,
 
+            end: end,
 
-            const end =
-                new Date(
-                    start
-                );
+            label:
+                start.toLocaleDateString(
+                    "en-US",
+                    {
+                        weekday: "short"
+                    }
+                )
 
-            end.setDate(
-                start.getDate() +
-                1
-            );
-
-
-            points.push({
-
-                start:
-                    start,
-
-                end:
-                    end,
-
-                label:
-                    start.toLocaleDateString(
-                        "en-US",
-                        {
-                            weekday:
-                                "short"
-                        }
-                    )
-
-            });
-
-        }
+        });
 
     }
 
+}
 
-    // =========================================
-    // THIS MONTH
-    // =========================================
+else {
 
-    else {
+    // =====================================
+    // MONTH = 5 WEEKLY PERIODS
+    // =====================================
 
-        const monthStart =
+    const monthStart =
+        new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            1
+        );
+
+    const nextMonth =
+        new Date(
+            now.getFullYear(),
+            now.getMonth() + 1,
+            1
+        );
+
+    const totalDays =
+        Math.ceil(
+            (
+                nextMonth -
+                monthStart
+            ) /
+            (
+                1000 *
+                60 *
+                60 *
+                24
+            )
+        );
+
+
+    for (
+        let i = 0;
+        i < 5;
+        i++
+    ) {
+
+        const start =
             new Date(
-                now.getFullYear(),
-                now.getMonth(),
-                1
+                monthStart
             );
 
+        start.setDate(
+            1 +
+            Math.floor(
+                (
+                    i *
+                    totalDays
+                ) / 5
+            )
+        );
 
-        const nextMonth =
+
+        const end =
             new Date(
-                now.getFullYear(),
-                now.getMonth() + 1,
-                1
+                monthStart
             );
 
-
-        const totalDays =
-            Math.ceil(
+        end.setDate(
+            1 +
+            Math.floor(
                 (
-                    nextMonth -
-                    monthStart
-                ) /
-                (
-                    1000 *
-                    60 *
-                    60 *
-                    24
-                )
-            );
+                    (i + 1) *
+                    totalDays
+                ) / 5
+            )
+        );
 
 
-        for (
-            let i = 0;
-            i < 5;
-            i++
-        ) {
+        points.push({
 
-            const start =
-                new Date(
-                    monthStart
-                );
+            start: start,
 
-            start.setDate(
-                1 +
-                Math.floor(
-                    (
-                        i *
-                        totalDays
-                    ) /
-                    5
-                )
-            );
+            end: end,
 
+            label:
+                "Week " +
+                (i + 1)
 
-            const end =
-                new Date(
-                    monthStart
-                );
-
-            end.setDate(
-                1 +
-                Math.floor(
-                    (
-                        (i + 1) *
-                        totalDays
-                    ) /
-                    5
-                )
-            );
-
-
-            points.push({
-
-                start:
-                    start,
-
-                end:
-                    end,
-
-                label:
-                    "Week " +
-                    (i + 1)
-
-            });
-
-        }
+        });
 
     }
 
-
+}
     // =========================================
     // GET ATTENDANCE
     // =========================================
