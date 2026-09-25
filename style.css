@@ -45952,3 +45952,34 @@ html.edu-session-restoring #adminDashboard,
 html.edu-session-restoring #teacherDashboard {
     visibility: hidden;
 }
+/* =====================================================
+   EDUPORTAL - ZERO BLANK SCREEN ON REFRESH
+===================================================== */
+
+/* Logged-in session: hide login immediately */
+html.edu-session-restoring .container {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+/* ADMIN - show immediately */
+html.edu-session-restoring.edu-role-administrator #adminDashboard {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* TEACHER - show immediately */
+html.edu-session-restoring.edu-role-teacher #teacherDashboard {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* STUDENT - show immediately */
+html.edu-session-restoring.edu-role-student #studentDashboard {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}

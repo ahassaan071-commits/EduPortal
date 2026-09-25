@@ -26,6 +26,33 @@
     })();
 </script>
 
+<script>
+(function () {
+
+    const isLoggedIn =
+        localStorage.getItem("isLoggedIn");
+
+    const role =
+        localStorage.getItem("loggedInRole");
+
+    if (
+        isLoggedIn === "true" &&
+        role
+    ) {
+
+        document.documentElement.classList.add(
+            "edu-session-restoring"
+        );
+
+        document.documentElement.classList.add(
+            "edu-role-" + role
+        );
+
+    }
+
+})();
+</script>
+
 <link rel="stylesheet" href="style.css">
 
 </head>
