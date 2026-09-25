@@ -46624,7 +46624,16 @@ const absentCount =
 
     }).length;
 
+const leaveCount =
+    overviewRecords.filter(function(record) {
 
+        return String(
+            record.status || ""
+        )
+        .trim()
+        .toLowerCase() === "leave";
+
+    }).length;
 
 
 // =========================================
