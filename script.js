@@ -47554,3 +47554,131 @@ document.addEventListener(
 
     }
 );
+// =========================================================
+// ACADEMIC SETUP - TEACHER ASSIGNMENT
+// Class + Subject + Existing Teacher
+// =========================================================
+
+async function loadAcademicAssignmentOptions() {
+
+    const classSelect = document.getElementById("academicAssignmentClass");
+    const subjectSelect = document.getElementById("academicAssignmentSubject");
+    const teacherSelect = document.getElementById("academicAssignmentTeacher");
+
+    if (!classSelect || !subjectSelect || !teacherSelect) return;
+
+    // Reset dropdowns
+    classSelect.innerHTML = `<option value="">Select Class</option>`;
+    subjectSelect.innerHTML = `<option value="">Select Subject</option>`;
+    teacherSelect.innerHTML = `<option value="">Select Teacher</option>`;
+
+    // -----------------------------
+    // LOAD CLASSES
+    // -----------------------------
+    const { data: classes, error: classError } =
+        await supabaseClient
+            .from("classes")
+            .select("id, name")
+            .order("id", { ascending: true });
+
+    if (classError) {
+        console.error("Classes Load Error:", classError);
+        return;
+    }
+
+    classes.forEach(function (item) {
+
+        const option = document.createElement("option");
+
+        option.value = item.id;
+        option.textContent = item.name;
+
+        classSelect.appendChild(option);
+    });
+
+
+    // -----------------------------
+    // LOAD SUBJECTS
+    // -----------------------------
+    const { data: subjects, error: subjectError } =
+        await supabaseClient
+            .from("subjects")
+            .select("id, name, code")
+            .order("id", { ascending: true });
+
+    if (subjectError) {
+        console.error("Subjects Load Error:", subjectError);
+        return;
+    }
+
+    subjects.forEach(function (item) {
+
+        const option = document.createElement("option");
+
+        option.value = item.id;
+        option.textContent = item.code
+            ? `${item.name} (${item.code})`
+            : item.name;
+
+        subjectSelect.appendChild(option);
+    });
+
+
+    // -----------------------------
+    // LOAD EXISTING TEACHERS
+    // -----------------------------
+    const { data: teachers, error: teacherError } =
+        await supabaseClient
+            .from("teachers")
+            .select("id, name, teacher_id")
+            .order("id", { ascending: true });
+
+    if (teacherError) {
+        console.error("Teachers Load Error:", teacherError);
+        return;
+    }
+
+    teachers.forEach(function (teacher) {
+
+        const option = document.createElement("option");
+
+        option.value = teacher.id;
+
+        option.textContent =
+            teacher.teacher_id
+                ? `${teacher.name} (${teacher.teacher_id})`
+                : teacher.name;
+
+        teacherSelect.appendChild(option);
+    });
+
+    console.log("Academic Assignment dropdowns loaded.");
+}
+// =========================================================
+// LOAD ASSIGNMENT OPTIONS WHEN ASSIGNMENT TAB OPENS
+// =========================================================
+
+document.addEventListener("click", function (event) {
+
+    const tabButton = event.target.closest(
+        "#adminAcademicSetupSection .academic-setup-tab"
+    );
+
+    if (!tabButton) return;
+
+    setTimeout(function () {
+
+        const assignmentTab =
+            document.getElementById("academicAssignmentTab");
+
+        if (
+            assignmentTab &&
+            assignmentTab.style.display !== "none"
+        ) {
+            loadAcademicAssignmentOptions();
+            loadAcademicAssignments();
+        }
+
+    }, 100);
+
+});
