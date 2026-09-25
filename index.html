@@ -2313,15 +2313,29 @@ My Profile Section
 
 <hr>
 
-<div class="profile-image">
+<div
+    class="profile-image"
+    id="profileImagePicker"
+    onclick="document.getElementById('profileImageInput').click()"
+>
 
-<img id="profileImage" src="" alt="Profile Image" style="display:none;">
+    <img
+        id="profileImage"
+        src=""
+        alt="Profile Image"
+        style="display:none;"
+    >
 
-<span id="profileIcon">👤</span>
+    <span id="profileIcon">👤</span>
 
 </div>
 
-<input type="file" id="profileImageInput" accept="image/*">
+<input
+    type="file"
+    id="profileImageInput"
+    accept="image/*"
+    style="display:none;"
+>
 
 <button
     type="button"
