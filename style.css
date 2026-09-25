@@ -46151,3 +46151,41 @@ html.edu-session-restoring.edu-role-student #studentDashboard {
     }
 
 }
+/* =====================================================
+   HEATMAP STATUS COLORS
+===================================================== */
+
+.teacher-heatmap-cell.heatmap-level-good {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+}
+
+.teacher-heatmap-cell.heatmap-level-good
+.teacher-heatmap-icon {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+
+.teacher-heatmap-cell.heatmap-level-warning {
+    background: #fffbeb;
+    border-color: #fde68a;
+}
+
+.teacher-heatmap-cell.heatmap-level-warning
+.teacher-heatmap-icon {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+
+.teacher-heatmap-cell.heatmap-level-danger {
+    background: #fef2f2;
+    border-color: #fecaca;
+}
+
+.teacher-heatmap-cell.heatmap-level-danger
+.teacher-heatmap-icon {
+    background: #fee2e2;
+    color: #dc2626;
+}

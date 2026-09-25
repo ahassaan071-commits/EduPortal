@@ -44215,114 +44215,192 @@ async function renderTeacherAttendanceOverview() {
     );
 
 
-    // =========================================
-    // GET GRAPH BARS
-    // =========================================
+ // =========================================
+// UPDATE ATTENDANCE HEATMAP
+// =========================================
 
-    const presentBars =
-        chart.querySelectorAll(
-            ".teacher-present-bar"
-        );
+const heatmapCells =
+    chart.querySelectorAll(
+        ".teacher-heatmap-cell"
+    );
 
-    const absentBars =
-        chart.querySelectorAll(
-            ".teacher-absent-bar"
-        );
+const heatmapLabels =
+    chart.querySelectorAll(
+        ".teacher-heatmap-day"
+    );
 
-    const labels =
-        chart.querySelectorAll(
-            ".teacher-chart-column small"
-        );
+const heatmapPercentages =
+    chart.querySelectorAll(
+        ".teacher-heatmap-percentage"
+    );
 
+const heatmapCounts =
+    chart.querySelectorAll(
+        ".teacher-heatmap-count"
+    );
 
-    // =========================================
-    // UPDATE GRAPH
-    // =========================================
-
-    points.forEach(
-        function(point, index) {
-
-            if (
-                !presentBars[index] ||
-                !absentBars[index]
-            ) {
-                return;
-            }
+const heatmapIcons =
+    chart.querySelectorAll(
+        ".teacher-heatmap-icon"
+    );
 
 
-            const total =
-                point.present +
-                point.absent;
+// =========================================
+// UPDATE EACH DAY
+// =========================================
+
+points.forEach(
+    function(point, index) {
+
+        if (!heatmapCells[index]) {
+            return;
+        }
 
 
-            let presentHeight =
-                0;
-
-            let absentHeight =
-                0;
+        const total =
+            point.present +
+            point.absent;
 
 
-            if (
-                total > 0
-            ) {
+        let attendancePercentage = 0;
 
-                presentHeight =
+
+        if (total > 0) {
+
+            attendancePercentage =
+                Math.round(
                     (
                         point.present /
                         total
-                    ) * 100;
+                    ) * 100
+                );
+
+        }
 
 
-                absentHeight =
-                    (
-                        point.absent /
-                        total
-                    ) * 100;
+        // =================================
+        // DAY
+        // =================================
 
-            }
+        if (heatmapLabels[index]) {
 
-
-            presentBars[index]
-                .style.height =
-                    presentHeight +
-                    "%";
-
-
-            absentBars[index]
-                .style.height =
-                    absentHeight +
-                    "%";
-
-
-            // =================================
-            // TOOLTIP
-            // =================================
-
-            presentBars[index].title =
-                "Present: " +
-                point.present;
-
-
-            absentBars[index].title =
-                "Absent: " +
-                point.absent;
-
-
-            // =================================
-            // DAY LABEL
-            // =================================
-
-            if (labels[index]) {
-
-                labels[index].textContent =
+            heatmapLabels[index]
+                .textContent =
                     point.label;
+
+        }
+
+
+        // =================================
+        // PERCENTAGE
+        // =================================
+
+        if (heatmapPercentages[index]) {
+
+            heatmapPercentages[index]
+                .textContent =
+                    attendancePercentage +
+                    "%";
+
+        }
+
+
+        // =================================
+        // PRESENT COUNT
+        // =================================
+
+        if (heatmapCounts[index]) {
+
+            heatmapCounts[index]
+                .textContent =
+                    point.present +
+                    " Present • " +
+                    point.absent +
+                    " Absent";
+
+        }
+
+
+        // =================================
+        // STATUS
+        // =================================
+
+        heatmapCells[index]
+            .classList.remove(
+                "heatmap-level-good",
+                "heatmap-level-warning",
+                "heatmap-level-danger"
+            );
+
+
+        if (
+            attendancePercentage >= 80
+        ) {
+
+            heatmapCells[index]
+                .classList.add(
+                    "heatmap-level-good"
+                );
+
+
+            if (heatmapIcons[index]) {
+
+                heatmapIcons[index]
+                    .textContent = "✓";
 
             }
 
         }
-    );
+
+        else if (
+            attendancePercentage >= 60
+        ) {
+
+            heatmapCells[index]
+                .classList.add(
+                    "heatmap-level-warning"
+                );
 
 
+            if (heatmapIcons[index]) {
+
+                heatmapIcons[index]
+                    .textContent = "!";
+
+            }
+
+        }
+
+        else {
+
+            heatmapCells[index]
+                .classList.add(
+                    "heatmap-level-danger"
+                );
+
+
+            if (heatmapIcons[index]) {
+
+                heatmapIcons[index]
+                    .textContent = "×";
+
+            }
+
+        }
+
+
+        // =================================
+        // TOOLTIP
+        // =================================
+
+        heatmapCells[index].title =
+            "Present: " +
+            point.present +
+            " | Absent: " +
+            point.absent;
+
+    }
+);
     // =========================================
     // CLEAR EXTRA BARS
     // =========================================
