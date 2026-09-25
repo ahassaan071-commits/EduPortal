@@ -13245,6 +13245,67 @@ return `${year}-${month}-${day}`;
 }
 
 // ==========================================
+// ATTENDANCE AUTO DAY CHANGE
+// ==========================================
+
+let eduPortalAttendanceLastAutoDate = null;
+
+function syncAttendanceDateWithToday() {
+
+    const dateFilter =
+        document.getElementById(
+            "attendanceDateFilter"
+        );
+
+    if (!dateFilter) {
+        return false;
+    }
+
+    const today =
+        getTodayDate();
+
+    const currentDate =
+        dateFilter.value;
+
+    // First time
+    if (!eduPortalAttendanceLastAutoDate) {
+
+        eduPortalAttendanceLastAutoDate =
+            currentDate || today;
+
+        return false;
+    }
+
+    // New day detected
+    if (
+        today !==
+        eduPortalAttendanceLastAutoDate
+    ) {
+
+        // Only change automatically if
+        // user was viewing the previous
+        // automatic/current date.
+        if (
+            currentDate ===
+            eduPortalAttendanceLastAutoDate
+        ) {
+
+            dateFilter.value =
+                today;
+
+            eduPortalAttendanceLastAutoDate =
+                today;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    return false;
+}
+
+// ==========================================
 // MARK ATTENDANCE BUTTON
 // ==========================================
 
@@ -13953,13 +14014,7 @@ renderAttendanceTable();
 }
 
 
-// ==========================================
-// DEFAULT DATE = TODAY
-// ==========================================
 
-if (dateFilter && !dateFilter.value) {
-dateFilter.value = getTodayDate();
-}
 
 
 // ==========================================
