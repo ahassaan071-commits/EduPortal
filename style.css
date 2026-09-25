@@ -39009,13 +39009,34 @@ table tbody tr:hover td {
    ========================================== */
 
 .fee-action-group {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    white-space: nowrap;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+    white-space: nowrap !important;
 }
 
+.fee-action-group .fee-mark-paid-btn,
+.fee-action-group .fee-delete-btn,
+.fee-action-group .fee-paid-badge {
+    flex: 0 0 auto !important;
+    display: inline-flex !important;
+    vertical-align: middle !important;
+}
+.fee-table td:last-child {
+    white-space: nowrap !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+.fee-table td:last-child .fee-action-group {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
 
 /* MARK PAID */
 
