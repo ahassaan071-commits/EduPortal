@@ -16,6 +16,11 @@ const supabaseClient =
 
 console.log("EduPortal Supabase connected ✅");
 function eduPortalShowOnly(activeId) {
+
+     document.documentElement.classList.remove(
+        "edu-session-restoring"
+    );
+    
     const allDashboards = ["studentDashboard", "adminDashboard", "teacherDashboard"];
     const loginContainer = document.querySelector(".container");
     if (loginContainer) {
