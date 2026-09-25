@@ -12542,40 +12542,18 @@ async function renderAdminTeachers() {
         return;
     }
 
-
-    // ==========================================
-    // LOADING
-    // ==========================================
-
     teachersList.innerHTML = `
         <div class="admin-empty-state">
             <h3>⏳ Loading Teachers...</h3>
         </div>
     `;
 
-
-    // ==========================================
-    // SUPABASE CHECK
-    // ==========================================
-
     if (
         typeof supabaseClient ===
         "undefined"
     ) {
-
-        teachersList.innerHTML = `
-            <div class="admin-empty-state">
-                <h3>⚠️ Database Connection Missing</h3>
-            </div>
-        `;
-
         return;
     }
-
-
-    // ==========================================
-    // LOAD TEACHERS FROM SUPABASE
-    // ==========================================
 
     const {
         data: teachers,
@@ -12591,11 +12569,6 @@ async function renderAdminTeachers() {
                 }
             );
 
-
-    // ==========================================
-    // ERROR
-    // ==========================================
-
     if (error) {
 
         console.error(
@@ -12606,20 +12579,12 @@ async function renderAdminTeachers() {
         teachersList.innerHTML = `
             <div class="admin-empty-state">
                 <h3>❌ Unable to Load Teachers</h3>
-
-                <p>
-                    ${error.message}
-                </p>
+                <p>${error.message}</p>
             </div>
         `;
 
         return;
     }
-
-
-    // ==========================================
-    // NO TEACHERS
-    // ==========================================
 
     if (
         !Array.isArray(teachers) ||
@@ -12628,198 +12593,91 @@ async function renderAdminTeachers() {
 
         teachersList.innerHTML = `
             <div class="admin-empty-state">
-
-                <h3>
-                    👨‍🏫 No Teachers Yet
-                </h3>
-
-                <p>
-                    Click
-                    <strong>Add Teacher</strong>
-                    to add a new teacher.
-                </p>
-
+                <h3>👨‍🏫 No Teachers Yet</h3>
+                <p>No teacher records found.</p>
             </div>
         `;
 
         return;
     }
 
+    teachersList.innerHTML = "";
 
-    // ==========================================
-    // TEACHERS TABLE
-    // ==========================================
+    teachers.forEach(
+        function (teacher) {
 
-    teachersList.innerHTML = `
+            const teacherCard =
+                document.createElement(
+                    "div"
+                );
 
-        <div class="admin-teachers-table-wrapper">
+            teacherCard.className =
+                "admin-teacher-card";
 
-            <table class="admin-teachers-table">
+            teacherCard.innerHTML = `
 
-                <thead>
+                <div class="admin-teacher-info">
 
-                    <tr>
+                    <div class="admin-teacher-avatar">
+                        👨‍🏫
+                    </div>
 
-                        <th>#</th>
+                    <div>
 
-                        <th>Teacher ID</th>
+                        <h3>
+                            ${teacher.name || "—"}
+                        </h3>
 
-                        <th>Teacher Name</th>
+                        <p>
+                            <strong>Teacher ID:</strong>
+                            ${teacher.teacher_id || "—"}
+                        </p>
 
-                        <th>Subject</th>
+                        <p>
+                            <strong>Subject:</strong>
+                            ${teacher.subject || "—"}
+                        </p>
 
-                        <th>Class</th>
+                        <p>
+                            <strong>Class:</strong>
+                            ${teacher.teacher_class || "—"}
+                        </p>
 
-                        <th>Email</th>
+                        <p>
+                            <strong>Email:</strong>
+                            ${teacher.email || "—"}
+                        </p>
 
-                        <th>Phone</th>
+                        <p>
+                            <strong>Phone:</strong>
+                            ${teacher.phone || "—"}
+                        </p>
 
-                        <th>Qualification</th>
+                        <p>
+                            <strong>Qualification:</strong>
+                            ${teacher.qualification || "—"}
+                        </p>
 
-                        <th>Joining Date</th>
+                        <p>
+                            <strong>Joining Date:</strong>
+                            ${teacher.joining_date || "—"}
+                        </p>
 
-                        <th>Status</th>
+                    </div>
 
-                    </tr>
+                </div>
 
-                </thead>
+                <div class="admin-teacher-status">
+                    ${teacher.status || "Active"}
+                </div>
+            `;
 
+            teachersList.appendChild(
+                teacherCard
+            );
 
-                <tbody>
-
-                    ${
-
-                        teachers.map(
-                            function (
-                                teacher,
-                                index
-                            ) {
-
-                                const status =
-                                    teacher.status ||
-                                    "Active";
-
-                                const statusClass =
-                                    String(
-                                        status
-                                    )
-                                    .toLowerCase()
-                                    === "active"
-                                        ? "active"
-                                        : "inactive";
-
-
-                                return `
-
-                                    <tr>
-
-                                        <td>
-                                            ${index + 1}
-                                        </td>
-
-
-                                        <td>
-
-                                            <strong>
-                                                ${
-                                                    teacher.teacher_id ||
-                                                    "—"
-                                                }
-                                            </strong>
-
-                                        </td>
-
-
-                                        <td>
-
-                                            <strong>
-                                                ${
-                                                    teacher.name ||
-                                                    "—"
-                                                }
-                                            </strong>
-
-                                        </td>
-
-
-                                        <td>
-                                            ${
-                                                teacher.subject ||
-                                                "—"
-                                            }
-                                        </td>
-
-
-                                        <td>
-                                            ${
-                                                teacher.teacher_class ||
-                                                "—"
-                                            }
-                                        </td>
-
-
-                                        <td>
-                                            ${
-                                                teacher.email ||
-                                                "—"
-                                            }
-                                        </td>
-
-
-                                        <td>
-                                            ${
-                                                teacher.phone ||
-                                                "—"
-                                            }
-                                        </td>
-
-
-                                        <td>
-                                            ${
-                                                teacher.qualification ||
-                                                "—"
-                                            }
-                                        </td>
-
-
-                                        <td>
-                                            ${
-                                                teacher.joining_date ||
-                                                "—"
-                                            }
-                                        </td>
-
-
-                                        <td>
-
-                                            <span
-                                                class="
-                                                    admin-teacher-table-status
-                                                    ${statusClass}
-                                                "
-                                            >
-                                                ${status}
-                                            </span>
-
-                                        </td>
-
-                                    </tr>
-
-                                `;
-
-                            }
-                        )
-                        .join("")
-
-                    }
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    `;
+        }
+    );
 }
 // ==========================================
 // TEACHERS INITIAL LOAD + REALTIME
