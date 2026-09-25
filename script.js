@@ -46758,33 +46758,15 @@ async function loadAcademicAssignmentOptions() {
     console.log("Academic Assignment dropdowns loaded.");
 }
 // =========================================================
-// LOAD ASSIGNMENT OPTIONS WHEN ASSIGNMENT TAB OPENS
+// LOAD ACADEMIC ASSIGNMENT DATA
 // =========================================================
 
-document.addEventListener("click", function (event) {
+async function loadAcademicSetupAssignmentData() {
 
-    const tabButton = event.target.closest(
-        "#adminAcademicSetupSection .academic-setup-tab"
-    );
+    await loadAcademicAssignmentOptions();
+    await loadAcademicAssignments();
 
-    if (!tabButton) return;
-
-    setTimeout(function () {
-
-        const assignmentTab =
-            document.getElementById("academicAssignmentTab");
-
-        if (
-            assignmentTab &&
-            assignmentTab.style.display !== "none"
-        ) {
-            loadAcademicAssignmentOptions();
-            loadAcademicAssignments();
-        }
-
-    }, 100);
-
-});
+}
 // =========================================================
 // SAVE TEACHER + CLASS + SUBJECT ASSIGNMENT
 // =========================================================
