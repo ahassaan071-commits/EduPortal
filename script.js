@@ -46699,37 +46699,31 @@ if (donut) {
                 totalAttendance
             ) * 360;
 
-        const leaveDegree =
-            (
-                leaveCount /
-                totalAttendance
-            ) * 360;
+const absentStart =
+    presentDegree;
 
-        const absentStart =
-            presentDegree;
-
-        const leaveStart =
-            presentDegree +
-            absentDegree;
+const absentEnd =
+    presentDegree +
+    absentDegree;
 
         donut.style.background =
-            "conic-gradient(" +
+    "conic-gradient(" +
 
-            "#16a34a 0deg " +
-            presentDegree +
-            "deg, " +
+    "#16a34a 0deg " +
+    presentDegree +
+    "deg, " +
 
-            "#ef4444 " +
-            presentDegree +
-            "deg " +
-            leaveStart +
-            "deg, " +
+    "#ef4444 " +
+    presentDegree +
+    "deg " +
+    absentEnd +
+    "deg, " +
 
-            "#f59e0b " +
-            leaveStart +
-            "deg 360deg" +
+    "#e2e8f0 " +
+    absentEnd +
+    "deg 360deg" +
 
-            ")";
+    ")";
 
     }
     else {
