@@ -46189,3 +46189,545 @@ html.edu-session-restoring.edu-role-student #studentDashboard {
     background: #fee2e2;
     color: #dc2626;
 }
+/* =========================================================
+   EDUPORTAL ADMIN
+   ACADEMIC SETUP MODULE
+   Classes + Subjects + Teacher Assignment
+========================================================= */
+
+#adminDashboard #adminAcademicSetupSection {
+
+    width: 100% !important;
+
+    max-width: 1200px !important;
+
+    margin: 0 auto !important;
+
+    box-sizing: border-box;
+
+}
+
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+#adminDashboard #adminAcademicSetupSection
+.admin-section-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 24px;
+
+}
+
+
+#adminDashboard #adminAcademicSetupSection
+.admin-section-header h2 {
+
+    margin: 0;
+
+    font-size: 25px;
+
+    font-weight: 700;
+
+    color: #1e293b;
+
+}
+
+
+#adminDashboard #adminAcademicSetupSection
+.admin-section-header p {
+
+    margin: 6px 0 0;
+
+    color: #64748b;
+
+    font-size: 13px;
+
+}
+
+
+/* =========================================================
+   TABS
+========================================================= */
+
+#adminDashboard
+.academic-setup-tabs {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 22px;
+
+    padding: 6px;
+
+    background: #f8fafc;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 14px;
+
+    width: fit-content;
+
+}
+
+
+#adminDashboard
+.academic-setup-tab {
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    color: #64748b;
+
+    padding: 11px 18px;
+
+    border-radius: 10px;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all .2s ease;
+
+}
+
+
+#adminDashboard
+.academic-setup-tab:hover {
+
+    background: #e2e8f0;
+
+    color: #1e293b;
+
+}
+
+
+#adminDashboard
+.academic-setup-tab.active {
+
+    background: #2563eb;
+
+    color: #ffffff;
+
+    box-shadow: 0 4px 12px rgba(37, 99, 235, .20);
+
+}
+
+
+/* =========================================================
+   TAB CONTENT
+========================================================= */
+
+#adminDashboard
+.academic-setup-tab-content {
+
+    width: 100%;
+
+}
+
+
+/* =========================================================
+   MAIN CARDS
+========================================================= */
+
+#adminDashboard
+.academic-setup-card {
+
+    width: 100%;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 16px;
+
+    padding: 22px;
+
+    box-sizing: border-box;
+
+    box-shadow: 0 4px 18px rgba(15, 23, 42, .05);
+
+    margin-bottom: 22px;
+
+}
+
+
+#adminDashboard
+.academic-setup-card-header {
+
+    margin-bottom: 20px;
+
+}
+
+
+#adminDashboard
+.academic-setup-card-header h3 {
+
+    margin: 0;
+
+    color: #1e293b;
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+}
+
+
+#adminDashboard
+.academic-setup-card-header p {
+
+    margin: 5px 0 0;
+
+    color: #64748b;
+
+    font-size: 13px;
+
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+#adminDashboard
+.academic-form-row {
+
+    display: grid;
+
+    grid-template-columns: minmax(0, 1fr) auto;
+
+    gap: 14px;
+
+    align-items: end;
+
+}
+
+
+#adminDashboard
+.academic-setup-card
+.input-group {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+
+}
+
+
+#adminDashboard
+.academic-setup-card
+.input-group label {
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    color: #475569;
+
+}
+
+
+#adminDashboard
+.academic-setup-card
+.input-group input,
+
+#adminDashboard
+.academic-setup-card
+.input-group select {
+
+    width: 100%;
+
+    min-height: 44px;
+
+    padding: 0 13px;
+
+    border: 1px solid #dbe2ea;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #1e293b;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    outline: none;
+
+    box-sizing: border-box;
+
+    transition: border-color .2s ease,
+                box-shadow .2s ease;
+
+}
+
+
+#adminDashboard
+.academic-setup-card
+.input-group input:focus,
+
+#adminDashboard
+.academic-setup-card
+.input-group select:focus {
+
+    border-color: #2563eb;
+
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .10);
+
+}
+
+
+/* =========================================================
+   PRIMARY BUTTON
+========================================================= */
+
+#adminDashboard
+.academic-primary-btn {
+
+    min-height: 44px;
+
+    padding: 0 18px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #2563eb;
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+
+    transition: all .2s ease;
+
+}
+
+
+#adminDashboard
+.academic-primary-btn:hover {
+
+    background: #1d4ed8;
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 5px 14px rgba(37, 99, 235, .20);
+
+}
+
+
+#adminDashboard
+.academic-primary-btn:active {
+
+    transform: translateY(0);
+
+}
+
+
+/* =========================================================
+   ASSIGNMENT FORM
+========================================================= */
+
+#adminDashboard
+.academic-assignment-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 15px;
+
+}
+
+
+#adminDashboard
+.academic-assignment-action {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    margin-top: 18px;
+
+}
+
+
+/* =========================================================
+   LIST CONTAINER
+========================================================= */
+
+#adminDashboard
+.academic-setup-list {
+
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+#adminDashboard
+.academic-empty-state {
+
+    width: 100%;
+
+    padding: 35px 20px;
+
+    text-align: center;
+
+    background: #f8fafc;
+
+    border: 1px dashed #cbd5e1;
+
+    border-radius: 14px;
+
+    box-sizing: border-box;
+
+}
+
+
+#adminDashboard
+.academic-empty-state h3 {
+
+    margin: 0 0 6px;
+
+    color: #475569;
+
+    font-size: 15px;
+
+}
+
+
+#adminDashboard
+.academic-empty-state p {
+
+    margin: 0;
+
+    color: #94a3b8;
+
+    font-size: 12px;
+
+}
+
+
+/* =========================================================
+   ASSIGNMENT VIEW CARDS
+========================================================= */
+
+#adminDashboard
+.academic-assignment-view {
+
+    margin-top: 22px;
+
+}
+
+
+#adminDashboard
+.academic-assignment-view
+.academic-setup-card-header {
+
+    margin-bottom: 15px;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 850px) {
+
+    #adminDashboard
+    .academic-assignment-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    #adminDashboard
+    .academic-setup-tabs {
+
+        width: 100%;
+
+        overflow-x: auto;
+
+    }
+
+
+    #adminDashboard
+    .academic-setup-tab {
+
+        flex: 1;
+
+        white-space: nowrap;
+
+    }
+
+
+    #adminDashboard
+    .academic-form-row {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    #adminDashboard
+    .academic-primary-btn {
+
+        width: 100%;
+
+    }
+
+
+    #adminDashboard
+    .academic-assignment-action {
+
+        justify-content: stretch;
+
+    }
+
+}

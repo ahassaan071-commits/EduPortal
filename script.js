@@ -42320,26 +42320,128 @@ const results =
 }
 
 // =========================================================
+// ACADEMIC SETUP TABS
+// Classes + Subjects + Teacher Assignment
+// =========================================================
+
+window.showAcademicSetupTab = function (tabName) {
+
+    const tabs = {
+
+        classes: "academicClassesTab",
+
+        subjects: "academicSubjectsTab",
+
+        assignment: "academicAssignmentTab"
+
+    };
+
+
+    // Hide all tabs
+
+    Object.values(tabs).forEach(
+        function (tabId) {
+
+            const tab =
+                document.getElementById(tabId);
+
+            if (tab) {
+
+                tab.style.display = "none";
+
+            }
+
+        }
+    );
+
+
+    // Show selected tab
+
+    const selectedTab =
+        document.getElementById(
+            tabs[tabName]
+        );
+
+
+    if (selectedTab) {
+
+        selectedTab.style.display =
+            "block";
+
+    }
+
+
+    // Remove active class
+
+    document
+        .querySelectorAll(
+            "#adminAcademicSetupSection .academic-setup-tab"
+        )
+        .forEach(
+            function (button) {
+
+                button.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+    // Activate selected button
+
+    const buttons =
+        document.querySelectorAll(
+            "#adminAcademicSetupSection .academic-setup-tab"
+        );
+
+
+    const buttonIndex = {
+
+        classes: 0,
+
+        subjects: 1,
+
+        assignment: 2
+
+    };
+
+
+    if (
+        buttons[buttonIndex[tabName]]
+    ) {
+
+        buttons[
+            buttonIndex[tabName]
+        ].classList.add(
+            "active"
+        );
+
+    }
+
+};
+
+// =========================================================
 // EDU PORTAL - FINAL ADMIN MODULE NAVIGATION
 // =========================================================
 
 window.showAdminModuleDirect = function (module) {
 
-    const moduleMap = {
+ const moduleMap = {
 
-        dashboard: "adminHomeSection",
-        students: "adminStudentsSection",
-        teachers: "adminTeachersSection",
-        academicSetup: "adminAcademicSetupSection",
-        attendance: "adminAttendanceSection",
-        results: "adminResultsSection",
-        fees: "adminFeesSection",
-        assignments: "adminAssignmentsSection",
-        notices: "adminNoticesSection",
-        users: "adminUsersStudentsSection",
-        settings: "adminSettingsSection"
+    dashboard: "adminHomeSection",
+    students: "adminStudentsSection",
+    teachers: "adminTeachersSection",
+    academicSetup: "adminAcademicSetupSection",
+    attendance: "adminAttendanceSection",
+    results: "adminResultsSection",
+    fees: "adminFeesSection",
+    assignments: "adminAssignmentsSection",
+    notices: "adminNoticesSection",
+    users: "adminUsersStudentsSection",
+    settings: "adminSettingsSection"
 
-    };
+};
 
     const targetId =
         moduleMap[module];
