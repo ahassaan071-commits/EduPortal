@@ -42346,6 +42346,16 @@ window.showAdminModuleDirect = function (module) {
     const targetId =
         moduleMap[module];
 
+        if (module === "academicSetup") {
+
+    setTimeout(function () {
+
+        loadAcademicSetupAssignmentData();
+
+    }, 100);
+
+}
+
     if (!targetId) {
         console.error(
             "Unknown Admin Module:",
