@@ -14406,12 +14406,16 @@ async function autoMarkAbsentAfterNoon() {
 
 async function renderAttendanceTable() {
 
+    // Make sure attendance uses
+    // the correct current date.
+    syncAttendanceDateWithToday();
+
     const tableBody =
         document.getElementById(
             "attendanceTableBody"
         );
 
-        await autoMarkAbsentAfterNoon();
+    await autoMarkAbsentAfterNoon();
 
     if (!tableBody) {
         return;
