@@ -46972,11 +46972,7 @@ if (!classList) return;
             </div>
         `;
 
-        teacherList.innerHTML = `
-            <div class="academic-empty-state">
-                No teacher assignments found.
-            </div>
-        `;
+      
 
         return;
     }
@@ -47084,109 +47080,6 @@ if (!classList) return;
     classList.innerHTML = classHTML;
 
 
-    // =====================================================
-    // GROUP BY TEACHER
-    // =====================================================
-
-    const teacherGroups = {};
-
-    assignments.forEach(function (assignment) {
-
-        if (!teacherGroups[assignment.teacher_id]) {
-            teacherGroups[assignment.teacher_id] = [];
-        }
-
-        teacherGroups[assignment.teacher_id].push(assignment);
-
-    });
-
-
-    let teacherHTML = "";
-
-    Object.keys(teacherGroups).forEach(function (teacherId) {
-
-        const teacher =
-            teacherMap[teacherId];
-
-        const teacherName =
-            teacher
-                ? teacher.name
-                : "Unknown Teacher";
-
-        const teacherCode =
-            teacher && teacher.teacher_id
-                ? ` (${teacher.teacher_id})`
-                : "";
-
-
-        teacherHTML += `
-            <div class="academic-setup-card">
-
-                <div class="academic-setup-card-header">
-                    <strong>
-                        👨‍🏫 ${teacherName}${teacherCode}
-                    </strong>
-                </div>
-
-                <div style="margin-top:15px;">
-        `;
-
-
-        teacherGroups[teacherId].forEach(function (assignment) {
-
-            const className =
-                classMap[assignment.class_id] || "Unknown Class";
-
-            const subjectName =
-                subjectMap[assignment.subject_id] || "Unknown Subject";
-
-
-            teacherHTML += `
-                <div style="
-                    display:flex;
-                    justify-content:space-between;
-                    align-items:center;
-                    padding:12px 0;
-                    border-bottom:1px solid #eee;
-                ">
-
-                    <div>
-                        🏫 ${className}
-                        <span style="margin-left:10px;">
-                            → 📖 ${subjectName}
-                        </span>
-                    </div>
-
-                    <button
-                        type="button"
-                        onclick="deleteAcademicAssignment(${assignment.id})"
-                        style="
-                            border:none;
-                            background:#fee2e2;
-                            color:#b91c1c;
-                            padding:7px 10px;
-                            border-radius:7px;
-                            cursor:pointer;
-                        "
-                    >
-                        🗑️
-                    </button>
-
-                </div>
-            `;
-
-        });
-
-
-        teacherHTML += `
-                </div>
-            </div>
-        `;
-
-    });
-
-
-    teacherList.innerHTML = teacherHTML;
 }
 // =========================================================
 // DELETE TEACHER ASSIGNMENT
