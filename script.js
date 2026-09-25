@@ -14014,7 +14014,18 @@ renderAttendanceTable();
 }
 
 
+// ==========================================
+// DEFAULT DATE = TODAY
+// ==========================================
 
+if (dateFilter) {
+
+    dateFilter.value =
+        getTodayDate();
+
+    eduPortalAttendanceLastAutoDate =
+        getTodayDate();
+}
 
 
 // ==========================================
@@ -14039,6 +14050,66 @@ updateAttendanceStatistics();
 renderAttendanceTable();
 
 updateAttendanceStatistics();
+
+
+// ==========================================
+// AUTOMATIC NEW DAY CHECK
+// ==========================================
+
+setInterval(
+    function () {
+
+        if (
+            document.visibilityState !==
+            "visible"
+        ) {
+            return;
+        }
+
+        const dateChanged =
+            syncAttendanceDateWithToday();
+
+        if (dateChanged) {
+
+            renderAttendanceTable();
+
+            updateAttendanceStatistics();
+
+        }
+
+    },
+    30000
+);
+
+
+// ==========================================
+// CHECK WHEN USER RETURNS TO TAB
+// ==========================================
+
+document.addEventListener(
+    "visibilitychange",
+    function () {
+
+        if (
+            document.visibilityState !==
+            "visible"
+        ) {
+            return;
+        }
+
+        const dateChanged =
+            syncAttendanceDateWithToday();
+
+        if (dateChanged) {
+
+            renderAttendanceTable();
+
+            updateAttendanceStatistics();
+
+        }
+
+    }
+);
 
 }
 
