@@ -12717,35 +12717,7 @@ async function renderAdminTeachers() {
                 </div>
 
 
-                <div class="admin-teacher-actions">
-
-                
-
-
-                    <button
-                        type="button"
-                        class="user-edit-btn"
-                        data-action="edit"
-                        data-user-type="teacher"
-                        data-user-id="${teacher.id}"
-                        title="Edit Teacher"
-                    >
-                        ✏️ Edit
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="user-delete-btn"
-                        data-action="delete"
-                        data-user-type="teacher"
-                        data-user-id="${teacher.id}"
-                        title="Delete Teacher"
-                    >
-                        🗑️ Delete
-                    </button>
-
-                </div>
+               
             `;
 
 
