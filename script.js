@@ -404,7 +404,15 @@ if (selectedRole === "administrator") {
             " 👋";
     }
 
+    if (
+        typeof syncFinalAdminDashboard ===
+        "function"
+    ) {
+        syncFinalAdminDashboard();
+    }
+
    
+
     return;
 }
  // ==========================================
