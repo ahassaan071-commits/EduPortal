@@ -17614,6 +17614,23 @@ async function renderFeeRecords() {
             `
     }
 
+<button
+    type="button"
+    class="result-action-btn"
+    style="
+        background:#eef2ff;
+        color:#4338ca;
+        margin-right:6px;
+    "
+    onclick="
+        editFeePayment(
+            '${record.id}'
+        )
+    "
+>
+    ✏️
+</button>
+
     <button
         type="button"
         class="result-action-btn"
@@ -18000,6 +18017,255 @@ async function deleteFeeRecord(
     );
 
 }
+
+// ==========================================
+// EDIT / ADD REMAINING FEE PAYMENT
+// ==========================================
+
+async function editFeePayment(recordId) {
+
+    if (!recordId) {
+        alert("Fee record ID is missing.");
+        return;
+    }
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+        alert(
+            "Supabase connection is missing."
+        );
+        return;
+    }
+
+
+    // ==========================================
+    // LOAD CURRENT FEE RECORD
+    // ==========================================
+
+    const {
+        data: feeRecord,
+        error: loadError
+    } =
+        await supabaseClient
+            .from("fee_records")
+            .select("*")
+            .eq(
+                "id",
+                String(recordId)
+            )
+            .maybeSingle();
+
+
+    if (
+        loadError ||
+        !feeRecord
+    ) {
+
+        console.error(
+            "FEE LOAD ERROR:",
+            loadError
+        );
+
+        alert(
+            "Unable to load fee record."
+        );
+
+        return;
+    }
+
+
+    // ==========================================
+    // CURRENT VALUES
+    // ==========================================
+
+    const totalFee =
+        Number(
+            feeRecord.fee_amount || 0
+        );
+
+    const alreadyPaid =
+        Number(
+            feeRecord.paid_amount || 0
+        );
+
+    const remaining =
+        Math.max(
+            totalFee - alreadyPaid,
+            0
+        );
+
+
+    // ==========================================
+    // ALREADY FULLY PAID
+    // ==========================================
+
+    if (remaining <= 0) {
+
+        alert(
+            "This fee is already fully Paid. ✅"
+        );
+
+        return;
+    }
+
+
+    // ==========================================
+    // ASK ADDITIONAL PAYMENT
+    // ==========================================
+
+    const paymentInput =
+        prompt(
+            "Add Remaining Fee Payment\n\n" +
+
+            "Total Fee: Rs. " +
+            totalFee.toLocaleString() +
+
+            "\nAlready Paid: Rs. " +
+            alreadyPaid.toLocaleString() +
+
+            "\nRemaining: Rs. " +
+            remaining.toLocaleString() +
+
+            "\n\nEnter additional payment amount:"
+        );
+
+
+    if (
+        paymentInput === null
+    ) {
+        return;
+    }
+
+
+    const additionalPayment =
+        Number(paymentInput);
+
+
+    // ==========================================
+    // VALIDATION
+    // ==========================================
+
+    if (
+        !Number.isFinite(
+            additionalPayment
+        ) ||
+        additionalPayment <= 0
+    ) {
+
+        alert(
+            "Please enter a valid payment amount."
+        );
+
+        return;
+    }
+
+
+    if (
+        additionalPayment >
+        remaining
+    ) {
+
+        alert(
+            "Payment cannot be greater than remaining fee.\n\n" +
+
+            "Remaining: Rs. " +
+            remaining.toLocaleString()
+        );
+
+        return;
+    }
+
+
+    // ==========================================
+    // CALCULATE NEW VALUES
+    // ==========================================
+
+    const newPaidAmount =
+        alreadyPaid +
+        additionalPayment;
+
+    const newRemainingAmount =
+        Math.max(
+            totalFee -
+            newPaidAmount,
+            0
+        );
+
+    const newStatus =
+        newRemainingAmount === 0
+            ? "Paid"
+            : "Partial";
+
+
+    // ==========================================
+    // UPDATE SUPABASE
+    // ==========================================
+
+    const {
+        error
+    } =
+        await supabaseClient
+            .from("fee_records")
+            .update({
+
+                paid_amount:
+                    newPaidAmount,
+
+                remaining_amount:
+                    newRemainingAmount,
+
+                status:
+                    newStatus,
+
+                payment_date:
+                    new Date()
+                        .toISOString()
+                        .split("T")[0]
+
+            })
+            .eq(
+                "id",
+                String(recordId)
+            );
+
+
+    if (error) {
+
+        console.error(
+            "FEE PAYMENT UPDATE ERROR:",
+            error
+        );
+
+        alert(
+            "Payment Update Error:\n\n" +
+            error.message
+        );
+
+        return;
+    }
+
+
+    // ==========================================
+    // REFRESH TABLE
+    // ==========================================
+
+    await renderFeeRecords();
+
+
+    alert(
+        "Payment updated successfully! ✅\n\n" +
+
+        "Paid: Rs. " +
+        newPaidAmount.toLocaleString() +
+
+        "\nRemaining: Rs. " +
+        newRemainingAmount.toLocaleString()
+    );
+
+}
+
 // ==========================================
 // RECORD FEE PAYMENT - FULL / PARTIAL
 // ==========================================
