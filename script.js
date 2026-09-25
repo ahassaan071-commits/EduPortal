@@ -32219,7 +32219,7 @@ const {
     error: studentsError
 } = await supabaseClient
     .from("students")
-    .select("*");
+    .select("id, student_class, created_at");
 
 if (studentsError) {
 
