@@ -21318,12 +21318,13 @@ document.addEventListener(
             const totalTeachers =
                 this.teachers.length;
 
-            const teacherElements = [
+           const teacherElements = [
 
-                "adminTotalTeachers",
-                "adminAnalyticsTeachers"
+    "adminTotalTeachers",
+    "adminAnalyticsTeachers",
+    "analyticsTotalTeachers"
 
-            ];
+];
 
             teacherElements.forEach(
                 function (id) {
