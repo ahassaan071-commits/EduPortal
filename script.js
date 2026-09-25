@@ -46854,12 +46854,9 @@ document.addEventListener("click", function (event) {
 async function loadAcademicAssignments() {
 
     const classList =
-        document.getElementById("academicClassAssignmentList");
+    document.getElementById("academicClassAssignmentList");
 
-    const teacherList =
-        document.getElementById("academicTeacherAssignmentList");
-
-    if (!classList || !teacherList) return;
+if (!classList) return;
 
     classList.innerHTML = `
         <div class="academic-empty-state">
@@ -46867,11 +46864,7 @@ async function loadAcademicAssignments() {
         </div>
     `;
 
-    teacherList.innerHTML = `
-        <div class="academic-empty-state">
-            Loading teacher assignments...
-        </div>
-    `;
+  
 
 
     // -----------------------------------------
