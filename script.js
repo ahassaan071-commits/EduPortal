@@ -14555,7 +14555,21 @@ async function renderAttendanceTable() {
             }
         );
 
+// ==========================================
+// GET CURRENT SELECTED ATTENDANCE DATE
+// BEFORE SUPABASE QUERY
+// ==========================================
 
+const attendanceDateFilter =
+    document.getElementById(
+        "attendanceDateFilter"
+    );
+
+const selectedDate =
+    attendanceDateFilter &&
+    attendanceDateFilter.value
+        ? attendanceDateFilter.value
+        : getTodayDate();
    // ==========================================
 // GET ATTENDANCE FROM SUPABASE
 // ==========================================
@@ -14695,12 +14709,7 @@ const records =
             : "all";
 
 
-    const selectedDate =
-        dateFilter &&
-        dateFilter.value
-            ? dateFilter.value
-            : getTodayDate();
-
+   
 
     // ==========================================
     // FILTER STUDENTS
