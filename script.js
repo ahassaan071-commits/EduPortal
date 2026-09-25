@@ -47682,3 +47682,457 @@ document.addEventListener("click", function (event) {
     }, 100);
 
 });
+// =========================================================
+// SAVE TEACHER + CLASS + SUBJECT ASSIGNMENT
+// =========================================================
+
+async function saveAcademicAssignment() {
+
+    const classSelect =
+        document.getElementById("academicAssignmentClass");
+
+    const subjectSelect =
+        document.getElementById("academicAssignmentSubject");
+
+    const teacherSelect =
+        document.getElementById("academicAssignmentTeacher");
+
+    const classId = classSelect.value;
+    const subjectId = subjectSelect.value;
+    const teacherId = teacherSelect.value;
+
+    // Validation
+    if (!classId || !subjectId || !teacherId) {
+        alert("Please select Class, Subject and Teacher.");
+        return;
+    }
+
+    const { error } = await supabaseClient
+        .from("teacher_class_subjects")
+        .insert([
+            {
+                teacher_id: Number(teacherId),
+                class_id: Number(classId),
+                subject_id: Number(subjectId)
+            }
+        ]);
+
+    if (error) {
+
+        console.error("Assignment Error:", error);
+
+        // Duplicate assignment
+        if (error.code === "23505") {
+            alert("This teacher is already assigned to this subject in this class.");
+        } else {
+            alert("Unable to assign teacher.\n\n" + error.message);
+        }
+
+        return;
+    }
+
+    alert("Teacher assigned successfully!");
+
+    // Reset dropdowns
+    classSelect.value = "";
+    subjectSelect.value = "";
+    teacherSelect.value = "";
+
+    // Refresh assignment lists
+    loadAcademicAssignments();
+}
+// =========================================================
+// ASSIGN TEACHER BUTTON
+// =========================================================
+
+document.addEventListener("click", function (event) {
+
+    if (event.target.closest("#saveAcademicAssignmentBtn")) {
+        saveAcademicAssignment();
+    }
+
+});
+// =========================================================
+// LOAD ALL TEACHER ASSIGNMENTS
+// =========================================================
+
+async function loadAcademicAssignments() {
+
+    const classList =
+        document.getElementById("academicClassAssignmentList");
+
+    const teacherList =
+        document.getElementById("academicTeacherAssignmentList");
+
+    if (!classList || !teacherList) return;
+
+    classList.innerHTML = `
+        <div class="academic-empty-state">
+            Loading class assignments...
+        </div>
+    `;
+
+    teacherList.innerHTML = `
+        <div class="academic-empty-state">
+            Loading teacher assignments...
+        </div>
+    `;
+
+
+    // -----------------------------------------
+    // GET ASSIGNMENTS
+    // -----------------------------------------
+
+    const { data: assignments, error } =
+        await supabaseClient
+            .from("teacher_class_subjects")
+            .select("*")
+            .order("id", { ascending: true });
+
+    if (error) {
+
+        console.error("Assignment Load Error:", error);
+
+        classList.innerHTML = `
+            <div class="academic-empty-state">
+                Unable to load assignments.
+            </div>
+        `;
+
+        teacherList.innerHTML = `
+            <div class="academic-empty-state">
+                Unable to load assignments.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    // -----------------------------------------
+    // GET CLASSES
+    // -----------------------------------------
+
+    const { data: classes } =
+        await supabaseClient
+            .from("classes")
+            .select("id, name")
+            .order("id", { ascending: true });
+
+
+    // -----------------------------------------
+    // GET SUBJECTS
+    // -----------------------------------------
+
+    const { data: subjects } =
+        await supabaseClient
+            .from("subjects")
+            .select("id, name, code")
+            .order("id", { ascending: true });
+
+
+    // -----------------------------------------
+    // GET TEACHERS
+    // -----------------------------------------
+
+    const { data: teachers } =
+        await supabaseClient
+            .from("teachers")
+            .select("id, name, teacher_id")
+            .order("id", { ascending: true });
+
+
+    // -----------------------------------------
+    // CREATE LOOKUP MAPS
+    // -----------------------------------------
+
+    const classMap = {};
+
+    (classes || []).forEach(function (item) {
+        classMap[item.id] = item.name;
+    });
+
+
+    const subjectMap = {};
+
+    (subjects || []).forEach(function (item) {
+        subjectMap[item.id] = item.name;
+    });
+
+
+    const teacherMap = {};
+
+    (teachers || []).forEach(function (item) {
+
+        teacherMap[item.id] = {
+            name: item.name,
+            teacher_id: item.teacher_id
+        };
+
+    });
+
+
+    // -----------------------------------------
+    // NO ASSIGNMENTS
+    // -----------------------------------------
+
+    if (!assignments || assignments.length === 0) {
+
+        classList.innerHTML = `
+            <div class="academic-empty-state">
+                No teacher assignments found.
+            </div>
+        `;
+
+        teacherList.innerHTML = `
+            <div class="academic-empty-state">
+                No teacher assignments found.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    // =====================================================
+    // GROUP BY CLASS
+    // =====================================================
+
+    const classGroups = {};
+
+    assignments.forEach(function (assignment) {
+
+        if (!classGroups[assignment.class_id]) {
+            classGroups[assignment.class_id] = [];
+        }
+
+        classGroups[assignment.class_id].push(assignment);
+
+    });
+
+
+    let classHTML = "";
+
+    Object.keys(classGroups).forEach(function (classId) {
+
+        const className =
+            classMap[classId] || "Unknown Class";
+
+        classHTML += `
+            <div class="academic-setup-card">
+                
+                <div class="academic-setup-card-header">
+                    <strong>🏫 ${className}</strong>
+                </div>
+
+                <div style="margin-top:15px;">
+        `;
+
+
+        classGroups[classId].forEach(function (assignment) {
+
+            const subjectName =
+                subjectMap[assignment.subject_id] || "Unknown Subject";
+
+            const teacher =
+                teacherMap[assignment.teacher_id];
+
+            const teacherName =
+                teacher
+                    ? teacher.name
+                    : "Unknown Teacher";
+
+            const teacherCode =
+                teacher && teacher.teacher_id
+                    ? ` (${teacher.teacher_id})`
+                    : "";
+
+
+            classHTML += `
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                    padding:12px 0;
+                    border-bottom:1px solid #eee;
+                ">
+
+                    <div>
+                        <strong>📖 ${subjectName}</strong>
+                        <span style="margin-left:10px;">
+                            → 👨‍🏫 ${teacherName}${teacherCode}
+                        </span>
+                    </div>
+
+                    <button
+                        type="button"
+                        onclick="deleteAcademicAssignment(${assignment.id})"
+                        style="
+                            border:none;
+                            background:#fee2e2;
+                            color:#b91c1c;
+                            padding:7px 10px;
+                            border-radius:7px;
+                            cursor:pointer;
+                        "
+                    >
+                        🗑️
+                    </button>
+
+                </div>
+            `;
+
+        });
+
+
+        classHTML += `
+                </div>
+            </div>
+        `;
+
+    });
+
+
+    classList.innerHTML = classHTML;
+
+
+    // =====================================================
+    // GROUP BY TEACHER
+    // =====================================================
+
+    const teacherGroups = {};
+
+    assignments.forEach(function (assignment) {
+
+        if (!teacherGroups[assignment.teacher_id]) {
+            teacherGroups[assignment.teacher_id] = [];
+        }
+
+        teacherGroups[assignment.teacher_id].push(assignment);
+
+    });
+
+
+    let teacherHTML = "";
+
+    Object.keys(teacherGroups).forEach(function (teacherId) {
+
+        const teacher =
+            teacherMap[teacherId];
+
+        const teacherName =
+            teacher
+                ? teacher.name
+                : "Unknown Teacher";
+
+        const teacherCode =
+            teacher && teacher.teacher_id
+                ? ` (${teacher.teacher_id})`
+                : "";
+
+
+        teacherHTML += `
+            <div class="academic-setup-card">
+
+                <div class="academic-setup-card-header">
+                    <strong>
+                        👨‍🏫 ${teacherName}${teacherCode}
+                    </strong>
+                </div>
+
+                <div style="margin-top:15px;">
+        `;
+
+
+        teacherGroups[teacherId].forEach(function (assignment) {
+
+            const className =
+                classMap[assignment.class_id] || "Unknown Class";
+
+            const subjectName =
+                subjectMap[assignment.subject_id] || "Unknown Subject";
+
+
+            teacherHTML += `
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                    padding:12px 0;
+                    border-bottom:1px solid #eee;
+                ">
+
+                    <div>
+                        🏫 ${className}
+                        <span style="margin-left:10px;">
+                            → 📖 ${subjectName}
+                        </span>
+                    </div>
+
+                    <button
+                        type="button"
+                        onclick="deleteAcademicAssignment(${assignment.id})"
+                        style="
+                            border:none;
+                            background:#fee2e2;
+                            color:#b91c1c;
+                            padding:7px 10px;
+                            border-radius:7px;
+                            cursor:pointer;
+                        "
+                    >
+                        🗑️
+                    </button>
+
+                </div>
+            `;
+
+        });
+
+
+        teacherHTML += `
+                </div>
+            </div>
+        `;
+
+    });
+
+
+    teacherList.innerHTML = teacherHTML;
+}
+// =========================================================
+// DELETE TEACHER ASSIGNMENT
+// =========================================================
+
+async function deleteAcademicAssignment(assignmentId) {
+
+    const confirmDelete =
+        confirm("Are you sure you want to remove this assignment?");
+
+    if (!confirmDelete) return;
+
+
+    const { error } =
+        await supabaseClient
+            .from("teacher_class_subjects")
+            .delete()
+            .eq("id", assignmentId);
+
+
+    if (error) {
+
+        console.error("Delete Assignment Error:", error);
+
+        alert(
+            "Unable to delete assignment.\n\n" +
+            error.message
+        );
+
+        return;
+    }
+
+
+    alert("Assignment removed successfully!");
+
+    loadAcademicAssignments();
+}
