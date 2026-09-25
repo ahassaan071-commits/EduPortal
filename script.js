@@ -36866,11 +36866,11 @@ const latestFeeRecord =
     }) || records[0] || null;
 
 
+
 const dueDateElement =
     document.getElementById(
         "feeDueDate"
     );
-
 
 if (dueDateElement) {
 
@@ -36894,8 +36894,7 @@ if (dueDateElement) {
                 }
             );
 
-    }
-    else {
+    } else {
 
         dueDateElement.textContent =
             "-";
@@ -36903,7 +36902,6 @@ if (dueDateElement) {
     }
 
 }
-
 
 // ==========================================
 // PAYMENT METHOD
