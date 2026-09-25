@@ -2818,19 +2818,28 @@ body.dark-mode .progress-bar{
 
 /* Profile information */
 #profileSection .profile-card > p {
-    display: flex;
+    display: inline-flex;
     align-items: center;
+    vertical-align: top;
+
+    width: 24%;
     min-height: 44px;
+
     margin: 0;
     padding: 10px 14px;
+
     border-bottom: 1px solid #e2e8f0;
+
     color: #475569;
     box-sizing: border-box;
+
+    gap: 8px;
 }
 
 #profileSection .profile-card > p strong {
-    min-width: 130px;
+    min-width: auto;
     color: #1e3a8a;
+    white-space: nowrap;
 }
 
 /* Upload image */
@@ -2887,12 +2896,13 @@ body.dark-mode .progress-bar{
 @media (max-width: 600px) {
 
     #profileSection .profile-card > p {
-        display: block;
+        display: flex;
+        width: 100%;
     }
 
     #profileSection .profile-card > p strong {
-        display: block;
-        margin-bottom: 4px;
+        display: inline;
+        margin-bottom: 0;
     }
 
 }
@@ -33389,7 +33399,7 @@ table tbody tr:hover td {
 }
 
 #studentDashboard #studentIdCardSection .student-details strong {
-    min-width: 68px !important;
+    min-width: auto !important;
 
     color: #172554 !important;
 
