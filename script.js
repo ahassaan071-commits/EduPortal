@@ -17548,12 +17548,21 @@ async function renderFeeRecords() {
                     }
                 </td>
 
-         <td>
+        <td>
     Rs.
     ${
         Number(
             record.remaining_amount
         ).toLocaleString()
+    }
+</td>
+
+<td>
+    ${
+        record.due_date
+            ? new Date(record.due_date)
+                .toLocaleDateString("en-GB")
+            : "—"
     }
 </td>
 
