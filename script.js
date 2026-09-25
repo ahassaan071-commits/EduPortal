@@ -36861,9 +36861,9 @@ if (statusElement) {
 // ==========================================
 
 const latestFeeRecord =
-    records.length > 0
-        ? records[0]
-        : null;
+    records.find(function(record) {
+        return record.due_date;
+    }) || records[0] || null;
 
 
 const dueDateElement =
