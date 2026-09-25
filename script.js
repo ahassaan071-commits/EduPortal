@@ -46603,7 +46603,7 @@ const totalAttendance =
     overviewRecords.length;
 
 const presentCount =
-    records.filter(function(record) {
+   overviewRecords.filter(function(record) {
 
         return String(
             record.status || ""
@@ -46614,7 +46614,7 @@ const presentCount =
     }).length;
 
 const absentCount =
-    records.filter(function(record) {
+    overviewRecords.filter(function(record) {
 
         return String(
             record.status || ""
@@ -46624,16 +46624,7 @@ const absentCount =
 
     }).length;
 
-const leaveCount =
-    records.filter(function(record) {
 
-        return String(
-            record.status || ""
-        )
-        .trim()
-        .toLowerCase() === "leave";
-
-    }).length;
 
 
 // =========================================
