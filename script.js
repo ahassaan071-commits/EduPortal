@@ -44232,7 +44232,7 @@ else {
     );
 
 
- // =========================================
+// =========================================
 // UPDATE ATTENDANCE HEATMAP
 // LIVE SUPABASE DATA
 // =========================================
@@ -44258,150 +44258,158 @@ const heatmapIcons =
     );
 
 
-// =========================================
-// UPDATE EACH PERIOD
-// =========================================
+points.forEach(function(point, index) {
 
-points.forEach(
-    function(point, index) {
-
-        if (!heatmapCells[index]) {
-            return;
-        }
+    if (!heatmapCells[index]) {
+        return;
+    }
 
 
-        // =====================================
-        // TOTAL STUDENTS
-        // =====================================
+    // =====================================
+    // TOTAL STUDENTS IN TEACHER CLASS
+    // =====================================
 
-        const total =
-            totalStudents;
-
-
-        // =====================================
-        // ATTENDANCE %
-        // =====================================
-
-        let attendancePercentage = 0;
-
-        if (total > 0) {
-
-            attendancePercentage =
-                Math.round(
-                    (
-                        point.present /
-                        total
-                    ) * 100
-                );
-
-        }
+    const total =
+        totalStudents;
 
 
-        // =====================================
-        // DAY / WEEK LABEL
-        // =====================================
+    // =====================================
+    // ATTENDANCE PERCENTAGE
+    // =====================================
 
-        if (heatmapLabels[index]) {
+    let percentage = 0;
 
-            heatmapLabels[index]
-                .textContent =
-                    point.label;
+    if (total > 0) {
 
-        }
+        percentage =
+            Math.round(
+                (
+                    point.present /
+                    total
+                ) * 100
+            );
 
-
-        // =====================================
-        // PERCENTAGE
-        // =====================================
-
-        if (heatmapPercentages[index]) {
-
-            heatmapPercentages[index]
-                .textContent =
-                    attendancePercentage +
-                    "%";
-
-        }
+    }
 
 
-        // =====================================
-        // STATUS COLOR
-        // =====================================
+    // =====================================
+    // LABEL
+    // =====================================
+
+    if (heatmapLabels[index]) {
+
+        heatmapLabels[index]
+            .textContent =
+                point.label;
+
+    }
+
+
+    // =====================================
+    // PERCENTAGE
+    // =====================================
+
+    if (heatmapPercentages[index]) {
+
+        heatmapPercentages[index]
+            .textContent =
+                percentage + "%";
+
+    }
+
+
+    // =====================================
+    // REMOVE OLD STATUS
+    // =====================================
+
+    heatmapCells[index]
+        .classList.remove(
+            "heatmap-level-good",
+            "heatmap-level-warning",
+            "heatmap-level-danger"
+        );
+
+
+    // =====================================
+    // STATUS
+    // =====================================
+
+    if (percentage >= 80) {
 
         heatmapCells[index]
-            .classList.remove(
-                "heatmap-level-good",
-                "heatmap-level-warning",
+            .classList.add(
+                "heatmap-level-good"
+            );
+
+        if (heatmapIcons[index]) {
+
+            heatmapIcons[index]
+                .textContent = "✓";
+
+        }
+
+    }
+
+    else if (percentage >= 60) {
+
+        heatmapCells[index]
+            .classList.add(
+                "heatmap-level-warning"
+            );
+
+        if (heatmapIcons[index]) {
+
+            heatmapIcons[index]
+                .textContent = "!";
+
+        }
+
+    }
+
+    else {
+
+        heatmapCells[index]
+            .classList.add(
                 "heatmap-level-danger"
             );
 
+        if (heatmapIcons[index]) {
 
-        if (
-            attendancePercentage >= 80
-        ) {
-
-            heatmapCells[index]
-                .classList.add(
-                    "heatmap-level-good"
-                );
-
-            if (heatmapIcons[index]) {
-
-                heatmapIcons[index]
-                    .textContent = "✓";
-
-            }
+            heatmapIcons[index]
+                .textContent = "×";
 
         }
-
-        else if (
-            attendancePercentage >= 60
-        ) {
-
-            heatmapCells[index]
-                .classList.add(
-                    "heatmap-level-warning"
-                );
-
-            if (heatmapIcons[index]) {
-
-                heatmapIcons[index]
-                    .textContent = "!";
-
-            }
-
-        }
-
-        else {
-
-            heatmapCells[index]
-                .classList.add(
-                    "heatmap-level-danger"
-                );
-
-            if (heatmapIcons[index]) {
-
-                heatmapIcons[index]
-                    .textContent = "×";
-
-            }
-
-        }
-
-
-        // =====================================
-        // TOOLTIP
-        // =====================================
-
-        heatmapCells[index].title =
-            point.present +
-            " Present | " +
-            point.absent +
-            " Absent";
 
     }
-);
 
+
+    // =====================================
+    // TOOLTIP
+    // =====================================
+
+    heatmapCells[index].title =
+        "Present: " +
+        point.present +
+        " | Absent: " +
+        point.absent;
+
+});
+
+
+// =========================================
+// HIDE EXTRA CELLS
+// =========================================
+
+for (
+    let i = points.length;
+    i < heatmapCells.length;
+    i++
+) {
+
+    heatmapCells[i].style.display =
+        "none";
+
+}
 
 // =========================================
 // HIDE UNUSED CELLS
