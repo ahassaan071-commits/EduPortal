@@ -404,23 +404,7 @@ if (selectedRole === "administrator") {
             " 👋";
     }
 
-    if (
-        typeof syncFinalAdminDashboard ===
-        "function"
-    ) {
-        syncFinalAdminDashboard();
-    }
-
-    if (
-        typeof refreshActiveDashboardData ===
-        "function"
-    ) {
-        setTimeout(
-            refreshActiveDashboardData,
-            100
-        );
-    }
-
+   
     return;
 }
  // ==========================================
