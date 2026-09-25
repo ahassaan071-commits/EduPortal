@@ -45937,3 +45937,18 @@ input[type="number"] {
     color:
         #dc2626;
 }
+/* =====================================================
+   EDUPORTAL - PREVENT LOGIN SCREEN BLINK ON REFRESH
+===================================================== */
+
+html.edu-session-restoring .container {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+html.edu-session-restoring #studentDashboard,
+html.edu-session-restoring #adminDashboard,
+html.edu-session-restoring #teacherDashboard {
+    visibility: hidden;
+}

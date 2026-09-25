@@ -6,6 +6,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EduPortal - Student Portal</title>
 
+
+<script>
+    (function () {
+        const isLoggedIn =
+            localStorage.getItem("isLoggedIn");
+
+        const role =
+            localStorage.getItem("loggedInRole");
+
+        if (
+            isLoggedIn === "true" &&
+            role
+        ) {
+            document.documentElement.classList.add(
+                "edu-session-restoring"
+            );
+        }
+    })();
+</script>
+
 <link rel="stylesheet" href="style.css">
 
 </head>
