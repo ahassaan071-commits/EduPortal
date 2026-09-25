@@ -12574,7 +12574,7 @@ async function renderAdminTeachers() {
 
 
     // ==========================================
-    // LOAD FROM SUPABASE
+    // LOAD TEACHERS FROM SUPABASE
     // ==========================================
 
     const {
@@ -12606,6 +12606,7 @@ async function renderAdminTeachers() {
         teachersList.innerHTML = `
             <div class="admin-empty-state">
                 <h3>❌ Unable to Load Teachers</h3>
+
                 <p>
                     ${error.message}
                 </p>
@@ -12627,11 +12628,17 @@ async function renderAdminTeachers() {
 
         teachersList.innerHTML = `
             <div class="admin-empty-state">
-                <h3>👨‍🏫 No Teachers Yet</h3>
+
+                <h3>
+                    👨‍🏫 No Teachers Yet
+                </h3>
+
                 <p>
-                    Click <strong>Add Teacher</strong>
+                    Click
+                    <strong>Add Teacher</strong>
                     to add a new teacher.
                 </p>
+
             </div>
         `;
 
@@ -12640,92 +12647,179 @@ async function renderAdminTeachers() {
 
 
     // ==========================================
-    // DISPLAY
+    // TEACHERS TABLE
     // ==========================================
 
-    teachersList.innerHTML = "";
+    teachersList.innerHTML = `
+
+        <div class="admin-teachers-table-wrapper">
+
+            <table class="admin-teachers-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+
+                        <th>Teacher ID</th>
+
+                        <th>Teacher Name</th>
+
+                        <th>Subject</th>
+
+                        <th>Class</th>
+
+                        <th>Email</th>
+
+                        <th>Phone</th>
+
+                        <th>Qualification</th>
+
+                        <th>Joining Date</th>
+
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
 
 
-    teachers.forEach(
-        function (teacher) {
+                <tbody>
 
-            const teacherCard =
-                document.createElement(
-                    "div"
-                );
+                    ${
 
-            teacherCard.className =
-                "admin-teacher-card";
+                        teachers.map(
+                            function (
+                                teacher,
+                                index
+                            ) {
 
+                                const status =
+                                    teacher.status ||
+                                    "Active";
 
-            teacherCard.innerHTML = `
-
-                <div class="admin-teacher-info">
-
-                    <div class="admin-teacher-avatar">
-                        👨‍🏫
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            ${teacher.name || "—"}
-                        </h3>
-
-                        <p>
-                            <strong>Teacher ID:</strong>
-                            ${teacher.teacher_id || "—"}
-                        </p>
-
-                        <p>
-                            <strong>Subject:</strong>
-                            ${teacher.subject || "—"}
-                        </p>
-
-                        <p>
-                            <strong>Class:</strong>
-                            ${teacher.teacher_class || "—"}
-                        </p>
-
-                        <p>
-                            <strong>Email:</strong>
-                            ${teacher.email || "—"}
-                        </p>
-
-                        <p>
-                            <strong>Phone:</strong>
-                            ${teacher.phone || "—"}
-                        </p>
-
-                        <p>
-                            <strong>Qualification:</strong>
-                            ${teacher.qualification || "—"}
-                        </p>
-
-                        <p>
-                            <strong>Joining Date:</strong>
-                            ${teacher.joining_date || "—"}
-                        </p>
-
-                    </div>
-
-                </div>
+                                const statusClass =
+                                    String(
+                                        status
+                                    )
+                                    .toLowerCase()
+                                    === "active"
+                                        ? "active"
+                                        : "inactive";
 
 
-                <div class="admin-teacher-status">
-                    ${teacher.status || "Active"}
-                </div>
+                                return `
+
+                                    <tr>
+
+                                        <td>
+                                            ${index + 1}
+                                        </td>
 
 
-               
-            `;
+                                        <td>
+
+                                            <strong>
+                                                ${
+                                                    teacher.teacher_id ||
+                                                    "—"
+                                                }
+                                            </strong>
+
+                                        </td>
 
 
-            teachersList.appendChild(
-                teacherCard
-            );
-        }
-    );
+                                        <td>
+
+                                            <strong>
+                                                ${
+                                                    teacher.name ||
+                                                    "—"
+                                                }
+                                            </strong>
+
+                                        </td>
+
+
+                                        <td>
+                                            ${
+                                                teacher.subject ||
+                                                "—"
+                                            }
+                                        </td>
+
+
+                                        <td>
+                                            ${
+                                                teacher.teacher_class ||
+                                                "—"
+                                            }
+                                        </td>
+
+
+                                        <td>
+                                            ${
+                                                teacher.email ||
+                                                "—"
+                                            }
+                                        </td>
+
+
+                                        <td>
+                                            ${
+                                                teacher.phone ||
+                                                "—"
+                                            }
+                                        </td>
+
+
+                                        <td>
+                                            ${
+                                                teacher.qualification ||
+                                                "—"
+                                            }
+                                        </td>
+
+
+                                        <td>
+                                            ${
+                                                teacher.joining_date ||
+                                                "—"
+                                            }
+                                        </td>
+
+
+                                        <td>
+
+                                            <span
+                                                class="
+                                                    admin-teacher-table-status
+                                                    ${statusClass}
+                                                "
+                                            >
+                                                ${status}
+                                            </span>
+
+                                        </td>
+
+                                    </tr>
+
+                                `;
+
+                            }
+                        )
+                        .join("")
+
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    `;
 }
 // ==========================================
 // TEACHERS INITIAL LOAD + REALTIME
