@@ -46499,8 +46499,71 @@ async function loadRealStudentAttendance() {
             return;
         }
 
-        const records =
-            attendanceRows || [];
+       const records =
+    attendanceRows || [];
+
+
+// =========================================
+// CURRENT MONTH
+// =========================================
+
+const now =
+    new Date();
+
+const currentYear =
+    now.getFullYear();
+
+const currentMonth =
+    String(
+        now.getMonth() + 1
+    ).padStart(2, "0");
+
+const currentMonthKey =
+    currentYear +
+    "-" +
+    currentMonth;
+
+
+// =========================================
+// UPDATE MONTH LABEL
+// =========================================
+
+const monthLabel =
+    document.getElementById(
+        "studentAttendanceMonthLabel"
+    );
+
+if (monthLabel) {
+
+    monthLabel.textContent =
+        now.toLocaleDateString(
+            "en-US",
+            {
+                month: "long",
+                year: "numeric"
+            }
+        );
+
+}
+
+
+// =========================================
+// ONLY CURRENT MONTH FOR OVERVIEW
+// =========================================
+
+const overviewRecords =
+    records.filter(
+        function(record) {
+
+            return String(
+                record.attendance_date || ""
+            ).substring(
+                0,
+                7
+            ) === currentMonthKey;
+
+        }
+    );
 
             // =========================================================
 // UPDATE ATTENDANCE OVERVIEW DONUT
@@ -46537,7 +46600,7 @@ const donutPercentage =
 // =========================================
 
 const totalAttendance =
-    records.length;
+    overviewRecords.length;
 
 const presentCount =
     records.filter(function(record) {
