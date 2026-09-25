@@ -610,176 +610,187 @@ Login
             <div class="teacher-analytics-grid">
 
 
-                <!-- ATTENDANCE OVERVIEW -->
+              <!-- ATTENDANCE OVERVIEW -->
 
-                <div class="teacher-analytics-card">
+<div class="teacher-analytics-card">
 
-                    <div class="teacher-card-heading">
+    <div class="teacher-card-heading">
 
-                        <div>
+        <div>
 
-                            <h3>
-                                <i class="fas fa-chart-bar"></i>
-                                Attendance Overview
-                            </h3>
+            <h3>
+                <i class="fas fa-calendar-check"></i>
+                Attendance Overview
+            </h3>
 
-                         
+            <p class="teacher-heatmap-subtitle">
+                Weekly attendance performance
+            </p>
 
-                        </div>
-
-
- <select
-    id="teacherAttendancePeriod"
->
-    <option value="today">
-        Today
-    </option>
-
-    <option value="yesterday">
-        Yesterday
-    </option>
-
-    <option value="last7">
-        Last 7 Days
-    </option>
-
-    <option value="month">
-        Last Month
-    </option>
-</select>
-
-                    </div>
+        </div>
 
 
-                    <div class="teacher-chart-legend">
+        <select
+            id="teacherAttendancePeriod"
+        >
 
-                        <span>
-                            <i class="teacher-legend-present"></i>
-                            Present
-                        </span>
+            <option value="today">
+                Today
+            </option>
 
-                        <span>
-                            <i class="teacher-legend-absent"></i>
-                            Absent
-                        </span>
+            <option value="yesterday">
+                Yesterday
+            </option>
 
-                    </div>
+            <option value="last7">
+                Last 7 Days
+            </option>
 
+            <option value="month">
+                Last Month
+            </option>
 
-                    <div
-                        class="teacher-attendance-chart"
-                        id="teacherAttendanceChart"
-                    >
+        </select>
 
-                        <div class="teacher-chart-column">
-
-                            <div class="teacher-bars">
-
-                                <span
-                                    class="teacher-present-bar"
-                                    style="height:82%;"
-                                ></span>
-
-                                <span
-                                    class="teacher-absent-bar"
-                                    style="height:25%;"
-                                ></span>
-
-                            </div>
-
-                            <small>Mon</small>
-
-                        </div>
+    </div>
 
 
-                        <div class="teacher-chart-column">
+    <!-- HEATMAP LEGEND -->
 
-                            <div class="teacher-bars">
+    <div class="teacher-heatmap-legend">
 
-                                <span
-                                    class="teacher-present-bar"
-                                    style="height:88%;"
-                                ></span>
+        <span>
+            <i class="heatmap-good"></i>
+            Good
+        </span>
 
-                                <span
-                                    class="teacher-absent-bar"
-                                    style="height:27%;"
-                                ></span>
+        <span>
+            <i class="heatmap-warning"></i>
+            Needs Attention
+        </span>
 
-                            </div>
+        <span>
+            <i class="heatmap-danger"></i>
+            Low Attendance
+        </span>
 
-                            <small>Tue</small>
-
-                        </div>
-
-
-                        <div class="teacher-chart-column">
-
-                            <div class="teacher-bars">
-
-                                <span
-                                    class="teacher-present-bar"
-                                    style="height:78%;"
-                                ></span>
-
-                                <span
-                                    class="teacher-absent-bar"
-                                    style="height:26%;"
-                                ></span>
-
-                            </div>
-
-                            <small>Wed</small>
-
-                        </div>
+    </div>
 
 
-                        <div class="teacher-chart-column">
+    <!-- ATTENDANCE HEATMAP -->
 
-                            <div class="teacher-bars">
+    <div
+        class="teacher-attendance-heatmap"
+        id="teacherAttendanceChart"
+    >
 
-                                <span
-                                    class="teacher-present-bar"
-                                    style="height:75%;"
-                                ></span>
+        <div class="teacher-heatmap-cell">
 
-                                <span
-                                    class="teacher-absent-bar"
-                                    style="height:24%;"
-                                ></span>
+            <div class="teacher-heatmap-day">
+                Mon
+            </div>
 
-                            </div>
+            <div class="teacher-heatmap-icon">
+                ✓
+            </div>
 
-                            <small>Thu</small>
+            <strong class="teacher-heatmap-percentage">
+                0%
+            </strong>
 
-                        </div>
+            <span class="teacher-heatmap-count">
+                0 Present
+            </span>
 
-
-                        <div class="teacher-chart-column">
-
-                            <div class="teacher-bars">
-
-                                <span
-                                    class="teacher-present-bar"
-                                    style="height:78%;"
-                                ></span>
-
-                                <span
-                                    class="teacher-absent-bar"
-                                    style="height:25%;"
-                                ></span>
-
-                            </div>
-
-                            <small>Fri</small>
-
-                        </div>
-
-                    </div>
-
-                </div>
+        </div>
 
 
+        <div class="teacher-heatmap-cell">
+
+            <div class="teacher-heatmap-day">
+                Tue
+            </div>
+
+            <div class="teacher-heatmap-icon">
+                ✓
+            </div>
+
+            <strong class="teacher-heatmap-percentage">
+                0%
+            </strong>
+
+            <span class="teacher-heatmap-count">
+                0 Present
+            </span>
+
+        </div>
+
+
+        <div class="teacher-heatmap-cell">
+
+            <div class="teacher-heatmap-day">
+                Wed
+            </div>
+
+            <div class="teacher-heatmap-icon">
+                ✓
+            </div>
+
+            <strong class="teacher-heatmap-percentage">
+                0%
+            </strong>
+
+            <span class="teacher-heatmap-count">
+                0 Present
+            </span>
+
+        </div>
+
+
+        <div class="teacher-heatmap-cell">
+
+            <div class="teacher-heatmap-day">
+                Thu
+            </div>
+
+            <div class="teacher-heatmap-icon">
+                ✓
+            </div>
+
+            <strong class="teacher-heatmap-percentage">
+                0%
+            </strong>
+
+            <span class="teacher-heatmap-count">
+                0 Present
+            </span>
+
+        </div>
+
+
+        <div class="teacher-heatmap-cell">
+
+            <div class="teacher-heatmap-day">
+                Fri
+            </div>
+
+            <div class="teacher-heatmap-icon">
+                ✓
+            </div>
+
+            <strong class="teacher-heatmap-percentage">
+                0%
+            </strong>
+
+            <span class="teacher-heatmap-count">
+                0 Present
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
 
                 <!-- STUDENTS DISTRIBUTION -->
 
