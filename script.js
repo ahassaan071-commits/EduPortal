@@ -43,17 +43,88 @@ function eduPortalShowOnly(activeId) {
 }
 
 function eduPortalShowLogin() {
-    const loginContainer = document.querySelector(".container");
-    if (loginContainer) {
-        loginContainer.classList.remove("session-hidden");
-        loginContainer.style.setProperty("display", "flex", "important");
-        loginContainer.style.setProperty("visibility", "visible", "important");
-        loginContainer.style.setProperty("opacity", "1", "important");
-    }
-    ["studentDashboard", "adminDashboard", "teacherDashboard"].forEach(function (id) {
-        const el = document.getElementById(id);
-        if (el) el.style.setProperty("display", "none", "important");
+
+    // Remove refresh/session classes
+    document.documentElement.classList.remove(
+        "edu-session-restoring"
+    );
+
+    document.documentElement.classList.remove(
+        "edu-role-administrator"
+    );
+
+    document.documentElement.classList.remove(
+        "edu-role-teacher"
+    );
+
+    document.documentElement.classList.remove(
+        "edu-role-student"
+    );
+
+
+    // Hide ALL dashboards
+    [
+        "studentDashboard",
+        "adminDashboard",
+        "teacherDashboard"
+    ].forEach(function (id) {
+
+        const el =
+            document.getElementById(id);
+
+        if (el) {
+
+            el.style.setProperty(
+                "display",
+                "none",
+                "important"
+            );
+
+            el.style.setProperty(
+                "visibility",
+                "hidden",
+                "important"
+            );
+
+            el.style.setProperty(
+                "opacity",
+                "0",
+                "important"
+            );
+        }
+
     });
+
+
+    // Show LOGIN container
+    const loginContainer =
+        document.querySelector(".container");
+
+    if (loginContainer) {
+
+        loginContainer.classList.remove(
+            "session-hidden"
+        );
+
+        loginContainer.style.setProperty(
+            "display",
+            "flex",
+            "important"
+        );
+
+        loginContainer.style.setProperty(
+            "visibility",
+            "visible",
+            "important"
+        );
+
+        loginContainer.style.setProperty(
+            "opacity",
+            "1",
+            "important"
+        );
+    }
+
 }
 // ===============================
 // EduPortal Student Portal
@@ -5965,6 +6036,21 @@ if (!logoutButton) {
 return;
 }
 eduPortalShowLogin();
+document.documentElement.classList.remove(
+    "edu-session-restoring"
+);
+
+document.documentElement.classList.remove(
+    "edu-role-administrator"
+);
+
+document.documentElement.classList.remove(
+    "edu-role-teacher"
+);
+
+document.documentElement.classList.remove(
+    "edu-role-student"
+);
 
 // ==========================================
 // CLEAR LOGIN SESSION
