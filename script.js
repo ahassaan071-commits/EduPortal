@@ -14575,8 +14575,11 @@ const {
             check_in_time,
             check_out_time
             `
+        )
+        .eq(
+            "attendance_date",
+            selectedDate
         );
-
 
 if (attendanceError) {
 
