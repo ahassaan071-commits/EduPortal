@@ -33428,6 +33428,33 @@ table tbody tr:hover td {
     background: #16a34a;
 }
 
+/* ==========================================
+   STUDENT ID CARD — HORIZONTAL INFO
+========================================== */
+
+#studentDashboard #studentIdCardSection .student-photo {
+    display: none !important;
+}
+
+#studentDashboard #studentIdCardSection {
+    display: block !important;
+    padding: 28px 38px !important;
+    min-height: auto !important;
+}
+
+#studentDashboard #studentIdCardSection .student-details {
+    width: 100% !important;
+}
+
+#studentDashboard #studentIdCardSection .student-details h2 {
+    margin-bottom: 20px !important;
+}
+
+#studentDashboard #studentIdCardSection .student-details p {
+    display: inline-flex !important;
+    margin: 0 35px 0 0 !important;
+    vertical-align: middle !important;
+}
 
 /* Mobile */
 
