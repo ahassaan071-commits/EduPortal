@@ -46769,3 +46769,20 @@ html.edu-session-restoring.edu-role-student #studentDashboard {
     }
 
 }
+/* =========================================
+   STUDENT ATTENDANCE MONTH
+========================================= */
+
+.student-attendance-month {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 12px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #eef6ff;
+    color: #1e40af;
+    font-size: 12px;
+    font-weight: 700;
+    vertical-align: middle;
+    white-space: nowrap;
+}
