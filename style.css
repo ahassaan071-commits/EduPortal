@@ -10175,6 +10175,16 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     font-family: inherit;
 }
 
+.attendance-date-input input[type="date"] {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
 .attendance-filter-field select:focus,
 .attendance-date-input:focus-within {
     border-color: #2563eb;
