@@ -47153,3 +47153,404 @@ document.addEventListener(
 
     }
 );
+// =========================================================
+// ACADEMIC SETUP - SUBJECTS
+// EXISTING SUPABASE SUBJECTS TABLE
+// =========================================================
+
+async function loadAcademicSubjects() {
+
+    const list =
+        document.getElementById(
+            "academicSubjectsList"
+        );
+
+    if (!list) {
+        return;
+    }
+
+
+    list.innerHTML = `
+        <div class="academic-empty-state">
+            Loading subjects...
+        </div>
+    `;
+
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+
+        list.innerHTML = `
+            <div class="academic-empty-state">
+                ❌ Supabase connection not found.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    const {
+        data: subjects,
+        error
+    } =
+        await supabaseClient
+            .from("subjects")
+            .select("*")
+            .order(
+                "id",
+                {
+                    ascending: true
+                }
+            );
+
+
+    if (error) {
+
+        console.error(
+            "ACADEMIC SUBJECT LOAD ERROR:",
+            error
+        );
+
+        list.innerHTML = `
+            <div class="academic-empty-state">
+                ❌ Unable to load subjects.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    if (
+        !subjects ||
+        subjects.length === 0
+    ) {
+
+        list.innerHTML = `
+            <div class="academic-empty-state">
+                📖 No subjects found.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    list.innerHTML = "";
+
+
+    subjects.forEach(
+        function (subject) {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+            card.className =
+                "academic-setup-card";
+
+
+            card.innerHTML = `
+
+                <div
+                    style="
+                        display:flex;
+                        align-items:center;
+                        justify-content:space-between;
+                        gap:15px;
+                    "
+                >
+
+                    <div>
+
+                        <div
+                            style="
+                                font-size:18px;
+                                font-weight:700;
+                                color:#1e293b;
+                            "
+                        >
+                            📖
+                            ${subject.name || "—"}
+                        </div>
+
+                        <div
+                            style="
+                                margin-top:5px;
+                                font-size:13px;
+                                color:#64748b;
+                            "
+                        >
+                            Code:
+                            ${subject.code || "—"}
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="academic-primary-btn"
+                        style="
+                            background:#ef4444;
+                            padding:8px 14px;
+                        "
+                        onclick="
+                            deleteAcademicSubject(
+                                ${subject.id}
+                            )
+                        "
+                    >
+                        🗑️ Delete
+                    </button>
+
+                </div>
+
+            `;
+
+
+            list.appendChild(card);
+
+        }
+    );
+
+}
+
+
+// =========================================================
+// ADD SUBJECT
+// =========================================================
+
+async function addAcademicSubject() {
+
+    const nameInput =
+        document.getElementById(
+            "academicSubjectName"
+        );
+
+
+    if (!nameInput) {
+        return;
+    }
+
+
+    const subjectName =
+        nameInput.value.trim();
+
+
+    if (!subjectName) {
+
+        alert(
+            "Please enter subject name."
+        );
+
+        nameInput.focus();
+
+        return;
+    }
+
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+
+        alert(
+            "Supabase connection is missing."
+        );
+
+        return;
+    }
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("subjects")
+            .insert([
+                {
+                    name: subjectName
+                }
+            ])
+            .select()
+            .single();
+
+
+    if (error) {
+
+        console.error(
+            "ACADEMIC SUBJECT INSERT ERROR:",
+            error
+        );
+
+
+        alert(
+            "Unable to add subject.\n\n" +
+            error.message
+        );
+
+        return;
+    }
+
+
+    console.log(
+        "Academic Subject Added:",
+        data
+    );
+
+
+    nameInput.value = "";
+
+
+    alert(
+        "Subject added successfully! ✅"
+    );
+
+
+    await loadAcademicSubjects();
+
+}
+
+
+// =========================================================
+// DELETE SUBJECT
+// =========================================================
+
+async function deleteAcademicSubject(
+    subjectId
+) {
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to delete this subject?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+
+        alert(
+            "Supabase connection is missing."
+        );
+
+        return;
+    }
+
+
+    const {
+        error
+    } =
+        await supabaseClient
+            .from("subjects")
+            .delete()
+            .eq(
+                "id",
+                subjectId
+            );
+
+
+    if (error) {
+
+        console.error(
+            "ACADEMIC SUBJECT DELETE ERROR:",
+            error
+        );
+
+        alert(
+            "Unable to delete subject.\n\n" +
+            error.message
+        );
+
+        return;
+    }
+
+
+    alert(
+        "Subject deleted successfully! ✅"
+    );
+
+
+    await loadAcademicSubjects();
+
+}
+
+
+// =========================================================
+// SUBJECT BUTTON
+// =========================================================
+
+document.addEventListener(
+    "click",
+    function (event) {
+
+        if (
+            event.target.closest(
+                "#saveAcademicSubjectBtn"
+            )
+        ) {
+
+            addAcademicSubject();
+
+        }
+
+    }
+);
+
+
+// =========================================================
+// LOAD SUBJECTS WHEN SUBJECT TAB IS OPENED
+// =========================================================
+
+document.addEventListener(
+    "click",
+    function (event) {
+
+        const tabButton =
+            event.target.closest(
+                "#adminAcademicSetupSection .academic-setup-tab"
+            );
+
+
+        if (!tabButton) {
+            return;
+        }
+
+
+        setTimeout(
+            function () {
+
+                const subjectsTab =
+                    document.getElementById(
+                        "academicSubjectsTab"
+                    );
+
+
+                if (
+                    subjectsTab &&
+                    subjectsTab.style.display !==
+                    "none"
+                ) {
+
+                    loadAcademicSubjects();
+
+                }
+
+            },
+            100
+        );
+
+    }
+);
