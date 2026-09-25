@@ -372,7 +372,7 @@ else if (selectedRole === "teacher") {
 // ==========================================
 
 localStorage.setItem(
-    "sessionStartedAt",
+    "lastActivityAt",
     String(Date.now())
 );
 
@@ -839,93 +839,208 @@ async function toggleTeacherPassword(
 }
 
 // =====================================================
-// EDUPORTAL - 30 MINUTE SESSION TIMEOUT
+// EDUPORTAL - 10 MINUTE INACTIVITY AUTO LOGOUT
 // ADMIN + TEACHER + STUDENT
 // =====================================================
 
 (function () {
 
-    const SESSION_LIMIT =
-        30 * 60 * 1000;
+    const INACTIVITY_LIMIT =
+        10 * 60 * 1000;
 
-    function checkSessionTimeout() {
+
+    // ==========================================
+    // LOGOUT
+    // ==========================================
+
+    function eduPortalAutoLogout() {
+
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("loggedInRole");
+
+        localStorage.removeItem("adminAccount");
+        localStorage.removeItem("loggedInTeacher");
+        localStorage.removeItem("loggedInStudent");
+        localStorage.removeItem("studentAccount");
+
+        localStorage.removeItem("lastActivityAt");
+        localStorage.removeItem("sessionStartedAt");
+
+
+        if (
+            typeof eduPortalShowLogin ===
+            "function"
+        ) {
+            eduPortalShowLogin();
+        }
+
+    }
+
+
+    // ==========================================
+    // CHECK INACTIVITY
+    // ==========================================
+
+    function checkInactivity() {
 
         const isLoggedIn =
             localStorage.getItem(
                 "isLoggedIn"
             );
 
-        const sessionStartedAt =
+        const lastActivityAt =
             Number(
                 localStorage.getItem(
-                    "sessionStartedAt"
+                    "lastActivityAt"
                 )
             );
 
+
         if (
             isLoggedIn !== "true" ||
-            !sessionStartedAt
+            !lastActivityAt
         ) {
             return;
         }
 
-        const sessionAge =
+
+        const inactiveTime =
             Date.now() -
-            sessionStartedAt;
+            lastActivityAt;
+
 
         if (
-            sessionAge >=
-            SESSION_LIMIT
+            inactiveTime >=
+            INACTIVITY_LIMIT
         ) {
 
-            // Logout all roles
-            localStorage.removeItem(
-                "isLoggedIn"
-            );
+            eduPortalAutoLogout();
 
-            localStorage.removeItem(
-                "loggedInRole"
-            );
-
-            localStorage.removeItem(
-                "adminAccount"
-            );
-
-            localStorage.removeItem(
-                "loggedInTeacher"
-            );
-
-            localStorage.removeItem(
-                "loggedInStudent"
-            );
-
-            localStorage.removeItem(
-                "studentAccount"
-            );
-
-            localStorage.removeItem(
-                "sessionStartedAt"
-            );
-
-            // Show login page
-            if (
-                typeof eduPortalShowLogin ===
-                "function"
-            ) {
-                eduPortalShowLogin();
-            }
-
-            alert(
-                "Your session has expired. Please login again. ⏰"
-            );
         }
+
     }
 
-    // Check every 10 seconds
+
+    // ==========================================
+    // UPDATE LAST ACTIVITY
+    // ==========================================
+
+    let activityTimer = null;
+
+
+    function updateActivity() {
+
+        if (
+            localStorage.getItem(
+                "isLoggedIn"
+            ) !== "true"
+        ) {
+            return;
+        }
+
+
+        if (activityTimer) {
+            return;
+        }
+
+
+        activityTimer =
+            setTimeout(
+                function () {
+
+                    localStorage.setItem(
+                        "lastActivityAt",
+                        String(
+                            Date.now()
+                        )
+                    );
+
+                    activityTimer = null;
+
+                },
+                1000
+            );
+
+    }
+
+
+    // ==========================================
+    // USER ACTIVITY EVENTS
+    // ==========================================
+
+    [
+        "mousemove",
+        "mousedown",
+        "keydown",
+        "scroll",
+        "touchstart",
+        "click"
+    ].forEach(
+        function (eventName) {
+
+            document.addEventListener(
+                eventName,
+                updateActivity,
+                {
+                    passive: true
+                }
+            );
+
+        }
+    );
+
+
+    // ==========================================
+    // CHECK EVERY 10 SECONDS
+    // ==========================================
+
     setInterval(
-        checkSessionTimeout,
+        checkInactivity,
         10000
     );
+
+
+    // ==========================================
+    // CHECK WHEN TAB BECOMES ACTIVE
+    // ==========================================
+
+    document.addEventListener(
+        "visibilitychange",
+        function () {
+
+            if (
+                document.visibilityState ===
+                "visible"
+            ) {
+
+                checkInactivity();
+
+            }
+
+        }
+    );
+
+
+    // ==========================================
+    // CHECK WHEN WINDOW OPENS / GETS FOCUS
+    // ==========================================
+
+    window.addEventListener(
+        "focus",
+        function () {
+
+            checkInactivity();
+
+        }
+    );
+
+
+    // ==========================================
+    // IMPORTANT:
+    // CHECK IMMEDIATELY WHEN PORTAL OPENS
+    // ==========================================
+
+    checkInactivity();
 
 })();
 // =====================================================
