@@ -1461,16 +1461,7 @@ if (
         }
 
 
-        if (
-            typeof refreshActiveDashboardData ===
-            "function"
-        ) {
-
-            setTimeout(
-                refreshActiveDashboardData,
-                100
-            );
-        }
+       
 
 
         return;
