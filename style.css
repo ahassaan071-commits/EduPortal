@@ -33360,32 +33360,32 @@ table tbody tr:hover td {
 #studentDashboard #studentIdCardSection .student-details {
     position: relative !important;
     z-index: 2 !important;
-
     padding: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 25px !important;
+    width: 100% !important;
 }
 
 #studentDashboard #studentIdCardSection .student-details h2 {
-    margin: 0 0 17px !important;
-
-    color: #172554 !important;
-
-    font-size: 29px !important;
-    font-weight: 750 !important;
-
-    letter-spacing: -.5px !important;
+    margin: 0 !important;
 }
 
 #studentDashboard #studentIdCardSection .student-details p {
-    display: flex !important;
+    display: inline-flex !important;
     align-items: center !important;
 
-    gap: 7px !important;
+    gap: 8px !important;
 
-    margin: 9px 0 !important;
+    margin: 0 !important;
 
     color: #475569 !important;
 
-    font-size: 15px !important;
+    font-size: 16px !important;
+
+    white-space: nowrap !important;
 }
 
 #studentDashboard #studentIdCardSection .student-details strong {
