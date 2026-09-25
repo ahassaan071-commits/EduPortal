@@ -42330,6 +42330,7 @@ window.showAdminModuleDirect = function (module) {
         dashboard: "adminHomeSection",
         students: "adminStudentsSection",
         teachers: "adminTeachersSection",
+        academicSetup: "adminAcademicSetupSection",
         attendance: "adminAttendanceSection",
         results: "adminResultsSection",
         fees: "adminFeesSection",
