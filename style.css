@@ -45937,3 +45937,32 @@ input[type="number"] {
     color:
         #dc2626;
 }
+/* ==========================================
+   TEACHERS TABLE - SAME WIDTH AS STUDENTS
+   FINAL FIX
+========================================== */
+
+#adminDashboard #adminTeachersList {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+}
+
+#adminDashboard #adminTeachersList .admin-teachers-table-wrapper {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    overflow-x: auto !important;
+}
+
+#adminDashboard #adminTeachersList .admin-teachers-table {
+    display: table !important;
+    width: 100% !important;
+    min-width: 1050px !important;
+    max-width: none !important;
+    box-sizing: border-box !important;
+}
