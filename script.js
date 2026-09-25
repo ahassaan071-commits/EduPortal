@@ -46755,3 +46755,401 @@ function openAdminTeacherModalDirect() {
     modal.style.justifyContent = "center";
 
 }
+// =========================================================
+// ACADEMIC SETUP - CLASSES
+// SUPABASE LIVE DATA
+// =========================================================
+
+async function loadAcademicClasses() {
+
+    const list =
+        document.getElementById(
+            "academicClassesList"
+        );
+
+    if (!list) {
+        return;
+    }
+
+    list.innerHTML = `
+        <div class="academic-empty-state">
+            Loading classes...
+        </div>
+    `;
+
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+
+        list.innerHTML = `
+            <div class="academic-empty-state">
+                ❌ Supabase connection not found.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    const {
+        data: classes,
+        error
+    } =
+        await supabaseClient
+            .from("classes")
+            .select("*")
+            .order(
+                "id",
+                {
+                    ascending: true
+                }
+            );
+
+
+    if (error) {
+
+        console.error(
+            "ACADEMIC CLASSES LOAD ERROR:",
+            error
+        );
+
+        list.innerHTML = `
+            <div class="academic-empty-state">
+                ❌ Unable to load classes.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    if (
+        !classes ||
+        classes.length === 0
+    ) {
+
+        list.innerHTML = `
+            <div class="academic-empty-state">
+                🏫 No classes added yet.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    list.innerHTML = "";
+
+
+    classes.forEach(
+        function (classItem) {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+            card.className =
+                "academic-setup-card";
+
+
+            card.innerHTML = `
+
+                <div
+                    style="
+                        display:flex;
+                        align-items:center;
+                        justify-content:space-between;
+                        gap:15px;
+                    "
+                >
+
+                    <div>
+
+                        <div
+                            style="
+                                font-size:18px;
+                                font-weight:700;
+                                color:#1e293b;
+                            "
+                        >
+                            🏫
+                            ${classItem.name}
+                        </div>
+
+                        <div
+                            style="
+                                margin-top:5px;
+                                font-size:13px;
+                                color:#64748b;
+                            "
+                        >
+                            Class ID:
+                            ${classItem.id}
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="academic-primary-btn"
+                        style="
+                            background:#ef4444;
+                            padding:8px 14px;
+                        "
+                        onclick="
+                            deleteAcademicClass(
+                                ${classItem.id}
+                            )
+                        "
+                    >
+                        🗑️ Delete
+                    </button>
+
+                </div>
+
+            `;
+
+
+            list.appendChild(card);
+
+        }
+    );
+
+}
+
+
+// =========================================================
+// ADD CLASS
+// =========================================================
+
+async function addAcademicClass() {
+
+    const input =
+        document.getElementById(
+            "academicClassName"
+        );
+
+    if (!input) {
+        return;
+    }
+
+
+    const className =
+        input.value.trim();
+
+
+    if (!className) {
+
+        alert(
+            "Please enter class name."
+        );
+
+        input.focus();
+
+        return;
+    }
+
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+
+        alert(
+            "Supabase connection is missing."
+        );
+
+        return;
+    }
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("classes")
+            .insert([
+                {
+                    name: className
+                }
+            ])
+            .select()
+            .single();
+
+
+    if (error) {
+
+        console.error(
+            "ACADEMIC CLASS INSERT ERROR:",
+            error
+        );
+
+
+        if (
+            error.code ===
+            "23505"
+        ) {
+
+            alert(
+                "This class already exists."
+            );
+
+        } else {
+
+            alert(
+                "Unable to add class.\n\n" +
+                error.message
+            );
+
+        }
+
+        return;
+    }
+
+
+    console.log(
+        "Academic Class Added:",
+        data
+    );
+
+
+    input.value = "";
+
+
+    alert(
+        "Class added successfully! ✅"
+    );
+
+
+    await loadAcademicClasses();
+
+}
+
+
+// =========================================================
+// DELETE CLASS
+// =========================================================
+
+async function deleteAcademicClass(
+    classId
+) {
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to delete this class?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+
+        alert(
+            "Supabase connection is missing."
+        );
+
+        return;
+    }
+
+
+    const {
+        error
+    } =
+        await supabaseClient
+            .from("classes")
+            .delete()
+            .eq(
+                "id",
+                classId
+            );
+
+
+    if (error) {
+
+        console.error(
+            "ACADEMIC CLASS DELETE ERROR:",
+            error
+        );
+
+        alert(
+            "Unable to delete class.\n\n" +
+            error.message
+        );
+
+        return;
+    }
+
+
+    alert(
+        "Class deleted successfully! ✅"
+    );
+
+
+    await loadAcademicClasses();
+
+}
+
+
+// =========================================================
+// ADD CLASS BUTTON
+// =========================================================
+
+document.addEventListener(
+    "click",
+    function (event) {
+
+        if (
+            event.target.closest(
+                "#saveAcademicClassBtn"
+            )
+        ) {
+
+            addAcademicClass();
+
+        }
+
+    }
+);
+
+
+// =========================================================
+// LOAD CLASSES WHEN ACADEMIC SETUP OPENS
+// =========================================================
+
+document.addEventListener(
+    "click",
+    function (event) {
+
+        const menu =
+            event.target.closest(
+                "#adminAcademicSetupMenu"
+            );
+
+
+        if (!menu) {
+            return;
+        }
+
+
+        setTimeout(
+            function () {
+
+                loadAcademicClasses();
+
+            },
+            150
+        );
+
+    }
+);
