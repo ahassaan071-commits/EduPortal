@@ -44217,6 +44217,7 @@ async function renderTeacherAttendanceOverview() {
 
  // =========================================
 // UPDATE ATTENDANCE HEATMAP
+// LIVE SUPABASE DATA
 // =========================================
 
 const heatmapCells =
@@ -44234,11 +44235,6 @@ const heatmapPercentages =
         ".teacher-heatmap-percentage"
     );
 
-const heatmapCounts =
-    chart.querySelectorAll(
-        ".teacher-heatmap-count"
-    );
-
 const heatmapIcons =
     chart.querySelectorAll(
         ".teacher-heatmap-icon"
@@ -44246,7 +44242,7 @@ const heatmapIcons =
 
 
 // =========================================
-// UPDATE EACH DAY
+// UPDATE EACH PERIOD
 // =========================================
 
 points.forEach(
@@ -44257,13 +44253,19 @@ points.forEach(
         }
 
 
-        const total =
-            point.present +
-            point.absent;
+        // =====================================
+        // TOTAL STUDENTS
+        // =====================================
 
+        const total =
+            totalStudents;
+
+
+        // =====================================
+        // ATTENDANCE %
+        // =====================================
 
         let attendancePercentage = 0;
-
 
         if (total > 0) {
 
@@ -44278,9 +44280,9 @@ points.forEach(
         }
 
 
-        // =================================
-        // DAY
-        // =================================
+        // =====================================
+        // DAY / WEEK LABEL
+        // =====================================
 
         if (heatmapLabels[index]) {
 
@@ -44291,9 +44293,9 @@ points.forEach(
         }
 
 
-        // =================================
+        // =====================================
         // PERCENTAGE
-        // =================================
+        // =====================================
 
         if (heatmapPercentages[index]) {
 
@@ -44305,25 +44307,9 @@ points.forEach(
         }
 
 
-        // =================================
-        // PRESENT COUNT
-        // =================================
-
-        if (heatmapCounts[index]) {
-
-            heatmapCounts[index]
-                .textContent =
-                    point.present +
-                    " Present • " +
-                    point.absent +
-                    " Absent";
-
-        }
-
-
-        // =================================
-        // STATUS
-        // =================================
+        // =====================================
+        // STATUS COLOR
+        // =====================================
 
         heatmapCells[index]
             .classList.remove(
@@ -44341,7 +44327,6 @@ points.forEach(
                 .classList.add(
                     "heatmap-level-good"
                 );
-
 
             if (heatmapIcons[index]) {
 
@@ -44361,7 +44346,6 @@ points.forEach(
                     "heatmap-level-warning"
                 );
 
-
             if (heatmapIcons[index]) {
 
                 heatmapIcons[index]
@@ -44378,7 +44362,6 @@ points.forEach(
                     "heatmap-level-danger"
                 );
 
-
             if (heatmapIcons[index]) {
 
                 heatmapIcons[index]
@@ -44389,18 +44372,34 @@ points.forEach(
         }
 
 
-        // =================================
+        // =====================================
         // TOOLTIP
-        // =================================
+        // =====================================
 
         heatmapCells[index].title =
-            "Present: " +
             point.present +
-            " | Absent: " +
-            point.absent;
+            " Present | " +
+            point.absent +
+            " Absent";
 
     }
 );
+
+
+// =========================================
+// HIDE UNUSED CELLS
+// =========================================
+
+for (
+    let i = points.length;
+    i < heatmapCells.length;
+    i++
+) {
+
+    heatmapCells[i].style.display =
+        "none";
+
+}
     // =========================================
     // CLEAR EXTRA BARS
     // =========================================
