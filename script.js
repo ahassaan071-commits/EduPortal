@@ -46579,10 +46579,7 @@ const absentDays =
         "chartAbsentDays"
     );
 
-const leaveDays =
-    document.getElementById(
-        "chartLeaveDays"
-    );
+
 
 const donut =
     document.getElementById(
