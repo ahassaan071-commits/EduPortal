@@ -17631,17 +17631,7 @@ async function renderFeeRecords() {
     ✏️
 </button>
 
-    <button
-        type="button"
-        class="result-action-btn"
-        onclick="
-            deleteFeeRecord(
-                '${record.id}'
-            )
-        "
-    >
-        🗑️
-    </button>
+ 
 
 </td>
 
