@@ -43649,6 +43649,7 @@ document.addEventListener(
 );
 // =========================================================
 // TEACHER DASHBOARD - REAL TIME ATTENDANCE OVERVIEW
+// FIXED VERSION
 // =========================================================
 
 async function renderTeacherAttendanceOverview() {
@@ -43678,9 +43679,9 @@ async function renderTeacherAttendanceOverview() {
     }
 
 
-    // =========================================
-    // LOGGED-IN TEACHER
-    // =========================================
+    // =====================================================
+    // GET LOGGED-IN TEACHER
+    // =====================================================
 
     let teacher = {};
 
@@ -43704,21 +43705,22 @@ async function renderTeacherAttendanceOverview() {
     }
 
 
-    // =========================================
-    // TEACHER CLASS
-    // =========================================
+    // =====================================================
+    // GET TEACHER CLASS
+    // =====================================================
 
     const teacherClass =
         String(
             teacher.teacherClass ||
             teacher.teacher_class ||
             teacher.class ||
+            teacher.assigned_class ||
             ""
         )
         .trim()
         .toLowerCase()
         .replace(
-            /^class\s+/,
+            /^class\s+/i,
             ""
         );
 
@@ -43733,9 +43735,9 @@ async function renderTeacherAttendanceOverview() {
     }
 
 
-    // =========================================
-    // GET REAL STUDENTS
-    // =========================================
+    // =====================================================
+    // GET STUDENTS
+    // =====================================================
 
     const {
         data: students,
@@ -43751,7 +43753,7 @@ async function renderTeacherAttendanceOverview() {
     if (studentsError) {
 
         console.error(
-            "Attendance chart students error:",
+            "Teacher attendance students error:",
             studentsError
         );
 
@@ -43759,9 +43761,9 @@ async function renderTeacherAttendanceOverview() {
     }
 
 
-    // =========================================
+    // =====================================================
     // ONLY TEACHER'S CLASS
-    // =========================================
+    // =====================================================
 
     const assignedStudents =
         (students || []).filter(
@@ -43775,7 +43777,7 @@ async function renderTeacherAttendanceOverview() {
                     .trim()
                     .toLowerCase()
                     .replace(
-                        /^class\s+/,
+                        /^class\s+/i,
                         ""
                     );
 
@@ -43802,234 +43804,328 @@ async function renderTeacherAttendanceOverview() {
         assignedStudents.length;
 
 
-    // =========================================
+    // =====================================================
     // SELECT PERIOD
-    // =========================================
+    // =====================================================
 
     const selectedPeriod =
         periodSelect &&
         periodSelect.value
             ? periodSelect.value
-            : "week";
+            : "today";
 
+
+    // =====================================================
+    // CURRENT DATE
+    // =====================================================
 
     const now =
         new Date();
 
 
+    // =====================================================
+    // HELPER - START OF DAY
+    // =====================================================
+
+    function startOfDay(date) {
+
+        const result =
+            new Date(date);
+
+        result.setHours(
+            0,
+            0,
+            0,
+            0
+        );
+
+        return result;
+
+    }
+
+
+    // =====================================================
+    // HELPER - FORMAT YYYY-MM-DD
+    // =====================================================
+
+    function formatDate(date) {
+
+        const year =
+            date.getFullYear();
+
+        const month =
+            String(
+                date.getMonth() + 1
+            ).padStart(
+                2,
+                "0"
+            );
+
+        const day =
+            String(
+                date.getDate()
+            ).padStart(
+                2,
+                "0"
+            );
+
+        return (
+            year +
+            "-" +
+            month +
+            "-" +
+            day
+        );
+
+    }
+
+
+    // =====================================================
+    // BUILD PERIODS
+    // =====================================================
+
     let points = [];
 
 
- // =========================================
-// BUILD ATTENDANCE PERIODS
-// =========================================
+    // =====================================================
+    // TODAY
+    // =====================================================
 
-if (
-    selectedPeriod === "today"
-) {
-
-    const start =
-        new Date(now);
-
-    start.setHours(
-        0, 0, 0, 0
-    );
-
-    const end =
-        new Date(start);
-
-    end.setDate(
-        end.getDate() + 1
-    );
-
-    points.push({
-
-        start: start,
-
-        end: end,
-
-        label: "Today"
-
-    });
-
-}
-
-else if (
-    selectedPeriod === "yesterday"
-) {
-
-    const end =
-        new Date(now);
-
-    end.setHours(
-        0, 0, 0, 0
-    );
-
-    const start =
-        new Date(end);
-
-    start.setDate(
-        start.getDate() - 1
-    );
-
-    points.push({
-
-        start: start,
-
-        end: end,
-
-        label: "Yesterday"
-
-    });
-
-}
-
-else if (
-    selectedPeriod === "last7"
-) {
-
-    for (
-        let i = 6;
-        i >= 0;
-        i--
+    if (
+        selectedPeriod ===
+        "today"
     ) {
 
         const start =
-            new Date(now);
-
-        start.setDate(
-            now.getDate() - i
-        );
-
-        start.setHours(
-            0, 0, 0, 0
-        );
+            startOfDay(now);
 
         const end =
             new Date(start);
 
         end.setDate(
-            start.getDate() + 1
+            end.getDate() + 1
         );
 
         points.push({
 
-            start: start,
+            start:
+                start,
 
-            end: end,
+            end:
+                end,
 
             label:
-                start.toLocaleDateString(
-                    "en-US",
-                    {
-                        weekday: "short"
-                    }
-                )
+                "Today"
 
         });
 
     }
 
-}
 
-else {
+    // =====================================================
+    // YESTERDAY
+    // =====================================================
 
-    // =====================================
-    // MONTH = 5 WEEKLY PERIODS
-    // =====================================
-
-    const monthStart =
-        new Date(
-            now.getFullYear(),
-            now.getMonth(),
-            1
-        );
-
-    const nextMonth =
-        new Date(
-            now.getFullYear(),
-            now.getMonth() + 1,
-            1
-        );
-
-    const totalDays =
-        Math.ceil(
-            (
-                nextMonth -
-                monthStart
-            ) /
-            (
-                1000 *
-                60 *
-                60 *
-                24
-            )
-        );
-
-
-    for (
-        let i = 0;
-        i < 5;
-        i++
+    else if (
+        selectedPeriod ===
+        "yesterday"
     ) {
 
+        const end =
+            startOfDay(now);
+
         const start =
-            new Date(
-                monthStart
-            );
+            new Date(end);
 
         start.setDate(
-            1 +
-            Math.floor(
-                (
-                    i *
-                    totalDays
-                ) / 5
-            )
+            start.getDate() - 1
         );
-
-
-        const end =
-            new Date(
-                monthStart
-            );
-
-        end.setDate(
-            1 +
-            Math.floor(
-                (
-                    (i + 1) *
-                    totalDays
-                ) / 5
-            )
-        );
-
 
         points.push({
 
-            start: start,
+            start:
+                start,
 
-            end: end,
+            end:
+                end,
 
             label:
-                "Week " +
-                (i + 1)
+                "Yesterday"
 
         });
 
     }
 
-}
-    // =========================================
-    // GET ATTENDANCE
-    // =========================================
 
-    let attendance =
-        [];
+    // =====================================================
+    // LAST 7 DAYS
+    // =====================================================
+
+    else if (
+        selectedPeriod ===
+        "last7"
+    ) {
+
+        for (
+            let i = 6;
+            i >= 0;
+            i--
+        ) {
+
+            const start =
+                startOfDay(now);
+
+            start.setDate(
+                start.getDate() - i
+            );
+
+            const end =
+                new Date(start);
+
+            end.setDate(
+                end.getDate() + 1
+            );
+
+            points.push({
+
+                start:
+                    start,
+
+                end:
+                    end,
+
+                label:
+                    start.toLocaleDateString(
+                        "en-US",
+                        {
+                            weekday:
+                                "short"
+                        }
+                    )
+
+            });
+
+        }
+
+    }
+
+
+    // =====================================================
+    // LAST MONTH / MONTH VIEW
+    // =====================================================
+
+    else {
+
+        const monthStart =
+            new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                1
+            );
+
+        const nextMonth =
+            new Date(
+                now.getFullYear(),
+                now.getMonth() + 1,
+                1
+            );
+
+        const totalDays =
+            Math.round(
+                (
+                    nextMonth -
+                    monthStart
+                ) /
+                (
+                    1000 *
+                    60 *
+                    60 *
+                    24
+                )
+            );
+
+
+        for (
+            let i = 0;
+            i < 5;
+            i++
+        ) {
+
+            const start =
+                new Date(
+                    monthStart
+                );
+
+            start.setDate(
+                1 +
+                Math.floor(
+                    (
+                        i *
+                        totalDays
+                    ) / 5
+                )
+            );
+
+            start.setHours(
+                0,
+                0,
+                0,
+                0
+            );
+
+
+            const end =
+                new Date(
+                    monthStart
+                );
+
+            end.setDate(
+                1 +
+                Math.floor(
+                    (
+                        (i + 1) *
+                        totalDays
+                    ) / 5
+                )
+            );
+
+            end.setHours(
+                0,
+                0,
+                0,
+                0
+            );
+
+
+            points.push({
+
+                start:
+                    start,
+
+                end:
+                    end,
+
+                label:
+                    "Week " +
+                    (i + 1)
+
+            });
+
+        }
+
+    }
+
+
+    // =====================================================
+    // GET ATTENDANCE DATA
+    // =====================================================
+
+    let attendance = [];
 
 
     if (
-        studentIds.length > 0
+        studentIds.length > 0 &&
+        points.length > 0
     ) {
 
         const firstDate =
@@ -44039,38 +44135,6 @@ else {
             points[
                 points.length - 1
             ].end;
-
-
-        function formatDate(date) {
-
-            const year =
-                date.getFullYear();
-
-            const month =
-                String(
-                    date.getMonth() + 1
-                ).padStart(
-                    2,
-                    "0"
-                );
-
-            const day =
-                String(
-                    date.getDate()
-                ).padStart(
-                    2,
-                    "0"
-                );
-
-            return (
-                year +
-                "-" +
-                month +
-                "-" +
-                day
-            );
-
-        }
 
 
         const {
@@ -44103,7 +44167,7 @@ else {
         if (error) {
 
             console.error(
-                "Attendance chart error:",
+                "Teacher attendance query error:",
                 error
             );
 
@@ -44117,25 +44181,33 @@ else {
     }
 
 
-    // =========================================
-    // CALCULATE EACH DAY
-    // =========================================
+    // =====================================================
+    // CALCULATE ATTENDANCE FOR EACH PERIOD
+    // =====================================================
 
     points.forEach(
         function(point) {
 
-            point.present =
-                0;
+            point.present = 0;
 
             point.absent =
-                0;
+                totalStudents;
 
 
-            // ---------------------------------
-            // FIND ATTENDANCE FOR THIS DAY
-            // ---------------------------------
+            const pointStart =
+                startOfDay(
+                    point.start
+                );
 
-            const dayRecords =
+            const pointEnd =
+                point.end;
+
+
+            // ------------------------------------------------
+            // FIND RECORDS FOR THIS PERIOD
+            // ------------------------------------------------
+
+            const periodRecords =
                 attendance.filter(
                     function(record) {
 
@@ -44143,51 +44215,40 @@ else {
                             String(
                                 record.attendance_date ||
                                 ""
+                            )
+                            .substring(
+                                0,
+                                10
                             );
 
-                        const year =
-                            point.start
-                                .getFullYear();
 
-                        const month =
-                            String(
-                                point.start
-                                    .getMonth() + 1
-                            ).padStart(
-                                2,
-                                "0"
+                        const recordDateObject =
+                            new Date(
+                                recordDate +
+                                "T00:00:00"
                             );
 
-                        const day =
-                            String(
-                                point.start
-                                    .getDate()
-                            ).padStart(
-                                2,
-                                "0"
-                            );
-
-                        const pointDate =
-                            year +
-                            "-" +
-                            month +
-                            "-" +
-                            day;
 
                         return (
-                            recordDate ===
-                            pointDate
+                            recordDateObject >=
+                                pointStart &&
+                            recordDateObject <
+                                pointEnd
                         );
 
                     }
                 );
 
 
-            // ---------------------------------
-            // COUNT PRESENT
-            // ---------------------------------
+            // ------------------------------------------------
+            // UNIQUE STUDENTS PRESENT
+            // ------------------------------------------------
 
-            dayRecords.forEach(
+            const presentStudentIds =
+                new Set();
+
+
+            periodRecords.forEach(
                 function(record) {
 
                     const status =
@@ -44200,15 +44261,16 @@ else {
 
 
                     if (
-                        status ===
-                            "present" ||
-                        status ===
-                            "late" ||
-                        status ===
-                            "p"
+                        status === "present" ||
+                        status === "late" ||
+                        status === "p"
                     ) {
 
-                        point.present++;
+                        presentStudentIds.add(
+                            String(
+                                record.student_id
+                            )
+                        );
 
                     }
 
@@ -44216,10 +44278,13 @@ else {
             );
 
 
-            // ---------------------------------
-            // IMPORTANT:
+            point.present =
+                presentStudentIds.size;
+
+
+            // ------------------------------------------------
             // NO RECORD = ABSENT
-            // ---------------------------------
+            // ------------------------------------------------
 
             point.absent =
                 Math.max(
@@ -44232,202 +44297,302 @@ else {
     );
 
 
-// =========================================
-// UPDATE ATTENDANCE HEATMAP
-// LIVE SUPABASE DATA
-// =========================================
+    // =====================================================
+    // HEATMAP ELEMENTS
+    // =====================================================
 
-const heatmapCells =
-    chart.querySelectorAll(
-        ".teacher-heatmap-cell"
-    );
+    const heatmapCells =
+        chart.querySelectorAll(
+            ".teacher-heatmap-cell"
+        );
 
-const heatmapLabels =
-    chart.querySelectorAll(
-        ".teacher-heatmap-day"
-    );
+    const heatmapLabels =
+        chart.querySelectorAll(
+            ".teacher-heatmap-day"
+        );
 
-const heatmapPercentages =
-    chart.querySelectorAll(
-        ".teacher-heatmap-percentage"
-    );
+    const heatmapPercentages =
+        chart.querySelectorAll(
+            ".teacher-heatmap-percentage"
+        );
 
-const heatmapIcons =
-    chart.querySelectorAll(
-        ".teacher-heatmap-icon"
-    );
-
-
-points.forEach(function(point, index) {
-
-    if (!heatmapCells[index]) {
-        return;
-    }
-
-
-    // =====================================
-    // TOTAL STUDENTS IN TEACHER CLASS
-    // =====================================
-
-    const total =
-        totalStudents;
-
-
-    // =====================================
-    // ATTENDANCE PERCENTAGE
-    // =====================================
-
-    let percentage = 0;
-
-    if (total > 0) {
-
-        percentage =
-            Math.round(
-                (
-                    point.present /
-                    total
-                ) * 100
-            );
-
-    }
-
-
-    // =====================================
-    // LABEL
-    // =====================================
-
-    if (heatmapLabels[index]) {
-
-        heatmapLabels[index]
-            .textContent =
-                point.label;
-
-    }
-
-
-    // =====================================
-    // PERCENTAGE
-    // =====================================
-
-    if (heatmapPercentages[index]) {
-
-        heatmapPercentages[index]
-            .textContent =
-                percentage + "%";
-
-    }
-
-
-    // =====================================
-    // REMOVE OLD STATUS
-    // =====================================
-
-    heatmapCells[index]
-        .classList.remove(
-            "heatmap-level-good",
-            "heatmap-level-warning",
-            "heatmap-level-danger"
+    const heatmapIcons =
+        chart.querySelectorAll(
+            ".teacher-heatmap-icon"
         );
 
 
-    // =====================================
-    // STATUS
-    // =====================================
+    // =====================================================
+    // UPDATE HEATMAP
+    // =====================================================
 
-    if (percentage >= 80) {
+    points.forEach(
+        function(point, index) {
 
-        heatmapCells[index]
-            .classList.add(
-                "heatmap-level-good"
-            );
+            if (
+                !heatmapCells[index]
+            ) {
+                return;
+            }
 
-        if (heatmapIcons[index]) {
 
-            heatmapIcons[index]
-                .textContent = "✓";
+            const percentage =
+                totalStudents > 0
+                    ? Math.round(
+                        (
+                            point.present /
+                            totalStudents
+                        ) * 100
+                    )
+                    : 0;
+
+
+            // ------------------------------------------------
+            // LABEL
+            // ------------------------------------------------
+
+            if (
+                heatmapLabels[index]
+            ) {
+
+                heatmapLabels[index]
+                    .textContent =
+                        point.label;
+
+            }
+
+
+            // ------------------------------------------------
+            // PERCENTAGE
+            // ------------------------------------------------
+
+            if (
+                heatmapPercentages[index]
+            ) {
+
+                heatmapPercentages[index]
+                    .textContent =
+                        percentage +
+                        "%";
+
+            }
+
+
+            // ------------------------------------------------
+            // REMOVE OLD LEVEL
+            // ------------------------------------------------
+
+            heatmapCells[index]
+                .classList.remove(
+                    "heatmap-level-good",
+                    "heatmap-level-warning",
+                    "heatmap-level-danger"
+                );
+
+
+            // ------------------------------------------------
+            // STATUS
+            // ------------------------------------------------
+
+            if (
+                percentage >= 80
+            ) {
+
+                heatmapCells[index]
+                    .classList.add(
+                        "heatmap-level-good"
+                    );
+
+
+                if (
+                    heatmapIcons[index]
+                ) {
+
+                    heatmapIcons[index]
+                        .textContent =
+                            "✓";
+
+                }
+
+            }
+
+            else if (
+                percentage >= 60
+            ) {
+
+                heatmapCells[index]
+                    .classList.add(
+                        "heatmap-level-warning"
+                    );
+
+
+                if (
+                    heatmapIcons[index]
+                ) {
+
+                    heatmapIcons[index]
+                        .textContent =
+                            "!";
+
+                }
+
+            }
+
+            else {
+
+                heatmapCells[index]
+                    .classList.add(
+                        "heatmap-level-danger"
+                    );
+
+
+                if (
+                    heatmapIcons[index]
+                ) {
+
+                    heatmapIcons[index]
+                        .textContent =
+                            "×";
+
+                }
+
+            }
+
+
+            // ------------------------------------------------
+            // TOOLTIP
+            // ------------------------------------------------
+
+            heatmapCells[index].title =
+                "Present: " +
+                point.present +
+                " | Absent: " +
+                point.absent;
+
+        }
+    );
+
+
+    // =====================================================
+    // HIDE UNUSED HEATMAP CELLS
+    // =====================================================
+
+    for (
+        let i = 0;
+        i < heatmapCells.length;
+        i++
+    ) {
+
+        if (
+            i < points.length
+        ) {
+
+            heatmapCells[i].style.display =
+                "";
+
+        } else {
+
+            heatmapCells[i].style.display =
+                "none";
 
         }
 
     }
 
-    else if (percentage >= 60) {
 
-        heatmapCells[index]
-            .classList.add(
-                "heatmap-level-warning"
-            );
+    // =====================================================
+    // ALSO SUPPORT OLD BAR CHART IF PRESENT
+    // =====================================================
 
-        if (heatmapIcons[index]) {
+    const presentBars =
+        chart.querySelectorAll(
+            ".teacher-present-bar"
+        );
 
-            heatmapIcons[index]
-                .textContent = "!";
+    const absentBars =
+        chart.querySelectorAll(
+            ".teacher-absent-bar"
+        );
+
+    const labels =
+        chart.querySelectorAll(
+            ".teacher-chart-column small"
+        );
+
+
+    points.forEach(
+        function(point, index) {
+
+            if (
+                !presentBars[index] ||
+                !absentBars[index]
+            ) {
+                return;
+            }
+
+
+            const total =
+                point.present +
+                point.absent;
+
+
+            const presentHeight =
+                total > 0
+                    ? (
+                        point.present /
+                        total
+                    ) * 100
+                    : 0;
+
+
+            const absentHeight =
+                total > 0
+                    ? (
+                        point.absent /
+                        total
+                    ) * 100
+                    : 0;
+
+
+            presentBars[index]
+                .style.height =
+                    presentHeight +
+                    "%";
+
+
+            absentBars[index]
+                .style.height =
+                    absentHeight +
+                    "%";
+
+
+            presentBars[index].title =
+                "Present: " +
+                point.present;
+
+
+            absentBars[index].title =
+                "Absent: " +
+                point.absent;
+
+
+            if (
+                labels[index]
+            ) {
+
+                labels[index]
+                    .textContent =
+                        point.label;
+
+            }
 
         }
-
-    }
-
-    else {
-
-        heatmapCells[index]
-            .classList.add(
-                "heatmap-level-danger"
-            );
-
-        if (heatmapIcons[index]) {
-
-            heatmapIcons[index]
-                .textContent = "×";
-
-        }
-
-    }
+    );
 
 
-    // =====================================
-    // TOOLTIP
-    // =====================================
-
-    heatmapCells[index].title =
-        "Present: " +
-        point.present +
-        " | Absent: " +
-        point.absent;
-
-});
-
-
-// =========================================
-// HIDE EXTRA CELLS
-// =========================================
-
-for (
-    let i = points.length;
-    i < heatmapCells.length;
-    i++
-) {
-
-    heatmapCells[i].style.display =
-        "none";
-
-}
-
-// =========================================
-// HIDE UNUSED CELLS
-// =========================================
-
-for (
-    let i = points.length;
-    i < heatmapCells.length;
-    i++
-) {
-
-    heatmapCells[i].style.display =
-        "none";
-
-}
-    // =========================================
-    // CLEAR EXTRA BARS
-    // =========================================
+    // =====================================================
+    // CLEAR EXTRA OLD BARS
+    // =====================================================
 
     for (
         let i = points.length;
@@ -44446,17 +44611,21 @@ for (
     }
 
 
+    // =====================================================
+    // FINAL LOG
+    // =====================================================
+
     console.log(
         "TEACHER ATTENDANCE OVERVIEW LIVE:",
         {
             teacherClass,
             totalStudents,
+            selectedPeriod,
             points
         }
     );
 
 }
-
 // =========================================================
 // TEACHER ATTENDANCE OVERVIEW - REALTIME
 // =========================================================
