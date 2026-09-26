@@ -116,6 +116,11 @@ button{
     cursor:pointer;
     font-size:16px;
 }
+.attendance-history-view-more-btn{
+    width:160px;
+    padding:10px 16px;
+    font-size:14px;
+}
 
 button:hover{
     background:#1d4ed8;
