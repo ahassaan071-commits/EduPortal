@@ -15293,19 +15293,14 @@ if (
         </strong>
     </td>
 
-    <td>
-        ${
-            student.studentClass ||
-            "—"
-        }
-    </td>
-
-    <td>
-        ${
-            student.section ||
-            "—"
-        }
-    </td>
+<td>
+    ${
+        formatClassSection(
+            student.studentClass,
+            student.section
+        )
+    }
+</td>
 
     <td>
 
@@ -15520,10 +15515,10 @@ async function updateAttendanceStatistics() {
             "attendanceClassFilter"
         );
 
-    const sectionFilter =
-        document.getElementById(
-            "attendanceSectionFilter"
-        );
+    const classFilter =
+    document.getElementById(
+        "attendanceClassFilter"
+    );
 
     const dateFilter =
         document.getElementById(
