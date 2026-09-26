@@ -26942,9 +26942,7 @@ if (teacherEditingAssignmentId) {
             classInput.value = "";
         }
 
-        if (sectionInput) {
-            sectionInput.value = "";
-        }
+       
 
         if (subjectInput) {
             subjectInput.value = "";
