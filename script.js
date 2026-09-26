@@ -6036,18 +6036,14 @@ async function viewAdminStudent(studentId) {
         ) +
 
         "\nClass: " +
-        (
-            student.student_class ||
-            "—"
-        ) +
+(
+    formatClassSection(
+        student.student_class,
+        student.section
+    )
+) +
 
-        "\nSection: " +
-        (
-            student.section ||
-            "—"
-        ) +
-
-        "\nRoll Number: " +
+"\nRoll Number: " +
         (
             student.roll_number ||
             "—"
