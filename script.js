@@ -13334,28 +13334,6 @@ return;
 // EDU PORTAL - ATTENDANCE DATA ENGINE
 // ==========================================
 
-const ATTENDANCE_STORAGE_KEY = "eduPortalAttendance";
-
-
-function getAttendanceRecords() {
-
-return JSON.parse(
-localStorage.getItem(ATTENDANCE_STORAGE_KEY)
-) || [];
-
-}
-
-
-function saveAttendanceRecords(records) {
-
-localStorage.setItem(
-ATTENDANCE_STORAGE_KEY,
-JSON.stringify(records)
-);
-
-}
-
-
 function getTodayDate() {
 
 const today = new Date();
@@ -15515,33 +15493,7 @@ return `${year}-${month}-${day}`;
 }
 
 
-// ==========================================================
-// GET ATTENDANCE RECORDS
-// ==========================================================
 
-function getStudentAttendanceRecords() {
-
-return JSON.parse(
-localStorage.getItem(
-STUDENT_ATTENDANCE_KEY
-)
-) || [];
-
-}
-
-
-// ==========================================================
-// SAVE ATTENDANCE RECORDS
-// ==========================================================
-
-function saveStudentAttendanceRecords(records) {
-
-localStorage.setItem(
-STUDENT_ATTENDANCE_KEY,
-JSON.stringify(records)
-);
-
-}
 
 
 // ==========================================================
