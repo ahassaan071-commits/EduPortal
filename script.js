@@ -40757,14 +40757,33 @@ const historyDateInput =
     );
 
 
-// Default date = Today
+// Default date = Latest Attendance Date
 if (
     historyDateInput &&
     !historyDateInput.value
 ) {
 
-    historyDateInput.value =
-        getStudentAttendanceDate();
+    if (
+        records &&
+        records.length > 0 &&
+        records[0].attendance_date
+    ) {
+
+        historyDateInput.value =
+            String(
+                records[0].attendance_date
+            ).substring(
+                0,
+                10
+            );
+
+    }
+    else {
+
+        historyDateInput.value =
+            getStudentAttendanceDate();
+
+    }
 
 }
 
@@ -41166,14 +41185,15 @@ if (chartStatus) {
         }
 
 
-        // =========================================
-        // LOAD TODAY ATTENDANCE TABLE
-        // =========================================
+     // =========================================
+// LOAD ATTENDANCE HISTORY TABLE
+// =========================================
 
-        loadStudentTodayAttendanceTable(
-            records
-        );
-
+loadStudentTodayAttendanceTable(
+    historyRecords.length > 0
+        ? historyRecords
+        : records
+);
         // =========================================================
 // STUDENT ATTENDANCE REALTIME
 // =========================================================
