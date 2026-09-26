@@ -26401,36 +26401,53 @@ async function loadTeacherAssignmentClass() {
     }
 
 
-    // ==========================================
-    // FILL CLASS DROPDOWN
-    // ==========================================
+  // ==========================================
+// FILL CLASS DROPDOWN
+// ==========================================
 
-    classSelect.innerHTML =
-        '<option value="">Select Class</option>';
+classSelect.disabled = false;
 
+classSelect.innerHTML =
+    '<option value="">Select Class</option>';
 
-    (
-        classes ||
-        []
-    ).forEach(
-        function(item) {
+const assignedClasses =
+    classes || [];
 
-            const option =
-                document.createElement(
-                    "option"
-                );
+assignedClasses.forEach(
+    function(item) {
 
-            option.value =
-                item.name;
+        const option =
+            document.createElement("option");
 
-            option.textContent =
-                item.name;
+        option.value =
+            String(item.id);
 
-            classSelect.appendChild(
-                option
-            );
+        option.textContent =
+            String(item.name);
+
+        classSelect.appendChild(
+            option
+        );
+
+    }
+);
+
+// Make sure dropdown is enabled
+classSelect.removeAttribute("disabled");
+
+console.log(
+    "CLASS DROPDOWN OPTIONS:",
+    Array.from(
+        classSelect.options
+    ).map(
+        function(option) {
+            return {
+                value: option.value,
+                text: option.text
+            };
         }
-    );
+    )
+);
 
 
     console.log(
