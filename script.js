@@ -8591,15 +8591,13 @@ marks
     const rawResults =
         resultsData || [];
 
-
-
-
 // ==========================================
 // LOAD STUDENTS
 // ==========================================
 
 const {
-    data: students
+    data: students,
+    error: studentsError
 } =
     await supabaseClient
         .from("students")
@@ -8607,7 +8605,12 @@ const {
             "id, student_id, name, full_name, student_class, section"
         );
 
-
+if (studentsError) {
+    console.error(
+        "Error loading students:",
+        studentsError
+    );
+}
 // ==========================================
 // BUILD RESULTS CLASS + SECTION DROPDOWN
 // ==========================================
@@ -8707,37 +8710,7 @@ if (resultsClassFilter) {
 }
 
 
-// ==========================================
-// CHECK EMPTY RESULTS
-// ==========================================
 
-if (rawResults.length === 0) {
-
-    tableBody.innerHTML = `
-        <tr class="results-empty-row">
-            <td colspan="10">
-
-                <div class="results-empty-state">
-
-                    <div>📊</div>
-
-                    <h3>No Results Found</h3>
-
-                    <p>
-                        Add student results to see
-                        records here.
-                    </p>
-
-                </div>
-
-            </td>
-        </tr>
-    `;
-
-    updateResultsStatistics([]);
-
-    return;
-}
     
     // ==========================================
     // LOAD SUBJECTS
