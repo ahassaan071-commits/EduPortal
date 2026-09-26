@@ -40238,19 +40238,25 @@ async function loadRealStudentFeeChart() {
         // LOAD REAL FEE RECORDS
         // ==========================================
 
-        const {
-            data: feeRecords,
-            error
-        } =
-            await supabaseClient
-                .from("fee_records")
-                .select(
-                    "fee_amount, paid_amount, remaining_amount"
-                )
-                .eq(
-                    "student_id",
-                    Number(dbStudent.id)
-                );
+      const {
+    data: feeRecords,
+    error
+} =
+    await supabaseClient
+        .from("fee_records")
+        .select(
+            "fee_amount, paid_amount, remaining_amount, month, fee_period, due_date"
+        )
+        .eq(
+            "student_id",
+            Number(dbStudent.id)
+        )
+        .order(
+            "created_at",
+            {
+                ascending: false
+            }
+        );
 
 
         if (error) {
@@ -40264,6 +40270,105 @@ async function loadRealStudentFeeChart() {
 
         }
 
+// ==========================================
+// FILTER FEE BY SELECTED ATTENDANCE MONTH
+// ==========================================
+
+const selectedFeeMonth =
+    window.studentAttendanceSelectedMonth ||
+    (
+        new Date().getFullYear() +
+        "-" +
+        String(
+            new Date().getMonth() + 1
+        ).padStart(2, "0")
+    );
+
+const selectedFeeRecords =
+    (feeRecords || []).filter(
+        function(record) {
+
+            let recordMonth = "";
+
+            // First preference: fee_period
+            if (record.fee_period) {
+
+                recordMonth =
+                    String(
+                        record.fee_period
+                    ).substring(
+                        0,
+                        7
+                    );
+
+            }
+
+            // Fallback: due_date
+            if (
+                !recordMonth &&
+                record.due_date
+            ) {
+
+                recordMonth =
+                    String(
+                        record.due_date
+                    ).substring(
+                        0,
+                        7
+                    );
+
+            }
+
+            // Fallback: month field
+            if (
+                !recordMonth &&
+                record.month
+            ) {
+
+                const monthName =
+                    String(
+                        record.month
+                    ).trim();
+
+                const monthNumber =
+                    {
+                        January: "01",
+                        February: "02",
+                        March: "03",
+                        April: "04",
+                        May: "05",
+                        June: "06",
+                        July: "07",
+                        August: "08",
+                        September: "09",
+                        October: "10",
+                        November: "11",
+                        December: "12"
+                    }[
+                        monthName
+                    ];
+
+                if (monthNumber) {
+
+                    recordMonth =
+                        selectedFeeMonth.substring(
+                            0,
+                            4
+                        ) +
+                        "-" +
+                        monthNumber;
+
+                }
+
+            }
+
+            return (
+                recordMonth ===
+                selectedFeeMonth
+            );
+
+        }
+    );
 
         // ==========================================
         // CALCULATE REAL FEE
@@ -40274,8 +40379,8 @@ async function loadRealStudentFeeChart() {
         let remainingFee = 0;
 
 
-        (feeRecords || [])
-            .forEach(function(record) {
+        (selectedFeeRecords || [])
+    .forEach(function(record) {
 
                 totalFee +=
                     Number(
