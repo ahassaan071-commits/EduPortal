@@ -8635,6 +8635,128 @@ marks
             );
 
 
+
+// ==========================================
+// BUILD RESULTS CLASS + SECTION DROPDOWN
+// ==========================================
+
+const resultsClassFilter =
+    document.getElementById(
+        "resultsClassFilter"
+    );
+
+if (resultsClassFilter) {
+
+    const previousValue =
+        resultsClassFilter.value || "all";
+
+    const combinations =
+        new Map();
+
+    (students || []).forEach(
+        function (student) {
+
+            const className =
+                String(
+                    student.student_class || ""
+                ).trim();
+
+            const section =
+                String(
+                    student.section || ""
+                )
+                .trim()
+                .toUpperCase();
+
+            if (!className) {
+                return;
+            }
+
+            const key =
+                `${className}||${section}`;
+
+            if (!combinations.has(key)) {
+
+                combinations.set(
+                    key,
+                    {
+                        className:
+                            className,
+
+                        section:
+                            section
+                    }
+                );
+
+            }
+
+        }
+    );
+
+    resultsClassFilter.innerHTML = `
+        <option value="all">
+            All Classes
+        </option>
+    `;
+
+    Array.from(
+        combinations.values()
+    )
+    .sort(
+        function (a, b) {
+
+            return (
+                Number(a.className) -
+                Number(b.className)
+            );
+
+        }
+    )
+    .forEach(
+        function (item) {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                `${item.className}||${item.section}`;
+
+            option.textContent =
+                item.section
+                    ? `Class ${item.className} ${item.section}`
+                    : `Class ${item.className}`;
+
+            resultsClassFilter.appendChild(
+                option
+            );
+
+        }
+    );
+
+    if (
+        Array.from(
+            resultsClassFilter.options
+        ).some(
+            function (option) {
+
+                return (
+                    option.value ===
+                    previousValue
+                );
+
+            }
+        )
+    ) {
+
+        resultsClassFilter.value =
+            previousValue;
+
+    }
+
+}
+
     // ==========================================
     // LOAD SUBJECTS
     // ==========================================
