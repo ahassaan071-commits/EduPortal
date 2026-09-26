@@ -46740,17 +46740,28 @@ if (
     monthSelect.dataset.bound !== "true"
 ) {
 
-    monthSelect.addEventListener(
-        "change",
-        function() {
+monthSelect.addEventListener(
+    "change",
+    function() {
 
-            window.studentAttendanceSelectedMonth =
-                this.value;
+        window.studentAttendanceSelectedMonth =
+            this.value;
 
-            loadRealStudentAttendance();
+        // Reload Attendance
+        loadRealStudentAttendance();
+
+        // Reload Fee Status
+        if (
+            typeof loadRealStudentFeeChart ===
+            "function"
+        ) {
+
+            loadRealStudentFeeChart();
 
         }
-    );
+
+    }
+);
 
     monthSelect.dataset.bound =
         "true";
