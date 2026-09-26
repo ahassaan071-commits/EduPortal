@@ -15,6 +15,56 @@ const supabaseClient =
     );
 
 console.log("EduPortal Supabase connected ✅");
+
+// =====================================================
+// CLASS + SECTION DISPLAY HELPER
+// =====================================================
+
+function formatClassSection(className, section) {
+
+    const cls = String(className || "").trim();
+    const sec = String(section || "").trim();
+
+    if (!cls) return "—";
+
+    if (!sec) return cls;
+
+    return `${cls} ${sec}`;
+}
+
+
+// Convert: "9th A" → class = "9th", section = "A"
+function parseClassSection(value) {
+
+    const text = String(value || "")
+        .trim()
+        .replace(/\s+/g, " ");
+
+    if (!text) {
+        return {
+            className: "",
+            section: ""
+        };
+    }
+
+    const match =
+        text.match(/^(.+?)\s+([A-Za-z])$/);
+
+    if (match) {
+
+        return {
+            className: match[1].trim(),
+            section: match[2].trim().toUpperCase()
+        };
+
+    }
+
+    return {
+        className: text,
+        section: ""
+    };
+}
+
 function eduPortalShowOnly(activeId) {
 
   
