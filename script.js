@@ -25115,7 +25115,7 @@ async function loadTeacherMyStudents() {
             tableBody.innerHTML = `
                 <tr>
                     <td
-                        colspan="8"
+                        colspan="7"
                         style="
                             text-align:center;
                             padding:50px;
