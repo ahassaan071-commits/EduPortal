@@ -284,11 +284,7 @@ transition:.3s;
 
 }
 
-.card:hover{
 
-transform:translateY(-8px);
-
-}
 
 .card h3{
 
@@ -664,10 +660,7 @@ Student ID Card
     transition:.3s;
 }
 
-.student-id-card:hover{
-    transform:translateY(-5px);
-    box-shadow:0 15px 35px rgba(0,0,0,.12);
-}
+
 
 .student-photo{
     width:120px;
@@ -858,9 +851,7 @@ Attendance Module
     transition:.3s;
 }
 
-.attendance-box:hover{
-    transform:translateY(-5px);
-}
+
 
 .attendance-box h3{
     color:#1e3a8a;
@@ -926,9 +917,7 @@ Results Module
     transition:.3s;
 }
 
-.result-box:hover{
-    transform:translateY(-5px);
-}
+
 
 .result-box h3{
     color:#1e3a8a;
@@ -977,10 +966,7 @@ Subjects Module
     transition:.3s;
 }
 
-.subject-card:hover{
-    transform:translateY(-6px);
-    box-shadow:0 12px 25px rgba(0,0,0,.12);
-}
+
 
 .subject-card h3{
     color:#1e3a8a;
@@ -1025,11 +1011,6 @@ Subjects Module
 }
 
 
-.analytics-card:hover{
-
-    transform:translateY(-6px);
-
-}
 
 
 .analytics-card h3{
@@ -1151,11 +1132,7 @@ Subjects Module
 }
 
 
-.quick-card:hover{
 
-    transform:translateY(-7px);
-
-}
 
 
 .quick-card:first-letter{
