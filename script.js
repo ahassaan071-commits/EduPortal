@@ -26087,15 +26087,20 @@ if (submissionModal) {
 );
 
 // ==========================================
-// TEACHER ASSIGNMENT CLASS
-// USE SAME CLASS AS TEACHER PROFILE
+// TEACHER ASSIGNMENT CLASS + SUBJECT
+// LOAD FROM ADMIN ACADEMIC ASSIGNMENT
 // ==========================================
 
-function loadTeacherAssignmentClass() {
+async function loadTeacherAssignmentClass() {
 
     const classSelect =
         document.getElementById(
             "teacherAssignmentClass"
+        );
+
+    const subjectInput =
+        document.getElementById(
+            "teacherAssignmentSubject"
         );
 
     if (!classSelect) {
@@ -26105,10 +26110,9 @@ function loadTeacherAssignmentClass() {
 
     // ==========================================
     // GET LOGGED-IN TEACHER
-    // SAME DATA USED BY TEACHER PROFILE
     // ==========================================
 
-    let teacher = null;
+    let teacher = {};
 
     try {
 
@@ -26119,71 +26123,326 @@ function loadTeacherAssignmentClass() {
                 )
             ) || {};
 
-    } catch (error) {
+    }
+    catch (error) {
 
         console.error(
-            "ASSIGNMENT TEACHER SESSION ERROR:",
+            "TEACHER SESSION ERROR:",
             error
         );
 
         classSelect.innerHTML =
-            '<option value="">Class Not Found</option>';
+            '<option value="">Teacher Not Found</option>';
 
         return;
     }
 
 
     // ==========================================
-    // GET TEACHER CLASS
+    // FIND TEACHER IN SUPABASE
     // ==========================================
 
-    const teacherClass =
-        teacher.teacherClass ||
-        teacher.teacher_class ||
-        teacher.class_name ||
-        teacher.class ||
-        "";
+    let dbTeacher = null;
+
+
+    // FIND BY DATABASE ID
+    if (
+        teacher.id &&
+        !isNaN(
+            Number(
+                teacher.id
+            )
+        )
+    ) {
+
+        const result =
+            await supabaseClient
+                .from("teachers")
+                .select(
+                    "id, teacher_id, name, username, subject"
+                )
+                .eq(
+                    "id",
+                    Number(
+                        teacher.id
+                    )
+                )
+                .maybeSingle();
+
+        if (
+            !result.error &&
+            result.data
+        ) {
+
+            dbTeacher =
+                result.data;
+        }
+    }
+
+
+    // FIND BY TEACHER ID
+    if (
+        !dbTeacher &&
+        (
+            teacher.teacherId ||
+            teacher.teacher_id
+        )
+    ) {
+
+        const teacherCode =
+            String(
+                teacher.teacherId ||
+                teacher.teacher_id
+            ).trim();
+
+        const result =
+            await supabaseClient
+                .from("teachers")
+                .select(
+                    "id, teacher_id, name, username, subject"
+                )
+                .eq(
+                    "teacher_id",
+                    teacherCode
+                )
+                .maybeSingle();
+
+        if (
+            !result.error &&
+            result.data
+        ) {
+
+            dbTeacher =
+                result.data;
+        }
+    }
+
+
+    // FIND BY USERNAME
+    if (
+        !dbTeacher &&
+        teacher.username
+    ) {
+
+        const result =
+            await supabaseClient
+                .from("teachers")
+                .select(
+                    "id, teacher_id, name, username, subject"
+                )
+                .ilike(
+                    "username",
+                    String(
+                        teacher.username
+                    ).trim()
+                )
+                .maybeSingle();
+
+        if (
+            !result.error &&
+            result.data
+        ) {
+
+            dbTeacher =
+                result.data;
+        }
+    }
 
 
     // ==========================================
-    // CLASS FOUND
+    // TEACHER NOT FOUND
     // ==========================================
 
-    if (teacherClass) {
+    if (!dbTeacher) {
 
         classSelect.innerHTML =
-            `
-            <option value="${teacherClass}">
-                ${teacherClass}
-            </option>
-            `;
+            '<option value="">Teacher Not Found</option>';
 
-        classSelect.value =
-            teacherClass;
+        if (subjectInput) {
 
-        // Teacher cannot change assigned class
-        classSelect.disabled = true;
+            subjectInput.value =
+                "";
 
-        console.log(
-            "ASSIGNMENT CLASS:",
-            teacherClass
-        );
+        }
 
         return;
     }
 
 
     // ==========================================
-    // CLASS NOT FOUND
+    // LOAD TEACHER SUBJECT
+    // SUBJECT IS FIXED
+    // ==========================================
+
+    if (subjectInput) {
+
+        subjectInput.value =
+            dbTeacher.subject ||
+            "";
+
+        subjectInput.readOnly =
+            true;
+    }
+
+
+    // ==========================================
+    // LOAD ASSIGNED CLASSES
+    // FROM teacher_class_subjects
+    // ==========================================
+
+    const {
+        data: teacherAssignments,
+        error: assignmentError
+    } =
+        await supabaseClient
+            .from(
+                "teacher_class_subjects"
+            )
+            .select(
+                "class_id"
+            )
+            .eq(
+                "teacher_id",
+                dbTeacher.id
+            );
+
+
+    if (assignmentError) {
+
+        console.error(
+            "TEACHER CLASS ASSIGNMENT ERROR:",
+            assignmentError
+        );
+
+        classSelect.innerHTML =
+            '<option value="">Unable to Load Classes</option>';
+
+        return;
+    }
+
+
+    // ==========================================
+    // GET UNIQUE CLASS IDs
+    // ==========================================
+
+    const classIds =
+        [
+            ...new Set(
+                (
+                    teacherAssignments ||
+                    []
+                )
+                    .map(
+                        function(item) {
+                            return item.class_id;
+                        }
+                    )
+                    .filter(
+                        function(id) {
+                            return id !== null &&
+                                   id !== undefined;
+                        }
+                    )
+            )
+        ];
+
+
+    // ==========================================
+    // NO CLASSES ASSIGNED
+    // ==========================================
+
+    if (
+        classIds.length === 0
+    ) {
+
+        classSelect.innerHTML =
+            '<option value="">No Class Assigned</option>';
+
+        return;
+    }
+
+
+    // ==========================================
+    // LOAD CLASS NAMES
+    // ==========================================
+
+    const {
+        data: classes,
+        error: classError
+    } =
+        await supabaseClient
+            .from("classes")
+            .select(
+                "id, name"
+            )
+            .in(
+                "id",
+                classIds
+            )
+            .order(
+                "id",
+                {
+                    ascending: true
+                }
+            );
+
+
+    if (classError) {
+
+        console.error(
+            "CLASSES LOAD ERROR:",
+            classError
+        );
+
+        classSelect.innerHTML =
+            '<option value="">Unable to Load Classes</option>';
+
+        return;
+    }
+
+
+    // ==========================================
+    // FILL CLASS DROPDOWN
     // ==========================================
 
     classSelect.innerHTML =
-        '<option value="">Class Not Assigned</option>';
+        '<option value="">Select Class</option>';
 
-    console.warn(
-        "Teacher class is missing from loggedInTeacher:",
-        teacher
+
+    (
+        classes ||
+        []
+    ).forEach(
+        function(item) {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                item.name;
+
+            option.textContent =
+                item.name;
+
+            classSelect.appendChild(
+                option
+            );
+        }
     );
+
+
+    console.log(
+        "TEACHER ASSIGNED CLASSES:",
+        classes
+    );
+
+    console.log(
+        "TEACHER SUBJECT:",
+        dbTeacher.subject
+    );
+
 }
 // =========================================================
 // CREATE ASSIGNMENT - NEW FORM
