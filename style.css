@@ -4176,6 +4176,68 @@ body {
 }
 
 
+.login-box .logo {
+    width: 100%;
+    max-width: 560px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 16px;
+
+    margin: 2px 0 42px !important;
+}
+
+
+.login-box .logo-circle {
+    width: 64px !important;
+    height: 64px !important;
+
+    min-width: 64px !important;
+
+    margin: 0 !important;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 18px !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            #eff6ff,
+            #dbeafe
+        ) !important;
+
+    border: 1px solid #bfdbfe !important;
+
+    box-shadow:
+        0 10px 25px rgba(37,99,235,.12);
+
+    font-size: 28px;
+
+    transform: none !important;
+}
+
+
+.login-box .logo-circle:hover {
+    transform: none !important;
+}
+
+
+.login-box .logo-text {
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    text-align: left;
+}
+
+
 .login-box .logo h1 {
     margin: 0 !important;
 
@@ -4185,15 +4247,43 @@ body {
         Arial,
         sans-serif;
 
-    font-size: 39px !important;
+    font-size: 36px !important;
 
     line-height: 1;
 
     font-weight: 800 !important;
 
-    letter-spacing: -1.5px;
+    letter-spacing: -1.2px;
 
     color: #102044 !important;
+}
+
+
+.login-box .logo h1 span {
+    color: #2563eb !important;
+}
+
+
+.login-box .logo p {
+    display: block !important;
+
+    margin: 7px 0 0 !important;
+
+    font-family:
+        "Segoe UI",
+        "Inter",
+        Arial,
+        sans-serif;
+
+    font-size: 13px !important;
+
+    line-height: 1.3;
+
+    font-weight: 500;
+
+    letter-spacing: .2px;
+
+    color: #64748b !important;
 }
 
 
