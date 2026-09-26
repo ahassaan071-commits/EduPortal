@@ -17379,6 +17379,146 @@ saveMonthlyFeeBtn.addEventListener(
     "click",
     async function () {
 
+// ==========================================
+// EDIT EXISTING FEE
+// ==========================================
+
+if (window.editingFeeRecordId) {
+
+    const recordId =
+        window.editingFeeRecordId;
+
+    const feeAmount =
+        Number(
+            document.getElementById(
+                "monthlyFeeAmount"
+            ).value
+        ) || 0;
+
+    const paidAmount =
+        Number(
+            document.getElementById(
+                "feePaidAmount"
+            ).value
+        ) || 0;
+
+    const dueDate =
+        document.getElementById(
+            "feeDueDate"
+        ).value;
+
+    const paymentDate =
+        document.getElementById(
+            "feePaymentDate"
+        ).value || null;
+
+    const remainingAmount =
+        Math.max(
+            feeAmount - paidAmount,
+            0
+        );
+
+    let status =
+        "Unpaid";
+
+    if (paidAmount >= feeAmount) {
+
+        status = "Paid";
+
+    }
+    else if (paidAmount > 0) {
+
+        status = "Partial";
+
+    }
+
+    const {
+        error: updateError
+    } =
+        await supabaseClient
+            .from("fee_records")
+            .update({
+
+                fee_amount:
+                    feeAmount,
+
+                paid_amount:
+                    paidAmount,
+
+                remaining_amount:
+                    remainingAmount,
+
+                due_date:
+                    dueDate || null,
+
+                payment_date:
+                    paymentDate,
+
+                status:
+                    status
+
+            })
+            .eq(
+                "id",
+                String(recordId)
+            );
+
+    if (updateError) {
+
+        console.error(
+            "FEE UPDATE ERROR:",
+            updateError
+        );
+
+        alert(
+            "Fee Update Error:\n\n" +
+            updateError.message
+        );
+
+        return;
+    }
+
+    // Clear edit mode
+
+    window.editingFeeRecordId =
+        null;
+
+    // Restore button text
+
+    const saveButton =
+        document.getElementById(
+            "saveMonthlyFeeBtn"
+        );
+
+    if (saveButton) {
+
+        saveButton.innerHTML =
+            "💾 Save Fee Record";
+
+    }
+
+    // Refresh table
+
+    await renderFeeRecords();
+
+    // Reset form
+
+    resetMonthlyFeeForm();
+
+    if (monthlyFeeForm) {
+
+        monthlyFeeForm.style.display =
+            "none";
+
+    }
+
+    alert(
+        "Fee record updated successfully! ✅"
+    );
+
+    return;
+}
+
 const feeStudentSelect =
     document.getElementById("feeStudent");
 
