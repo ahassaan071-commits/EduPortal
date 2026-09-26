@@ -6225,8 +6225,7 @@ behavior: "instant"
 
 });
 // ==========================================
-// ADMIN STUDENT SEARCH & CLASS FILTER
-// SUPABASE LIVE DATA
+// ADMIN STUDENT SEARCH + CLASS/SECTION FILTER
 // ==========================================
 
 async function filterAdminStudents() {
@@ -6257,22 +6256,20 @@ async function filterAdminStudents() {
                 .toLowerCase()
             : "";
 
-    const selectedClass =
-        classFilter
-            ? classFilter.value
-            : "all";
-
     if (
         typeof supabaseClient ===
         "undefined"
     ) {
-
         console.error(
             "Supabase connection is missing."
         );
-
         return;
     }
+
+
+    // ==========================================
+    // LOAD STUDENTS
+    // ==========================================
 
     const {
         data: students,
@@ -6287,6 +6284,9 @@ async function filterAdminStudents() {
                 student_class,
                 section,
                 roll_number,
+                date_of_birth,
+                email,
+                mobile,
                 status
             `)
             .order(
@@ -6295,6 +6295,7 @@ async function filterAdminStudents() {
                     ascending: false
                 }
             );
+
 
     if (error) {
 
@@ -6314,14 +6315,177 @@ async function filterAdminStudents() {
         return;
     }
 
+
+    // ==========================================
+    // BUILD CLASS + SECTION OPTIONS
+    // ==========================================
+
+    if (classFilter) {
+
+        const previousValue =
+            classFilter.value || "all";
+
+        const combinations =
+            new Map();
+
+        (students || []).forEach(
+            function(student) {
+
+                const className =
+                    String(
+                        student.student_class ||
+                        ""
+                    ).trim();
+
+                const section =
+                    String(
+                        student.section ||
+                        ""
+                    ).trim()
+                    .toUpperCase();
+
+                if (!className) {
+                    return;
+                }
+
+                const key =
+                    `${className}||${section}`;
+
+                if (
+                    !combinations.has(key)
+                ) {
+
+                    combinations.set(
+                        key,
+                        {
+                            className:
+                                className,
+
+                            section:
+                                section
+                        }
+                    );
+
+                }
+
+            }
+        );
+
+
+        classFilter.innerHTML = `
+            <option value="all">
+                All Classes
+            </option>
+        `;
+
+
+        Array.from(
+            combinations.values()
+        )
+        .sort(
+            function(a, b) {
+
+                return (
+                    Number(
+                        a.className
+                    ) -
+                    Number(
+                        b.className
+                    )
+                );
+
+            }
+        )
+        .forEach(
+            function(item) {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+                option.value =
+                    `${item.className}||${item.section}`;
+
+                option.textContent =
+                    item.section
+                        ? `Class ${item.className}${item.section}`
+                        : `Class ${item.className}`;
+
+                classFilter.appendChild(
+                    option
+                );
+
+            }
+        );
+
+
+        // Restore previous selection
+        if (
+            Array.from(
+                classFilter.options
+            ).some(
+                function(option) {
+                    return (
+                        option.value ===
+                        previousValue
+                    );
+                }
+            )
+        ) {
+
+            classFilter.value =
+                previousValue;
+
+        }
+
+    }
+
+
+    // ==========================================
+    // GET SELECTED CLASS + SECTION
+    // ==========================================
+
+    const selectedValue =
+        classFilter
+            ? classFilter.value
+            : "all";
+
+    let selectedClass = "";
+    let selectedSection = "";
+
+    if (
+        selectedValue !== "all"
+    ) {
+
+        const parts =
+            selectedValue.split("||");
+
+        selectedClass =
+            String(
+                parts[0] || ""
+            ).trim();
+
+        selectedSection =
+            String(
+                parts[1] || ""
+            ).trim()
+            .toUpperCase();
+
+    }
+
+
+    // ==========================================
+    // FILTER STUDENTS
+    // ==========================================
+
     const filteredStudents =
         (students || []).filter(
-            function (student) {
+            function(student) {
 
                 const name =
                     String(
                         student.name ||
-                        student.full_name ||
                         ""
                     ).toLowerCase();
 
@@ -6336,30 +6500,68 @@ async function filterAdminStudents() {
                     String(
                         student.student_class ||
                         ""
+                    ).trim();
+
+                const studentSection =
+                    String(
+                        student.section ||
+                        ""
+                    ).trim()
+                    .toUpperCase();
+
+
+                const classDisplay =
+                    formatClassSection(
+                        studentClass,
+                        studentSection
                     ).toLowerCase();
 
+
                 const matchesSearch =
-                    name.includes(searchText) ||
-                    studentId.includes(searchText) ||
-                    studentClass.includes(searchText);
+                    name.includes(
+                        searchText
+                    ) ||
+
+                    studentId.includes(
+                        searchText
+                    ) ||
+
+                    classDisplay.includes(
+                        searchText
+                    );
+
 
                 const matchesClass =
-                    selectedClass === "all" ||
-                    String(
-                        student.student_class ||
-                        ""
-                    ) === String(
-                        selectedClass
+                    selectedValue === "all" ||
+
+                    (
+                        studentClass ===
+                        selectedClass &&
+
+                        studentSection ===
+                        selectedSection
                     );
+
 
                 return (
                     matchesSearch &&
                     matchesClass
                 );
+
             }
         );
 
+
+    // ==========================================
+    // CLEAR TABLE
+    // ==========================================
+
     tableBody.innerHTML = "";
+
+
+    // ==========================================
+    // NO RECORDS
+    // ==========================================
 
     if (
         filteredStudents.length ===
@@ -6377,16 +6579,39 @@ async function filterAdminStudents() {
         return;
     }
 
+
+    // ==========================================
+    // RENDER STUDENTS
+    // ==========================================
+
     filteredStudents.forEach(
-        function (student, index) {
+        function(student, index) {
 
             const row =
                 document.createElement(
                     "tr"
                 );
 
+
+            const studentClass =
+                String(
+                    student.student_class ||
+                    ""
+                ).trim();
+
+            const studentSection =
+                String(
+                    student.section ||
+                    ""
+                ).trim()
+                .toUpperCase();
+
+
             row.innerHTML = `
-                <td>${index + 1}</td>
+
+                <td>
+                    ${index + 1}
+                </td>
 
                 <td>
                     ${
@@ -6399,36 +6624,56 @@ async function filterAdminStudents() {
                 <td>
                     ${
                         student.name ||
-                        student.full_name ||
                         "—"
                     }
                 </td>
 
-               <td>
-    ${
-        formatClassSection(
-            student.student_class,
-            student.section
-        )
-    }
-</td>
-
-<td>
-    ${
-        student.roll_number ||
-        "—"
-    }
-</td>
-
                 <td>
                     ${
-                        student.status ||
-                        "Active"
+                        student.father_name ||
+                        "—"
                     }
                 </td>
 
-           
+                <td>
+                    ${
+                        formatClassSection(
+                            studentClass,
+                            studentSection
+                        )
+                    }
+                </td>
+
+                <td>
+                    ${
+                        student.roll_number ||
+                        "—"
+                    }
+                </td>
+
+                <td>
+                    ${
+                        student.date_of_birth ||
+                        "—"
+                    }
+                </td>
+
+                <td>
+                    ${
+                        student.email ||
+                        "—"
+                    }
+                </td>
+
+                <td>
+                    ${
+                        student.mobile ||
+                        "—"
+                    }
+                </td>
+
             `;
+
 
             tableBody.appendChild(
                 row
@@ -6455,7 +6700,13 @@ filterAdminStudents
 
 }
 
-
+// Initial student list + class/section dropdown
+setTimeout(
+    function() {
+        filterAdminStudents();
+    },
+    300
+);
 // ==========================================
 // CLASS FILTER EVENT
 // ==========================================
