@@ -46977,7 +46977,6 @@ console.log(
         total: totalAttendance,
         present: presentCount,
         absent: absentCount,
-        leave: leaveCount,
         percentage: livePercentage
     }
 );
