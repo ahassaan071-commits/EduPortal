@@ -26403,10 +26403,10 @@ async function loadTeacherAssignmentClass() {
         error: classError
     } =
         await supabaseClient
-            .from("classes")
-            .select(
-                "id, name"
-            )
+           .from("classes")
+.select(
+    "id, name, section"
+)
             .in(
                 "id",
                 classIds
@@ -26452,10 +26452,22 @@ assignedClasses.forEach(
             document.createElement("option");
 
         option.value =
-            String(item.id);
+    `${item.id}|${item.name}|${item.section || ""}`;
 
-        option.textContent =
-            String(item.name);
+option.textContent =
+    formatClassSection(
+        item.name,
+        item.section
+    );
+
+option.dataset.classId =
+    item.id;
+
+option.dataset.class =
+    item.name;
+
+option.dataset.section =
+    item.section || "";
 
         classSelect.appendChild(
             option
