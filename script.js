@@ -6644,13 +6644,14 @@ async function openAdminViewStudent(studentId) {
             viewFather.textContent = fatherName;
         }
 
-        if (viewClass) {
-            viewClass.textContent = studentClass;
-        }
+     if (viewClass) {
 
-        if (viewSection) {
-            viewSection.textContent = section;
-        }
+    viewClass.textContent =
+        formatClassSection(
+            studentClass,
+            section
+        );
+}
 
         if (viewRoll) {
             viewRoll.textContent = rollNumber;
