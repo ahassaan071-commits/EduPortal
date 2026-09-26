@@ -18513,10 +18513,18 @@ async function deleteFeeRecord(
 }
 
 // ==========================================
-// EDIT / ADD REMAINING FEE PAYMENT
+// CUSTOM FEE PAYMENT MODAL
+// NO BROWSER PROMPT
 // ==========================================
 
-async function editFeePayment(recordId) {
+let currentFeePaymentRecord = null;
+
+
+// ==========================================
+// OPEN FEE PAYMENT FORM
+// ==========================================
+
+async function openFeePaymentForm(recordId) {
 
     if (!recordId) {
         alert("Fee record ID is missing.");
@@ -18527,20 +18535,18 @@ async function editFeePayment(recordId) {
         typeof supabaseClient ===
         "undefined"
     ) {
-        alert(
-            "Supabase connection is missing."
-        );
+        alert("Supabase connection is missing.");
         return;
     }
 
 
     // ==========================================
-    // LOAD CURRENT FEE RECORD
+    // LOAD FEE RECORD
     // ==========================================
 
     const {
         data: feeRecord,
-        error: loadError
+        error
     } =
         await supabaseClient
             .from("fee_records")
@@ -18552,173 +18558,15 @@ async function editFeePayment(recordId) {
             .maybeSingle();
 
 
-    if (
-        loadError ||
-        !feeRecord
-    ) {
-
-        console.error(
-            "FEE LOAD ERROR:",
-            loadError
-        );
-
-        alert(
-            "Unable to load fee record."
-        );
-
-        return;
-    }
-
-
-    // ==========================================
-    // CURRENT VALUES
-    // ==========================================
-
-    const totalFee =
-        Number(
-            feeRecord.fee_amount || 0
-        );
-
-    const alreadyPaid =
-        Number(
-            feeRecord.paid_amount || 0
-        );
-
-    const remaining =
-        Math.max(
-            totalFee - alreadyPaid,
-            0
-        );
-
-
-    // ==========================================
-    // ALREADY FULLY PAID
-    // ==========================================
-
-    if (remaining <= 0) {
-
-        alert(
-            "This fee is already fully Paid. ✅"
-        );
-
-        return;
-    }
-
-
-    // ==========================================
-    // ASK ADDITIONAL PAYMENT
-    // ==========================================
-
-
-
-    if (
-        paymentInput === null
-    ) {
-        return;
-    }
-
-
-    const additionalPayment =
-        Number(paymentInput);
-
-
-    // ==========================================
-    // VALIDATION
-    // ==========================================
-
-    if (
-        !Number.isFinite(
-            additionalPayment
-        ) ||
-        additionalPayment <= 0
-    ) {
-
-        alert(
-            "Please enter a valid payment amount."
-        );
-
-        return;
-    }
-
-
-    if (
-        additionalPayment >
-        remaining
-    ) {
-
-        alert(
-            "Payment cannot be greater than remaining fee.\n\n" +
-
-            "Remaining: Rs. " +
-            remaining.toLocaleString()
-        );
-
-        return;
-    }
-
-
-    // ==========================================
-    // CALCULATE NEW VALUES
-    // ==========================================
-
-    const newPaidAmount =
-        alreadyPaid +
-        additionalPayment;
-
-    const newRemainingAmount =
-        Math.max(
-            totalFee -
-            newPaidAmount,
-            0
-        );
-
-    const newStatus =
-        newRemainingAmount === 0
-            ? "Paid"
-            : "Partial";
-
-
-    // ==========================================
-    // UPDATE SUPABASE
-    // ==========================================
-
-    const {
-        error
-    } =
-        await supabaseClient
-            .from("fee_records")
-            .update({
-
-                paid_amount:
-                    newPaidAmount,
-
-                remaining_amount:
-                    newRemainingAmount,
-
-                status:
-                    newStatus,
-
-                payment_date:
-                    new Date()
-                        .toISOString()
-                        .split("T")[0]
-
-            })
-            .eq(
-                "id",
-                String(recordId)
-            );
-
-
     if (error) {
 
         console.error(
-            "FEE PAYMENT UPDATE ERROR:",
+            "FEE PAYMENT LOAD ERROR:",
             error
         );
 
         alert(
-            "Payment Update Error:\n\n" +
+            "Unable to load fee record.\n\n" +
             error.message
         );
 
@@ -18726,82 +18574,18 @@ async function editFeePayment(recordId) {
     }
 
 
-    // ==========================================
-    // REFRESH TABLE
-    // ==========================================
-
-    await renderFeeRecords();
-
-
-    alert(
-        "Payment updated successfully! ✅\n\n" +
-
-        "Paid: Rs. " +
-        newPaidAmount.toLocaleString() +
-
-        "\nRemaining: Rs. " +
-        newRemainingAmount.toLocaleString()
-    );
-
-}
-
-// ==========================================
-// RECORD FEE PAYMENT - FULL / PARTIAL
-// ==========================================
-
-async function markFeeAsPaid(recordId) {
-
-    if (!recordId) {
-        alert("Fee record ID is missing.");
-        return;
-    }
-
-    if (
-        typeof supabaseClient ===
-        "undefined"
-    ) {
-        alert(
-            "Supabase connection is missing."
-        );
-        return;
-    }
-
-    // ==========================================
-    // LOAD CURRENT FEE RECORD
-    // ==========================================
-
-    const {
-        data: feeRecord,
-        error: loadError
-    } =
-        await supabaseClient
-            .from("fee_records")
-            .select("*")
-            .eq(
-                "id",
-                String(recordId)
-            )
-            .maybeSingle();
-
-    if (
-        loadError ||
-        !feeRecord
-    ) {
-
-        console.error(
-            "FEE LOAD ERROR:",
-            loadError
-        );
+    if (!feeRecord) {
 
         alert(
-            "Unable to load fee record."
+            "Fee record not found."
         );
 
         return;
     }
 
+
     // ==========================================
-    // CURRENT VALUES
+    // CURRENT FEE VALUES
     // ==========================================
 
     const totalFee =
@@ -18816,13 +18600,11 @@ async function markFeeAsPaid(recordId) {
 
     const remaining =
         Math.max(
-            totalFee - alreadyPaid,
+            totalFee -
+            alreadyPaid,
             0
         );
 
-    // ==========================================
-    // ALREADY PAID
-    // ==========================================
 
     if (remaining <= 0) {
 
@@ -18833,152 +18615,731 @@ async function markFeeAsPaid(recordId) {
         return;
     }
 
+
+    currentFeePaymentRecord = {
+        id: String(recordId),
+        totalFee: totalFee,
+        alreadyPaid: alreadyPaid,
+        remaining: remaining
+    };
+
+
     // ==========================================
-    // ASK PAYMENT AMOUNT
+    // REMOVE OLD MODAL
+    // ==========================================
+
+    const oldModal =
+        document.getElementById(
+            "feePaymentModal"
+        );
+
+    if (oldModal) {
+        oldModal.remove();
+    }
+
+
+    // ==========================================
+    // CREATE MODAL
+    // ==========================================
+
+    const modal =
+        document.createElement("div");
+
+    modal.id =
+        "feePaymentModal";
+
+    modal.style.cssText = `
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.55);
+        backdrop-filter: blur(4px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+        padding: 20px;
+    `;
+
+
+    modal.innerHTML = `
+
+        <div
+            style="
+                width:100%;
+                max-width:520px;
+                background:#ffffff;
+                border-radius:16px;
+                box-shadow:0 20px 50px rgba(0,0,0,.20);
+                overflow:hidden;
+                font-family:inherit;
+            "
+        >
+
+            <!-- HEADER -->
+
+            <div
+                style="
+                    display:flex;
+                    align-items:center;
+                    justify-content:space-between;
+                    padding:20px 24px;
+                    border-bottom:1px solid #e5e7eb;
+                "
+            >
+
+                <div>
+
+                    <h3
+                        style="
+                            margin:0;
+                            font-size:20px;
+                            font-weight:700;
+                            color:#111827;
+                        "
+                    >
+                        Add Fee Payment
+                    </h3>
+
+                    <p
+                        style="
+                            margin:5px 0 0;
+                            font-size:13px;
+                            color:#6b7280;
+                        "
+                    >
+                        Add remaining fee payment
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="closeFeePaymentModal"
+                    style="
+                        width:36px;
+                        height:36px;
+                        border:none;
+                        border-radius:10px;
+                        background:#f3f4f6;
+                        color:#374151;
+                        cursor:pointer;
+                        font-size:18px;
+                    "
+                >
+                    ✕
+                </button>
+
+            </div>
+
+
+            <!-- BODY -->
+
+            <div
+                style="
+                    padding:24px;
+                "
+            >
+
+                <!-- SUMMARY -->
+
+                <div
+                    style="
+                        display:grid;
+                        grid-template-columns:
+                            repeat(3,1fr);
+                        gap:12px;
+                        margin-bottom:22px;
+                    "
+                >
+
+                    <div
+                        style="
+                            background:#f8fafc;
+                            border:1px solid #e5e7eb;
+                            border-radius:12px;
+                            padding:14px;
+                        "
+                    >
+
+                        <div
+                            style="
+                                font-size:12px;
+                                color:#6b7280;
+                                margin-bottom:5px;
+                            "
+                        >
+                            Total Fee
+                        </div>
+
+                        <strong>
+                            Rs.
+                            ${totalFee.toLocaleString()}
+                        </strong>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            background:#f8fafc;
+                            border:1px solid #e5e7eb;
+                            border-radius:12px;
+                            padding:14px;
+                        "
+                    >
+
+                        <div
+                            style="
+                                font-size:12px;
+                                color:#6b7280;
+                                margin-bottom:5px;
+                            "
+                        >
+                            Already Paid
+                        </div>
+
+                        <strong
+                            style="color:#16a34a;"
+                        >
+                            Rs.
+                            ${alreadyPaid.toLocaleString()}
+                        </strong>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            background:#fff7ed;
+                            border:1px solid #fed7aa;
+                            border-radius:12px;
+                            padding:14px;
+                        "
+                    >
+
+                        <div
+                            style="
+                                font-size:12px;
+                                color:#9a3412;
+                                margin-bottom:5px;
+                            "
+                        >
+                            Remaining
+                        </div>
+
+                        <strong
+                            id="feePaymentRemainingPreview"
+                            style="color:#ea580c;"
+                        >
+                            Rs.
+                            ${remaining.toLocaleString()}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PAYMENT AMOUNT -->
+
+                <div
+                    style="margin-bottom:18px;"
+                >
+
+                    <label
+                        style="
+                            display:block;
+                            margin-bottom:8px;
+                            font-size:14px;
+                            font-weight:600;
+                            color:#374151;
+                        "
+                    >
+                        Additional Payment Amount
+                        <span style="color:#dc2626;">
+                            *
+                        </span>
+                    </label>
+
+
+                    <input
+                        type="number"
+                        id="feePaymentAmount"
+                        min="1"
+                        max="${remaining}"
+                        step="1"
+                        placeholder="Enter payment amount"
+                        style="
+                            width:100%;
+                            box-sizing:border-box;
+                            padding:12px 14px;
+                            border:1px solid #d1d5db;
+                            border-radius:10px;
+                            outline:none;
+                            font-size:14px;
+                            font-family:inherit;
+                        "
+                    >
+
+
+                    <div
+                        id="feePaymentValidation"
+                        style="
+                            display:none;
+                            margin-top:7px;
+                            font-size:12px;
+                            color:#dc2626;
+                        "
+                    ></div>
+
+                </div>
+
+
+                <!-- PAYMENT DATE -->
+
+                <div>
+
+                    <label
+                        style="
+                            display:block;
+                            margin-bottom:8px;
+                            font-size:14px;
+                            font-weight:600;
+                            color:#374151;
+                        "
+                    >
+                        Payment Date
+                    </label>
+
+
+                    <input
+                        type="date"
+                        id="feePaymentDate"
+                        value="${
+                            new Date()
+                                .toISOString()
+                                .split("T")[0]
+                        }"
+                        style="
+                            width:100%;
+                            box-sizing:border-box;
+                            padding:12px 14px;
+                            border:1px solid #d1d5db;
+                            border-radius:10px;
+                            outline:none;
+                            font-size:14px;
+                            font-family:inherit;
+                        "
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- FOOTER -->
+
+            <div
+                style="
+                    display:flex;
+                    justify-content:flex-end;
+                    gap:10px;
+                    padding:18px 24px;
+                    border-top:1px solid #e5e7eb;
+                    background:#fafafa;
+                "
+            >
+
+                <button
+                    type="button"
+                    id="cancelFeePaymentBtn"
+                    style="
+                        padding:11px 18px;
+                        border:none;
+                        border-radius:9px;
+                        background:#f3f4f6;
+                        color:#374151;
+                        font-size:14px;
+                        font-weight:600;
+                        cursor:pointer;
+                    "
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="button"
+                    id="saveFeePaymentBtn"
+                    style="
+                        padding:11px 20px;
+                        border:none;
+                        border-radius:9px;
+                        background:#2563eb;
+                        color:white;
+                        font-size:14px;
+                        font-weight:600;
+                        cursor:pointer;
+                    "
+                >
+                    💾 Save Payment
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    document.body.appendChild(
+        modal
+    );
+
+
+    // ==========================================
+    // GET INPUTS
     // ==========================================
 
     const paymentInput =
-        prompt(
-            "Enter payment amount.\n\n" +
-            "Total Fee: Rs. " +
-            totalFee.toLocaleString() +
-            "\nAlready Paid: Rs. " +
-            alreadyPaid.toLocaleString() +
-            "\nRemaining: Rs. " +
-            remaining.toLocaleString()
+        document.getElementById(
+            "feePaymentAmount"
         );
-
-    if (
-        paymentInput === null
-    ) {
-        return;
-    }
-
-    const paymentAmount =
-        Number(paymentInput);
-
-    // ==========================================
-    // VALIDATION
-    // ==========================================
-
-    if (
-        !Number.isFinite(paymentAmount) ||
-        paymentAmount <= 0
-    ) {
-
-        alert(
-            "Please enter a valid payment amount."
-        );
-
-        return;
-    }
-
-    if (
-        paymentAmount > remaining
-    ) {
-
-        alert(
-            "Payment cannot be greater than remaining amount.\n\n" +
-            "Remaining: Rs. " +
-            remaining.toLocaleString()
-        );
-
-        return;
-    }
-
-    // ==========================================
-    // NEW TOTALS
-    // ==========================================
-
-    const newPaidAmount =
-        alreadyPaid +
-        paymentAmount;
-
-    const newRemainingAmount =
-        Math.max(
-            totalFee -
-            newPaidAmount,
-            0
-        );
-
-    const newStatus =
-        newRemainingAmount === 0
-            ? "Paid"
-            : "Partial";
 
     const paymentDate =
-        new Date()
-            .toISOString()
-            .split("T")[0];
+        document.getElementById(
+            "feePaymentDate"
+        );
+
+    const remainingPreview =
+        document.getElementById(
+            "feePaymentRemainingPreview"
+        );
+
+    const validation =
+        document.getElementById(
+            "feePaymentValidation"
+        );
+
+
+    // ==========================================
+    // LIVE REMAINING
+    // ==========================================
+
+    paymentInput.addEventListener(
+        "input",
+        function () {
+
+            const amount =
+                Number(
+                    this.value
+                ) || 0;
+
+            const newRemaining =
+                Math.max(
+                    remaining -
+                    amount,
+                    0
+                );
+
+            remainingPreview.textContent =
+                "Rs. " +
+                newRemaining.toLocaleString();
+
+
+            if (
+                amount >
+                remaining
+            ) {
+
+                validation.textContent =
+                    "Payment cannot be greater than remaining fee.";
+
+                validation.style.display =
+                    "block";
+
+            }
+            else {
+
+                validation.style.display =
+                    "none";
+
+            }
+
+        }
+    );
+
+
+    // ==========================================
+    // CLOSE MODAL
+    // ==========================================
+
+    function closeModal() {
+
+        const box =
+            document.getElementById(
+                "feePaymentModal"
+            );
+
+        if (box) {
+            box.remove();
+        }
+
+        currentFeePaymentRecord =
+            null;
+    }
+
+
+    document
+        .getElementById(
+            "closeFeePaymentModal"
+        )
+        .addEventListener(
+            "click",
+            closeModal
+        );
+
+
+    document
+        .getElementById(
+            "cancelFeePaymentBtn"
+        )
+        .addEventListener(
+            "click",
+            closeModal
+        );
+
+
+    modal.addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target ===
+                modal
+            ) {
+
+                closeModal();
+
+            }
+
+        }
+    );
+
 
     // ==========================================
     // SAVE PAYMENT
     // ==========================================
 
-    const {
-        error: updateError
-    } =
-        await supabaseClient
-            .from("fee_records")
-            .update({
+    document
+        .getElementById(
+            "saveFeePaymentBtn"
+        )
+        .addEventListener(
+            "click",
+            async function () {
 
-                paid_amount:
-                    newPaidAmount,
+                const amount =
+                    Number(
+                        paymentInput.value
+                    ) || 0;
 
-                remaining_amount:
-                    newRemainingAmount,
 
-                status:
-                    newStatus,
+                const selectedDate =
+                    paymentDate.value ||
+                    new Date()
+                        .toISOString()
+                        .split("T")[0];
 
-                payment_method:
-                    "Cash",
 
-                payment_date:
-                    paymentDate
+                // VALIDATION
 
-            })
-            .eq(
-                "id",
-                String(recordId)
-            );
+                if (
+                    !Number.isFinite(amount) ||
+                    amount <= 0
+                ) {
 
-    if (updateError) {
+                    validation.textContent =
+                        "Please enter a valid payment amount.";
 
-        console.error(
-            "FEE PAYMENT UPDATE ERROR:",
-            updateError
+                    validation.style.display =
+                        "block";
+
+                    paymentInput.focus();
+
+                    return;
+                }
+
+
+                if (
+                    amount >
+                    remaining
+                ) {
+
+                    validation.textContent =
+                        "Payment cannot be greater than remaining fee.";
+
+                    validation.style.display =
+                        "block";
+
+                    paymentInput.focus();
+
+                    return;
+                }
+
+
+                // NEW VALUES
+
+                const newPaidAmount =
+                    alreadyPaid +
+                    amount;
+
+
+                const newRemainingAmount =
+                    Math.max(
+                        totalFee -
+                        newPaidAmount,
+                        0
+                    );
+
+
+                const newStatus =
+                    newRemainingAmount === 0
+                        ? "Paid"
+                        : "Partial";
+
+
+                const saveButton =
+                    document.getElementById(
+                        "saveFeePaymentBtn"
+                    );
+
+
+                saveButton.disabled =
+                    true;
+
+                saveButton.textContent =
+                    "Saving...";
+
+
+                // SUPABASE UPDATE
+
+                const {
+                    error:
+                        updateError
+                } =
+                    await supabaseClient
+                        .from("fee_records")
+                        .update({
+
+                            paid_amount:
+                                newPaidAmount,
+
+                            remaining_amount:
+                                newRemainingAmount,
+
+                            status:
+                                newStatus,
+
+                            payment_method:
+                                "Cash",
+
+                            payment_date:
+                                selectedDate
+
+                        })
+                        .eq(
+                            "id",
+                            String(recordId)
+                        );
+
+
+                if (updateError) {
+
+                    console.error(
+                        "FEE PAYMENT UPDATE ERROR:",
+                        updateError
+                    );
+
+                    saveButton.disabled =
+                        false;
+
+                    saveButton.textContent =
+                        "💾 Save Payment";
+
+                    validation.textContent =
+                        updateError.message;
+
+                    validation.style.display =
+                        "block";
+
+                    return;
+                }
+
+
+                // CLOSE
+
+                closeModal();
+
+
+                // REFRESH
+
+                await renderFeeRecords();
+
+
+                alert(
+                    "Payment recorded successfully! ✅\n\n" +
+
+                    "Paid Now: Rs. " +
+                    amount.toLocaleString() +
+
+                    "\nTotal Paid: Rs. " +
+                    newPaidAmount.toLocaleString() +
+
+                    "\nRemaining: Rs. " +
+                    newRemainingAmount.toLocaleString() +
+
+                    "\nStatus: " +
+                    newStatus
+                );
+
+            }
         );
 
-        alert(
-            "Fee payment could not be saved.\n\n" +
-            updateError.message
-        );
 
-        return;
-    }
+    paymentInput.focus();
 
-    // ==========================================
-    // REFRESH RECORDS
-    // ==========================================
+}
 
-    await renderFeeRecords();
 
-    // ==========================================
-    // SUCCESS
-    // ==========================================
+// ==========================================
+// MARK FEE AS PAID
+// ==========================================
 
-    alert(
-        "Payment recorded successfully! ✅\n\n" +
-        "Paid Now: Rs. " +
-        paymentAmount.toLocaleString() +
-        "\nTotal Paid: Rs. " +
-        newPaidAmount.toLocaleString() +
-        "\nRemaining: Rs. " +
-        newRemainingAmount.toLocaleString() +
-        "\nStatus: " +
-        newStatus
+async function markFeeAsPaid(
+    recordId
+) {
+
+    await openFeePaymentForm(
+        recordId
     );
+
+}
+
+
+// ==========================================
+// EDIT / ADD REMAINING FEE PAYMENT
+// ==========================================
+
+async function editFeePayment(
+    recordId
+) {
+
+    await openFeePaymentForm(
+        recordId
+    );
+
 }
 // ==========================================
 // FEE MANAGEMENT INITIAL LOAD + REALTIME
