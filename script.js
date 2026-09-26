@@ -18083,59 +18083,19 @@ async function renderFeeRecords() {
     ${record.status || "Unpaid"}
 </td>
 
-          <td>
+         <td>
 
-    ${
-        String(record.status || "").toLowerCase() === "paid"
-            ? `
-                <span
-                    style="
-                        color:#16a34a;
-                        font-weight:600;
-                        margin-right:8px;
-                    "
-                >
-                    Paid ✅
-                </span>
-            `
-            : `
-                <button
-                    type="button"
-                    class="result-action-btn"
-                    style="
-                        background:#16a34a;
-                        color:white;
-                        margin-right:6px;
-                    "
-                    onclick="
-                        markFeeAsPaid(
-                            '${record.id}'
-                        )
-                    "
-                >
-                    💰 Mark as Paid
-                </button>
-            `
-    }
-
-<button
-    type="button"
-    class="result-action-btn"
-    style="
-        background:#eef2ff;
-        color:#4338ca;
-        margin-right:6px;
-    "
-    onclick="
-        editFeePayment(
-            '${record.id}'
-        )
-    "
->
-    ✏️
-</button>
-
- 
+    <button
+        type="button"
+        class="result-action-btn"
+        onclick="
+            editFeeRecord(
+                '${record.id}'
+            )
+        "
+    >
+        ✏️
+    </button>
 
 </td>
 
