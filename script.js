@@ -23376,34 +23376,7 @@ function renderTeacherStudentCards(
     );
 
 }
-// =========================================================
-// LOAD TEACHER STUDENTS WHEN MENU IS OPENED
-// =========================================================
 
-document.addEventListener(
-    "click",
-    function (event) {
-
-        const menu =
-            event.target.closest(
-                "#teacherStudentsMenu"
-            );
-
-        if (!menu) {
-            return;
-        }
-
-        setTimeout(
-            function () {
-
-                renderTeacherMyStudents();
-
-            },
-            50
-        );
-
-    }
-);
 // =========================================================
 // TEACHER - VIEW STUDENT
 // SUPABASE LIVE DATA
