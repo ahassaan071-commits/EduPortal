@@ -18,7 +18,7 @@ body{
     display:block;
     background:linear-gradient(135deg,#2563eb,#1e3a8a);
     padding:0;
-    overflow:hidden;
+    overflow:auto;
 }
 
 .container{
@@ -3939,7 +3939,7 @@ body {
             #e0e7ff
         ) !important;
 
-    overflow: hidden;
+    overflow: auto;
 }
 
 
