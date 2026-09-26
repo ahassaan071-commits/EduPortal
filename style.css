@@ -12329,6 +12329,48 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 
 #loginForm .password-box input {
+    padding-right: 55px !important;
+}
+
+
+#togglePassword {
+    position: absolute;
+
+    right: 17px;
+    top: 50%;
+
+    transform: translateY(-50%) !important;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 30px;
+    height: 30px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-size: 17px;
+
+    opacity: .65;
+
+    transition:
+        opacity .2s ease,
+        background .2s ease;
+}
+
+
+#togglePassword:hover {
+    opacity: 1;
+
+    background: #eff6ff;
+
+    transform: translateY(-50%) !important;
+}
+
+#loginForm .password-box input {
     padding-right: 50px !important;
 }
 
