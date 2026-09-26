@@ -14374,8 +14374,7 @@ document.getElementById("attendanceDateFilter");
 const classFilter =
 document.getElementById("attendanceClassFilter");
 
-const sectionFilter =
-document.getElementById("attendanceSectionFilter");
+
 
 const applyButton =
 document.getElementById("applyAttendanceFilters");
