@@ -18609,21 +18609,6 @@ async function editFeePayment(recordId) {
     // ASK ADDITIONAL PAYMENT
     // ==========================================
 
-    const paymentInput =
-        prompt(
-            "Add Remaining Fee Payment\n\n" +
-
-            "Total Fee: Rs. " +
-            totalFee.toLocaleString() +
-
-            "\nAlready Paid: Rs. " +
-            alreadyPaid.toLocaleString() +
-
-            "\nRemaining: Rs. " +
-            remaining.toLocaleString() +
-
-            "\n\nEnter additional payment amount:"
-        );
 
 
     if (
