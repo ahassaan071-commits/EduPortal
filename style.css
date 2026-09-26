@@ -12190,7 +12190,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     width: 70px !important;
     height: 70px !important;
 
-    margin: 0 auto 15px !important;
+   margin: 0 !important;
 
     display: flex !important;
     align-items: center;
