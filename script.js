@@ -30846,7 +30846,7 @@ document.body.style.height = "auto";
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("loggedInRole");
     localStorage.removeItem("loggedInTeacher");
-    localStorage.removeItem("teacherSessionStart");
+    
 
 
     // ==========================================
@@ -30964,109 +30964,6 @@ document.body.style.height = "auto";
 
     window.scrollTo(0, 0);
 }
-
-
-
-
-/* =========================================================
-   START 10-MINUTE TEACHER SESSION
-========================================================= */
-
-function startTeacherSession() {
-
-    const now =
-        Date.now();
-
-
-    localStorage.setItem(
-        "teacherSessionStart",
-        String(now)
-    );
-
-}
-
-
-/* =========================================================
-   CHECK TEACHER SESSION
-========================================================= */
-
-function checkTeacherSession() {
-
-    const isLoggedIn =
-        localStorage.getItem(
-            "isLoggedIn"
-        );
-
-    const role =
-        localStorage.getItem(
-            "loggedInRole"
-        );
-
-
-    /* Only check Teacher session */
-
-    if (
-        isLoggedIn !== "true" ||
-        role !== "teacher"
-    ) {
-
-        return;
-    }
-
-
-    const sessionStart =
-        Number(
-            localStorage.getItem(
-                "teacherSessionStart"
-            )
-        );
-
-
-    if (!sessionStart) {
-
-        startTeacherSession();
-
-        return;
-    }
-
-
-    const tenMinutes =
-        10 * 60 * 1000;
-
-
-    const sessionExpired =
-        Date.now() -
-        sessionStart >=
-        tenMinutes;
-
-
-    if (sessionExpired) {
-
-        alert(
-            "Your session has expired. Please login again."
-        );
-
-
-        logoutTeacher();
-
-    }
-
-}
-
-
-/* =========================================================
-   CHECK SESSION EVERY 30 SECONDS
-========================================================= */
-
-setInterval(
-    function() {
-
-        checkTeacherSession();
-
-    },
-    30000
-);
-
 
 
 
