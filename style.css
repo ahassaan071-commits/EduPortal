@@ -1393,7 +1393,7 @@ body.dark-mode .progress-bar{
 #studentDashboard{
     position:relative;
     overflow-x:hidden;
-    overflow-y:hidden;
+    overflow-y:visible;
 }
 
 
@@ -1583,7 +1583,8 @@ body.dark-mode .progress-bar{
 
     border-radius:20px;
 
-    overflow:hidden;
+    overflow-y:auto;
+overflow-x:hidden;
 
     margin:25px auto;
 
