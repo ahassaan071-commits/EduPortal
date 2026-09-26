@@ -46506,52 +46506,110 @@ async function loadRealStudentAttendance() {
 
     
 // =========================================
-// CURRENT MONTH
+// ATTENDANCE MONTH DROPDOWN
 // =========================================
 
-const now =
-    new Date();
-
-const currentYear =
-    now.getFullYear();
-
-const currentMonth =
-    String(
-        now.getMonth() + 1
-    ).padStart(2, "0");
-
-const currentMonthKey =
-    currentYear +
-    "-" +
-    currentMonth;
-
-
-// =========================================
-// UPDATE MONTH LABEL
-// =========================================
-
-const monthLabel =
+const monthSelect =
     document.getElementById(
-        "studentAttendanceMonthLabel"
+        "studentAttendanceMonthSelect"
     );
 
-if (monthLabel) {
+const today =
+    new Date();
 
-    monthLabel.textContent =
-        now.toLocaleDateString(
-            "en-US",
-            {
-                month: "long",
-                year: "numeric"
-            }
+const currentMonthKey =
+    today.getFullYear() +
+    "-" +
+    String(
+        today.getMonth() + 1
+    ).padStart(2, "0");
+
+
+// Default current month
+if (
+    !window.studentAttendanceSelectedMonth
+) {
+    window.studentAttendanceSelectedMonth =
+        currentMonthKey;
+}
+
+
+// =========================================
+// CREATE MONTH OPTIONS
+// =========================================
+
+if (
+    monthSelect &&
+    monthSelect.options.length === 0
+) {
+
+    for (
+        let i = 0;
+        i < 12;
+        i++
+    ) {
+
+        const date =
+            new Date(
+                today.getFullYear(),
+                today.getMonth() - i,
+                1
+            );
+
+        const year =
+            date.getFullYear();
+
+        const month =
+            String(
+                date.getMonth() + 1
+            ).padStart(2, "0");
+
+        const monthValue =
+            year + "-" + month;
+
+        const option =
+            document.createElement(
+                "option"
+            );
+
+        option.value =
+            monthValue;
+
+        option.textContent =
+            date.toLocaleDateString(
+                "en-US",
+                {
+                    month: "long",
+                    year: "numeric"
+                }
+            );
+
+        monthSelect.appendChild(
+            option
         );
+    }
 
 }
 
 
 // =========================================
-// ONLY CURRENT MONTH FOR OVERVIEW
+// SET SELECTED MONTH
 // =========================================
+
+if (monthSelect) {
+
+    monthSelect.value =
+        window.studentAttendanceSelectedMonth;
+
+}
+
+
+// =========================================
+// FILTER ATTENDANCE BY MONTH
+// =========================================
+
+const selectedAttendanceMonth =
+    window.studentAttendanceSelectedMonth;
 
 const overviewRecords =
     records.filter(
@@ -46562,10 +46620,37 @@ const overviewRecords =
             ).substring(
                 0,
                 7
-            ) === currentMonthKey;
+            ) === selectedAttendanceMonth;
 
         }
     );
+
+
+// =========================================
+// MONTH CHANGE
+// =========================================
+
+if (
+    monthSelect &&
+    monthSelect.dataset.bound !== "true"
+) {
+
+    monthSelect.addEventListener(
+        "change",
+        function() {
+
+            window.studentAttendanceSelectedMonth =
+                this.value;
+
+            loadRealStudentAttendance();
+
+        }
+    );
+
+    monthSelect.dataset.bound =
+        "true";
+
+}
 
             // =========================================================
 // UPDATE ATTENDANCE OVERVIEW DONUT
