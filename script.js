@@ -6277,18 +6277,19 @@ async function filterAdminStudents() {
     } =
         await supabaseClient
             .from("students")
-            .select(`
-                id,
-                student_id,
-                name,
-                student_class,
-                section,
-                roll_number,
-                date_of_birth,
-                email,
-                mobile,
-                status
-            `)
+           .select(`
+    id,
+    student_id,
+    name,
+    father_name,
+    student_class,
+    section,
+    roll_number,
+    date_of_birth,
+    email,
+    mobile,
+    status
+`)
             .order(
                 "created_at",
                 {
