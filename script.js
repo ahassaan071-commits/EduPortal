@@ -25135,64 +25135,59 @@ async function loadTeacherMyStudents() {
                     .map(
                         function (student, index) {
 
-                            return `
-                                <tr>
+                          return `
+    <tr>
 
-                                    <td>
-                                        ${index + 1}
-                                    </td>
+        <td>
+            ${index + 1}
+        </td>
 
-                                    <td>
-                                        ${
-                                            student.student_id ||
-                                            "-"
-                                        }
-                                    </td>
+        <td>
+            ${
+                student.name ||
+                "-"
+            }
+        </td>
 
-                                    <td>
-                                        ${
-                                            student.name ||
-                                            "-"
-                                        }
-                                    </td>
+        <td>
+            ${
+                student.student_id ||
+                "-"
+            }
+        </td>
 
-                                    <td>
-                                        ${
-                                            student.student_class ||
-                                            "-"
-                                        }
-                                    </td>
+        <td>
+            ${
+                formatClassSection(
+                    student.student_class,
+                    student.section
+                )
+            }
+        </td>
 
-                                    <td>
-                                        ${
-                                            student.section ||
-                                            "-"
-                                        }
-                                    </td>
+        <td>
+            ${
+                student.roll_number ||
+                "-"
+            }
+        </td>
 
-                                    <td>
-                                        ${
-                                            student.roll_number ||
-                                            "-"
-                                        }
-                                    </td>
+        <td>
+            ${
+                student.mobile ||
+                "-"
+            }
+        </td>
 
-                                    <td>
-                                        ${
-                                            student.mobile ||
-                                            "-"
-                                        }
-                                    </td>
+        <td>
+            ${
+                student.status ||
+                "-"
+            }
+        </td>
 
-                                    <td>
-                                        ${
-                                            student.status ||
-                                            "-"
-                                        }
-                                    </td>
-
-                                </tr>
-                            `;
+    </tr>
+`;
                         }
                     )
                     .join("");
