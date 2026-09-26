@@ -18085,23 +18085,7 @@ async function renderFeeRecords() {
 
           <td>
 
-    ${
-        String(record.status || "").toLowerCase() === "paid"
-            ? `
-                <span
-                    style="
-                        color:#16a34a;
-                        font-weight:600;
-                        margin-right:8px;
-                    "
-                >
-                    Paid ✅
-                </span>
-            `
-            : `
-              
-            `
-    }
+   
 
 <button
     type="button"
