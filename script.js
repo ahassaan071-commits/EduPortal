@@ -42566,7 +42566,7 @@ let eduPortalRefreshRunning = false;
 let eduPortalRefreshTimer = null;
 let eduPortalLastRefresh = 0;
 
-const EDUPORTAL_SAFETY_REFRESH = 60000;
+const EDUPORTAL_SAFETY_REFRESH = 10000;
 const EDUPORTAL_REALTIME_DEBOUNCE = 500;
 
 
