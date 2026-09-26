@@ -5212,7 +5212,7 @@ async function renderAdminStudents() {
     tableBody.innerHTML = `
         <tr>
             <td
-                colspan="10"
+                colspan="9"
                 style="text-align:center;"
             >
                 Loading students...
@@ -5233,7 +5233,7 @@ async function renderAdminStudents() {
         tableBody.innerHTML = `
             <tr>
                 <td
-                    colspan="11"
+                    colspan="9"
                     style="text-align:center;"
                 >
                     Supabase connection is missing.
@@ -5278,7 +5278,7 @@ async function renderAdminStudents() {
         tableBody.innerHTML = `
             <tr>
                 <td
-                    colspan="11"
+                    colspan="9"
                     style="text-align:center;"
                 >
                     Unable to load students.
@@ -5304,7 +5304,7 @@ async function renderAdminStudents() {
         tableBody.innerHTML = `
             <tr>
                 <td
-                    colspan="11"
+                    colspan="9"
                     style="text-align:center;"
                 >
                     No students found.
