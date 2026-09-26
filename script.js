@@ -15073,10 +15073,7 @@ const records =
             "attendanceClassFilter"
         );
 
-    const sectionFilter =
-        document.getElementById(
-            "attendanceSectionFilter"
-        );
+   
 
     const dateFilter =
         document.getElementById(
