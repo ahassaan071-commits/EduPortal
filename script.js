@@ -15515,10 +15515,7 @@ async function updateAttendanceStatistics() {
             "attendanceClassFilter"
         );
 
-    const classFilter =
-    document.getElementById(
-        "attendanceClassFilter"
-    );
+  
 
     const dateFilter =
         document.getElementById(
@@ -15526,18 +15523,33 @@ async function updateAttendanceStatistics() {
         );
 
 
-    const selectedClass =
-        classFilter &&
-        classFilter.value
-            ? classFilter.value
-            : "all";
+const selectedClassSection =
+    classFilter &&
+    classFilter.value
+        ? classFilter.value
+        : "all";
 
+let selectedClass = "";
+let selectedSection = "";
 
-    const selectedSection =
-        sectionFilter &&
-        sectionFilter.value
-            ? sectionFilter.value
-            : "all";
+if (
+    selectedClassSection !== "all"
+) {
+
+    const parts =
+        selectedClassSection.split("||");
+
+    selectedClass =
+        String(
+            parts[0] || ""
+        ).trim();
+
+    selectedSection =
+        String(
+            parts[1] || ""
+        ).trim()
+        .toUpperCase();
+}
 
 
     const selectedDate =
@@ -15568,26 +15580,19 @@ async function updateAttendanceStatistics() {
                     );
 
 
-                const classMatch =
-                    selectedClass === "all" ||
-                    studentClass ===
-                        String(
-                            selectedClass
-                        );
+           const classMatch =
+    selectedClassSection === "all" ||
+
+    (
+        studentClass ===
+        selectedClass &&
+
+        studentSection ===
+        selectedSection
+    );
 
 
-                const sectionMatch =
-                    selectedSection === "all" ||
-                    studentSection ===
-                        String(
-                            selectedSection
-                        );
-
-
-                return (
-                    classMatch &&
-                    sectionMatch
-                );
+             return classMatch;
             }
         );
 
