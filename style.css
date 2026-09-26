@@ -12263,13 +12263,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
     margin-bottom: 8px !important;
 
-    color: #1e293b !important;
+    color: #172554 !important;
 
     font-size: 14px !important;
 
-    font-weight: 700 !important;
-}
+    font-weight: 650 !important;
 
+    letter-spacing: .1px;
+}
 
 #loginForm input,
 #loginForm select {
