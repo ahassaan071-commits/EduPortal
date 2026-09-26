@@ -8606,11 +8606,15 @@ const {
         );
 
 if (studentsError) {
+
     console.error(
-        "Error loading students:",
+        "RESULTS STUDENTS LOAD ERROR:",
         studentsError
     );
+
 }
+
+
 // ==========================================
 // BUILD RESULTS CLASS + SECTION DROPDOWN
 // ==========================================
@@ -8622,11 +8626,8 @@ const resultsClassFilter =
 
 if (resultsClassFilter) {
 
-    resultsClassFilter.innerHTML = `
-        <option value="all">
-            All Classes
-        </option>
-    `;
+    const previousValue =
+        resultsClassFilter.value || "all";
 
     const combinations =
         new Map();
@@ -8671,6 +8672,18 @@ if (resultsClassFilter) {
         }
     );
 
+
+    // Clear old options
+
+    resultsClassFilter.innerHTML = `
+        <option value="all">
+            All Classes
+        </option>
+    `;
+
+
+    // Add Class + Section options
+
     Array.from(
         combinations.values()
     )
@@ -8707,11 +8720,31 @@ if (resultsClassFilter) {
         }
     );
 
+
+    // Restore previous selection
+
+    if (
+        Array.from(
+            resultsClassFilter.options
+        ).some(
+            function (option) {
+
+                return (
+                    option.value ===
+                    previousValue
+                );
+
+            }
+        )
+    ) {
+
+        resultsClassFilter.value =
+            previousValue;
+
+    }
+
 }
 
-
-
-    
     // ==========================================
     // LOAD SUBJECTS
     // ==========================================
