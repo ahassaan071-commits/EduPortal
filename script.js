@@ -8602,7 +8602,7 @@ const {
     await supabaseClient
         .from("students")
         .select(
-            "id, student_id, name, full_name, student_class, section"
+            "id, student_id, name,student_class, section"
         );
 
 if (studentsError) {
@@ -41006,7 +41006,7 @@ const {
     await supabaseClient
         .from("students")
         .select(
-            "id, student_id, name, student_class, section"
+            "id, student_id, name, full_name, student_class, section"
         );
 
 
