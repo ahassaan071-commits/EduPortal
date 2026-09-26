@@ -3910,41 +3910,46 @@ body.dark-mode #notificationPanel .notification-box::-webkit-scrollbar-track {
 body.dark-mode #notificationPanel .notification-box::-webkit-scrollbar-thumb {
     background: #475569;
 }
-/* ==============================
-   EDUPORTAL LOGIN - PROFESSIONAL
-============================== */
+/* =========================================================
+   EDUPORTAL - PROFESSIONAL LOGIN PAGE
+   ========================================================= */
 
 body {
-
     min-height: 100vh;
-
+    min-height: 100dvh;
     margin: 0;
-
     padding: 20px !important;
-
     box-sizing: border-box;
 
     background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(96,165,250,.30),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 90%,
+            rgba(167,139,250,.22),
+            transparent 32%
+        ),
         linear-gradient(
             135deg,
-            #eaf3ff,
-            #dbeafe
+            #dbeafe,
+            #e0e7ff
         ) !important;
 
-    overflow-x: hidden;
-
+    overflow: hidden;
 }
 
 
-/* =========================================
+/* =========================================================
    MAIN LOGIN CONTAINER
-========================================= */
+   ========================================================= */
 
 .container {
-
     width: min(1180px, 100%);
-
     height: calc(100vh - 40px);
+    height: calc(100dvh - 40px);
 
     min-height: 650px;
 
@@ -3956,25 +3961,25 @@ body {
 
     border-radius: 26px;
 
-    box-shadow:
-        0 30px 80px rgba(15, 23, 42, .20);
+    background: #ffffff;
 
+    box-shadow:
+        0 30px 80px rgba(15,23,42,.20),
+        0 8px 30px rgba(37,99,235,.08);
 }
 
 
-/* =========================================
+/* =========================================================
    LEFT CAMPUS PANEL
-========================================= */
+   ========================================================= */
 
 .login-side-panel {
-
     position: relative;
 
     width: 50% !important;
-
     height: 100%;
 
-    min-height: 650px;
+    min-height: 0 !important;
 
     flex-shrink: 0;
 
@@ -3983,22 +3988,21 @@ body {
     background-image:
         linear-gradient(
             135deg,
-            rgba(15, 65, 130, .18),
-            rgba(15, 23, 42, .08)
+            rgba(15,23,42,.04),
+            rgba(37,99,235,.08)
         ),
         url("eduportal-campus.png");
 
     background-size: cover;
-
     background-position: center;
 
+    border-radius: 26px 0 0 26px;
 }
 
 
-/* Clean blue overlay */
+/* Dark cinematic overlay */
 
 .login-side-panel::after {
-
     content: "";
 
     position: absolute;
@@ -4008,40 +4012,36 @@ body {
     background:
         linear-gradient(
             135deg,
-            rgba(7, 54, 112, .12),
-            rgba(37, 99, 235, .04),
-            transparent
+            rgba(15,23,42,.05),
+            rgba(37,99,235,.04),
+            rgba(15,23,42,.12)
         );
 
     pointer-events: none;
 
+    z-index: 1;
 }
 
 
-/* =========================================
-   SMART EDUCATIONAL TEXT
-========================================= */
+/* =========================================================
+   CAMPUS TEXT
+   ========================================================= */
 
 .campus-overlay {
-
     position: absolute;
 
-    z-index: 3;
+    z-index: 5;
 
-    left: 70px;
+    left: 68px;
+    top: 145px;
 
-    top: 150px;
-
-    width: calc(100% - 120px);
-
+    width: 500px;
+    max-width: calc(100% - 100px);
 }
 
 
-/* Main heading */
-
 .campus-overlay h2 {
-
-    margin: 0;
+    margin: 0 !important;
 
     font-family:
         "Segoe UI",
@@ -4049,112 +4049,106 @@ body {
         Arial,
         sans-serif;
 
-    font-size: 46px;
+    font-size: 46px !important;
 
-    line-height: 1.12;
+    line-height: 1.10 !important;
 
-    font-weight: 800;
+    font-weight: 800 !important;
 
     letter-spacing: -1.5px;
 
-    color: #ffffff;
+    color: #ffffff !important;
 
     text-shadow:
-        0 4px 18px rgba(0,0,0,.22);
-
+        0 4px 18px rgba(0,0,0,.28);
 }
 
-
-/* Second line */
 
 .campus-overlay h2 span {
-
     display: block;
 
-    margin-top: 4px;
+    margin-top: 5px;
 
-    color: #67b7ff;
+    color: #67b7ff !important;
 
     font-weight: 800;
-
 }
 
 
-/* =========================================
+/* =========================================================
    RIGHT LOGIN PANEL
-========================================= */
+   ========================================================= */
 
 .login-box {
-
     position: relative;
 
     width: 50% !important;
-
     height: 100%;
 
-    min-height: 650px;
+    min-height: 0 !important;
 
     box-sizing: border-box;
 
-    padding: 55px 65px !important;
+    padding: 48px 64px !important;
 
     background: #ffffff !important;
 
     border-radius: 0 26px 26px 0 !important;
 
     overflow-y: auto;
+    overflow-x: hidden;
 
     display: flex;
 
     flex-direction: column;
 
     align-items: center;
-
 }
 
 
-/* =========================================
-   LOGO
-========================================= */
+/* =========================================================
+   HIDE OLD LOGIN TABS
+   IDs remain available for JavaScript
+   ========================================================= */
+
+.login-box .tabs {
+    display: none !important;
+}
+
+
+/* =========================================================
+   EDUPORTAL LOGO
+   ========================================================= */
 
 .login-box .logo {
-
     width: 100%;
-
-    max-width: 520px;
+    max-width: 560px;
 
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
     gap: 18px;
 
-    margin: 5px 0 50px;
-
+    margin: 2px 0 48px !important;
 }
 
 
-/* Graduation cap */
-
 .login-box .logo-circle {
-
     width: 64px !important;
-
     height: 64px !important;
 
-    min-width: 64px;
+    min-width: 64px !important;
 
     margin: 0 !important;
 
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
-    border-radius: 18px;
+    border-radius: 50%;
 
     background:
         linear-gradient(
@@ -4163,20 +4157,26 @@ body {
             #dbeafe
         ) !important;
 
-    border: 1px solid #bfdbfe;
+    border: 2px solid #bfdbfe !important;
 
     box-shadow:
-        0 10px 25px rgba(37,99,235,.12);
+        0 10px 28px rgba(37,99,235,.13);
 
-    font-size: 30px;
+    font-size: 29px;
 
+    transform: none !important;
 }
 
 
-/* EduPortal */
+.login-box .logo-circle:hover {
+    transform: none !important;
+
+    box-shadow:
+        0 10px 28px rgba(37,99,235,.13);
+}
+
 
 .login-box .logo h1 {
-
     margin: 0 !important;
 
     font-family:
@@ -4187,61 +4187,48 @@ body {
 
     font-size: 39px !important;
 
-    font-weight: 800;
+    line-height: 1;
+
+    font-weight: 800 !important;
 
     letter-spacing: -1.5px;
 
     color: #102044 !important;
-
 }
 
-
-/* Blue part */
 
 .login-box .logo h1 span {
-
-    color: #2563eb;
-
+    color: #2563eb !important;
 }
 
-
-/* Hide old Student Portal text if present */
 
 .login-box .logo p {
-
     display: none !important;
-
 }
 
 
-/* =========================================
-   FORM
-========================================= */
+/* =========================================================
+   LOGIN FORM
+   ========================================================= */
 
 #loginForm {
-
     width: 100%;
-
-    max-width: 520px;
-
+    max-width: 560px;
 }
 
 
-/* Input group */
+/* =========================================================
+   INPUT GROUPS
+   ========================================================= */
 
 #loginForm .input-group {
-
     width: 100%;
 
     margin-bottom: 22px !important;
-
 }
 
 
-/* Labels */
-
 #loginForm .input-group label {
-
     display: block;
 
     margin-bottom: 9px !important;
@@ -4257,15 +4244,15 @@ body {
     font-weight: 650;
 
     color: #172554;
-
 }
 
 
-/* Inputs + select */
+/* =========================================================
+   INPUTS + SELECT
+   ========================================================= */
 
 #loginForm input,
 #loginForm select {
-
     width: 100%;
 
     height: 58px;
@@ -4282,13 +4269,13 @@ body {
 
     color: #172033;
 
-    font-size: 16px;
-
     font-family:
         "Segoe UI",
         "Inter",
         Arial,
         sans-serif;
+
+    font-size: 16px;
 
     outline: none;
 
@@ -4296,24 +4283,24 @@ body {
         border-color .2s ease,
         box-shadow .2s ease,
         background .2s ease;
-
 }
 
-
-/* Placeholder */
 
 #loginForm input::placeholder {
-
     color: #8a99b3;
-
 }
 
 
-/* Focus */
+#loginForm input:hover,
+#loginForm select:hover {
+    transform: none !important;
+
+    border-color: #bfdbfe !important;
+}
+
 
 #loginForm input:focus,
 #loginForm select:focus {
-
     background: #ffffff !important;
 
     border-color: #3b82f6 !important;
@@ -4321,64 +4308,54 @@ body {
     box-shadow:
         0 0 0 4px rgba(37,99,235,.08);
 
-}
-
-
-/* No movement on input hover */
-
-#loginForm input:hover,
-#loginForm select:hover {
-
     transform: none !important;
-
 }
 
 
-/* =========================================
+/* =========================================================
    PASSWORD
-========================================= */
+   ========================================================= */
 
 #loginForm .password-box {
-
-    width: 100%;
-
     position: relative;
 
+    width: 100%;
 }
 
 
 #loginForm .password-box input {
-
     padding-right: 55px !important;
-
 }
 
 
 #togglePassword {
-
     position: absolute;
 
     right: 17px;
-
     top: 50%;
 
-    transform: translateY(-50%);
+    transform: translateY(-50%) !important;
 
     cursor: pointer;
 
     font-size: 19px;
 
     opacity: .70;
-
 }
 
 
-/* =========================================
+#togglePassword:hover {
+    opacity: 1;
+
+    transform: translateY(-50%) !important;
+}
+
+
+/* =========================================================
    LOGIN OPTIONS
-========================================= */
+   ========================================================= */
 
 .login-options {
-
     width: 100%;
 
     display: flex;
@@ -4387,15 +4364,11 @@ body {
 
     justify-content: space-between;
 
-    margin: 2px 0 25px;
-
+    margin: 2px 0 25px !important;
 }
 
 
-/* Remember */
-
 .login-options .remember-box {
-
     display: flex;
 
     align-items: center;
@@ -4404,57 +4377,63 @@ body {
 
     margin: 0 !important;
 
-    cursor: pointer;
+    height: auto;
 
+    cursor: pointer;
 }
 
 
 .login-options .remember-box input {
-
     width: 18px !important;
-
     height: 18px !important;
 
     min-width: 18px !important;
-
     min-height: 18px !important;
 
-    padding: 0 !important;
-
     margin: 0 !important;
+    padding: 0 !important;
 
     accent-color: #2563eb;
 
+    cursor: pointer;
 }
 
 
 .login-options .remember-box span {
+    font-family:
+        "Segoe UI",
+        "Inter",
+        Arial,
+        sans-serif;
 
     font-size: 15px;
 
     color: #334155;
 
     white-space: nowrap;
-
 }
 
 
-/* =========================================
-   FORGOT PASSWORD
-========================================= */
+/* =========================================================
+   ADMIN FORGOT PASSWORD
+   ========================================================= */
 
 #adminForgotPasswordBox {
+    display: none;
 
     margin: 0 !important;
-
     padding: 0 !important;
-
 }
 
 
 #adminForgotPasswordBox a {
-
     color: #2563eb;
+
+    font-family:
+        "Segoe UI",
+        "Inter",
+        Arial,
+        sans-serif;
 
     font-size: 15px;
 
@@ -4463,22 +4442,22 @@ body {
     text-decoration: none;
 
     white-space: nowrap;
-
 }
 
 
 #adminForgotPasswordBox a:hover {
+    color: #1d4ed8;
 
     text-decoration: underline;
-
 }
 
 
-/* =========================================
+/* =========================================================
    LOGIN BUTTON
-========================================= */
+   ========================================================= */
 
 #loginBtn {
+    position: relative;
 
     width: 100%;
 
@@ -4493,7 +4472,7 @@ body {
     background:
         linear-gradient(
             135deg,
-            #2696ff,
+            #2563eb,
             #145cf5
         );
 
@@ -4519,38 +4498,34 @@ body {
     transition:
         box-shadow .2s ease,
         background .2s ease;
-
 }
 
 
-/* IMPORTANT:
-   Button will NOT move */
+/* NO MOVEMENT */
 
 #loginBtn:hover {
-
     transform: none !important;
 
     box-shadow:
         0 14px 30px rgba(37,99,235,.28);
-
 }
 
 
-.login-arrow {
-
-    margin-left: 12px;
-
-    font-size: 22px;
-
+#loginBtn:active {
+    transform: none !important;
 }
 
 
-/* =========================================
+#loginBtn::before {
+    display: none !important;
+}
+
+
+/* =========================================================
    MESSAGE
-========================================= */
+   ========================================================= */
 
-#message {
-
+#loginForm #message {
     width: 100%;
 
     margin: 12px 0 0;
@@ -4558,167 +4533,222 @@ body {
     text-align: center;
 
     font-size: 14px;
-
 }
 
 
-/* =========================================
-   HIDDEN TABS
-========================================= */
+/* =========================================================
+   REGISTER FORM
+   Existing JS remains compatible
+   ========================================================= */
 
-.login-box .tabs {
+#registerForm {
+    width: 100%;
 
-    display: none !important;
+    max-width: 560px;
 
+    display: flex;
+
+    flex-direction: column;
+
+    max-height: 520px;
+
+    overflow-y: auto;
+
+    padding-right: 8px;
 }
 
 
-/* =========================================
-   DARK MODE LOGIN
-========================================= */
+#registerForm::-webkit-scrollbar {
+    width: 6px;
+}
+
+
+#registerForm::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+#registerForm::-webkit-scrollbar-thumb {
+    background: #2f66e8;
+
+    border-radius: 10px;
+}
+
+
+/* =========================================================
+   REMOVE LOGIN CARD MOVEMENT
+   ========================================================= */
+
+.login-box,
+.login-side-panel {
+    transform: none !important;
+}
+
+
+.login-box:hover,
+.login-side-panel:hover {
+    transform: none !important;
+}
+
+
+/* =========================================================
+   DARK MODE - KEEP LOGIN LIGHT
+   ========================================================= */
 
 body.dark-mode {
-
     background:
         linear-gradient(
             135deg,
             #dbeafe,
             #eff6ff
         ) !important;
-
 }
 
 
 body.dark-mode .login-box {
-
     background: #ffffff !important;
-
 }
 
 
-/* =========================================
+body.dark-mode .login-side-panel {
+    filter: none !important;
+}
+
+
+/* =========================================================
    RESPONSIVE
-========================================= */
+   ========================================================= */
 
 @media (max-width: 900px) {
 
     body {
-
         padding: 12px !important;
 
+        overflow-y: auto;
     }
 
 
     .container {
-
         height: auto;
 
         min-height: calc(100vh - 24px);
 
+        min-height: calc(100dvh - 24px);
+
         flex-direction: column;
 
         border-radius: 20px;
-
     }
 
 
     .login-side-panel {
-
         width: 100% !important;
 
         height: 300px;
 
-        min-height: 300px;
+        min-height: 300px !important;
 
         border-radius: 20px 20px 0 0;
-
     }
 
 
     .campus-overlay {
-
         left: 35px;
 
-        top: 90px;
+        top: 80px;
 
         width: calc(100% - 70px);
-
     }
 
 
     .campus-overlay h2 {
-
-        font-size: 34px;
-
+        font-size: 36px !important;
     }
 
 
     .login-box {
-
         width: 100% !important;
 
-        min-height: auto;
+        height: auto;
 
-        padding: 40px 30px !important;
+        min-height: 520px !important;
+
+        padding: 42px 32px !important;
 
         border-radius: 0 0 20px 20px !important;
 
+        overflow: visible;
     }
-
 }
 
 
 @media (max-width: 520px) {
 
+    body {
+        padding: 8px !important;
+    }
+
+
+    .container {
+        border-radius: 16px;
+    }
+
+
+    .login-side-panel {
+        height: 240px;
+
+        min-height: 240px !important;
+
+        border-radius: 16px 16px 0 0;
+    }
+
+
+    .campus-overlay {
+        left: 25px;
+
+        top: 65px;
+
+        width: calc(100% - 50px);
+    }
+
+
     .campus-overlay h2 {
-
-        font-size: 29px;
-
+        font-size: 29px !important;
     }
 
 
     .login-box {
-
         padding: 32px 22px !important;
 
+        border-radius: 0 0 16px 16px !important;
     }
 
 
     .login-box .logo {
-
-        margin-bottom: 35px;
-
-    }
-
-
-    .login-box .logo h1 {
-
-        font-size: 31px !important;
-
+        margin-bottom: 35px !important;
     }
 
 
     .login-box .logo-circle {
-
         width: 54px !important;
-
         height: 54px !important;
 
-        min-width: 54px;
+        min-width: 54px !important;
 
         font-size: 25px;
+    }
 
+
+    .login-box .logo h1 {
+        font-size: 31px !important;
     }
 
 
     .login-options {
-
         flex-wrap: wrap;
 
         gap: 12px;
-
     }
-
 }
 /* =========================================
    CREATE NEW LOGIN MODAL
