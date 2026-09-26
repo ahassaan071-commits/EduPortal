@@ -1616,27 +1616,16 @@ if (
                 "profileStudentClass"
             );
 
-       if (profileStudentClass) {
+     if (profileStudentClass) {
 
     profileStudentClass.textContent =
-        student.student_class ||
-        student.studentClass ||
-        "Not Assigned";
+        formatClassSection(
+            student.student_class ||
+            student.studentClass,
+
+            student.section
+        );
 }
-
-
-        const profileSectionName =
-            document.getElementById(
-                "profileSectionName"
-            );
-
-        if (profileSectionName) {
-
-            profileSectionName.textContent =
-                student.section ||
-                "—";
-        }
-
 
         const profileRollNumber =
             document.getElementById(
