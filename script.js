@@ -14816,7 +14816,7 @@ async function renderAttendanceTable() {
 
     tableBody.innerHTML = `
         <tr>
-            <td colspan="7"
+            <td colspan="6"
                 style="text-align:center;padding:35px;">
                 Loading attendance...
             </td>
@@ -14839,7 +14839,7 @@ async function renderAttendanceTable() {
 
         tableBody.innerHTML = `
             <tr>
-                <td colspan="8"
+                <td colspan="6"
                     style="text-align:center;padding:35px;">
                     Supabase connection missing.
                 </td>
@@ -14875,7 +14875,7 @@ async function renderAttendanceTable() {
 
         tableBody.innerHTML = `
             <tr>
-                <td colspan="8"
+                <td colspan="6"
                     style="text-align:center;padding:35px;">
                     Unable to load students.
                 </td>
@@ -15110,7 +15110,7 @@ if (attendanceError) {
     tableBody.innerHTML = `
         <tr>
             <td
-                colspan="8"
+                colspan="6"
                 style="text-align:center;padding:35px;"
             >
                 Unable to load attendance.
@@ -15334,7 +15334,7 @@ if (
 
         tableBody.innerHTML = `
             <tr>
-                <td colspan="8"
+                <td colspan="6"
                     style="text-align:center;padding:40px;">
                     No students found.
                 </td>
