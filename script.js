@@ -6408,10 +6408,10 @@ async function filterAdminStudents() {
                 option.value =
                     `${item.className}||${item.section}`;
 
-                option.textContent =
-                    item.section
-                        ? `Class ${item.className}${item.section}`
-                        : `Class ${item.className}`;
+              option.textContent =
+    item.section
+        ? `Class ${item.className} ${item.section}`
+        : `Class ${item.className}`;
 
                 classFilter.appendChild(
                     option
@@ -24912,7 +24912,7 @@ async function loadTeacherMyStudents() {
             tableBody.innerHTML = `
                 <tr>
                     <td
-                        colspan="8"
+                        colspan="7"
                         style="
                             text-align:center;
                             padding:40px;
@@ -24962,7 +24962,7 @@ async function loadTeacherMyStudents() {
             tableBody.innerHTML = `
                 <tr>
                     <td
-                        colspan="8"
+                        colspan="7"
                         style="
                             text-align:center;
                             padding:50px;
@@ -25019,7 +25019,7 @@ async function loadTeacherMyStudents() {
             tableBody.innerHTML = `
                 <tr>
                     <td
-                        colspan="8"
+                        colspan="7"
                         style="
                             text-align:center;
                             padding:40px;
