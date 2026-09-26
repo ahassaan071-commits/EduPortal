@@ -18099,22 +18099,7 @@ async function renderFeeRecords() {
                 </span>
             `
             : `
-                <button
-                    type="button"
-                    class="result-action-btn"
-                    style="
-                        background:#16a34a;
-                        color:white;
-                        margin-right:6px;
-                    "
-                    onclick="
-                        markFeeAsPaid(
-                            '${record.id}'
-                        )
-                    "
-                >
-                    💰 Mark as Paid
-                </button>
+              
             `
     }
 
