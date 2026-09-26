@@ -6404,26 +6404,21 @@ async function filterAdminStudents() {
                     }
                 </td>
 
-                <td>
-                    ${
-                        student.student_class ||
-                        "—"
-                    }
-                </td>
+               <td>
+    ${
+        formatClassSection(
+            student.student_class,
+            student.section
+        )
+    }
+</td>
 
-                <td>
-                    ${
-                        student.section ||
-                        "—"
-                    }
-                </td>
-
-                <td>
-                    ${
-                        student.roll_number ||
-                        "—"
-                    }
-                </td>
+<td>
+    ${
+        student.roll_number ||
+        "—"
+    }
+</td>
 
                 <td>
                     ${
