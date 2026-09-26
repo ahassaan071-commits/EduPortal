@@ -8612,8 +8612,15 @@ if (studentsError) {
         studentsError
     );
 
+    alert(
+        "Students load error: " +
+        studentsError.message
+    );
+
 }
 
+console.log("RESULTS STUDENTS ERROR:", studentsError);
+console.log("RESULTS STUDENTS DATA:", students);
 
 // ==========================================
 // BUILD RESULTS CLASS + SECTION DROPDOWN
