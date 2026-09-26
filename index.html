@@ -89,131 +89,201 @@ Student Portal Loading...
 </div>
 
 <div class="container">
-<!-- ===========================
-Login Campus Panel
-=========================== -->
 
-<div class="login-side-panel"></div>
-<div class="login-box">
+    <!-- =========================================
+         LEFT CAMPUS PANEL
+    ========================================== -->
 
-<!-- Logo -->
-<div class="logo">
+    <div class="login-side-panel">
 
-<div class="logo-circle">🎓</div>
+        <div class="campus-overlay">
 
-<h1>EduPortal</h1>
+            <h2>
+                Smart Educational
+                <span>Management System</span>
+            </h2>
 
-<p>Student Portal</p>
+        </div>
 
-</div>
-
-<!-- Tabs -->
-<div class="tabs">
-
-<button id="loginTab" class="active" type="button">
-
-Login
-
-</button>
-
-</div>
+    </div>
 
 
+    <!-- =========================================
+         RIGHT LOGIN PANEL
+    ========================================== -->
 
-<form id="loginForm">
+    <div class="login-box">
 
-<div class="input-group">
+        <!-- Hidden tabs
+             IDs preserved for existing JavaScript -->
+        <div class="tabs" style="display:none;">
 
-<label>Account Type</label>
+            <button
+                id="loginTab"
+                class="active"
+                type="button">
+                Login
+            </button>
 
-<select id="loginRole">
+            <button
+                id="registerTab"
+                type="button">
+                Create Account
+            </button>
 
-<option value="student">
-🎓 Student
-</option>
-
-<option value="administrator">
-👨‍💼 Administrator
-</option>
-
-<option value="teacher">
-    👨‍🏫 Teacher
-</option>
-
-</select>
-
-</div>
-
-<div class="input-group">
-
-<label>Username</label>
-
-<input
-    type="text"
-    id="username"
-    placeholder="Enter Username"
-    autocomplete="off">
-
-</div>
-
-<!-- Password -->
-
-<div class="input-group">
-
-<label>Password</label>
-
-<div class="password-box">
-
-<input
-    type="password"
-    id="password"
-    placeholder="Enter Password"
-    autocomplete="new-password">
-
-<span id="togglePassword">👁️</span>
-
-</div>
-
-</div>
+        </div>
 
 
-<div class="login-options">
+        <!-- =====================================
+             EDUPORTAL LOGO
+        ====================================== -->
 
-<label class="remember-box">
+        <div class="logo">
 
-<input type="checkbox" id="rememberMe">
+            <div class="logo-circle">
+                🎓
+            </div>
 
-<span>Remember Me</span>
+            <h1>
+                EDU<span>PORTAL</span>
+            </h1>
 
-</label>
-
-
-<!-- Administrator Forgot Password -->
-
-<p class="forgot-password" id="adminForgotPasswordBox">
-
-<a href="javascript:void(0);" id="adminForgotPasswordLink">
-
-Forgot Password?
-
-</a>
-</p>
-
-</div>
+        </div>
 
 
-<!-- Login Button -->
+        <!-- =====================================
+             LOGIN FORM
+        ====================================== -->
 
-<button type="button" id="loginBtn">
-
-Login
-
-</button>
+        <form id="loginForm">
 
 
-<p id="message"></p>
-</form>
+            <!-- ACCOUNT TYPE -->
 
+            <div class="input-group">
+
+                <label>
+                    Account Type
+                </label>
+
+                <select id="loginRole">
+
+                    <option value="student">
+                        🎓 Student
+                    </option>
+
+                    <option value="administrator">
+                        👨‍💼 Administrator
+                    </option>
+
+                    <option value="teacher">
+                        👨‍🏫 Teacher
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- USERNAME -->
+
+            <div class="input-group">
+
+                <label>
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="Enter your username"
+                    autocomplete="off">
+
+            </div>
+
+
+            <!-- PASSWORD -->
+
+            <div class="input-group">
+
+                <label>
+                    Password
+                </label>
+
+                <div class="password-box">
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter your password"
+                        autocomplete="new-password">
+
+                    <span id="togglePassword">
+                        👁️
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- LOGIN OPTIONS -->
+
+            <div class="login-options">
+
+                <label class="remember-box">
+
+                    <input
+                        type="checkbox"
+                        id="rememberMe">
+
+                    <span>
+                        Remember Me
+                    </span>
+
+                </label>
+
+
+                <!-- ONLY ADMINISTRATOR -->
+
+                <p
+                    class="forgot-password"
+                    id="adminForgotPasswordBox"
+                    style="display:none;">
+
+                    <a
+                        href="javascript:void(0);"
+                        id="adminForgotPasswordLink">
+
+                        Forgot Password?
+
+                    </a>
+
+                </p>
+
+            </div>
+
+
+            <!-- LOGIN BUTTON -->
+
+            <button
+                type="button"
+                id="loginBtn">
+
+                Sign In
+                <span class="login-arrow">→</span>
+
+            </button>
+
+
+            <!-- MESSAGE -->
+
+            <p id="message"></p>
+
+        </form>
+
+
+        <!-- ============== REGISTER FORM ================= -->
 <!-- ============== REGISTER FORM ================= -->
 <form id="registerForm" style="display:none;">
 
