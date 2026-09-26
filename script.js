@@ -26890,7 +26890,11 @@ if (teacherEditingAssignmentId) {
             descriptionInput.value = "";
         }
 
+// =========================================
+// RELOAD ASSIGNED CLASSES + SUBJECT
+// =========================================
 
+await loadTeacherAssignmentClass();
         // =========================================
         // REFRESH ASSIGNMENTS
         // =========================================
