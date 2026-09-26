@@ -8592,48 +8592,20 @@ marks
         resultsData || [];
 
 
-    if (rawResults.length === 0) {
-
-        tableBody.innerHTML = `
-            <tr class="results-empty-row">
-                <td colspan="10">
-
-                    <div class="results-empty-state">
-
-                        <div>📊</div>
-
-                        <h3>No Results Found</h3>
-
-                        <p>
-                            Add student results to see
-                            records here.
-                        </p>
-
-                    </div>
-
-                </td>
-            </tr>
-        `;
-
-        updateResultsStatistics([]);
-
-        return;
-    }
 
 
-    // ==========================================
-    // LOAD STUDENTS
-    // ==========================================
+// ==========================================
+// LOAD STUDENTS
+// ==========================================
 
-    const {
-        data: students
-    } =
-        await supabaseClient
-            .from("students")
-            .select(
-                "id, student_id, name, full_name, student_class, section"
-            );
-
+const {
+    data: students
+} =
+    await supabaseClient
+        .from("students")
+        .select(
+            "id, student_id, name, full_name, student_class, section"
+        );
 
 
 // ==========================================
@@ -8647,8 +8619,11 @@ const resultsClassFilter =
 
 if (resultsClassFilter) {
 
-    const previousValue =
-        resultsClassFilter.value || "all";
+    resultsClassFilter.innerHTML = `
+        <option value="all">
+            All Classes
+        </option>
+    `;
 
     const combinations =
         new Map();
@@ -8693,12 +8668,6 @@ if (resultsClassFilter) {
         }
     );
 
-    resultsClassFilter.innerHTML = `
-        <option value="all">
-            All Classes
-        </option>
-    `;
-
     Array.from(
         combinations.values()
     )
@@ -8735,28 +8704,41 @@ if (resultsClassFilter) {
         }
     );
 
-    if (
-        Array.from(
-            resultsClassFilter.options
-        ).some(
-            function (option) {
-
-                return (
-                    option.value ===
-                    previousValue
-                );
-
-            }
-        )
-    ) {
-
-        resultsClassFilter.value =
-            previousValue;
-
-    }
-
 }
 
+
+// ==========================================
+// CHECK EMPTY RESULTS
+// ==========================================
+
+if (rawResults.length === 0) {
+
+    tableBody.innerHTML = `
+        <tr class="results-empty-row">
+            <td colspan="10">
+
+                <div class="results-empty-state">
+
+                    <div>📊</div>
+
+                    <h3>No Results Found</h3>
+
+                    <p>
+                        Add student results to see
+                        records here.
+                    </p>
+
+                </div>
+
+            </td>
+        </tr>
+    `;
+
+    updateResultsStatistics([]);
+
+    return;
+}
+    
     // ==========================================
     // LOAD SUBJECTS
     // ==========================================
