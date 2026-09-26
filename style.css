@@ -2157,7 +2157,7 @@ overflow-x:hidden;
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
-    overflow-y: hidden;
+    overflow-y: visible;
     background: #f1f5f9;
 }
 
