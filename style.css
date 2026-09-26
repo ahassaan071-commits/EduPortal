@@ -4053,14 +4053,14 @@ body {
 
     line-height: 1.10 !important;
 
-    font-weight: 800 !important;
+    font-weight: 900 !important;
 
     letter-spacing: -1.5px;
 
-    color: #ffffff !important;
+    color: #172554 !important;
 
     text-shadow:
-        0 4px 18px rgba(0,0,0,.28);
+        0 3px 10px rgba(255,255,255,.45);
 }
 
 
@@ -4069,9 +4069,14 @@ body {
 
     margin-top: 5px;
 
-    color: #67b7ff !important;
+    color: #2563eb !important;
 
-    font-weight: 800;
+    font-weight: 900 !important;
+
+    letter-spacing: -1.5px;
+
+    text-shadow:
+        0 3px 12px rgba(37,99,235,.18);
 }
 
 
