@@ -26564,16 +26564,23 @@ document.addEventListener(
         // GET FORM VALUES
         // =========================================
 
-        const className =
-            document.getElementById(
-                "teacherAssignmentClass"
-            )?.value.trim();
+    const classSelect =
+    document.getElementById(
+        "teacherAssignmentClass"
+    );
 
+const selectedOption =
+    classSelect?.options[
+        classSelect.selectedIndex
+    ];
 
-        const sectionName =
-            document.getElementById(
-                "teacherAssignmentSection"
-            )?.value.trim();
+const className =
+    selectedOption?.dataset.class ||
+    "";
+
+const sectionName =
+    selectedOption?.dataset.section ||
+    "";
 
 
         const subject =
