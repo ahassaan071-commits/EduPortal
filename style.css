@@ -12276,23 +12276,33 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 #loginForm select {
     width: 100% !important;
 
-    height: 54px !important;
+    height: 56px !important;
 
-    padding: 0 16px !important;
+    padding: 0 17px !important;
 
     box-sizing: border-box;
 
-    border: 1px solid #dbe3ef !important;
+    border: 1px solid #d9e2ef !important;
 
-    border-radius: 11px !important;
+    border-radius: 12px !important;
 
     background: #f8fafc !important;
 
-    color: #1e293b !important;
+    color: #172033 !important;
 
     font-size: 15px !important;
 
-    transition: .2s ease;
+    font-weight: 500;
+
+    outline: none;
+
+    box-shadow:
+        inset 0 1px 2px rgba(15,23,42,.02);
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
 }
 
 
