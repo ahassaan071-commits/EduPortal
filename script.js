@@ -42657,35 +42657,31 @@ async function refreshActiveDashboardData(force = false) {
         }
 
 
-        if (role === "student") {
+  if (role === "student") {
 
-            if (
-                typeof StudentDashboard !==
-                "undefined" &&
-                typeof StudentDashboard.loadDashboard ===
-                "function"
-            ) {
+    if (
+        typeof StudentDashboard !==
+        "undefined" &&
+        typeof StudentDashboard.init ===
+        "function"
+    ) {
 
-                const savedStudent =
-                    localStorage.getItem(
-                        "loggedInStudent"
-                    );
+        const savedStudent =
+            localStorage.getItem(
+                "loggedInStudent"
+            );
 
-                if (savedStudent) {
+        if (savedStudent) {
 
-                    const student =
-                        JSON.parse(savedStudent);
+            await StudentDashboard.init();
 
-                    await StudentDashboard.loadDashboard(
-                        student
-                    );
-                }
-            }
-
-            return;
         }
-
     }
+
+    return;
+}
+
+     }
     catch (error) {
 
         console.error(
