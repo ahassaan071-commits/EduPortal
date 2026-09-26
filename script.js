@@ -5373,13 +5373,7 @@ async function renderAdminStudents() {
                     ${student.father_name || ""}
                 </td>
 
-                <td>
-                    ${student.student_class || ""}
-                </td>
-
-                <td>
-                    ${student.section || ""}
-                </td>
+                
 
                 <td>
                     ${student.roll_number || ""}
