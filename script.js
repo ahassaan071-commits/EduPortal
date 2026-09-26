@@ -15081,19 +15081,33 @@ const records =
         );
 
 
-    const selectedClass =
-        classFilter &&
-        classFilter.value
-            ? classFilter.value
-            : "all";
+    const selectedClassSection =
+    classFilter &&
+    classFilter.value
+        ? classFilter.value
+        : "all";
 
+let selectedClass = "";
+let selectedSection = "";
 
-    const selectedSection =
-        sectionFilter &&
-        sectionFilter.value
-            ? sectionFilter.value
-            : "all";
+if (
+    selectedClassSection !== "all"
+) {
 
+    const parts =
+        selectedClassSection.split("||");
+
+    selectedClass =
+        String(
+            parts[0] || ""
+        ).trim();
+
+    selectedSection =
+        String(
+            parts[1] || ""
+        ).trim()
+        .toUpperCase();
+}
 
    
 
