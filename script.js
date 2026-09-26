@@ -18383,7 +18383,253 @@ remainingField.textContent =
 
 }
 
+// ==========================================
+// EDIT FEE RECORD - SUPABASE
+// ==========================================
 
+async function editFeeRecord(recordId) {
+
+    if (!recordId) {
+        alert("Fee record ID is missing.");
+        return;
+    }
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+        alert("Supabase connection is missing.");
+        return;
+    }
+
+    // ==========================================
+    // LOAD FEE RECORD
+    // ==========================================
+
+    const {
+        data: feeRecord,
+        error
+    } =
+        await supabaseClient
+            .from("fee_records")
+            .select("*")
+            .eq(
+                "id",
+                String(recordId)
+            )
+            .maybeSingle();
+
+    if (error) {
+
+        console.error(
+            "EDIT FEE LOAD ERROR:",
+            error
+        );
+
+        alert(
+            "Unable to load fee record.\n\n" +
+            error.message
+        );
+
+        return;
+    }
+
+    if (!feeRecord) {
+
+        alert(
+            "Fee record not found."
+        );
+
+        return;
+    }
+
+    // ==========================================
+    // SHOW FEE FORM
+    // ==========================================
+
+    const monthlyFeeForm =
+        document.getElementById(
+            "monthlyFeeForm"
+        );
+
+    if (monthlyFeeForm) {
+        monthlyFeeForm.style.display =
+            "block";
+    }
+
+    // ==========================================
+    // STUDENT
+    // ==========================================
+
+    const studentSelect =
+        document.getElementById(
+            "feeStudent"
+        );
+
+    if (studentSelect) {
+
+        const studentOptions =
+            Array.from(
+                studentSelect.options
+            );
+
+        const matchingOption =
+            studentOptions.find(
+                function(option) {
+
+                    return (
+                        String(
+                            option.dataset.databaseId ||
+                            option.value
+                        ) ===
+                        String(
+                            feeRecord.student_id
+                        )
+                    );
+
+                }
+            );
+
+        if (matchingOption) {
+
+            studentSelect.value =
+                matchingOption.value;
+
+        }
+
+    }
+
+    // ==========================================
+    // MONTH
+    // ==========================================
+
+    const monthField =
+        document.getElementById(
+            "feeMonth"
+        );
+
+    if (monthField) {
+        monthField.value =
+            feeRecord.month || "";
+    }
+
+    // ==========================================
+    // FEE AMOUNT
+    // ==========================================
+
+    const feeAmountField =
+        document.getElementById(
+            "monthlyFeeAmount"
+        );
+
+    if (feeAmountField) {
+
+        feeAmountField.value =
+            feeRecord.fee_amount || 0;
+
+    }
+
+    // ==========================================
+    // PAID AMOUNT
+    // ==========================================
+
+    const paidAmountField =
+        document.getElementById(
+            "feePaidAmount"
+        );
+
+    if (paidAmountField) {
+
+        paidAmountField.value =
+            feeRecord.paid_amount || 0;
+
+    }
+
+    // ==========================================
+    // DUE DATE
+    // ==========================================
+
+    const dueDateField =
+        document.getElementById(
+            "feeDueDate"
+        );
+
+    if (dueDateField) {
+
+        dueDateField.value =
+            feeRecord.due_date || "";
+
+    }
+
+    // ==========================================
+    // PAYMENT DATE
+    // ==========================================
+
+    const paymentDateField =
+        document.getElementById(
+            "feePaymentDate"
+        );
+
+    if (paymentDateField) {
+
+        paymentDateField.value =
+            feeRecord.payment_date || "";
+
+    }
+
+    // ==========================================
+    // STATUS
+    // ==========================================
+
+    const statusField =
+        document.getElementById(
+            "feeStatus"
+        );
+
+    if (statusField) {
+
+        statusField.value =
+            feeRecord.status || "Unpaid";
+
+    }
+
+    // ==========================================
+    // REMAINING AMOUNT
+    // ==========================================
+
+    if (
+        typeof calculateFeeRemaining ===
+        "function"
+    ) {
+
+        calculateFeeRemaining();
+
+    }
+
+    // ==========================================
+    // STORE EDITING ID
+    // ==========================================
+
+    window.editingFeeRecordId =
+        String(recordId);
+
+    // ==========================================
+    // CHANGE BUTTON TEXT
+    // ==========================================
+
+    const saveButton =
+        document.getElementById(
+            "saveMonthlyFeeBtn"
+        );
+
+    if (saveButton) {
+
+        saveButton.innerHTML =
+            "💾 Update Fee Record";
+
+    }
+
+}
 // ==========================================
 // DELETE FEE RECORD - SUPABASE
 // ==========================================
