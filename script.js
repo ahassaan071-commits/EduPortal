@@ -26920,10 +26920,7 @@ if (teacherEditingAssignmentId) {
                 "teacherAssignmentClass"
             );
 
-        const sectionInput =
-            document.getElementById(
-                "teacherAssignmentSection"
-            );
+      
 
         const subjectInput =
             document.getElementById(
@@ -27120,14 +27117,33 @@ const dueDateInput =
                     "teacherAssignmentDescription"
                 );
 
-            if (classInput) {
-                classInput.value =
-                    assignment.class_name || "";
-            }
+      if (classInput) {
 
-            if (sectionInput) {
-                sectionInput.value = "";
-            }
+    const options =
+        Array.from(
+            classInput.options
+        );
+
+    const matchingOption =
+        options.find(function(option) {
+
+            return (
+                option.dataset.class ===
+                assignment.class_name
+                &&
+                option.dataset.section ===
+                (assignment.section || "")
+            );
+
+        });
+
+    if (matchingOption) {
+
+        classInput.value =
+            matchingOption.value;
+
+    }
+}
 
             if (subjectInput) {
                 subjectInput.value =
