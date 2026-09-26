@@ -15493,7 +15493,33 @@ return `${year}-${month}-${day}`;
 }
 
 
+// ==========================================================
+// GET ATTENDANCE RECORDS
+// ==========================================================
 
+function getStudentAttendanceRecords() {
+
+return JSON.parse(
+localStorage.getItem(
+STUDENT_ATTENDANCE_KEY
+)
+) || [];
+
+}
+
+
+// ==========================================================
+// SAVE ATTENDANCE RECORDS
+// ==========================================================
+
+function saveStudentAttendanceRecords(records) {
+
+localStorage.setItem(
+STUDENT_ATTENDANCE_KEY,
+JSON.stringify(records)
+);
+
+}
 
 
 // ==========================================================

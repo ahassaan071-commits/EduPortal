@@ -117,9 +117,10 @@ button{
     font-size:16px;
 }
 .attendance-history-view-more-btn{
-    width:160px;
+    width:200px;
     padding:10px 16px;
     font-size:14px;
+    margin:0 auto;
 }
 
 button:hover{
