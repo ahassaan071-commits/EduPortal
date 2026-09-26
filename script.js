@@ -14944,6 +14944,122 @@ async function renderAttendanceTable() {
             }
         );
 
+        // ==========================================
+// BUILD CLASS + SECTION DROPDOWN
+// ==========================================
+
+const attendanceClassFilter =
+    document.getElementById(
+        "attendanceClassFilter"
+    );
+
+if (attendanceClassFilter) {
+
+    const previousValue =
+        attendanceClassFilter.value || "all";
+
+    const combinations =
+        new Map();
+
+    students.forEach(
+        function(student) {
+
+            const className =
+                String(
+                    student.studentClass || ""
+                ).trim();
+
+            const section =
+                String(
+                    student.section || ""
+                ).trim()
+                .toUpperCase();
+
+            if (!className) {
+                return;
+            }
+
+            const key =
+                `${className}||${section}`;
+
+            if (!combinations.has(key)) {
+
+                combinations.set(
+                    key,
+                    {
+                        className:
+                            className,
+                        section:
+                            section
+                    }
+                );
+
+            }
+
+        }
+    );
+
+    attendanceClassFilter.innerHTML = `
+        <option value="all">
+            All Classes
+        </option>
+    `;
+
+    Array.from(
+        combinations.values()
+    )
+    .sort(
+        function(a, b) {
+
+            return (
+                Number(a.className) -
+                Number(b.className)
+            );
+
+        }
+    )
+    .forEach(
+        function(item) {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                `${item.className}||${item.section}`;
+
+            option.textContent =
+                item.section
+                    ? `Class ${item.className} ${item.section}`
+                    : `Class ${item.className}`;
+
+            attendanceClassFilter.appendChild(
+                option
+            );
+
+        }
+    );
+
+    if (
+        Array.from(
+            attendanceClassFilter.options
+        ).some(
+            function(option) {
+                return (
+                    option.value ===
+                    previousValue
+                );
+            }
+        )
+    ) {
+
+        attendanceClassFilter.value =
+            previousValue;
+
+    }
+
+}
 // ==========================================
 // GET CURRENT SELECTED ATTENDANCE DATE
 // BEFORE SUPABASE QUERY
