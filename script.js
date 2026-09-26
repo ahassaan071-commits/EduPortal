@@ -528,12 +528,7 @@ if (selectedRole === "administrator") {
             " 👋";
     }
 
-    if (
-        typeof syncFinalAdminDashboard ===
-        "function"
-    ) {
-        syncFinalAdminDashboard();
-    }
+  await refreshActiveDashboardData(true);
 
    
 
@@ -616,23 +611,7 @@ if (teacherDashboard) {
     );
 }
 
-   setTimeout(function () {
-
-    if (typeof loadTeacherProfile === "function") {
-        loadTeacherProfile();
-    }
-
-    if (typeof loadTeacherAssignmentClass === "function") {
-        loadTeacherAssignmentClass();
-    }
-
-    if (typeof loadTeacherDashboardData === "function") {
-        loadTeacherDashboardData();
-    }
-
-   
-
-}, 300);
+ await refreshActiveDashboardData(true);
 
     return;
 }
