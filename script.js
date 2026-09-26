@@ -26787,6 +26787,9 @@ if (
             class_name:
                 className,
 
+                section:
+    sectionName,
+
                 due_date:
     dueDate,
 
