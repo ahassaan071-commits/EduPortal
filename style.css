@@ -3985,13 +3985,7 @@ body {
 
     overflow: hidden;
 
-    background-image:
-        linear-gradient(
-            135deg,
-            rgba(15,23,42,.04),
-            rgba(37,99,235,.08)
-        ),
-        url("eduportal-campus.png");
+  background: #000000 !important;
 
     background-size: cover;
     background-position: center;
