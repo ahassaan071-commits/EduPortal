@@ -45192,30 +45192,38 @@ table tbody tr:hover td {
 
 }
 /* ==========================================
-   TEACHER ASSIGNMENT CLASS - LOCKED
+   TEACHER ASSIGNMENT CLASS - ADMIN ASSIGNED
    ========================================== */
 
 #teacherDashboard #teacherAssignmentClass {
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
 
-    pointer-events: none !important;
-    cursor: not-allowed !important;
+    width: 100% !important;
+
+    pointer-events: auto !important;
+
+    cursor: pointer !important;
+
+    appearance: auto !important;
+    -webkit-appearance: auto !important;
+    -moz-appearance: auto !important;
 
     background-image: none !important;
-    padding-right: 12px !important;
 
     color: #172033 !important;
+
     opacity: 1 !important;
 }
 
-/* Keep locked class looking normal */
+/* Make sure dropdown is NOT disabled */
+
 #teacherDashboard #teacherAssignmentClass:disabled {
-    background-color: #f8fafc !important;
-    color: #172033 !important;
+
+    pointer-events: auto !important;
+
+    cursor: pointer !important;
+
     opacity: 1 !important;
-    cursor: not-allowed !important;
+
 }
 /* ==========================================
    TEACHER RESULTS SEARCH - SINGLE BOX
