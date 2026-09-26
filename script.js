@@ -15131,16 +15131,16 @@ if (
                     ).trim();
 
 
-                const classMatch =
-                    selectedClass === "all" ||
-                    studentClass ===
-                        String(selectedClass);
+              const classMatch =
+    selectedClassSection === "all" ||
 
+    (
+        studentClass ===
+        selectedClass &&
 
-                const sectionMatch =
-                    selectedSection === "all" ||
-                    studentSection ===
-                        String(selectedSection);
+        studentSection ===
+        selectedSection
+    );
 
 
                 const searchInput =
@@ -15192,11 +15192,10 @@ if (
                     );
 
 
-                return (
-                    classMatch &&
-                    sectionMatch &&
-                    searchMatch
-                );
+               return (
+    classMatch &&
+    searchMatch
+);
 
             }
         );
