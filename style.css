@@ -46800,3 +46800,14 @@ html.edu-session-restoring.edu-role-student #studentDashboard {
     vertical-align: middle;
     white-space: nowrap;
 }
+.teacher-settings-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 25px;
+}
+
+.teacher-settings-actions .teacher-primary-btn {
+    width: 300px;
+}
