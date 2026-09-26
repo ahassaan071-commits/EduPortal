@@ -29484,38 +29484,6 @@ document.addEventListener(
 );
 
 
-// =========================================================
-// OPEN ATTENDANCE
-// =========================================================
-
-document.addEventListener(
-    "click",
-    function(event) {
-
-        const menu =
-            event.target.closest(
-                "#teacherAttendanceMenu"
-            );
-
-
-        if (!menu) {
-            return;
-        }
-
-
-        setTimeout(
-            function() {
-
-                setTeacherAttendanceDate();
-
-                loadTeacherAttendance();
-
-            },
-            50
-        );
-
-    }
-);
 
 
 // =========================================================
