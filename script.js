@@ -5372,8 +5372,15 @@ async function renderAdminStudents() {
                 <td>
                     ${student.father_name || ""}
                 </td>
-
-                
+<td>
+    ${
+        formatClassSection(
+            student.student_class,
+            student.section
+        )
+    }
+</td>
+            
 
                 <td>
                     ${student.roll_number || ""}
