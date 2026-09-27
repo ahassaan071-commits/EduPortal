@@ -44154,29 +44154,48 @@ if (
     // ONLY TEACHER'S CLASS
     // =====================================================
 
-    const assignedStudents =
-        (students || []).filter(
-            function(student) {
+   const assignedStudents =
+    (students || []).filter(
+        function(student) {
 
-                const studentClass =
-                    String(
-                        student.student_class ||
-                        ""
-                    )
-                    .trim()
-                    .toLowerCase()
-                    .replace(
-                        /^class\s+/i,
-                        ""
-                    );
-
-                return (
-                    studentClass ===
-                    teacherClass
+            const studentClass =
+                String(
+                    student.student_class ||
+                    ""
+                )
+                .trim()
+                .toLowerCase()
+                .replace(
+                    /^class\s*/i,
+                    ""
+                )
+                .replace(
+                    /[^a-z0-9]/g,
+                    ""
                 );
 
-            }
-        );
+            const studentSection =
+                String(
+                    student.section ||
+                    ""
+                )
+                .trim()
+                .toLowerCase()
+                .replace(
+                    /[^a-z0-9]/g,
+                    ""
+                );
+
+            const studentClassKey =
+                studentClass +
+                studentSection;
+
+            return assignedClassKeys.includes(
+                studentClassKey
+            );
+
+        }
+    );
 
 
     const studentIds =
