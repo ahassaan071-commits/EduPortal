@@ -16003,18 +16003,31 @@ const STUDENT_ATTENDANCE_KEY = "eduPortalAttendance";
 
 function getStudentAttendanceDate() {
 
-const today = new Date();
+    const pakistanTime =
+        new Date().toLocaleString(
+            "en-US",
+            {
+                timeZone: "Asia/Karachi"
+            }
+        );
 
-const year =
-today.getFullYear();
+    const today =
+        new Date(pakistanTime);
 
-const month =
-String(today.getMonth() + 1).padStart(2, "0");
+    const year =
+        today.getFullYear();
 
-const day =
-String(today.getDate()).padStart(2, "0");
+    const month =
+        String(
+            today.getMonth() + 1
+        ).padStart(2, "0");
 
-return `${year}-${month}-${day}`;
+    const day =
+        String(
+            today.getDate()
+        ).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
 
 }
 
