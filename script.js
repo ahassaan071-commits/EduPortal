@@ -18145,7 +18145,357 @@ monthlyFeeForm.style.display =
 
 }
 
+// ==========================================
+// AUTO GENERATE MONTHLY STUDENT FEES
+// ==========================================
 
+async function generateMonthlyStudentFees() {
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+        console.error(
+            "Supabase connection is missing."
+        );
+        return;
+    }
+
+    try {
+
+        // ==========================================
+        // PAKISTAN DATE
+        // ==========================================
+
+        const pakistanDate =
+            new Date().toLocaleDateString(
+                "en-CA",
+                {
+                    timeZone:
+                        "Asia/Karachi"
+                }
+            );
+
+        const [
+            currentYear,
+            currentMonthNumber,
+            currentDay
+        ] =
+            pakistanDate
+                .split("-")
+                .map(Number);
+
+        // ==========================================
+        // ONLY RUN ON 1ST DAY OF MONTH
+        // ==========================================
+
+        if (
+            currentDay !== 1
+        ) {
+            return;
+        }
+
+        const monthNames = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December"
+        ];
+
+        const currentMonth =
+            monthNames[
+                currentMonthNumber - 1
+            ];
+
+        // ==========================================
+        // DUE DATE = 10TH
+        // ==========================================
+
+        const dueDate =
+            `${currentYear}-${String(
+                currentMonthNumber
+            ).padStart(2, "0")}-10`;
+
+        // ==========================================
+        // GET ACTIVE STUDENTS
+        // ==========================================
+
+        const {
+            data: students,
+            error: studentError
+        } =
+            await supabaseClient
+                .from("students")
+                .select(`
+                    id,
+                    student_id,
+                    name,
+                    student_class,
+                    section,
+                    monthly_fee,
+                    status
+                `)
+                .eq(
+                    "status",
+                    "Active"
+                );
+
+        if (studentError) {
+
+            console.error(
+                "MONTHLY FEE STUDENT LOAD ERROR:",
+                studentError
+            );
+
+            return;
+        }
+
+        if (
+            !students ||
+            students.length === 0
+        ) {
+            return;
+        }
+
+        // ==========================================
+        // PROCESS EACH STUDENT
+        // ==========================================
+
+        for (
+            const student
+            of students
+        ) {
+
+            const monthlyFee =
+                Number(
+                    student.monthly_fee ||
+                    0
+                );
+
+            if (
+                monthlyFee <= 0
+            ) {
+                continue;
+            }
+
+            // ==========================================
+            // CHECK DUPLICATE CURRENT MONTH
+            // ==========================================
+
+            const {
+                data:
+                    existingRecords,
+                error:
+                    existingError
+            } =
+                await supabaseClient
+                    .from("fee_records")
+                    .select(`
+                        id,
+                        fee_amount,
+                        paid_amount,
+                        remaining_amount,
+                        month
+                    `)
+                    .eq(
+                        "student_id",
+                        student.student_id
+                    )
+                    .eq(
+                        "month",
+                        currentMonth
+                    );
+
+            if (existingError) {
+
+                console.error(
+                    "MONTHLY FEE CHECK ERROR:",
+                    existingError
+                );
+
+                continue;
+            }
+
+            if (
+                existingRecords &&
+                existingRecords.length > 0
+            ) {
+                continue;
+            }
+
+            // ==========================================
+            // GET PREVIOUS OUTSTANDING BALANCE
+            // ==========================================
+
+            const {
+                data:
+                    previousRecords,
+                error:
+                    previousError
+            } =
+                await supabaseClient
+                    .from("fee_records")
+                    .select(`
+                        id,
+                        remaining_amount,
+                        created_at
+                    `)
+                    .eq(
+                        "student_id",
+                        student.student_id
+                    )
+                    .gt(
+                        "remaining_amount",
+                        0
+                    )
+                    .order(
+                        "created_at",
+                        {
+                            ascending:
+                                false
+                        }
+                    );
+
+            if (previousError) {
+
+                console.error(
+                    "PREVIOUS FEE LOAD ERROR:",
+                    previousError
+                );
+
+                continue;
+            }
+
+            // ==========================================
+            // CALCULATE PREVIOUS BALANCE
+            // ==========================================
+
+            let previousBalance = 0;
+
+            if (
+                previousRecords &&
+                previousRecords.length > 0
+            ) {
+
+                previousBalance =
+                    previousRecords.reduce(
+                        function(
+                            total,
+                            record
+                        ) {
+
+                            return (
+                                total +
+                                Number(
+                                    record.remaining_amount ||
+                                    0
+                                )
+                            );
+
+                        },
+                        0
+                    );
+            }
+
+            // ==========================================
+            // TOTAL PAYABLE
+            // ==========================================
+
+            const totalPayable =
+                monthlyFee +
+                previousBalance;
+
+            // ==========================================
+            // CREATE FEE RECORD
+            // ==========================================
+
+            const {
+                error:
+                    feeInsertError
+            } =
+                await supabaseClient
+                    .from("fee_records")
+                    .insert({
+
+                        student_id:
+                            student.student_id,
+
+                        student_name:
+                            student.name,
+
+                        student_class:
+                            student.student_class,
+
+                        section:
+                            student.section,
+
+                        month:
+                            currentMonth,
+
+                        fee_amount:
+                            totalPayable,
+
+                        paid_amount:
+                            0,
+
+                        remaining_amount:
+                            totalPayable,
+
+                        due_date:
+                            dueDate,
+
+                        payment_method:
+                            null,
+
+                        payment_date:
+                            null,
+
+                        status:
+                            "Unpaid",
+
+                        fee_source:
+                            "Auto - Monthly"
+                    });
+
+            if (
+                feeInsertError
+            ) {
+
+                console.error(
+                    "MONTHLY FEE INSERT ERROR:",
+                    feeInsertError
+                );
+
+                continue;
+            }
+
+            console.log(
+                "Monthly fee generated:",
+                student.name,
+                totalPayable
+            );
+        }
+
+        console.log(
+            `Monthly fee generation completed for ${currentMonth} ${currentYear}.`
+        );
+
+    } catch (error) {
+
+        console.error(
+            "MONTHLY FEE GENERATOR ERROR:",
+            error
+        );
+    }
+}
 // ==========================================
 // RENDER FEE RECORDS - SUPABASE
 // ==========================================
