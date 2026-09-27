@@ -18411,11 +18411,14 @@ if (
                     .from("fee_records")
                     .insert({
 
-                        student_id:
-                           student.id,
+    id:
+        Date.now(),
 
-                        student_name:
-                            student.name,
+    student_id:
+        student.id,
+
+    student_name:
+        student.name,
 
                         student_class:
                             student.student_class,
