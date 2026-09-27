@@ -4875,12 +4875,11 @@ const monthlyFee =
         // VALIDATION
         // ==========================================
 
-      if (
+if (
     !name ||
     !fatherName ||
     !studentId ||
     !studentClass ||
-    !section ||
     !rollNumber ||
     !username ||
     !password ||
