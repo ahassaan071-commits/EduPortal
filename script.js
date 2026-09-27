@@ -18190,7 +18190,7 @@ async function generateMonthlyStudentFees() {
         // ==========================================
 
        if (
-    currentDay < 1
+    currentDay !== 1
 ) {
     return;
 }
