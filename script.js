@@ -28645,21 +28645,10 @@ if (
 // TEACHER CLASS
 // =========================================
 
-const teacherClass =
-    String(
-        dbTeacher?.teacher_class ||
-        teacher.teacherClass ||
-        teacher.teacher_class ||
-        teacher.class ||
-        ""
-    )
-    .trim()
-    .toLowerCase()
-    .replace(
-        /^class\s*/i,
-        ""
+const assignedClassKeys =
+    await getTeacherAssignedClassKeys(
+        dbTeacher
     );
-
 
 // IMPORTANT:
 // Never show all students if class is missing.
@@ -28762,7 +28751,7 @@ if (!teacherClass) {
     // FILTER TEACHER STUDENTS
     // =========================================
 
-    const assignedStudents =
+   const assignedStudents =
     (students || []).filter(
         function(student) {
 
@@ -28778,13 +28767,17 @@ if (!teacherClass) {
                 .replace(
                     /^class\s*/i,
                     ""
+                )
+                .replace(
+                    /[^a-z0-9]/g,
+                    ""
                 );
 
             return (
-                studentClass ===
-                teacherClass
+                assignedClassKeys.includes(
+                    studentClass
+                )
             );
-
         }
     );
 // =========================================
