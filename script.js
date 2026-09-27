@@ -16583,7 +16583,23 @@ if (
     // ALREADY CHECKED IN
     // ==========================================
 
-    if (existingRecord) {
+  if (existingRecord) {
+
+    const existingStatus =
+        String(
+            existingRecord.status || ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+    // ==========================================
+    // ALREADY PRESENT
+    // ==========================================
+
+    if (
+        existingStatus === "present"
+    ) {
 
         updateStudentAttendanceUI();
 
@@ -16593,6 +16609,94 @@ if (
 
         return;
     }
+
+
+    // ==========================================
+    // ABSENT RECORD BEFORE 12 PM
+    // ALLOW CHECK-IN
+    // ==========================================
+
+    if (
+        existingStatus === "absent" &&
+        currentHour < 12
+    ) {
+
+        const now =
+            new Date();
+
+        const checkInTime =
+            now.toLocaleTimeString(
+                [],
+                {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                }
+            );
+
+
+        const {
+            error: updateError
+        } =
+            await supabaseClient
+                .from("attendance")
+                .update({
+                    status: "Present",
+                    check_in_time:
+                        now.toISOString(),
+                    check_out_time:
+                        null
+                })
+                .eq(
+                    "id",
+                    existingRecord.id
+                );
+
+
+        if (updateError) {
+
+            console.error(
+                "ATTENDANCE UPDATE ERROR:",
+                updateError
+            );
+
+            alert(
+                "Attendance could not be updated:\n" +
+                updateError.message
+            );
+
+            return;
+        }
+
+
+        updateStudentAttendanceUI();
+
+        updateStudentAttendanceSummary();
+
+        await loadRealStudentAttendance();
+
+
+        alert(
+            "Attendance marked successfully! ✅\n\n" +
+            "Check In: " +
+            checkInTime
+        );
+
+        return;
+    }
+
+
+    // ==========================================
+    // OTHER EXISTING STATUS
+    // ==========================================
+
+    updateStudentAttendanceUI();
+
+    alert(
+        "Today's attendance is already processed."
+    );
+
+    return;
+}
 
 
     // ==========================================
@@ -40608,15 +40712,93 @@ async function loadStudentTodayAttendanceTable(
     }
 
 
-    // =========================================
-    // STORE REAL RECORDS
-    // =========================================
+   // ==========================================
+// PRE-12 PM HISTORY RULE
+// ==========================================
 
-    studentAttendanceHistoryRecords =
-        Array.isArray(records)
-            ? [...records]
-            : [];
+const pakistanTime =
+    new Date().toLocaleString(
+        "en-US",
+        {
+            timeZone: "Asia/Karachi"
+        }
+    );
 
+const pakistanNow =
+    new Date(pakistanTime);
+
+const today =
+    getStudentAttendanceDate();
+
+let historyRecords =
+    Array.isArray(records)
+        ? [...records]
+        : [];
+
+
+// Before 12 PM:
+// Today's Absent record must NOT appear.
+// Today's status should be Not Marked.
+
+if (
+    pakistanNow.getHours() < 12
+) {
+
+    historyRecords =
+        historyRecords.filter(
+            function(record) {
+
+                return !(
+                    String(
+                        record.attendance_date || ""
+                    ) === String(today) &&
+
+                    String(
+                        record.status || ""
+                    ).toLowerCase() === "absent"
+                );
+
+            }
+        );
+
+
+    // If today's record does not exist,
+    // show temporary Not Marked row.
+
+    const todayRecord =
+        historyRecords.find(
+            function(record) {
+
+                return String(
+                    record.attendance_date || ""
+                ) === String(today);
+
+            }
+        );
+
+
+    if (!todayRecord) {
+
+        historyRecords.unshift({
+
+            attendance_date:
+                today,
+
+            status:
+                "Not Marked",
+
+            check_in_time:
+                null
+
+        });
+
+    }
+
+}
+
+
+studentAttendanceHistoryRecords =
+    historyRecords;
 
     // =========================================
     // SORT — LATEST DATE FIRST
