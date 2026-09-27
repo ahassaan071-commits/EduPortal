@@ -25980,24 +25980,21 @@ return (
     // =========================================
 
     console.log(
-        "TEACHER MY STUDENTS:",
-        {
-            teacher:
-                dbTeacher.name,
+    "TEACHER MY STUDENTS:",
+    {
+        teacher:
+            dbTeacher.name,
 
-            teacherId:
-                dbTeacher.teacher_id,
+        teacherId:
+            dbTeacher.teacher_id,
 
-            teacherClass:
-                dbTeacher.teacher_class,
+        assignedClasses:
+            assignedClassKeys,
 
-            normalizedClass:
-                teacherClass,
-
-            totalStudents:
-                assignedStudents.length
-        }
-    );
+        totalStudents:
+            assignedStudents.length
+    }
+);
 
     // =========================================
     // TOTAL STUDENTS
