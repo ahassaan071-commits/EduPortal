@@ -24183,47 +24183,42 @@ async function loadTeacherAttendanceSection() {
     // TEACHER CLASS
     // =========================================
 
-    const teacherClass =
-        String(
-            teacher.teacherClass ||
-            teacher.teacher_class ||
-            teacher.class ||
-            teacher.assigned_class ||
-            teacher.student_class ||
-            ""
-        )
-        .trim()
-        .toLowerCase()
-        .replace(/^class\s*/i, "");
+const assignedClassKeys =
+    await getTeacherAssignedClassKeys(
+        teacher
+    );
 
     // =========================================
     // ONLY TEACHER'S CLASS STUDENTS
     // =========================================
 
     const assignedStudents =
-        (students || []).filter(
-            function (student) {
+    (students || []).filter(
+        function (student) {
 
-                const studentClass =
-                    String(
-                        student.student_class ||
-                        ""
-                    )
-                    .trim()
-                    .toLowerCase()
-                    .replace(/^class\s*/i, "");
-
-                if (!teacherClass) {
-                    return false;
-                }
-
-                return (
-                    studentClass ===
-                    teacherClass
+            const studentClass =
+                String(
+                    student.student_class ||
+                    ""
+                )
+                .trim()
+                .toLowerCase()
+                .replace(
+                    /^class\s*/i,
+                    ""
+                )
+                .replace(
+                    /[^a-z0-9]/g,
+                    ""
                 );
 
-            }
-        );
+            return (
+                assignedClassKeys.includes(
+                    studentClass
+                )
+            );
+        }
+    );
 
     // =========================================
     // SHOW CLASS
