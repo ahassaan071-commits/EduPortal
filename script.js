@@ -26080,13 +26080,15 @@ async function loadTeacherMyStudents() {
                                         }
                                     </div>
 
-                                    <div class="student-card-info">
-                                        Class:
-                                        ${
-                                            student.student_class ||
-                                            "-"
-                                        }
-                                    </div>
+                                   <div class="student-card-info">
+    Class:
+    ${
+        formatClassSection(
+            student.student_class,
+            student.section
+        )
+    }
+</div>
 
                                     <div class="student-card-info">
                                         Section:
