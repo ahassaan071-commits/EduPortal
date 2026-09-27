@@ -19957,6 +19957,16 @@ document.addEventListener(
             await renderFeeRecords();
         }
 
+        // ==========================================
+// AUTO GENERATE MONTHLY FEES
+// ==========================================
+
+if (
+    typeof generateMonthlyStudentFees ===
+    "function"
+) {
+    await generateMonthlyStudentFees();
+}
 
         // ==========================================
         // SUPABASE CHECK
