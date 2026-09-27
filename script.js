@@ -30981,7 +30981,7 @@ window.openTeacherHome = function (
 // LOAD COMPLETE LOGGED-IN TEACHER DATA
 // ==========================================
 
-function loadTeacherProfile() {
+async function loadTeacherProfile() {
 
     // ==========================================
     // GET LOGGED-IN TEACHER
