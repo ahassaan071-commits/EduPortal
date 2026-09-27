@@ -9801,19 +9801,32 @@ async function renderUserManagementStudents() {
 
     try {
 
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .from("students")
-                .select("*")
-                .order(
-                    "created_at",
-                    {
-                        ascending: false
-                    }
-                );
+    const {
+    data,
+    error
+} =
+    await supabaseClient
+        .from("students")
+        .select(`
+            id,
+            student_id,
+            name,
+            father_name,
+            student_class,
+            section,
+            roll_number,
+            email,
+            mobile,
+            status,
+            username,
+            created_at
+        `)
+        .order(
+            "created_at",
+            {
+                ascending: false
+            }
+        );
 
         if (error) {
             console.error(
