@@ -31098,10 +31098,179 @@ async function loadTeacherProfile() {
     "Not Provided";
 
 
-    const teacherClass =
-        teacher.teacherClass ||
-        teacher.teacher_class ||
-        "—";
+   let teacherClass = "Not Assigned";
+
+try {
+
+    let teacherDbId =
+        teacher.id || null;
+
+    // Find teacher ID from teacher_id
+    if (
+        !teacherDbId &&
+        (
+            teacher.teacherId ||
+            teacher.teacher_id
+        )
+    ) {
+
+        const teacherResult =
+            await supabaseClient
+                .from("teachers")
+                .select("id")
+                .eq(
+                    "teacher_id",
+                    String(
+                        teacher.teacherId ||
+                        teacher.teacher_id
+                    ).trim()
+                )
+                .maybeSingle();
+
+        if (
+            !teacherResult.error &&
+            teacherResult.data
+        ) {
+            teacherDbId =
+                teacherResult.data.id;
+        }
+    }
+
+    // Find teacher ID from username
+    if (
+        !teacherDbId &&
+        teacher.username
+    ) {
+
+        const teacherResult =
+            await supabaseClient
+                .from("teachers")
+                .select("id")
+                .eq(
+                    "username",
+                    String(
+                        teacher.username
+                    ).trim()
+                )
+                .maybeSingle();
+
+        if (
+            !teacherResult.error &&
+            teacherResult.data
+        ) {
+            teacherDbId =
+                teacherResult.data.id;
+        }
+    }
+
+    if (teacherDbId) {
+
+        const {
+            data: assignments,
+            error: assignmentError
+        } =
+            await supabaseClient
+                .from("teacher_class_subjects")
+                .select("class_id")
+                .eq(
+                    "teacher_id",
+                    teacherDbId
+                );
+
+        if (
+            !assignmentError &&
+            assignments &&
+            assignments.length > 0
+        ) {
+
+            const classIds =
+                [
+                    ...new Set(
+                        assignments
+                            .map(function(item) {
+                                return item.class_id;
+                            })
+                            .filter(function(id) {
+                                return (
+                                    id !== null &&
+                                    id !== undefined
+                                );
+                            })
+                    )
+                ];
+
+            if (classIds.length > 0) {
+
+                const {
+                    data: assignedClasses,
+                    error: classError
+                } =
+                    await supabaseClient
+                        .from("classes")
+                        .select(
+                            "id, name, section"
+                        )
+                        .in(
+                            "id",
+                            classIds
+                        );
+
+                if (
+                    !classError &&
+                    assignedClasses &&
+                    assignedClasses.length > 0
+                ) {
+
+                    teacherClass =
+                        assignedClasses
+                            .map(function(classItem) {
+
+                                const className =
+                                    String(
+                                        classItem.name ||
+                                        ""
+                                    ).trim();
+
+                                const section =
+                                    String(
+                                        classItem.section ||
+                                        ""
+                                    ).trim();
+
+                                if (
+                                    className &&
+                                    section
+                                ) {
+                                    return (
+                                        className +
+                                        " " +
+                                        section
+                                    );
+                                }
+
+                                return (
+                                    className ||
+                                    section
+                                );
+
+                            })
+                            .filter(Boolean)
+                            .join(", ");
+                }
+            }
+        }
+    }
+
+} catch (error) {
+
+    console.error(
+        "TEACHER ASSIGNED CLASS PROFILE ERROR:",
+        error
+    );
+
+    teacherClass =
+        "Not Assigned";
+}
 
 
     const teacherQualification =
