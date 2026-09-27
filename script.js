@@ -18052,6 +18052,9 @@ const { data, error } =
     month:
         feeRecord.month,
 
+        fee_period:
+    feeRecord.feePeriod,
+
     fee_amount:
         feeRecord.feeAmount,
 
