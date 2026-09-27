@@ -25919,27 +25919,43 @@ async function loadTeacherMyStudents() {
     (students || []).filter(
         function (student) {
 
-            const studentClass =
-                String(
-                    student.student_class ||
-                    ""
-                )
-                .trim()
-                .toLowerCase()
-                .replace(
-                    /^class\s*/i,
-                    ""
-                )
-                .replace(
-                    /[^a-z0-9]/g,
-                    ""
-                );
+         const studentClass =
+    String(
+        student.student_class ||
+        ""
+    )
+    .trim()
+    .toLowerCase()
+    .replace(
+        /^class\s*/i,
+        ""
+    )
+    .replace(
+        /[^a-z0-9]/g,
+        ""
+    );
 
-            return (
-                assignedClassKeys.includes(
-                    studentClass
-                )
-            );
+const studentSection =
+    String(
+        student.section ||
+        ""
+    )
+    .trim()
+    .toLowerCase()
+    .replace(
+        /[^a-z0-9]/g,
+        ""
+    );
+
+const studentClassKey =
+    studentClass +
+    studentSection;
+
+return (
+    assignedClassKeys.includes(
+        studentClassKey
+    )
+);
         }
     );
 
@@ -28933,29 +28949,45 @@ if (!teacherClass) {
     (students || []).filter(
         function(student) {
 
-            const studentClass =
-                String(
-                    student.student_class ||
-                    student.studentClass ||
-                    student.class ||
-                    ""
-                )
-                .trim()
-                .toLowerCase()
-                .replace(
-                    /^class\s*/i,
-                    ""
-                )
-                .replace(
-                    /[^a-z0-9]/g,
-                    ""
-                );
+     const studentClass =
+    String(
+        student.student_class ||
+        student.studentClass ||
+        student.class ||
+        ""
+    )
+    .trim()
+    .toLowerCase()
+    .replace(
+        /^class\s*/i,
+        ""
+    )
+    .replace(
+        /[^a-z0-9]/g,
+        ""
+    );
 
-            return (
-                assignedClassKeys.includes(
-                    studentClass
-                )
-            );
+const studentSection =
+    String(
+        student.section ||
+        ""
+    )
+    .trim()
+    .toLowerCase()
+    .replace(
+        /[^a-z0-9]/g,
+        ""
+    );
+
+const studentClassKey =
+    studentClass +
+    studentSection;
+
+return (
+    assignedClassKeys.includes(
+        studentClassKey
+    )
+);
         }
     );
 // =========================================
