@@ -17919,6 +17919,9 @@ section:
 month:
 month,
 
+feePeriod:
+    feePeriod,
+
 feeAmount:
 feeAmount,
 
