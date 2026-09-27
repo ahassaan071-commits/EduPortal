@@ -17830,23 +17830,29 @@ if (feeRecordsLoadError) {
 const feeRecords = existingFeeRecords || [];
 // ==========================================
 // CHECK DUPLICATE FEE
+// SAME STUDENT + SAME FEE PERIOD
 // ==========================================
+
+const feePeriod = dueDate
+    ? `${dueDate.substring(0, 7)}-01`
+    : `${new Date().getFullYear()}-${String(
+        new Date().getMonth() + 1
+      ).padStart(2, "0")}-01`;
 
 const {
     data: duplicateFees,
     error: duplicateError
-} =
-    await supabaseClient
-        .from("fee_records")
-        .select("id")
-        .eq(
-            "student_id",
-            student.id
-        )
-        .eq(
-            "month",
-            month
-        );
+} = await supabaseClient
+    .from("fee_records")
+    .select("id, month, fee_period")
+    .eq(
+        "student_id",
+        student.id
+    )
+    .eq(
+        "fee_period",
+        feePeriod
+    );
 
 if (duplicateError) {
 
@@ -17869,40 +17875,11 @@ if (
 ) {
 
     alert(
-        "Fee record for this student and month already exists."
+        `Fee for ${student.name} for ${month} ${feePeriod.substring(0, 4)} already exists.`
     );
 
     return;
 }
-
-// Check duplicate month
-
-const duplicate =
-feeRecords.find(
-function (record) {
-
-return (
-String(
-    record.studentId
-) === String(studentId)
-&&
-record.month === month
-);
-
-}
-);
-
-
-if (duplicate) {
-
-alert(
-"Fee record for this student and month already exists."
-);
-
-return;
-
-}
-
 
 const remainingAmount =
 Math.max(
