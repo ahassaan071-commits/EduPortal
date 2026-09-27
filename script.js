@@ -44111,46 +44111,32 @@ async function renderTeacherAttendanceOverview() {
     // =====================================================
     // GET TEACHER CLASS
     // =====================================================
+const assignedClassKeys =
+    await getTeacherAssignedClassKeys(
+        teacher
+    );
 
-    const teacherClass =
-        String(
-            teacher.teacherClass ||
-            teacher.teacher_class ||
-            teacher.class ||
-            teacher.assigned_class ||
-            ""
-        )
-        .trim()
-        .toLowerCase()
-        .replace(
-            /^class\s+/i,
-            ""
-        );
-
-
-    if (!teacherClass) {
-
-        console.warn(
-            "Teacher class not found."
-        );
-
-        return;
-    }
+if (
+    !Array.isArray(assignedClassKeys) ||
+    assignedClassKeys.length === 0
+) {
+    return;
+}
 
 
     // =====================================================
     // GET STUDENTS
     // =====================================================
 
-    const {
-        data: students,
-        error: studentsError
-    } =
-        await supabaseClient
-            .from("students")
-            .select(
-                "id, student_class"
-            );
+  const {
+    data: students,
+    error: studentsError
+} =
+    await supabaseClient
+        .from("students")
+        .select(
+            "id, student_class, section"
+        );
 
 
     if (studentsError) {
