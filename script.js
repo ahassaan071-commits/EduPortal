@@ -36713,8 +36713,25 @@ const databaseRemaining =
 
 
 // ==========================================
-// REMAINING
+// FALLBACK TO STUDENT MONTHLY FEE
 // ==========================================
+
+if (
+    records.length === 0 &&
+    Number(dbStudent?.monthly_fee || 0) > 0
+) {
+
+    total =
+        Number(
+            dbStudent.monthly_fee
+        );
+
+    paid = 0;
+
+    databaseRemaining =
+        total;
+
+}
 
 const remaining =
     Math.max(
@@ -36746,6 +36763,12 @@ else if (paid > 0) {
 
     status =
         "Partially Paid";
+
+}
+else {
+
+    status =
+        "Pending";
 
 }
 
@@ -40093,8 +40116,8 @@ async function loadRealStudentFeeChart() {
                 await supabaseClient
                     .from("students")
                     .select(
-                        "id, student_id"
-                    )
+    "id, student_id, monthly_fee"
+)
                     .eq(
                         "id",
                         student.id
