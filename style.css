@@ -46247,3 +46247,41 @@ html.edu-session-restoring.edu-role-student #studentDashboard {
 .teacher-settings-actions .teacher-primary-btn {
     width: 300px;
 }
+/* ==========================================
+   FINAL SCROLLBAR FIX - MUST STAY AT END OF FILE
+   ========================================== */
+
+#studentDashboard .main-content {
+    height: 100vh !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+#adminDashboard .admin-main-content {
+    height: 100vh !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+#teacherDashboard .teacher-main-content {
+    height: 100vh !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+/* Custom scrollbar look */
+#studentDashboard .main-content::-webkit-scrollbar,
+#adminDashboard .admin-main-content::-webkit-scrollbar,
+#teacherDashboard .teacher-main-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+#studentDashboard .main-content::-webkit-scrollbar-thumb,
+#adminDashboard .admin-main-content::-webkit-scrollbar-thumb,
+#teacherDashboard .teacher-main-content::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
