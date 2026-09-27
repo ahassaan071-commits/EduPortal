@@ -18426,11 +18426,16 @@ if (
                         section:
                             student.section,
 
-                        month:
-                            currentMonth,
+                       month:
+    currentMonth,
 
-                        fee_amount:
-                            totalPayable,
+fee_period:
+    `${currentYear}-${String(
+        currentMonthNumber
+    ).padStart(2, "0")}-01`,
+
+fee_amount:
+    totalPayable,
 
                         paid_amount:
                             0,
