@@ -24344,27 +24344,43 @@ const assignedClassKeys =
     (students || []).filter(
         function (student) {
 
-            const studentClass =
-                String(
-                    student.student_class ||
-                    ""
-                )
-                .trim()
-                .toLowerCase()
-                .replace(
-                    /^class\s*/i,
-                    ""
-                )
-                .replace(
-                    /[^a-z0-9]/g,
-                    ""
-                );
+          const studentClass =
+    String(
+        student.student_class ||
+        ""
+    )
+    .trim()
+    .toLowerCase()
+    .replace(
+        /^class\s*/i,
+        ""
+    )
+    .replace(
+        /[^a-z0-9]/g,
+        ""
+    );
 
-            return (
-                assignedClassKeys.includes(
-                    studentClass
-                )
-            );
+const studentSection =
+    String(
+        student.section ||
+        ""
+    )
+    .trim()
+    .toLowerCase()
+    .replace(
+        /[^a-z0-9]/g,
+        ""
+    );
+
+const studentClassKey =
+    studentClass +
+    studentSection;
+
+return (
+    assignedClassKeys.includes(
+        studentClassKey
+    )
+);
         }
     );
 
@@ -25569,19 +25585,36 @@ async function getTeacherAssignedClassKeys(teacher) {
     // Normalize class names
     return classes.map(function(classItem) {
 
-        return String(
-            classItem.name || ""
-        )
-        .trim()
-        .toLowerCase()
-        .replace(
-            /^class\s*/i,
-            ""
-        )
-        .replace(
-            /[^a-z0-9]/g,
-            ""
-        );
+      const className =
+    String(
+        classItem.name || ""
+    )
+    .trim()
+    .toLowerCase()
+    .replace(
+        /^class\s*/i,
+        ""
+    )
+    .replace(
+        /[^a-z0-9]/g,
+        ""
+    );
+
+const section =
+    String(
+        classItem.section || ""
+    )
+    .trim()
+    .toLowerCase()
+    .replace(
+        /[^a-z0-9]/g,
+        ""
+    );
+
+return (
+    className +
+    section
+);
 
     }).filter(Boolean);
 }
