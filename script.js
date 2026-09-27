@@ -25641,19 +25641,10 @@ async function loadTeacherMyStudents() {
     // GET TEACHER CLASS
     // =========================================
 
-    const teacherClass =
-        String(
-            dbTeacher.teacher_class ||
-            teacher.teacherClass ||
-            teacher.teacher_class ||
-            ""
-        )
-        .trim()
-        .toLowerCase()
-        .replace(
-            /^class\s*/i,
-            ""
-        );
+ const assignedClassKeys =
+    await getTeacherAssignedClassKeys(
+        dbTeacher
+    );
 
     // =========================================
     // CLASS MUST EXIST
@@ -25748,28 +25739,33 @@ async function loadTeacherMyStudents() {
     // FILTER STUDENTS BY TEACHER CLASS
     // =========================================
 
-    const assignedStudents =
-        (students || []).filter(
-            function (student) {
+   const assignedStudents =
+    (students || []).filter(
+        function (student) {
 
-                const studentClass =
-                    String(
-                        student.student_class ||
-                        ""
-                    )
-                    .trim()
-                    .toLowerCase()
-                    .replace(
-                        /^class\s*/i,
-                        ""
-                    );
-
-                return (
-                    studentClass ===
-                    teacherClass
+            const studentClass =
+                String(
+                    student.student_class ||
+                    ""
+                )
+                .trim()
+                .toLowerCase()
+                .replace(
+                    /^class\s*/i,
+                    ""
+                )
+                .replace(
+                    /[^a-z0-9]/g,
+                    ""
                 );
-            }
-        );
+
+            return (
+                assignedClassKeys.includes(
+                    studentClass
+                )
+            );
+        }
+    );
 
     // =========================================
     // DEBUG
