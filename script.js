@@ -23472,7 +23472,16 @@ closeAllAdminUserModals();
             if (studentForm) {
                 studentForm.reset();
             }
+// LOAD CURRENT CLASSES + SECTIONS
 
+if (
+    typeof loadAdminStudentClassSections ===
+    "function"
+) {
+
+    await loadAdminStudentClassSections();
+
+}
 
             // ==========================================
             // OPEN STUDENT MODAL
