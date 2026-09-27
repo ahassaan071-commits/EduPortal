@@ -18189,11 +18189,11 @@ async function generateMonthlyStudentFees() {
         // ONLY RUN ON 1ST DAY OF MONTH
         // ==========================================
 
-        if (
-            currentDay !== 1
-        ) {
-            return;
-        }
+       if (
+    currentDay < 1
+) {
+    return;
+}
 
         const monthNames = [
             "January",
@@ -18290,29 +18290,30 @@ async function generateMonthlyStudentFees() {
             // CHECK DUPLICATE CURRENT MONTH
             // ==========================================
 
-            const {
-                data:
-                    existingRecords,
-                error:
-                    existingError
-            } =
-                await supabaseClient
-                    .from("fee_records")
-                    .select(`
-                        id,
-                        fee_amount,
-                        paid_amount,
-                        remaining_amount,
-                        month
-                    `)
-                    .eq(
-                        "student_id",
-                        student.student_id
-                    )
-                    .eq(
-                        "month",
-                        currentMonth
-                    );
+         const {
+    data:
+        existingRecords,
+    error:
+        existingError
+} =
+    await supabaseClient
+        .from("fee_records")
+        .select(`
+            id,
+            fee_amount,
+            paid_amount,
+            remaining_amount,
+            month,
+            due_date
+        `)
+        .eq(
+            "student_id",
+            student.id
+        )
+        .eq(
+            "due_date",
+            dueDate
+        );
 
             if (existingError) {
 
@@ -18335,34 +18336,33 @@ async function generateMonthlyStudentFees() {
             // GET PREVIOUS OUTSTANDING BALANCE
             // ==========================================
 
-            const {
-                data:
-                    previousRecords,
-                error:
-                    previousError
-            } =
-                await supabaseClient
-                    .from("fee_records")
-                    .select(`
-                        id,
-                        remaining_amount,
-                        created_at
-                    `)
-                    .eq(
-                        "student_id",
-                        student.student_id
-                    )
-                    .gt(
-                        "remaining_amount",
-                        0
-                    )
-                    .order(
-                        "created_at",
-                        {
-                            ascending:
-                                false
-                        }
-                    );
+           const {
+    data: previousRecords,
+    error: previousError
+} =
+    await supabaseClient
+        .from("fee_records")
+        .select(`
+            id,
+            remaining_amount,
+            created_at
+        `)
+        .eq(
+            "student_id",
+            student.id
+        )
+        .gt(
+            "remaining_amount",
+            0
+        )
+        .order(
+            "created_at",
+            {
+                ascending:
+                    false
+            }
+        )
+        .limit(1);
 
             if (previousError) {
 
@@ -18378,32 +18378,18 @@ async function generateMonthlyStudentFees() {
             // CALCULATE PREVIOUS BALANCE
             // ==========================================
 
-            let previousBalance = 0;
+         let previousBalance = 0;
 
-            if (
-                previousRecords &&
-                previousRecords.length > 0
-            ) {
-
-                previousBalance =
-                    previousRecords.reduce(
-                        function(
-                            total,
-                            record
-                        ) {
-
-                            return (
-                                total +
-                                Number(
-                                    record.remaining_amount ||
-                                    0
-                                )
-                            );
-
-                        },
-                        0
-                    );
-            }
+if (
+    previousRecords &&
+    previousRecords.length > 0
+) {
+    previousBalance =
+        Number(
+            previousRecords[0]
+                .remaining_amount || 0
+        );
+}
 
             // ==========================================
             // TOTAL PAYABLE
@@ -18426,7 +18412,7 @@ async function generateMonthlyStudentFees() {
                     .insert({
 
                         student_id:
-                            student.student_id,
+                           student.id,
 
                         student_name:
                             student.name,
@@ -37049,28 +37035,18 @@ records.forEach(function(record) {
 // DATABASE REMAINING FEE
 // ==========================================
 
-let databaseRemaining =
-    records.reduce(
-        function(sum, record) {
+let databaseRemaining = 0;
 
-            return sum +
-                Number(
-                    record.remaining_amount ??
-                    Math.max(
-                        0,
-                        Number(
-                            record.fee_amount || 0
-                        ) -
-                        Number(
-                            record.paid_amount || 0
-                        )
-                    )
-                );
+if (records.length > 0) {
 
-        },
-        0
-    );
+    const latestRecord =
+        records[0];
 
+    databaseRemaining =
+        Number(
+            latestRecord.remaining_amount || 0
+        );
+}
 
 // ==========================================
 // FALLBACK TO STUDENT MONTHLY FEE
