@@ -26032,7 +26032,7 @@ return (
                             color:#64748b;
                         "
                     >
-                        No students found for Class
+                        No students found in your assigned classes.
                         ${teacherClass}.
                     </td>
                 </tr>
