@@ -25282,6 +25282,166 @@ async function loadSavedTeacherAttendance() {
     updateTeacherAttendanceCounts();
 
 }
+
+// =========================================================
+// GET TEACHER ASSIGNED CLASSES
+// SOURCE: teacher_class_subjects
+// =========================================================
+
+async function getTeacherAssignedClassKeys(teacher) {
+
+    if (
+        typeof supabaseClient === "undefined" ||
+        !teacher
+    ) {
+        return [];
+    }
+
+    let teacherDbId =
+        teacher.id || null;
+
+    // Find teacher DB ID if session does not have it
+    if (!teacherDbId) {
+
+        if (
+            teacher.teacherId ||
+            teacher.teacher_id
+        ) {
+
+            const result =
+                await supabaseClient
+                    .from("teachers")
+                    .select("id")
+                    .eq(
+                        "teacher_id",
+                        String(
+                            teacher.teacherId ||
+                            teacher.teacher_id
+                        )
+                    )
+                    .maybeSingle();
+
+            if (
+                !result.error &&
+                result.data
+            ) {
+                teacherDbId =
+                    result.data.id;
+            }
+        }
+    }
+
+    // Try username if still not found
+    if (
+        !teacherDbId &&
+        teacher.username
+    ) {
+
+        const result =
+            await supabaseClient
+                .from("teachers")
+                .select("id")
+                .eq(
+                    "username",
+                    String(
+                        teacher.username
+                    ).trim()
+                )
+                .maybeSingle();
+
+        if (
+            !result.error &&
+            result.data
+        ) {
+            teacherDbId =
+                result.data.id;
+        }
+    }
+
+    if (!teacherDbId) {
+        return [];
+    }
+
+    // Get assigned class IDs
+    const {
+        data: assignments,
+        error: assignmentError
+    } =
+        await supabaseClient
+            .from("teacher_class_subjects")
+            .select("class_id")
+            .eq(
+                "teacher_id",
+                teacherDbId
+            );
+
+    if (
+        assignmentError ||
+        !assignments ||
+        assignments.length === 0
+    ) {
+        return [];
+    }
+
+    const classIds =
+        [
+            ...new Set(
+                assignments
+                    .map(function(item) {
+                        return item.class_id;
+                    })
+                    .filter(function(id) {
+                        return (
+                            id !== null &&
+                            id !== undefined
+                        );
+                    })
+            )
+        ];
+
+    if (classIds.length === 0) {
+        return [];
+    }
+
+    // Get actual class names
+    const {
+        data: classes,
+        error: classError
+    } =
+        await supabaseClient
+            .from("classes")
+            .select("id, name, section")
+            .in(
+                "id",
+                classIds
+            );
+
+    if (
+        classError ||
+        !classes
+    ) {
+        return [];
+    }
+
+    // Normalize class names
+    return classes.map(function(classItem) {
+
+        return String(
+            classItem.name || ""
+        )
+        .trim()
+        .toLowerCase()
+        .replace(
+            /^class\s*/i,
+            ""
+        )
+        .replace(
+            /[^a-z0-9]/g,
+            ""
+        );
+
+    }).filter(Boolean);
+}
 // =========================================================
 // TEACHER - MY STUDENTS
 // =========================================================
