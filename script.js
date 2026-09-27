@@ -26066,14 +26066,16 @@ return (
             }
         </td>
 
-        <td>
-            ${
-                formatClassSection(
-                    student.student_class,
-                    student.section
-                )
-            }
-        </td>
+       <td>
+    ${
+        formatClassSection(
+            student.student_class,
+            student.section
+        )
+        .replace(/^class\s*/i, "")
+        .replace(/\s+/g, "")
+    }
+</td>
 
         <td>
             ${
@@ -36934,9 +36936,6 @@ const container =
     );
 
 if (!container) {
-    console.warn(
-        "studentNotices element NOT FOUND"
-    );
     return;
 }
 
