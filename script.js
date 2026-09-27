@@ -9911,17 +9911,29 @@ async function renderUserManagementStudents() {
                 student.full_name ||
                 "—",
 
-            classSubject:
-                student.student_class
-                    ? "Class " +
-                      student.student_class
-                    :
-                    (
-                        student.studentClass
-                            ? "Class " +
-                              student.studentClass
-                            : "—"
-                    ),
+           classSubject:
+    (
+        student.student_class ||
+        student.studentClass ||
+        ""
+    )
+    .toString()
+    .replace(
+        /^class\s*/i,
+        ""
+    )
+    .trim()
+    +
+    (
+        student.section
+            ? " " +
+              String(
+                  student.section
+              )
+              .trim()
+              .toUpperCase()
+            : ""
+    ),
 
             username:
                 student.username ||
