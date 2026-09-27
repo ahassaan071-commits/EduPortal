@@ -5585,12 +5585,12 @@ statusField.value = "Active";
 
 }
 // ==========================================================
-// LOAD CLASS + SECTION FOR ADD STUDENT FORM
+// LOAD CLASS + SECTION FOR ADD STUDENT
 // ==========================================================
 
-async function loadAdminStudentClassSections() {
+async function loadAdminStudentClasses() {
 
-    const classField =
+    const classSelect =
         document.getElementById(
             "adminNewStudentClass"
         );
@@ -5600,45 +5600,15 @@ async function loadAdminStudentClassSections() {
             "adminNewStudentSection"
         );
 
-    if (
-        !classField ||
-        !sectionField
-    ) {
+    if (!classSelect) {
         return;
     }
 
-    // Reset class dropdown
-    classField.innerHTML = `
+    classSelect.innerHTML = `
         <option value="">
             Loading Classes...
         </option>
     `;
-
-    sectionField.innerHTML = `
-        <option value="">
-            Select Section
-        </option>
-    `;
-
-    sectionField.disabled = true;
-
-    if (
-        typeof supabaseClient ===
-        "undefined"
-    ) {
-
-        classField.innerHTML = `
-            <option value="">
-                Unable to load classes
-            </option>
-        `;
-
-        return;
-    }
-
-    // ==========================================
-    // LOAD CLASSES FROM SUPABASE
-    // ==========================================
 
     const {
         data: classes,
@@ -5659,11 +5629,11 @@ async function loadAdminStudentClassSections() {
     if (error) {
 
         console.error(
-            "ADMIN STUDENT CLASS LOAD ERROR:",
+            "ADD STUDENT CLASS LOAD ERROR:",
             error
         );
 
-        classField.innerHTML = `
+        classSelect.innerHTML = `
             <option value="">
                 Unable to load classes
             </option>
@@ -5672,47 +5642,23 @@ async function loadAdminStudentClassSections() {
         return;
     }
 
-    classField.innerHTML = `
+    classSelect.innerHTML = `
         <option value="">
-            Select Class
+            Select Class - Subject
         </option>
     `;
 
-    if (
-        !classes ||
-        classes.length === 0
-    ) {
-
-        classField.innerHTML = `
-            <option value="">
-                No classes available
-            </option>
-        `;
-
-        return;
-    }
-
-    // ==========================================
-    // REMOVE DUPLICATES
-    // ==========================================
-
-    const combinations =
-        new Map();
-
-    classes.forEach(
-        function(classItem) {
+    (classes || []).forEach(
+        function(item) {
 
             const className =
                 String(
-                    classItem.name ||
-                    ""
-                )
-                .trim();
+                    item.name || ""
+                ).trim();
 
             const section =
                 String(
-                    classItem.section ||
-                    ""
+                    item.section || ""
                 )
                 .trim()
                 .toUpperCase();
@@ -5721,139 +5667,55 @@ async function loadAdminStudentClassSections() {
                 return;
             }
 
-            const key =
-                className
-                .toLowerCase()
-                .replace(
-                    /^class\s*/i,
-                    ""
-                ) +
-                "|" +
-                section;
-
-            if (
-                !combinations.has(key)
-            ) {
-
-                combinations.set(
-                    key,
-                    {
-                        className:
-                            className,
-
-                        section:
-                            section
-                    }
-                );
-
-            }
-
-        }
-    );
-
-    // ==========================================
-    // CREATE CLASS OPTIONS
-    // ==========================================
-
-    combinations.forEach(
-        function(item) {
-
             const option =
                 document.createElement(
                     "option"
                 );
 
-            const displayClass =
-                item.className
-                    .replace(
-                        /^class\s*/i,
-                        ""
-                    )
-                    .trim();
-
             option.value =
-                displayClass;
+                className;
 
             option.textContent =
-                displayClass +
-                item.section;
+                className.replace(
+                    /^class\s*/i,
+                    ""
+                ) +
+                (
+                    section
+                        ? section
+                        : ""
+                );
 
             option.dataset.section =
-                item.section;
+                section;
 
-            classField.appendChild(
+            classSelect.appendChild(
                 option
             );
-
         }
     );
 
     // ==========================================
-    // AUTO SELECT SECTION
+    // AUTOMATICALLY STORE SECTION
     // ==========================================
 
-    classField.onchange =
+    classSelect.onchange =
         function() {
 
             const selectedOption =
-                classField.options[
-                    classField.selectedIndex
+                classSelect.options[
+                    classSelect.selectedIndex
                 ];
 
-            const selectedSection =
-                selectedOption
-                    ?.dataset
-                    ?.section ||
+            const section =
+                selectedOption?.dataset?.section ||
                 "";
 
-            sectionField.innerHTML = `
-                <option value="">
-                    Select Section
-                </option>
-            `;
+            if (sectionField) {
 
-            if (
-                selectedSection
-            ) {
-
-                const sectionOption =
-                    document.createElement(
-                        "option"
-                    );
-
-                sectionOption.value =
-                    selectedSection;
-
-                sectionOption.textContent =
-                    "Section " +
-                    selectedSection;
-
-                sectionOption.selected =
-                    true;
-
-                sectionField.appendChild(
-                    sectionOption
-                );
-
-                sectionField.disabled =
-                    false;
-
-            } else {
-
-                sectionField.disabled =
-                    true;
-
+                sectionField.value =
+                    section;
             }
-
-            // Reload subjects
-            classField.dispatchEvent(
-                new Event(
-                    "change",
-                    {
-                        bubbles: true
-                    }
-                )
-            );
 
         };
 
