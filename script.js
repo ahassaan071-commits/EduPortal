@@ -25822,37 +25822,40 @@ async function loadTeacherMyStudents() {
         dbTeacher
     );
 
-    // =========================================
-    // CLASS MUST EXIST
-    // =========================================
+  // =========================================
+// ASSIGNED CLASSES MUST EXIST
+// =========================================
 
-    if (!teacherClass) {
+if (
+    !Array.isArray(assignedClassKeys) ||
+    assignedClassKeys.length === 0
+) {
 
-        console.error(
-            "No class assigned to teacher:",
-            dbTeacher
-        );
+    console.error(
+        "No class assigned to teacher:",
+        dbTeacher
+    );
 
-        if (tableBody) {
+    if (tableBody) {
 
-            tableBody.innerHTML = `
-                <tr>
-                    <td
-                        colspan="7"
-                        style="
-                            text-align:center;
-                            padding:50px;
-                            color:#64748b;
-                        "
-                    >
-                        No class is assigned to this teacher.
-                    </td>
-                </tr>
-            `;
-        }
-
-        return;
+        tableBody.innerHTML = `
+            <tr>
+                <td
+                    colspan="7"
+                    style="
+                        text-align:center;
+                        padding:50px;
+                        color:#64748b;
+                    "
+                >
+                    No class is assigned to this teacher.
+                </td>
+            </tr>
+        `;
     }
+
+    return;
+}
 
     // =========================================
     // LOAD STUDENTS
@@ -28847,10 +28850,17 @@ const assignedClassKeys =
 // IMPORTANT:
 // Never show all students if class is missing.
 
-if (!teacherClass) {
+// =========================================
+// ASSIGNED CLASSES MUST EXIST
+// =========================================
+
+if (
+    !Array.isArray(assignedClassKeys) ||
+    assignedClassKeys.length === 0
+) {
 
     console.error(
-        "Teacher class not found."
+        "No class assigned to teacher."
     );
 
     tableBody.innerHTML = `
@@ -28860,10 +28870,10 @@ if (!teacherClass) {
                 style="
                     text-align:center;
                     padding:50px;
-                    color:#dc2626;
+                    color:#64748b;
                 "
             >
-                Teacher class is not assigned.
+                No class is assigned to this teacher.
             </td>
         </tr>
     `;
