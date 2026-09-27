@@ -5585,6 +5585,280 @@ statusField.value = "Active";
 
 }
 // ==========================================================
+// LOAD CLASS + SECTION FOR ADD STUDENT FORM
+// ==========================================================
+
+async function loadAdminStudentClassSections() {
+
+    const classField =
+        document.getElementById(
+            "adminNewStudentClass"
+        );
+
+    const sectionField =
+        document.getElementById(
+            "adminNewStudentSection"
+        );
+
+    if (
+        !classField ||
+        !sectionField
+    ) {
+        return;
+    }
+
+    // Reset class dropdown
+    classField.innerHTML = `
+        <option value="">
+            Loading Classes...
+        </option>
+    `;
+
+    sectionField.innerHTML = `
+        <option value="">
+            Select Section
+        </option>
+    `;
+
+    sectionField.disabled = true;
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+
+        classField.innerHTML = `
+            <option value="">
+                Unable to load classes
+            </option>
+        `;
+
+        return;
+    }
+
+    // ==========================================
+    // LOAD CLASSES FROM SUPABASE
+    // ==========================================
+
+    const {
+        data: classes,
+        error
+    } =
+        await supabaseClient
+            .from("classes")
+            .select(
+                "id, name, section"
+            )
+            .order(
+                "id",
+                {
+                    ascending: true
+                }
+            );
+
+    if (error) {
+
+        console.error(
+            "ADMIN STUDENT CLASS LOAD ERROR:",
+            error
+        );
+
+        classField.innerHTML = `
+            <option value="">
+                Unable to load classes
+            </option>
+        `;
+
+        return;
+    }
+
+    classField.innerHTML = `
+        <option value="">
+            Select Class
+        </option>
+    `;
+
+    if (
+        !classes ||
+        classes.length === 0
+    ) {
+
+        classField.innerHTML = `
+            <option value="">
+                No classes available
+            </option>
+        `;
+
+        return;
+    }
+
+    // ==========================================
+    // REMOVE DUPLICATES
+    // ==========================================
+
+    const combinations =
+        new Map();
+
+    classes.forEach(
+        function(classItem) {
+
+            const className =
+                String(
+                    classItem.name ||
+                    ""
+                )
+                .trim();
+
+            const section =
+                String(
+                    classItem.section ||
+                    ""
+                )
+                .trim()
+                .toUpperCase();
+
+            if (!className) {
+                return;
+            }
+
+            const key =
+                className
+                .toLowerCase()
+                .replace(
+                    /^class\s*/i,
+                    ""
+                ) +
+                "|" +
+                section;
+
+            if (
+                !combinations.has(key)
+            ) {
+
+                combinations.set(
+                    key,
+                    {
+                        className:
+                            className,
+
+                        section:
+                            section
+                    }
+                );
+
+            }
+
+        }
+    );
+
+    // ==========================================
+    // CREATE CLASS OPTIONS
+    // ==========================================
+
+    combinations.forEach(
+        function(item) {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            const displayClass =
+                item.className
+                    .replace(
+                        /^class\s*/i,
+                        ""
+                    )
+                    .trim();
+
+            option.value =
+                displayClass;
+
+            option.textContent =
+                displayClass +
+                item.section;
+
+            option.dataset.section =
+                item.section;
+
+            classField.appendChild(
+                option
+            );
+
+        }
+    );
+
+    // ==========================================
+    // AUTO SELECT SECTION
+    // ==========================================
+
+    classField.onchange =
+        function() {
+
+            const selectedOption =
+                classField.options[
+                    classField.selectedIndex
+                ];
+
+            const selectedSection =
+                selectedOption
+                    ?.dataset
+                    ?.section ||
+                "";
+
+            sectionField.innerHTML = `
+                <option value="">
+                    Select Section
+                </option>
+            `;
+
+            if (
+                selectedSection
+            ) {
+
+                const sectionOption =
+                    document.createElement(
+                        "option"
+                    );
+
+                sectionOption.value =
+                    selectedSection;
+
+                sectionOption.textContent =
+                    "Section " +
+                    selectedSection;
+
+                sectionOption.selected =
+                    true;
+
+                sectionField.appendChild(
+                    sectionOption
+                );
+
+                sectionField.disabled =
+                    false;
+
+            } else {
+
+                sectionField.disabled =
+                    true;
+
+            }
+
+            // Reload subjects
+            classField.dispatchEvent(
+                new Event(
+                    "change",
+                    {
+                        bubbles: true
+                    }
+                )
+            );
+
+        };
+
+}
+// ==========================================================
 // LOAD SUBJECTS IN STUDENT SUBJECT FORM
 // ==========================================================
 
