@@ -36689,7 +36689,7 @@ records.forEach(function(record) {
 // DATABASE REMAINING FEE
 // ==========================================
 
-const databaseRemaining =
+let databaseRemaining =
     records.reduce(
         function(sum, record) {
 
@@ -40360,6 +40360,25 @@ const selectedFeeRecords =
 
             });
 
+            // ==========================================
+// FALLBACK TO STUDENT MONTHLY FEE
+// ==========================================
+
+if (
+    selectedFeeRecords.length === 0 &&
+    Number(dbStudent?.monthly_fee || 0) > 0
+) {
+
+    totalFee =
+        Number(
+            dbStudent.monthly_fee
+        );
+
+    paidFee = 0;
+
+    remainingFee =
+        totalFee;
+}
 
         // ==========================================
         // PERCENTAGE
