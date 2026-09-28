@@ -20763,6 +20763,22 @@ async function () {
         return;
     }
 
+// ==========================================
+// SPECIFIC CLASS VALIDATION
+// ==========================================
+
+if (
+    audience === "Class" &&
+    !selectedClass
+) {
+
+    alert(
+        "Please select a class."
+    );
+
+    return;
+}
+
 
     if (!date) {
 
@@ -20814,11 +20830,15 @@ const noticeRecord = {
 
     message: description,
 
-    target_role: audience,
+    target_role:
+        audience === "Class"
+            ? "Class:" + selectedClass
+            : audience,
 
     expiry_date: date,
 
-    created_at: new Date().toISOString()
+    created_at:
+        new Date().toISOString()
 };
 
     const {
