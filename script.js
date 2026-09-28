@@ -22105,30 +22105,250 @@ async function loadLatestAdminNotice() {
     }
 
 
-    // ==========================================
-    // LOAD LATEST PUBLISHED NOTICE
-    // ==========================================
+  // ==========================================
+// GET CURRENT STUDENT
+// ==========================================
 
-       const {
-       data: notices,
-       error
-   } =
-       await supabaseClient
-           .from("notices")
-       .select(
-    "id, title, message, target_role, expiry_date, created_at"
-)
-.gte(
-    "expiry_date",
-    new Date().toISOString().slice(0, 10)
-)
-.order(
-    "created_at",
-    {
-        ascending: false
+let currentStudent = null;
+
+try {
+
+    currentStudent =
+        JSON.parse(
+            localStorage.getItem(
+                "loggedInStudent"
+            )
+        ) ||
+        JSON.parse(
+            localStorage.getItem(
+                "studentAccount"
+            )
+        ) ||
+        null;
+
+} catch (error) {
+
+    currentStudent = null;
+
+}
+
+
+// ==========================================
+// FIND STUDENT FROM DATABASE
+// ==========================================
+
+let dbStudent = null;
+
+
+// TRY DATABASE ID
+
+if (
+    currentStudent &&
+    currentStudent.id
+) {
+
+    const {
+        data
+    } =
+        await supabaseClient
+            .from("students")
+            .select(
+                "id, student_id, student_class, class, section"
+            )
+            .eq(
+                "id",
+                currentStudent.id
+            )
+            .maybeSingle();
+
+    if (data) {
+
+        dbStudent = data;
+
     }
-)
-.limit(1);
+
+}
+
+
+// TRY STUDENT ID
+
+if (
+    !dbStudent &&
+    currentStudent &&
+    currentStudent.studentId
+) {
+
+    const {
+        data
+    } =
+        await supabaseClient
+            .from("students")
+            .select(
+                "id, student_id, student_class, class, section"
+            )
+            .eq(
+                "student_id",
+                String(
+                    currentStudent.studentId
+                )
+            )
+            .maybeSingle();
+
+    if (data) {
+
+        dbStudent = data;
+
+    }
+
+}
+
+
+// ==========================================
+// STUDENT CLASS + SECTION
+// ==========================================
+
+const studentClass =
+    String(
+        dbStudent?.student_class ||
+        dbStudent?.class ||
+        currentStudent?.studentClass ||
+        currentStudent?.class ||
+        ""
+    )
+    .trim()
+    .replace(
+        /^class\s*/i,
+        ""
+    )
+    .toLowerCase();
+
+
+const studentSection =
+    String(
+        dbStudent?.section ||
+        currentStudent?.section ||
+        ""
+    )
+    .trim()
+    .toLowerCase();
+
+
+const studentClassKey =
+    `${studentClass}||${studentSection}`;
+
+
+// ==========================================
+// LOAD ALL ACTIVE NOTICES
+// ==========================================
+
+const {
+    data: allNotices,
+    error
+} =
+    await supabaseClient
+        .from("notices")
+        .select(
+            "id, title, message, target_role, expiry_date, created_at"
+        )
+        .gte(
+            "expiry_date",
+            new Date().toISOString().slice(0, 10)
+        )
+        .order(
+            "created_at",
+            {
+                ascending: false
+            }
+        );
+
+
+// ==========================================
+// FILTER NOTICES FOR CURRENT STUDENT
+// ==========================================
+
+const notices =
+    (allNotices || [])
+        .filter(
+            function(notice) {
+
+                const target =
+                    String(
+                        notice.target_role ||
+                        ""
+                    )
+                    .trim()
+                    .toLowerCase();
+
+
+                // -------------------------------
+                // ALL STUDENTS
+                // -------------------------------
+
+                if (
+                    target === "all" ||
+                    target === "all students" ||
+                    target === "everyone" ||
+                    target === "students"
+                ) {
+
+                    return true;
+
+                }
+
+
+                // -------------------------------
+                // STUDENT
+                // -------------------------------
+
+                if (
+                    target === "student"
+                ) {
+
+                    return true;
+
+                }
+
+
+                // -------------------------------
+                // SPECIFIC CLASS + SECTION
+                // -------------------------------
+
+                if (
+                    target.startsWith(
+                        "class:"
+                    )
+                ) {
+
+                    const noticeClassKey =
+                        target
+                            .replace(
+                                /^class:/i,
+                                ""
+                            )
+                            .trim()
+                            .toLowerCase();
+
+
+                    return (
+                        noticeClassKey ===
+                        studentClassKey
+                    );
+
+                }
+
+
+                // -------------------------------
+                // OTHER AUDIENCE
+                // -------------------------------
+
+                return false;
+
+            }
+        )
+        .slice(
+            0,
+            1
+        );
 
 
     // ==========================================
