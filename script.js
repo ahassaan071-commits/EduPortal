@@ -31965,8 +31965,8 @@ async function loadTeacherSavedResults() {
         await supabaseClient
             .from("students")
             .select(
-                "id, name, student_name, student_id, student_class, section"
-            )
+    "id, name, student_id, student_class, section"
+)
             .in(
                 "id",
                 studentIds
@@ -47671,11 +47671,10 @@ if (
     console.log(
         "TEACHER ATTENDANCE OVERVIEW LIVE:",
         {
-            teacherClass,
-            totalStudents,
-            selectedPeriod,
-            points
-        }
+    totalStudents,
+    selectedPeriod,
+    points
+}
     );
 
 }
