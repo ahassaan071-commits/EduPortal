@@ -18589,6 +18589,38 @@ const studentIdMap = {};
     }
 );
 
+// ==========================================
+// CREATE STUDENT CLASS + SECTION MAP
+// ==========================================
+
+const studentClassMap = {};
+
+(studentsList || []).forEach(
+    function(student) {
+
+        const className =
+            String(
+                student.student_class || ""
+            )
+            .trim()
+            .replace(/^Class\s*/i, "");
+
+        const section =
+            String(
+                student.section || ""
+            )
+            .trim()
+            .toUpperCase();
+
+        studentClassMap[
+            String(student.id)
+        ] =
+            section
+                ? `${className} - ${section}`
+                : className;
+
+    }
+);
 
     if (error) {
 
@@ -18685,23 +18717,24 @@ const studentIdMap = {};
                     ${record.student_name || ""}
                 </td>
 
-                <td>
-                    ${record.student_id || ""}
-                </td>
+               <td>
+    ${
+        studentIdMap[
+            String(record.student_id)
+        ] ||
+        record.student_id ||
+        ""
+    }
+</td>
 
                 <td>
-                    ${
-                        record.student_class ||
-                        ""
-                    }
-
-                    ${
-                        record.section
-                            ? " - " +
-                              record.section
-                            : ""
-                    }
-                </td>
+    ${
+        studentClassMap[
+            String(record.student_id)
+        ] ||
+        ""
+    }
+</td>
 
             <td>
     ${record.month || ""}
