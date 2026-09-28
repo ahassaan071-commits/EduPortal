@@ -1351,201 +1351,381 @@ Student Portal Loading...
 
 </section>
 
-        <!-- =================================================
-             RESULTS
-        ================================================== -->
+       <!-- =================================================
+     RESULTS
+================================================= -->
 
-        <section
-            id="teacherResultsSection"
-            class="teacher-section-page"
-            style="display:none;"
-        >
-
-    <div class="teacher-page-heading teacher-results-page-heading">
-
-    <div>
-        <h2>
-            Results
-        </h2>
-    </div>
-
-    <div class="teacher-results-search-box">
-
-        <i class="fas fa-search"></i>
-
-        <input
-            type="text"
-            id="teacherResultSearch"
-            placeholder="Search Student..."
-            autocomplete="off"
-        >
-
-    </div>
-
-</div>
-
-            <div class="teacher-section-card">
-
-                <div class="teacher-card-heading">
-
-                    <div>
-
-                        <h3>
-                            Student Results
-                        </h3>
-
-                    </div>
-
-                </div>
-
-
-              <div class="teacher-results-content">
-
-    <div class="teacher-results-toolbar">
-
-        <div class="teacher-result-field">
-
-    <input
-        type="text"
-        id="teacherResultSubject"
-        placeholder="Enter subject"
-    >
-
-</div>
-
-
-        <div class="teacher-result-field">
-
-        <input
-    type="number"
-    id="teacherResultTotalMarks"
-    min="1"
-    placeholder="Enter total marks"
+<section
+    id="teacherResultsSection"
+    class="teacher-section-page"
+    style="display:none;"
 >
 
+    <!-- =========================================
+         RESULTS PAGE HEADER
+    ========================================== -->
+
+    <div class="teacher-page-heading">
+
+        <div>
+            <h2>
+                Results
+            </h2>
+
+            <p>
+                Manage student academic results
+            </p>
         </div>
-
-    </div>
-
-
-    <div class="teacher-results-table-wrapper">
-
-        <table class="teacher-results-table">
-
-            <thead>
-
-                <tr>
-                    <th>#</th>
-                    <th>Student</th>
-                    <th>Student ID</th>
-                    <th>Total Marks</th>
-                    <th>Obtained Marks</th>
-                    <th>Percentage</th>
-                    <th>Grade</th>
-                </tr>
-
-            </thead>
-
-
-            <tbody id="teacherResultsTableBody">
-
-                <tr>
-
-                    <td
-                        colspan="7"
-                        class="teacher-module-loading"
-                    >
-                        Loading results...
-                    </td>
-
-                </tr>
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-
-    <div class="teacher-results-footer">
 
         <button
             type="button"
-            id="teacherSaveResultsBtn"
+            id="teacherAddResultBtn"
             class="teacher-primary-btn"
         >
-            <i class="fas fa-save"></i>
-            Save Results
+            <i class="fas fa-plus"></i>
+            Add Result
         </button>
 
     </div>
 
 
-<!-- =========================================
-     SAVED RESULTS
-========================================= -->
+    <!-- =========================================
+         RESULT ENTRY FORM
+    ========================================== -->
 
-<div class="teacher-saved-results-card">
+    <div
+        id="teacherResultFormCard"
+        class="teacher-section-card"
+        style="display:none;"
+    >
 
-    <div class="teacher-card-heading">
+        <div class="teacher-card-heading">
 
-        <div>
-            <h3>
-                <i class="fas fa-history"></i>
-                Saved Results
-            </h3>
+            <div>
 
-           
+                <h3>
+                    <i class="fas fa-file-signature"></i>
+                    Add Student Results
+                </h3>
+
+                <p>
+                    Enter academic result details for the assigned class.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="teacher-results-form">
+
+            <!-- =====================================
+                 SUBJECT
+            ====================================== -->
+
+            <div class="teacher-result-field">
+
+                <label for="teacherResultSubject">
+                    Subject
+                    <span>*</span>
+                </label>
+
+                <select
+                    id="teacherResultSubject"
+                    required
+                >
+
+                    <option value="">
+                        Select Subject
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- =====================================
+                 CLASS
+            ====================================== -->
+
+            <div class="teacher-result-field">
+
+                <label for="teacherResultClass">
+                    Class
+                    <span>*</span>
+                </label>
+
+                <select
+                    id="teacherResultClass"
+                    required
+                >
+
+                    <option value="">
+                        Select Assigned Class
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- =====================================
+                 RESULT TYPE
+            ====================================== -->
+
+            <div class="teacher-result-field">
+
+                <label for="teacherResultType">
+                    Result Type
+                    <span>*</span>
+                </label>
+
+                <select
+                    id="teacherResultType"
+                    required
+                >
+
+                    <option value="">
+                        Select Result Type
+                    </option>
+
+                    <option value="Monthly Test">
+                        Monthly Test
+                    </option>
+
+                    <option value="Mid Term">
+                        Mid Term
+                    </option>
+
+                    <option value="Final Term">
+                        Final Term
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- =====================================
+                 TOTAL MARKS
+            ====================================== -->
+
+            <div class="teacher-result-field">
+
+                <label for="teacherResultTotalMarks">
+                    Total Marks
+                    <span>*</span>
+                </label>
+
+                <input
+                    type="number"
+                    id="teacherResultTotalMarks"
+                    min="1"
+                    placeholder="Enter total marks"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================================
+             STUDENT RESULTS
+        ========================================== -->
+
+        <div
+            id="teacherResultStudentsArea"
+            class="teacher-result-students-area"
+        >
+
+            <div class="teacher-result-empty-state">
+
+                <i class="fas fa-users"></i>
+
+                <h4>
+                    Select a class
+                </h4>
+
+                <p>
+                    Students from the selected class will appear here.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================================
+             SAVE / CANCEL
+        ========================================== -->
+
+        <div class="teacher-results-footer">
+
+            <button
+                type="button"
+                id="teacherCancelResultBtn"
+                class="teacher-secondary-btn"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                id="teacherSaveResultsBtn"
+                class="teacher-primary-btn"
+            >
+                <i class="fas fa-save"></i>
+                Save Results
+            </button>
+
         </div>
 
     </div>
 
 
-    <div class="teacher-saved-results-table-wrapper">
+    <!-- =========================================
+         SAVED RESULTS
+    ========================================== -->
 
-        <table class="teacher-saved-results-table">
+    <div class="teacher-section-card">
 
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Student</th>
-                    <th>Student ID</th>
-                    <th>Subject</th>
-                    <th>Total Marks</th>
-                    <th>Obtained Marks</th>
-                    <th>Percentage</th>
-                    <th>Grade</th>
-                </tr>
-            </thead>
+        <div class="teacher-card-heading">
 
+            <div>
 
-            <tbody id="teacherSavedResultsTableBody">
+                <h3>
+                    <i class="fas fa-history"></i>
+                    Result Records
+                </h3>
 
-                <tr>
-                    <td
-                        colspan="8"
-                        class="teacher-module-loading"
-                    >
-                        No saved results yet.
-                    </td>
-                </tr>
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-</div>
-
-</div>
+                <p>
+                    Previously saved student results
+                </p>
 
             </div>
 
-        </section>
+
+            <div class="teacher-results-record-count">
+
+                <span id="teacherSavedResultsCount">
+                    0
+                </span>
+
+                Records
+
+            </div>
+
+        </div>
 
 
+        <!-- =====================================
+             SEARCH
+        ====================================== -->
 
+        <div class="teacher-results-record-toolbar">
+
+            <div class="teacher-results-search-box">
+
+                <i class="fas fa-search"></i>
+
+                <input
+                    type="text"
+                    id="teacherResultSearch"
+                    placeholder="Search student, ID or subject..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================
+             TABLE
+        ====================================== -->
+
+        <div class="teacher-results-table-wrapper">
+
+            <table class="teacher-results-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+
+                        <th>
+                            Student
+                        </th>
+
+                        <th>
+                            Student ID
+                        </th>
+
+                        <th>
+                            Class
+                        </th>
+
+                        <th>
+                            Subject
+                        </th>
+
+                        <th>
+                            Result Type
+                        </th>
+
+                        <th>
+                            Total
+                        </th>
+
+                        <th>
+                            Obtained
+                        </th>
+
+                        <th>
+                            Percentage
+                        </th>
+
+                        <th>
+                            Grade
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="teacherSavedResultsTableBody"
+                >
+
+                    <tr>
+
+                        <td
+                            colspan="11"
+                            class="teacher-module-loading"
+                        >
+
+                            No result records found.
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
         <!-- =================================================
              NOTICES
         ================================================== -->
