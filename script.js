@@ -1175,10 +1175,11 @@ async function toggleTeacherPassword(
         localStorage.removeItem("isLoggedIn");
         localStorage.removeItem("loggedInRole");
 
-        localStorage.removeItem("adminAccount");
-        localStorage.removeItem("loggedInTeacher");
-        localStorage.removeItem("loggedInStudent");
-        localStorage.removeItem("studentAccount");
+       localStorage.removeItem("adminAccount");
+localStorage.removeItem("loggedInTeacher");
+localStorage.removeItem("loggedInStudent");
+localStorage.removeItem("studentAccount");
+localStorage.removeItem("currentStudent");
 
         localStorage.removeItem("lastActivityAt");
         localStorage.removeItem("sessionStartedAt");
