@@ -46626,3 +46626,12 @@ html.edu-session-restoring.edu-role-student #studentDashboard {
     padding-right: 0 !important;
     background: transparent !important;
 }
+/* Add Result Button - Smaller */
+#teacherAddResultBtn {
+    width: 180px !important;
+    min-width: 180px !important;
+    height: 46px !important;
+    padding: 0 22px !important;
+    margin-left: auto;
+    flex: 0 0 auto !important;
+}
