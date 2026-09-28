@@ -18433,6 +18433,9 @@ async function generateMonthlyStudentFees() {
                         fee_period:
                             feePeriod,
 
+                            fee_generated_date:
+    pakistanDate,
+
                         fee_amount:
                             totalPayable,
 
