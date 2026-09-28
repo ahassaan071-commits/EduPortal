@@ -32239,7 +32239,7 @@ function calculateTeacherResultGrade(
 }
 
 // =========================================================
-// TEACHER SAVE RESULTS - REAL SUPABASE
+// TEACHER SAVE RESULTS - NEW RESULT FORM
 // =========================================================
 
 document.addEventListener(
@@ -32257,16 +32257,8 @@ document.addEventListener(
 
 
         // =========================================
-        // GET LOGGED-IN TEACHER
+        // SUPABASE CHECK
         // =========================================
-
-        const teacher =
-            JSON.parse(
-                localStorage.getItem(
-                    "loggedInTeacher"
-                )
-            ) || {};
-
 
         if (
             typeof supabaseClient ===
@@ -32282,36 +32274,80 @@ document.addEventListener(
 
 
         // =========================================
-        // SUBJECT
+        // GET FORM VALUES
         // =========================================
 
-        const subject =
+        const subjectSelect =
             document.getElementById(
                 "teacherResultSubject"
-            )?.value
-                .trim() || "";
+            );
+
+        const classSelect =
+            document.getElementById(
+                "teacherResultClass"
+            );
+
+        const resultTypeSelect =
+            document.getElementById(
+                "teacherResultType"
+            );
+
+        const totalMarksInput =
+            document.getElementById(
+                "teacherResultTotalMarks"
+            );
 
 
-        if (!subject) {
+        const subjectId =
+            subjectSelect?.value || "";
+
+
+        const classId =
+            classSelect?.value || "";
+
+
+        const resultType =
+            resultTypeSelect?.value || "";
+
+
+        const totalMarks =
+            Number(
+                totalMarksInput?.value
+            );
+
+
+        // =========================================
+        // VALIDATION
+        // =========================================
+
+        if (!subjectId) {
 
             alert(
-                "Please select or enter a subject."
+                "Please select a subject."
             );
 
             return;
         }
 
 
-        // =========================================
-        // TOTAL MARKS
-        // =========================================
+        if (!classId) {
 
-        const totalMarks =
-            Number(
-                document.getElementById(
-                    "teacherResultTotalMarks"
-                )?.value
+            alert(
+                "Please select a class."
             );
+
+            return;
+        }
+
+
+        if (!resultType) {
+
+            alert(
+                "Please select result type."
+            );
+
+            return;
+        }
 
 
         if (
@@ -32327,255 +32363,24 @@ document.addEventListener(
         }
 
 
-       // =========================================
-// FIND SUBJECT THROUGH TEACHER ASSIGNMENT
-// =========================================
-
-let subjectRow = null;
-
-let dbTeacherForSubject = null;
-
-
-// =========================================
-// FIND TEACHER
-// =========================================
-
-if (teacher.id) {
-
-    const {
-        data
-    } =
-        await supabaseClient
-            .from("teachers")
-            .select(
-                "id, teacher_id, name, username"
-            )
-            .eq(
-                "id",
-                teacher.id
-            )
-            .maybeSingle();
-
-    if (data) {
-        dbTeacherForSubject = data;
-    }
-
-}
-
-
-if (
-    !dbTeacherForSubject &&
-    (
-        teacher.teacherId ||
-        teacher.teacher_id
-    )
-) {
-
-    const {
-        data
-    } =
-        await supabaseClient
-            .from("teachers")
-            .select(
-                "id, teacher_id, name, username"
-            )
-            .eq(
-                "teacher_id",
-                String(
-                    teacher.teacherId ||
-                    teacher.teacher_id
-                )
-            )
-            .maybeSingle();
-
-    if (data) {
-        dbTeacherForSubject = data;
-    }
-
-}
-
-
-if (
-    !dbTeacherForSubject &&
-    teacher.username
-) {
-
-    const {
-        data
-    } =
-        await supabaseClient
-            .from("teachers")
-            .select(
-                "id, teacher_id, name, username"
-            )
-            .ilike(
-                "username",
-                String(
-                    teacher.username
-                ).trim()
-            )
-            .maybeSingle();
-
-    if (data) {
-        dbTeacherForSubject = data;
-    }
-
-}
-
-
-// =========================================
-// GET TEACHER ASSIGNED SUBJECTS
-// =========================================
-
-if (
-    dbTeacherForSubject &&
-    dbTeacherForSubject.id
-) {
-
-    const {
-        data: assignments,
-        error: assignmentError
-    } =
-        await supabaseClient
-            .from("teacher_class_subjects")
-            .select(
-                "subject_id"
-            )
-            .eq(
-                "teacher_id",
-                dbTeacherForSubject.id
-            );
-
-
-    if (assignmentError) {
-
-        console.error(
-            "TEACHER SUBJECT ASSIGNMENT ERROR:",
-            assignmentError
-        );
-
-        alert(
-            "Unable to load teacher subject.\n\n" +
-            assignmentError.message
-        );
-
-        return;
-    }
-
-
-    const subjectIds =
-        [
-            ...new Set(
-                (assignments || [])
-                    .map(
-                        function(item) {
-                            return Number(
-                                item.subject_id
-                            );
-                        }
-                    )
-                    .filter(
-                        function(id) {
-                            return !isNaN(id);
-                        }
-                    )
-            )
-        ];
-
-
-    if (
-        subjectIds.length > 0
-    ) {
-
-        const {
-            data: assignedSubjects,
-            error: subjectsError
-        } =
-            await supabaseClient
-                .from("subjects")
-                .select(
-                    "id, name, code"
-                )
-                .in(
-                    "id",
-                    subjectIds
-                );
-
-
-        if (subjectsError) {
-
-            console.error(
-                "SUBJECT LOAD ERROR:",
-                subjectsError
-            );
-
-            alert(
-                "Unable to load subject.\n\n" +
-                subjectsError.message
-            );
-
-            return;
-        }
-
-
-        subjectRow =
-            (assignedSubjects || [])
-                .find(
-                    function(row) {
-
-                        return (
-                            String(
-                                row.name || ""
-                            )
-                            .trim()
-                            .toLowerCase() ===
-                            subject
-                                .trim()
-                                .toLowerCase()
-                        );
-
-                    }
-                );
-
-
-        if (
-            !subjectRow &&
-            assignedSubjects &&
-            assignedSubjects.length === 1
-        ) {
-
-            subjectRow =
-                assignedSubjects[0];
-
-        }
-
-    }
-
-}
-
-
-// =========================================
-// SUBJECT NOT FOUND
-// =========================================
-
-if (!subjectRow) {
-
-    alert(
-        "Subject not found in your teacher assignment.\n\n" +
-        "Selected Subject: " +
-        subject
-    );
-
-    return;
-}
-
-
         // =========================================
-        // FIND TEACHER IN SUPABASE
+        // GET LOGGED-IN TEACHER
         // =========================================
+
+        const teacher =
+            JSON.parse(
+                localStorage.getItem(
+                    "loggedInTeacher"
+                )
+            ) || {};
+
 
         let dbTeacher = null;
 
+
+        // =========================================
+        // FIND TEACHER BY TEACHER ID
+        // =========================================
 
         if (
             teacher.teacherId ||
@@ -32589,7 +32394,7 @@ if (!subjectRow) {
                 await supabaseClient
                     .from("teachers")
                     .select(
-                        "id, teacher_id, name, teacher_class"
+                        "id, teacher_id, name"
                     )
                     .eq(
                         "teacher_id",
@@ -32638,7 +32443,7 @@ if (!subjectRow) {
                 await supabaseClient
                     .from("teachers")
                     .select(
-                        "id, teacher_id, name, teacher_class"
+                        "id, teacher_id, name"
                     )
                     .eq(
                         "id",
@@ -32679,23 +32484,22 @@ if (!subjectRow) {
 
 
         // =========================================
-        // LOAD TEACHER'S STUDENTS
+        // GET STUDENT RESULT INPUTS
         // =========================================
 
-        const {
-            data: students,
-            error: studentsError
-        } =
-            await supabaseClient
-                .from("students")
-                .select("*");
+        const inputs =
+            document.querySelectorAll(
+                "#teacherResultStudentsTableBody " +
+                ".teacher-obtained-marks"
+            );
 
 
-        if (studentsError) {
+        if (
+            !inputs.length
+        ) {
 
             alert(
-                "Students could not be loaded.\n\n" +
-                studentsError.message
+                "No students are available for this class."
             );
 
             return;
@@ -32703,145 +32507,240 @@ if (!subjectRow) {
 
 
         // =========================================
-        // SAVE EVERY ENTERED MARK
+        // DISABLE SAVE BUTTON
         // =========================================
 
-        const inputs =
-            document.querySelectorAll(
-                "#teacherResultsTableBody " +
-                ".teacher-obtained-marks"
-            );
+        saveButton.disabled = true;
+
+        const originalButtonHTML =
+            saveButton.innerHTML;
+
+        saveButton.innerHTML =
+            `
+                <i class="fas fa-spinner fa-spin"></i>
+                Saving...
+            `;
 
 
         let savedCount = 0;
 
 
-        for (
-            const input of inputs
-        ) {
+        try {
 
-            const studentId =
-                input.dataset.studentId;
+            // =====================================
+            // SAVE EACH STUDENT RESULT
+            // =====================================
 
-
-            if (
-                !studentId ||
-                input.value === ""
+            for (
+                const input of inputs
             ) {
 
-                continue;
-            }
+                const studentId =
+                    input.dataset.studentId;
 
 
-            const obtainedMarks =
-                Number(
-                    input.value
-                );
+                if (
+                    !studentId ||
+                    input.value === ""
+                ) {
+
+                    continue;
+                }
 
 
-            // =====================================
-            // VALIDATE MARKS
-            // =====================================
-
-            if (
-                obtainedMarks < 0 ||
-                obtainedMarks > totalMarks
-            ) {
-
-                alert(
-                    "Invalid marks for a student.\n\n" +
-                    "Obtained marks cannot be greater than total marks."
-                );
-
-                return;
-            }
+                const obtainedMarks =
+                    Number(
+                        input.value
+                    );
 
 
-            // =====================================
-            // FIND STUDENT
-            // =====================================
+                // =================================
+                // VALIDATE MARKS
+                // =================================
 
-            const student =
-                (students || []).find(
-                    function(item) {
+                if (
+                    isNaN(obtainedMarks) ||
+                    obtainedMarks < 0 ||
+                    obtainedMarks > totalMarks
+                ) {
 
-                        return (
-                            String(
-                                item.id
-                            ) ===
-                            String(
+                    alert(
+                        "Invalid marks entered.\n\n" +
+                        "Obtained marks cannot be greater than total marks."
+                    );
+
+                    return;
+                }
+
+
+                // =================================
+                // DATABASE RECORD
+                // =================================
+
+                const record = {
+
+                    teacher_id:
+                        dbTeacher.id,
+
+                    student_id:
+                        Number(
+                            studentId
+                        ),
+
+                    subject_id:
+                        Number(
+                            subjectId
+                        ),
+
+                    total_marks:
+                        totalMarks,
+
+                    marks:
+                        obtainedMarks,
+
+                    result_type:
+                        resultType
+
+                };
+
+
+                // =================================
+                // CHECK EXISTING RESULT
+                // =================================
+
+                const {
+                    data: existingResult,
+                    error: existingError
+                } =
+                    await supabaseClient
+                        .from("results")
+                        .select("id")
+                        .eq(
+                            "student_id",
+                            Number(
                                 studentId
                             )
+                        )
+                        .eq(
+                            "subject_id",
+                            Number(
+                                subjectId
+                            )
+                        )
+                        .eq(
+                            "teacher_id",
+                            dbTeacher.id
+                        )
+                        .eq(
+                            "result_type",
+                            resultType
+                        )
+                        .maybeSingle();
+
+
+                if (existingError) {
+
+                    console.error(
+                        "Existing result error:",
+                        existingError
+                    );
+
+                    alert(
+                        "Unable to check existing result.\n\n" +
+                        existingError.message
+                    );
+
+                    return;
+                }
+
+
+                // =================================
+                // UPDATE EXISTING RESULT
+                // =================================
+
+                if (existingResult) {
+
+                    const {
+                        error
+                    } =
+                        await supabaseClient
+                            .from("results")
+                            .update(
+                                record
+                            )
+                            .eq(
+                                "id",
+                                existingResult.id
+                            );
+
+
+                    if (error) {
+
+                        console.error(
+                            "Result update error:",
+                            error
                         );
 
+                        alert(
+                            "Result update failed.\n\n" +
+                            error.message
+                        );
+
+                        return;
                     }
-                );
+
+                }
 
 
-            if (!student) {
+                // =================================
+                // INSERT NEW RESULT
+                // =================================
 
-                console.warn(
-                    "Student not found:",
-                    studentId
-                );
+                else {
 
-                continue;
+                    const {
+                        error
+                    } =
+                        await supabaseClient
+                            .from("results")
+                            .insert([
+                                record
+                            ]);
+
+
+                    if (error) {
+
+                        console.error(
+                            "Result insert error:",
+                            error
+                        );
+
+                        alert(
+                            "Result save failed.\n\n" +
+                            error.message
+                        );
+
+                        return;
+                    }
+
+                }
+
+
+                savedCount++;
+
             }
 
 
             // =====================================
-            // CALCULATE RESULT
+            // NOTHING ENTERED
             // =====================================
 
-            const percentage =
-                calculateTeacherResultPercentage(
-                    obtainedMarks,
-                    totalMarks
-                );
-
-
-            const grade =
-                calculateTeacherResultGrade(
-                    percentage
-                );
-
-
-            // =====================================
-            // CHECK EXISTING RESULT
-            // =====================================
-
-            const {
-                data: existingResult,
-                error: existingError
-            } =
-                await supabaseClient
-                    .from("results")
-                    .select("id")
-                    .eq(
-                        "student_id",
-                        student.id
-                    )
-                    .eq(
-                        "subject_id",
-                        subjectRow.id
-                    )
-                    .eq(
-                        "teacher_id",
-                        dbTeacher.id
-                    )
-                    .maybeSingle();
-
-
-            if (existingError) {
-
-                console.error(
-                    "Existing result error:",
-                    existingError
-                );
+            if (
+                savedCount === 0
+            ) {
 
                 alert(
-                    "Unable to check existing result.\n\n" +
-                    existingError.message
+                    "Please enter marks for at least one student."
                 );
 
                 return;
@@ -32849,243 +32748,81 @@ if (!subjectRow) {
 
 
             // =====================================
-            // REAL DATABASE RECORD
+            // SUCCESS
             // =====================================
-
-     const record = {
-
-    teacher_id:
-        dbTeacher.id,
-
-    student_id:
-        student.id,
-
-    subject_id:
-        subjectRow.id,
-
-    total_marks:
-        totalMarks,
-
-    marks:
-        obtainedMarks
-
-};
-
-
-            // =====================================
-            // UPDATE
-            // =====================================
-
-            if (existingResult) {
-
-                const {
-                    error
-                } =
-                    await supabaseClient
-                        .from("results")
-                        .update(record)
-                        .eq(
-                            "id",
-                            existingResult.id
-                        );
-
-
-                if (error) {
-
-                    console.error(
-                        "Result update error:",
-                        error
-                    );
-
-                    alert(
-                        "Result update failed.\n\n" +
-                        error.message
-                    );
-
-                    return;
-                }
-
-            }
-
-            // =====================================
-            // INSERT
-            // =====================================
-
-            else {
-
-                const {
-                    error
-                } =
-                    await supabaseClient
-                        .from("results")
-                        .insert([
-                            record
-                        ]);
-
-
-                if (error) {
-
-                    console.error(
-                        "Result insert error:",
-                        error
-                    );
-
-                    alert(
-                        "Result save failed.\n\n" +
-                        error.message
-                    );
-
-                    return;
-                }
-
-            }
-
-
-            savedCount++;
-
-        }
-
-
-        // =========================================
-        // NOTHING ENTERED
-        // =========================================
-
-        if (
-            savedCount === 0
-        ) {
 
             alert(
-                "No marks were entered."
+                savedCount +
+                " student result(s) saved successfully! ✅"
             );
 
-            return;
+
+            // =====================================
+            // RESET FORM
+            // =====================================
+
+            if (subjectSelect) {
+                subjectSelect.value = "";
+            }
+
+            if (classSelect) {
+                classSelect.value = "";
+            }
+
+            if (resultTypeSelect) {
+                resultTypeSelect.value = "";
+            }
+
+            if (totalMarksInput) {
+                totalMarksInput.value = "";
+            }
+
+
+            const studentsArea =
+                document.getElementById(
+                    "teacherResultStudentsArea"
+                );
+
+
+            if (studentsArea) {
+
+                studentsArea.innerHTML = `
+                    <div class="teacher-result-empty-state">
+                        <i class="fas fa-users"></i>
+                        <h4>Select a class</h4>
+                        <p>
+                            Students from the selected
+                            class will appear here.
+                        </p>
+                    </div>
+                `;
+
+            }
+
+
         }
+        catch (error) {
 
+            console.error(
+                "SAVE RESULT ERROR:",
+                error
+            );
 
-        // =========================================
-        // SUCCESS
-        // =========================================
+            alert(
+                "Something went wrong while saving results.\n\n" +
+                error.message
+            );
 
-        alert(
-            savedCount +
-            " student result(s) saved successfully! ✅"
-        );
-
-
-        // =========================================
-        // REFRESH TEACHER RESULTS
-        // =========================================
-
-        await loadTeacherResults();
-await loadTeacherSavedResults();
-
-    }
-);
-
-// =========================================================
-// LIVE TOTAL MARKS UPDATE
-// =========================================================
-
-document.addEventListener(
-    "input",
-    function(event) {
-
-        if (
-            event.target.id !==
-            "teacherResultTotalMarks"
-        ) {
-            return;
         }
+        finally {
 
-        const totalMarks =
-            Number(event.target.value) || 0;
+            saveButton.disabled =
+                false;
 
-        // Update Total Marks column
-        document
-            .querySelectorAll(
-                ".result-total-marks"
-            )
-            .forEach(
-                function(element) {
+            saveButton.innerHTML =
+                originalButtonHTML;
 
-                    element.textContent =
-                        totalMarks > 0
-                            ? totalMarks
-                            : "—";
-
-                }
-            );
-
-        // Update maximum allowed marks
-        document
-            .querySelectorAll(
-                ".teacher-obtained-marks"
-            )
-            .forEach(
-                function(input) {
-
-                    if (totalMarks > 0) {
-
-                        input.max =
-                            totalMarks;
-
-                        if (
-                            Number(input.value) >
-                            totalMarks
-                        ) {
-                            input.value =
-                                totalMarks;
-                        }
-
-                    } else {
-
-                        input.removeAttribute(
-                            "max"
-                        );
-
-                    }
-
-                    // Recalculate percentage
-                    const studentId =
-                        input.dataset.studentId;
-
-                    const percentage =
-                        calculateTeacherResultPercentage(
-                            input.value,
-                            totalMarks
-                        );
-
-                    const grade =
-                        calculateTeacherResultGrade(
-                            percentage
-                        );
-
-                    const percentageElement =
-                        document.querySelector(
-                            `[data-percentage-for="${studentId}"]`
-                        );
-
-                    const gradeElement =
-                        document.querySelector(
-                            `[data-grade-for="${studentId}"]`
-                        );
-
-                    if (percentageElement) {
-
-                        percentageElement.textContent =
-                            percentage + "%";
-
-                    }
-
-                    if (gradeElement) {
-
-                        gradeElement.textContent =
-                            grade;
-
-                    }
-
-                }
-            );
+        }
 
     }
 );
