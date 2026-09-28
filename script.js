@@ -33071,62 +33071,10 @@ document.addEventListener(
 );
 
 
-// =========================================================
-// SUBJECT / RESULTS REFRESH
-// =========================================================
-
-document.addEventListener(
-    "change",
-    function(event) {
-
-        if (
-            event.target.id !==
-            "teacherResultSubject"
-        ) {
-
-            return;
-
-        }
 
 
-        loadTeacherResults();
-
-    }
-);
 
 
-// =========================================================
-// OPEN RESULTS
-// =========================================================
-
-document.addEventListener(
-    "click",
-    function(event) {
-
-        const menu =
-            event.target.closest(
-                "#teacherResultsMenu"
-            );
-
-
-        if (!menu) {
-            return;
-        }
-
-
-      setTimeout(
-    async function() {
-
-        await loadTeacherResults();
-
-        await loadTeacherSavedResults();
-
-    },
-    50
-);
-
-    }
-);
 // =========================================================
 // SEARCH STUDENTS
 // =========================================================
@@ -33175,60 +33123,9 @@ document.addEventListener(
 );
 
 
-// =========================================================
-// SUBJECT CHANGE
-// =========================================================
-
-document.addEventListener(
-    "change",
-    function(event) {
-
-        if (
-            event.target.id !==
-            "teacherResultSubject"
-        ) {
-
-            return;
-
-        }
 
 
-        loadTeacherResults();
 
-    }
-);
-
-
-// =========================================================
-// OPEN TEACHER RESULTS
-// =========================================================
-
-document.addEventListener(
-    "click",
-    function(event) {
-
-        const menu =
-            event.target.closest(
-                "#teacherResultsMenu"
-            );
-
-
-        if (!menu) {
-            return;
-        }
-
-
-        setTimeout(
-            function() {
-
-                loadTeacherResults();
-
-            },
-            50
-        );
-
-    }
-);
 // =========================================================
 // TEACHER NOTICES
 // =========================================================
