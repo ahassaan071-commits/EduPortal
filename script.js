@@ -20896,6 +20896,28 @@ const noticeRecord = {
         "adminNoticeAudience"
     ).value = "";
 
+    const resetNoticeClass =
+    document.getElementById(
+        "adminNoticeClass"
+    );
+
+if (resetNoticeClass) {
+
+    resetNoticeClass.value = "";
+
+}
+
+const resetNoticeClassGroup =
+    document.getElementById(
+        "adminNoticeClassGroup"
+    );
+
+if (resetNoticeClassGroup) {
+
+    resetNoticeClassGroup.style.display =
+        "none";
+
+}
 
     document.getElementById(
         "adminNoticeDate"
@@ -21164,7 +21186,26 @@ title:
 notice.title || "",
 
  audience:
-       notice.target_role || "",
+    String(
+        notice.target_role || ""
+    ).startsWith("Class:")
+        ? (
+            "Specific Class - " +
+            String(
+                notice.target_role
+            )
+            .replace(
+                /^Class:/,
+                ""
+            )
+            .replace(
+                "||",
+                " - "
+            )
+        )
+        : (
+            notice.target_role || ""
+        ),
 
 date:
 notice.created_at
