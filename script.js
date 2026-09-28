@@ -31257,6 +31257,556 @@ async function loadTeacherSavedResults() {
     );
 
 }
+
+// =========================================================
+// TEACHER RESULTS — OPEN RESULT FORM
+// =========================================================
+
+document.addEventListener(
+    "click",
+    async function(event) {
+
+        const addButton =
+            event.target.closest(
+                "#teacherAddResultBtn"
+            );
+
+        if (!addButton) {
+            return;
+        }
+
+
+        const formCard =
+            document.getElementById(
+                "teacherResultFormCard"
+            );
+
+
+        if (!formCard) {
+            return;
+        }
+
+
+        // =========================================
+        // OPEN FORM
+        // =========================================
+
+        formCard.style.display =
+            "block";
+
+
+        // =========================================
+        // SUPABASE CHECK
+        // =========================================
+
+        if (
+            typeof supabaseClient ===
+            "undefined"
+        ) {
+
+            alert(
+                "Supabase connection is missing."
+            );
+
+            return;
+        }
+
+
+        // =========================================
+        // GET LOGGED-IN TEACHER
+        // =========================================
+
+        let teacher = {};
+
+        try {
+
+            teacher =
+                JSON.parse(
+                    localStorage.getItem(
+                        "loggedInTeacher"
+                    )
+                ) || {};
+
+        } catch (error) {
+
+            console.error(
+                "Teacher session error:",
+                error
+            );
+
+            return;
+        }
+
+
+        // =========================================
+        // FIND TEACHER DATABASE ID
+        // =========================================
+
+        let teacherDbId =
+            teacher.id || null;
+
+
+        if (!teacherDbId) {
+
+            const teacherCode =
+                teacher.teacherId ||
+                teacher.teacher_id ||
+                "";
+
+
+            if (teacherCode) {
+
+                const result =
+                    await supabaseClient
+                        .from("teachers")
+                        .select("id")
+                        .eq(
+                            "teacher_id",
+                            String(
+                                teacherCode
+                            ).trim()
+                        )
+                        .maybeSingle();
+
+
+                if (
+                    !result.error &&
+                    result.data
+                ) {
+
+                    teacherDbId =
+                        result.data.id;
+
+                }
+
+            }
+
+        }
+
+
+        if (
+            !teacherDbId &&
+            teacher.username
+        ) {
+
+            const result =
+                await supabaseClient
+                    .from("teachers")
+                    .select("id")
+                    .ilike(
+                        "username",
+                        String(
+                            teacher.username
+                        ).trim()
+                    )
+                    .limit(1);
+
+
+            if (
+                !result.error &&
+                result.data &&
+                result.data.length
+            ) {
+
+                teacherDbId =
+                    result.data[0].id;
+
+            }
+
+        }
+
+
+        if (!teacherDbId) {
+
+            alert(
+                "Logged-in teacher could not be verified."
+            );
+
+            return;
+        }
+
+
+        // =========================================
+        // GET FORM ELEMENTS
+        // =========================================
+
+        const subjectSelect =
+            document.getElementById(
+                "teacherResultSubject"
+            );
+
+        const classSelect =
+            document.getElementById(
+                "teacherResultClass"
+            );
+
+
+        // =========================================
+        // RESET FORM
+        // =========================================
+
+        if (subjectSelect) {
+
+            subjectSelect.innerHTML = `
+                <option value="">
+                    Select Subject
+                </option>
+            `;
+
+        }
+
+
+        if (classSelect) {
+
+            classSelect.innerHTML = `
+                <option value="">
+                    Select Assigned Class
+                </option>
+            `;
+
+        }
+
+
+        // =========================================
+        // LOAD TEACHER ASSIGNMENTS
+        // =========================================
+
+        const {
+            data: assignments,
+            error: assignmentError
+        } =
+            await supabaseClient
+                .from(
+                    "teacher_class_subjects"
+                )
+                .select(
+                    "class_id, subject_id"
+                )
+                .eq(
+                    "teacher_id",
+                    teacherDbId
+                );
+
+
+        if (assignmentError) {
+
+            console.error(
+                "Teacher assignment error:",
+                assignmentError
+            );
+
+            alert(
+                "Unable to load teacher assignments.\n\n" +
+                assignmentError.message
+            );
+
+            return;
+        }
+
+
+        if (
+            !assignments ||
+            !assignments.length
+        ) {
+
+            alert(
+                "No class or subject has been assigned to you."
+            );
+
+            return;
+        }
+
+
+        // =========================================
+        // UNIQUE CLASS IDs
+        // =========================================
+
+        const classIds =
+            [
+                ...new Set(
+                    assignments
+                        .map(
+                            function(item) {
+                                return item.class_id;
+                            }
+                        )
+                        .filter(
+                            function(id) {
+                                return (
+                                    id !== null &&
+                                    id !== undefined
+                                );
+                            }
+                        )
+                )
+            ];
+
+
+        // =========================================
+        // UNIQUE SUBJECT IDs
+        // =========================================
+
+        const subjectIds =
+            [
+                ...new Set(
+                    assignments
+                        .map(
+                            function(item) {
+                                return item.subject_id;
+                            }
+                        )
+                        .filter(
+                            function(id) {
+                                return (
+                                    id !== null &&
+                                    id !== undefined
+                                );
+                            }
+                        )
+                )
+            ];
+
+
+        // =========================================
+        // LOAD CLASSES
+        // =========================================
+
+        const {
+            data: classes,
+            error: classError
+        } =
+            await supabaseClient
+                .from("classes")
+                .select(
+                    "id, name, section"
+                )
+                .in(
+                    "id",
+                    classIds
+                )
+                .order(
+                    "id",
+                    {
+                        ascending: true
+                    }
+                );
+
+
+        if (classError) {
+
+            console.error(
+                "Class loading error:",
+                classError
+            );
+
+            alert(
+                "Unable to load assigned classes.\n\n" +
+                classError.message
+            );
+
+            return;
+        }
+
+
+        // =========================================
+        // ADD CLASSES TO DROPDOWN
+        // =========================================
+
+        (
+            classes || []
+        ).forEach(
+            function(item) {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    item.id;
+
+
+                option.textContent =
+                    formatClassSection(
+                        item.name,
+                        item.section
+                    );
+
+
+                option.dataset.class =
+                    item.name;
+
+
+                option.dataset.section =
+                    item.section || "";
+
+
+                classSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+
+        // =========================================
+        // LOAD SUBJECTS
+        // =========================================
+
+        const {
+            data: subjects,
+            error: subjectError
+        } =
+            await supabaseClient
+                .from("subjects")
+                .select(
+                    "id, name, code"
+                )
+                .in(
+                    "id",
+                    subjectIds
+                )
+                .order(
+                    "name",
+                    {
+                        ascending: true
+                    }
+                );
+
+
+        if (subjectError) {
+
+            console.error(
+                "Subject loading error:",
+                subjectError
+            );
+
+            alert(
+                "Unable to load assigned subjects.\n\n" +
+                subjectError.message
+            );
+
+            return;
+        }
+
+
+        // =========================================
+        // ADD SUBJECTS TO DROPDOWN
+        // =========================================
+
+        (
+            subjects || []
+        ).forEach(
+            function(item) {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    item.id;
+
+
+                option.textContent =
+                    item.code
+                        ? item.name +
+                          " (" +
+                          item.code +
+                          ")"
+                        : item.name;
+
+
+                option.dataset.subjectId =
+                    item.id;
+
+
+                option.dataset.subjectName =
+                    item.name;
+
+
+                subjectSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+
+        // =========================================
+        // RESET STUDENTS AREA
+        // =========================================
+
+        const studentsArea =
+            document.getElementById(
+                "teacherResultStudentsArea"
+            );
+
+
+        if (studentsArea) {
+
+            studentsArea.innerHTML = `
+
+                <div
+                    class="teacher-result-empty-state"
+                >
+
+                    <i class="fas fa-users"></i>
+
+                    <h4>
+                        Select a class
+                    </h4>
+
+                    <p>
+                        Students from the selected
+                        class will appear here.
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+    }
+);
+
+
+// =========================================================
+// CLOSE RESULT FORM
+// =========================================================
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        const cancelButton =
+            event.target.closest(
+                "#teacherCancelResultBtn"
+            );
+
+        if (!cancelButton) {
+            return;
+        }
+
+
+        const formCard =
+            document.getElementById(
+                "teacherResultFormCard"
+            );
+
+
+        if (formCard) {
+
+            formCard.style.display =
+                "none";
+
+        }
+
+    }
+);
 // =========================================================
 // CALCULATE PERCENTAGE
 // =========================================================
