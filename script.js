@@ -26129,14 +26129,26 @@ return (
                     }
                 </td>
 
-                <td>
-                    ${
-                        student.student_class
-                            ? "Class " +
-                              student.student_class
-                            : "—"
-                    }
-                </td>
+               student.student_class
+    ? String(
+        student.student_class
+    )
+    .replace(
+        /^Class\s*/i,
+        ""
+    )
+    +
+    (
+        student.section
+            ? "-" +
+              String(
+                  student.section
+              )
+              .trim()
+              .toUpperCase()
+            : ""
+    )
+    : "—"
 
                 <td>
 
