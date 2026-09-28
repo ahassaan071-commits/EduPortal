@@ -551,10 +551,27 @@ if (selectedRole === "administrator") {
         JSON.stringify(account)
     );
 
-    eduPortalShowOnly("adminDashboard");
+   eduPortalShowOnly("adminDashboard");
 
-    const adminName =
-        document.getElementById("adminName");
+// ==========================================
+// ALWAYS OPEN ADMIN MAIN DASHBOARD AFTER LOGIN
+// ==========================================
+
+setTimeout(function () {
+
+    const adminDashboardMenu =
+        document.getElementById(
+            "adminDashboardMenu"
+        );
+
+    if (adminDashboardMenu) {
+        adminDashboardMenu.click();
+    }
+
+}, 300);
+
+const adminName =
+    document.getElementById("adminName");
 
     if (adminName) {
         adminName.textContent =
@@ -611,6 +628,23 @@ if (selectedRole === "teacher") {
 eduPortalShowOnly(
     "teacherDashboard"
 );
+
+// ==========================================
+// ALWAYS OPEN TEACHER MAIN DASHBOARD AFTER LOGIN
+// ==========================================
+
+setTimeout(function () {
+
+    const teacherDashboardMenu =
+        document.getElementById(
+            "teacherDashboardMenu"
+        );
+
+    if (teacherDashboardMenu) {
+        teacherDashboardMenu.click();
+    }
+
+}, 300);
 
 const teacherDashboard =
     document.getElementById(
