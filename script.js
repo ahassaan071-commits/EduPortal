@@ -31845,71 +31845,33 @@ document.addEventListener(
                 "teacherResultStudentsArea"
             );
 
-
         if (!studentsArea) {
             return;
         }
 
-
-        // =========================================
-        // NO CLASS SELECTED
-        // =========================================
-
         if (!classId) {
 
             studentsArea.innerHTML = `
-
-                <div
-                    class="teacher-result-empty-state"
-                >
-
+                <div class="teacher-result-empty-state">
                     <i class="fas fa-users"></i>
-
-                    <h4>
-                        Select a class
-                    </h4>
-
+                    <h4>Select a class</h4>
                     <p>
                         Students from the selected
                         class will appear here.
                     </p>
-
                 </div>
-
             `;
 
             return;
         }
 
-
-        // =========================================
-        // LOADING
-        // =========================================
-
         studentsArea.innerHTML = `
-
-            <div
-                class="teacher-result-empty-state"
-            >
-
+            <div class="teacher-result-empty-state">
                 <i class="fas fa-spinner fa-spin"></i>
-
-                <h4>
-                    Loading Students
-                </h4>
-
-                <p>
-                    Please wait...
-                </p>
-
+                <h4>Loading Students</h4>
+                <p>Please wait...</p>
             </div>
-
         `;
-
-
-        // =========================================
-        // SUPABASE CHECK
-        // =========================================
 
         if (
             typeof supabaseClient ===
@@ -31917,28 +31879,17 @@ document.addEventListener(
         ) {
 
             studentsArea.innerHTML = `
-
-                <div
-                    class="teacher-result-empty-state"
-                >
-
+                <div class="teacher-result-empty-state">
                     <i class="fas fa-exclamation-circle"></i>
-
-                    <h4>
-                        Connection Error
-                    </h4>
-
+                    <h4>Connection Error</h4>
                     <p>
                         Supabase connection is missing.
                     </p>
-
                 </div>
-
             `;
 
             return;
         }
-
 
         // =========================================
         // LOAD STUDENTS
@@ -31950,14 +31901,7 @@ document.addEventListener(
         } =
             await supabaseClient
                 .from("students")
-                .select("*")
-                .order(
-                    "full_name",
-                    {
-                        ascending: true
-                    }
-                );
-
+                .select("*");
 
         if (error) {
 
@@ -31967,31 +31911,20 @@ document.addEventListener(
             );
 
             studentsArea.innerHTML = `
-
-                <div
-                    class="teacher-result-empty-state"
-                >
-
+                <div class="teacher-result-empty-state">
                     <i class="fas fa-exclamation-triangle"></i>
-
-                    <h4>
-                        Unable to Load Students
-                    </h4>
-
+                    <h4>Unable to Load Students</h4>
                     <p>
                         ${error.message}
                     </p>
-
                 </div>
-
             `;
 
             return;
         }
 
-
         // =========================================
-        // FILTER CLASS + SECTION
+        // CLEAN CLASS VALUE
         // =========================================
 
         const cleanValue =
@@ -32013,15 +31946,13 @@ document.addEventListener(
 
             };
 
-
         const selectedClassKey =
-            cleanValue(
-                className
-            ) +
-            cleanValue(
-                sectionName
-            );
+            cleanValue(className) +
+            cleanValue(sectionName);
 
+        // =========================================
+        // FILTER STUDENTS
+        // =========================================
 
         const assignedStudents =
             (
@@ -32036,17 +31967,14 @@ document.addEventListener(
                             student.class
                         );
 
-
                     const studentSection =
                         cleanValue(
                             student.section
                         );
 
-
                     const studentClassKey =
                         studentClass +
                         studentSection;
-
 
                     return (
                         studentClassKey ===
@@ -32055,7 +31983,6 @@ document.addEventListener(
 
                 }
             );
-
 
         // =========================================
         // NO STUDENTS
@@ -32066,111 +31993,69 @@ document.addEventListener(
         ) {
 
             studentsArea.innerHTML = `
-
-                <div
-                    class="teacher-result-empty-state"
-                >
-
+                <div class="teacher-result-empty-state">
                     <i class="fas fa-user-slash"></i>
-
-                    <h4>
-                        No Students Found
-                    </h4>
-
+                    <h4>No Students Found</h4>
                     <p>
                         No students are registered
-                        in ${className}${sectionName ? "-" + sectionName : ""}.
+                        in ${
+                            className
+                        }${
+                            sectionName
+                                ? "-" + sectionName
+                                : ""
+                        }.
                     </p>
-
                 </div>
-
             `;
 
             return;
         }
-
 
         // =========================================
         // STUDENT TABLE
         // =========================================
 
         studentsArea.innerHTML = `
-
             <div class="teacher-result-student-header">
-
                 <div>
-
-                    <h4>
-                        Student Results
-                    </h4>
-
+                    <h4>Student Results</h4>
                     <p>
-                        ${assignedStudents.length}
+                        ${
+                            assignedStudents.length
+                        }
                         student(s) found
                     </p>
-
                 </div>
-
             </div>
 
-
             <div class="teacher-results-table-wrapper">
-
                 <table class="teacher-results-table">
 
                     <thead>
-
                         <tr>
-
                             <th>#</th>
-
-                            <th>
-                                Student
-                            </th>
-
-                            <th>
-                                Student ID
-                            </th>
-
-                            <th>
-                                Total Marks
-                            </th>
-
-                            <th>
-                                Obtained Marks
-                            </th>
-
-                            <th>
-                                Percentage
-                            </th>
-
-                            <th>
-                                Grade
-                            </th>
-
+                            <th>Student</th>
+                            <th>Student ID</th>
+                            <th>Total Marks</th>
+                            <th>Obtained Marks</th>
+                            <th>Percentage</th>
+                            <th>Grade</th>
                         </tr>
-
                     </thead>
-
 
                     <tbody
                         id="teacherResultStudentsTableBody"
-                    >
-
-                    </tbody>
+                    ></tbody>
 
                 </table>
-
             </div>
-
         `;
-
 
         const tableBody =
             document.getElementById(
                 "teacherResultStudentsTableBody"
             );
-
 
         const totalMarks =
             Number(
@@ -32178,7 +32063,6 @@ document.addEventListener(
                     "teacherResultTotalMarks"
                 )?.value
             ) || 0;
-
 
         assignedStudents.forEach(
             function(student, index) {
@@ -32188,20 +32072,20 @@ document.addEventListener(
                         "tr"
                     );
 
+                const studentName =
+                    student.name ||
+                    student.student_name ||
+                    student.full_name ||
+                    "—";
 
                 row.innerHTML = `
-
                     <td>
                         ${index + 1}
                     </td>
 
                     <td>
                         <strong>
-                            ${
-                                student.full_name ||
-                                student.name ||
-                                "—"
-                            }
+                            ${studentName}
                         </strong>
                     </td>
 
@@ -32213,7 +32097,6 @@ document.addEventListener(
                     </td>
 
                     <td>
-
                         <span
                             class="result-total-marks"
                         >
@@ -32222,11 +32105,9 @@ document.addEventListener(
                                 "—"
                             }
                         </span>
-
                     </td>
 
                     <td>
-
                         <input
                             type="number"
                             class="teacher-obtained-marks"
@@ -32239,33 +32120,26 @@ document.addEventListener(
                             }
                             placeholder="Enter marks"
                         >
-
                     </td>
 
                     <td>
-
                         <span
                             class="teacher-result-percentage"
                             data-percentage-for="${student.id}"
                         >
                             0%
                         </span>
-
                     </td>
 
                     <td>
-
                         <span
                             class="teacher-result-grade"
                             data-grade-for="${student.id}"
                         >
                             —
                         </span>
-
                     </td>
-
                 `;
-
 
                 tableBody.appendChild(
                     row
