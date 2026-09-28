@@ -33344,7 +33344,7 @@ document.addEventListener(
                 savedCount +
                 " student result(s) saved successfully! ✅"
             );
-
+await loadTeacherSavedResults();
 
             // =====================================
             // RESET FORM
