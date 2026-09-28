@@ -20475,6 +20475,167 @@ document.getElementById(
 const noticeSort =
 document.getElementById("adminNoticeSort");
 
+// ==========================================
+// SPECIFIC CLASS NOTICE ELEMENTS
+// ==========================================
+
+const noticeAudience =
+    document.getElementById(
+        "adminNoticeAudience"
+    );
+
+const noticeClassGroup =
+    document.getElementById(
+        "adminNoticeClassGroup"
+    );
+
+const noticeClass =
+    document.getElementById(
+        "adminNoticeClass"
+    );
+
+
+// ==========================================
+// LOAD NOTICE CLASS OPTIONS
+// ==========================================
+
+async function loadNoticeClasses() {
+
+    if (!noticeClass) {
+        return;
+    }
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+        return;
+    }
+
+    const {
+        data: students,
+        error
+    } = await supabaseClient
+        .from("students")
+        .select(
+            "student_class, section"
+        );
+
+    if (error) {
+
+        console.error(
+            "NOTICE CLASS LOAD ERROR:",
+            error
+        );
+
+        return;
+    }
+
+
+    const combinations =
+        new Map();
+
+
+    (students || []).forEach(
+        function(student) {
+
+            const className =
+                String(
+                    student.student_class ||
+                    ""
+                )
+                .trim()
+                .replace(
+                    /^Class\s*/i,
+                    ""
+                );
+
+            const section =
+                String(
+                    student.section ||
+                    ""
+                )
+                .trim()
+                .toUpperCase();
+
+
+            if (!className) {
+                return;
+            }
+
+
+            const key =
+                `${className}||${section}`;
+
+
+            if (
+                !combinations.has(key)
+            ) {
+
+                combinations.set(
+                    key,
+                    {
+                        className:
+                            className,
+
+                        section:
+                            section
+                    }
+                );
+
+            }
+
+        }
+    );
+
+
+    noticeClass.innerHTML = `
+        <option value="">
+            Select Class
+        </option>
+    `;
+
+
+    Array.from(
+        combinations.values()
+    )
+    .sort(
+        function(a, b) {
+
+            return (
+                Number(a.className) -
+                Number(b.className)
+            );
+
+        }
+    )
+    .forEach(
+        function(item) {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                `${item.className}||${item.section}`;
+
+
+            option.textContent =
+                item.section
+                    ? `Class ${item.className} - ${item.section}`
+                    : `Class ${item.className}`;
+
+
+            noticeClass.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
 
 // ==========================================
 // OPEN NOTICE FORM
