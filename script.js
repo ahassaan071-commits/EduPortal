@@ -30981,96 +30981,247 @@ document.addEventListener(
         }
 
 
-        // =========================================
-        // FIND SUBJECT IN SUPABASE
-        // =========================================
+       // =========================================
+// FIND SUBJECT THROUGH TEACHER ASSIGNMENT
+// =========================================
+
+let subjectRow = null;
+
+let dbTeacherForSubject = null;
+
+
+// =========================================
+// FIND TEACHER
+// =========================================
+
+if (teacher.id) {
+
+    const {
+        data
+    } =
+        await supabaseClient
+            .from("teachers")
+            .select(
+                "id, teacher_id, name, username"
+            )
+            .eq(
+                "id",
+                teacher.id
+            )
+            .maybeSingle();
+
+    if (data) {
+        dbTeacherForSubject = data;
+    }
+
+}
+
+
+if (
+    !dbTeacherForSubject &&
+    (
+        teacher.teacherId ||
+        teacher.teacher_id
+    )
+) {
+
+    const {
+        data
+    } =
+        await supabaseClient
+            .from("teachers")
+            .select(
+                "id, teacher_id, name, username"
+            )
+            .eq(
+                "teacher_id",
+                String(
+                    teacher.teacherId ||
+                    teacher.teacher_id
+                )
+            )
+            .maybeSingle();
+
+    if (data) {
+        dbTeacherForSubject = data;
+    }
+
+}
+
+
+if (
+    !dbTeacherForSubject &&
+    teacher.username
+) {
+
+    const {
+        data
+    } =
+        await supabaseClient
+            .from("teachers")
+            .select(
+                "id, teacher_id, name, username"
+            )
+            .ilike(
+                "username",
+                String(
+                    teacher.username
+                ).trim()
+            )
+            .maybeSingle();
+
+    if (data) {
+        dbTeacherForSubject = data;
+    }
+
+}
+
+
+// =========================================
+// GET TEACHER ASSIGNED SUBJECTS
+// =========================================
+
+if (
+    dbTeacherForSubject &&
+    dbTeacherForSubject.id
+) {
+
+    const {
+        data: assignments,
+        error: assignmentError
+    } =
+        await supabaseClient
+            .from("teacher_class_subjects")
+            .select(
+                "subject_id"
+            )
+            .eq(
+                "teacher_id",
+                dbTeacherForSubject.id
+            );
+
+
+    if (assignmentError) {
+
+        console.error(
+            "TEACHER SUBJECT ASSIGNMENT ERROR:",
+            assignmentError
+        );
+
+        alert(
+            "Unable to load teacher subject.\n\n" +
+            assignmentError.message
+        );
+
+        return;
+    }
+
+
+    const subjectIds =
+        [
+            ...new Set(
+                (assignments || [])
+                    .map(
+                        function(item) {
+                            return Number(
+                                item.subject_id
+                            );
+                        }
+                    )
+                    .filter(
+                        function(id) {
+                            return !isNaN(id);
+                        }
+                    )
+            )
+        ];
+
+
+    if (
+        subjectIds.length > 0
+    ) {
 
         const {
-            data: subjectRows,
-            error: subjectError
+            data: assignedSubjects,
+            error: subjectsError
         } =
             await supabaseClient
                 .from("subjects")
                 .select(
-                    "id, name, code, teacher_id"
+                    "id, name, code"
+                )
+                .in(
+                    "id",
+                    subjectIds
                 );
 
 
-        if (subjectError) {
+        if (subjectsError) {
 
             console.error(
-                "Subject lookup error:",
-                subjectError
+                "SUBJECT LOAD ERROR:",
+                subjectsError
             );
 
             alert(
-                "Unable to load subjects.\n\n" +
-                subjectError.message
+                "Unable to load subject.\n\n" +
+                subjectsError.message
             );
 
             return;
         }
 
 
-       const normalizedSubject =
-    String(
-        subject || ""
-    )
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, " ");
+        subjectRow =
+            (assignedSubjects || [])
+                .find(
+                    function(row) {
 
+                        return (
+                            String(
+                                row.name || ""
+                            )
+                            .trim()
+                            .toLowerCase() ===
+                            subject
+                                .trim()
+                                .toLowerCase()
+                        );
 
-const subjectRow =
-    (subjectRows || []).find(
-        function(row) {
-
-            const rowName =
-                String(
-                    row.name || ""
-                )
-                .trim()
-                .toLowerCase()
-                .replace(
-                    /\s+/g,
-                    " "
+                    }
                 );
 
 
-            const rowCode =
-                String(
-                    row.code || ""
-                )
-                .trim()
-                .toLowerCase()
-                .replace(
-                    /\s+/g,
-                    " "
-                );
+        if (
+            !subjectRow &&
+            assignedSubjects &&
+            assignedSubjects.length === 1
+        ) {
 
-
-            return (
-                rowName ===
-                normalizedSubject ||
-
-                rowCode ===
-                normalizedSubject
-            );
+            subjectRow =
+                assignedSubjects[0];
 
         }
+
+    }
+
+}
+
+
+// =========================================
+// SUBJECT NOT FOUND
+// =========================================
+
+if (!subjectRow) {
+
+    alert(
+        "Subject not found in your teacher assignment.\n\n" +
+        "Selected Subject: " +
+        subject
     );
 
-
-        if (!subjectRow) {
-
-            alert(
-                "Subject not found in Supabase.\n\n" +
-                "Subject: " +
-                subject
-            );
-
-            return;
-        }
+    return;
+}
 
 
         // =========================================
