@@ -20729,6 +20729,15 @@ async function () {
             "adminNoticeAudience"
         ).value;
 
+        const selectedClass =
+    document.getElementById(
+        "adminNoticeClass"
+    )
+    ? document.getElementById(
+        "adminNoticeClass"
+    ).value
+    : "";
+
     const date =
         document.getElementById(
             "adminNoticeDate"
