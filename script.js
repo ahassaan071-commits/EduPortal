@@ -1495,6 +1495,23 @@ if (
                 "adminDashboard"
             );
 
+// ==========================================
+// ALWAYS OPEN ADMIN MAIN DASHBOARD AFTER LOGIN
+// ==========================================
+
+setTimeout(function () {
+
+    const adminDashboardMenu =
+        document.getElementById(
+            "adminDashboardMenu"
+        );
+
+    if (adminDashboardMenu) {
+        adminDashboardMenu.click();
+    }
+
+}, 300);
+
 
             const adminDashboard =
                 document.getElementById(
