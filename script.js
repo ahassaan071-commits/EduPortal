@@ -822,22 +822,18 @@ if (
 
 setTimeout(async function () {
 
+    eduPortalShowOnly("studentDashboard");
+
+    // ALWAYS OPEN MAIN DASHBOARD AFTER LOGIN
     if (
         typeof StudentDashboard !== "undefined" &&
-        typeof StudentDashboard.init === "function"
+        typeof StudentDashboard.openModule === "function"
     ) {
-
-        await StudentDashboard.init();
-
+        StudentDashboard.openModule("dashboard");
     }
 
-    if (
-        typeof updateDashboardStats ===
-        "function"
-    ) {
-
+    if (typeof updateDashboardStats === "function") {
         updateDashboardStats();
-
     }
 
 }, 300);
@@ -34918,18 +34914,28 @@ function openIndividualAttendance(studentId) {
 
 const StudentDashboard = {
 
-   getStudent() {
+  getStudent() {
+    let student = null;
 
-    const student =
-        JSON.parse(
-            localStorage.getItem("loggedInStudent")
-        ) ||
-        JSON.parse(
-            localStorage.getItem("studentAccount")
-        ) ||
-        JSON.parse(
-            localStorage.getItem("currentStudent")
+    try {
+        student =
+            JSON.parse(
+                localStorage.getItem("loggedInStudent")
+            ) ||
+            JSON.parse(
+                localStorage.getItem("studentAccount")
+            ) ||
+            JSON.parse(
+                localStorage.getItem("currentStudent")
+            );
+    } catch (error) {
+        console.error(
+            "Student session read error:",
+            error
         );
+
+        return null;
+    }
 
     return student || null;
 },
