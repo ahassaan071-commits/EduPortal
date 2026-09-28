@@ -5694,20 +5694,39 @@ async function renderAdminStudents() {
     );
 
 
-    // ==========================================
-    // UPDATE TOTAL STUDENTS
-    // ==========================================
+   // ==========================================
+// UPDATE STUDENT COUNTS
+// ==========================================
 
-    const countElement =
-        document.getElementById(
-            "adminTotalStudents"
-        );
+const countElement =
+    document.getElementById(
+        "adminTotalStudents"
+    );
 
-    if (countElement) {
+if (countElement) {
 
-        countElement.textContent =
-            students.length;
-    }
+    countElement.textContent =
+        students.length;
+}
+
+
+// ==========================================
+// UPDATE STUDENTS TABLE FOOTER
+// ==========================================
+
+const entriesElement =
+    document.getElementById(
+        "adminStudentsEntriesText"
+    );
+
+if (entriesElement) {
+
+    entriesElement.textContent =
+        "Showing " +
+        students.length +
+        " students";
+}
+
 }
 // ==========================================
 // UPDATE TOTAL STUDENTS
