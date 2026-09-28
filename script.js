@@ -1633,6 +1633,23 @@ setTimeout(function () {
             "teacherDashboard"
         );
 
+// ==========================================
+// ALWAYS OPEN TEACHER MAIN DASHBOARD AFTER LOGIN
+// ==========================================
+
+setTimeout(function () {
+
+    const teacherDashboardMenu =
+        document.getElementById(
+            "teacherDashboardMenu"
+        );
+
+    if (teacherDashboardMenu) {
+        teacherDashboardMenu.click();
+    }
+
+}, 300);
+
 
         const teacherDashboard =
             document.getElementById(
