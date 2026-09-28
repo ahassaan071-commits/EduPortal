@@ -39983,15 +39983,69 @@ document.addEventListener(
                     }
 
 
-                    // Student
-                    if (
-                        target === "student"
-                    ) {
-                        return true;
-                    }
+                // ==========================================
+// STUDENT / CLASS-SPECIFIC NOTICE
+// ==========================================
+
+if (
+    target === "student"
+) {
+    return true;
+}
 
 
-                    return false;
+// ==========================================
+// SPECIFIC CLASS NOTICE
+// ==========================================
+
+if (
+    target.startsWith("class:")
+) {
+
+    const studentClass =
+        String(
+            student?.student_class ||
+            ""
+        )
+        .trim()
+        .replace(
+            /^Class\s*/i,
+            ""
+        );
+
+    const studentSection =
+        String(
+            student?.section ||
+            ""
+        )
+        .trim()
+        .toUpperCase();
+
+
+    const studentClassKey =
+        `${studentClass}||${studentSection}`
+        .toLowerCase();
+
+
+    const noticeClassKey =
+        target
+            .replace(
+                /^class:/i,
+                ""
+            )
+            .trim()
+            .toLowerCase();
+
+
+    return (
+        studentClassKey ===
+        noticeClassKey
+    );
+
+}
+
+
+return false;
 
                 }
             );
