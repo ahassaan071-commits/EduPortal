@@ -31506,33 +31506,30 @@ if (!subjectRow) {
             // REAL DATABASE RECORD
             // =====================================
 
-            const record = {
+      const record = {
 
-                teacher_id:
-                    dbTeacher.id,
+    teacher_id:
+        dbTeacher.id,
 
-                student_id:
-                    student.id,
+    student_id:
+        student.id,
 
-                subject_id:
-                    subjectRow.id,
+    subject_id:
+        subjectRow.id,
 
-                total_marks:
-                    totalMarks,
+    total_marks:
+        totalMarks,
 
-                marks:
-                    obtainedMarks,
+    marks:
+        obtainedMarks,
 
-                obtained_marks:
-                    obtainedMarks,
+    percentage:
+        percentage,
 
-                percentage:
-                    percentage,
+    grade:
+        grade
 
-                grade:
-                    grade
-
-            };
+};
 
 
             // =====================================
