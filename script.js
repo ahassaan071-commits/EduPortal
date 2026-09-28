@@ -39905,6 +39905,72 @@ document.addEventListener(
         const student =
             getCurrentStudent();
 
+// ==========================================
+// LOAD STUDENT CLASS + SECTION
+// ==========================================
+
+if (
+    student &&
+    typeof supabaseClient !==
+    "undefined"
+) {
+
+    let studentQuery = null;
+
+
+    if (student.id) {
+
+        studentQuery =
+            await supabaseClient
+                .from("students")
+                .select(
+                    "id, student_id, student_class, section"
+                )
+                .eq(
+                    "id",
+                    student.id
+                )
+                .maybeSingle();
+
+    }
+
+
+    if (
+        (!studentQuery ||
+        !studentQuery.data) &&
+        student.studentId
+    ) {
+
+        studentQuery =
+            await supabaseClient
+                .from("students")
+                .select(
+                    "id, student_id, student_class, section"
+                )
+                .eq(
+                    "student_id",
+                    student.studentId
+                )
+                .maybeSingle();
+
+    }
+
+
+    if (
+        studentQuery &&
+        studentQuery.data
+    ) {
+
+        student.student_class =
+            studentQuery.data.student_class;
+
+        student.section =
+            studentQuery.data.section;
+
+    }
+
+}
+
 
         const {
             data: notices,
