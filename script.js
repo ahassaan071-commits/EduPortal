@@ -21782,6 +21782,194 @@ closeInstitutionModal();
 );
 
 }
+
+// ==========================================
+// SAVE INSTITUTION INFO
+// ==========================================
+
+const saveInstitutionInfoBtn =
+document.getElementById("saveInstitutionInfoBtn");
+
+const institutionNameInput =
+document.getElementById("institutionNameInput");
+
+const institutionAddressInput =
+document.getElementById("institutionAddressInput");
+
+const institutionPhoneInput =
+document.getElementById("institutionPhoneInput");
+
+const settingsInstitutionName =
+document.getElementById("settingsInstitutionName");
+
+const settingsInstitutionAddress =
+document.getElementById("settingsInstitutionAddress");
+
+const settingsInstitutionPhone =
+document.getElementById("settingsInstitutionPhone");
+
+
+if (saveInstitutionInfoBtn) {
+
+saveInstitutionInfoBtn.addEventListener(
+"click",
+function () {
+
+const institutionName =
+institutionNameInput.value.trim();
+
+const institutionAddress =
+institutionAddressInput.value.trim();
+
+const institutionPhone =
+institutionPhoneInput.value.trim();
+
+
+if (institutionName === "") {
+
+alert("Please enter institution name.");
+
+return;
+
+}
+
+
+if (institutionAddress === "") {
+
+alert("Please enter institution address.");
+
+return;
+
+}
+
+
+if (institutionPhone === "") {
+
+alert("Please enter institution phone number.");
+
+return;
+
+}
+
+
+// UPDATE SETTINGS CARD
+
+if (settingsInstitutionName) {
+
+settingsInstitutionName.textContent =
+institutionName;
+
+}
+
+if (settingsInstitutionAddress) {
+
+settingsInstitutionAddress.textContent =
+institutionAddress;
+
+}
+
+if (settingsInstitutionPhone) {
+
+settingsInstitutionPhone.textContent =
+institutionPhone;
+
+}
+
+
+// SAVE TO LOCAL STORAGE
+
+localStorage.setItem(
+"adminInstitutionSettings",
+JSON.stringify({
+
+name: institutionName,
+
+address: institutionAddress,
+
+phone: institutionPhone
+
+})
+);
+
+
+// CLOSE MODAL
+
+closeInstitutionModal();
+
+
+// SUCCESS MESSAGE
+
+alert(
+"Institution information updated successfully. ✅"
+);
+
+}
+
+);
+
+}
+
+
+// ==========================================
+// LOAD SAVED INSTITUTION INFO
+// ==========================================
+
+function loadInstitutionSettings() {
+
+const savedInstitution =
+JSON.parse(
+localStorage.getItem(
+"adminInstitutionSettings"
+)
+);
+
+
+if (!savedInstitution) {
+
+return;
+
+}
+
+
+if (
+settingsInstitutionName &&
+savedInstitution.name
+) {
+
+settingsInstitutionName.textContent =
+savedInstitution.name;
+
+}
+
+
+if (
+settingsInstitutionAddress &&
+savedInstitution.address
+) {
+
+settingsInstitutionAddress.textContent =
+savedInstitution.address;
+
+}
+
+
+if (
+settingsInstitutionPhone &&
+savedInstitution.phone
+) {
+
+settingsInstitutionPhone.textContent =
+savedInstitution.phone;
+
+}
+
+}
+
+
+// LOAD SAVED DATA
+
+loadInstitutionSettings();
+
 // ==========================================
 // SETTINGS - EMAIL
 // ==========================================
