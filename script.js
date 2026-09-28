@@ -31807,6 +31807,475 @@ document.addEventListener(
 
     }
 );
+
+// =========================================================
+// LOAD STUDENTS WHEN CLASS IS SELECTED
+// =========================================================
+
+document.addEventListener(
+    "change",
+    async function(event) {
+
+        if (
+            event.target.id !==
+            "teacherResultClass"
+        ) {
+            return;
+        }
+
+        const classSelect =
+            event.target;
+
+        const selectedOption =
+            classSelect.options[
+                classSelect.selectedIndex
+            ];
+
+        const classId =
+            selectedOption?.value || "";
+
+        const className =
+            selectedOption?.dataset.class || "";
+
+        const sectionName =
+            selectedOption?.dataset.section || "";
+
+        const studentsArea =
+            document.getElementById(
+                "teacherResultStudentsArea"
+            );
+
+
+        if (!studentsArea) {
+            return;
+        }
+
+
+        // =========================================
+        // NO CLASS SELECTED
+        // =========================================
+
+        if (!classId) {
+
+            studentsArea.innerHTML = `
+
+                <div
+                    class="teacher-result-empty-state"
+                >
+
+                    <i class="fas fa-users"></i>
+
+                    <h4>
+                        Select a class
+                    </h4>
+
+                    <p>
+                        Students from the selected
+                        class will appear here.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        // =========================================
+        // LOADING
+        // =========================================
+
+        studentsArea.innerHTML = `
+
+            <div
+                class="teacher-result-empty-state"
+            >
+
+                <i class="fas fa-spinner fa-spin"></i>
+
+                <h4>
+                    Loading Students
+                </h4>
+
+                <p>
+                    Please wait...
+                </p>
+
+            </div>
+
+        `;
+
+
+        // =========================================
+        // SUPABASE CHECK
+        // =========================================
+
+        if (
+            typeof supabaseClient ===
+            "undefined"
+        ) {
+
+            studentsArea.innerHTML = `
+
+                <div
+                    class="teacher-result-empty-state"
+                >
+
+                    <i class="fas fa-exclamation-circle"></i>
+
+                    <h4>
+                        Connection Error
+                    </h4>
+
+                    <p>
+                        Supabase connection is missing.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        // =========================================
+        // LOAD STUDENTS
+        // =========================================
+
+        const {
+            data: students,
+            error
+        } =
+            await supabaseClient
+                .from("students")
+                .select("*")
+                .order(
+                    "full_name",
+                    {
+                        ascending: true
+                    }
+                );
+
+
+        if (error) {
+
+            console.error(
+                "Result students error:",
+                error
+            );
+
+            studentsArea.innerHTML = `
+
+                <div
+                    class="teacher-result-empty-state"
+                >
+
+                    <i class="fas fa-exclamation-triangle"></i>
+
+                    <h4>
+                        Unable to Load Students
+                    </h4>
+
+                    <p>
+                        ${error.message}
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        // =========================================
+        // FILTER CLASS + SECTION
+        // =========================================
+
+        const cleanValue =
+            function(value) {
+
+                return String(
+                    value || ""
+                )
+                .trim()
+                .toLowerCase()
+                .replace(
+                    /^class\s*/i,
+                    ""
+                )
+                .replace(
+                    /[^a-z0-9]/g,
+                    ""
+                );
+
+            };
+
+
+        const selectedClassKey =
+            cleanValue(
+                className
+            ) +
+            cleanValue(
+                sectionName
+            );
+
+
+        const assignedStudents =
+            (
+                students || []
+            ).filter(
+                function(student) {
+
+                    const studentClass =
+                        cleanValue(
+                            student.student_class ||
+                            student.studentClass ||
+                            student.class
+                        );
+
+
+                    const studentSection =
+                        cleanValue(
+                            student.section
+                        );
+
+
+                    const studentClassKey =
+                        studentClass +
+                        studentSection;
+
+
+                    return (
+                        studentClassKey ===
+                        selectedClassKey
+                    );
+
+                }
+            );
+
+
+        // =========================================
+        // NO STUDENTS
+        // =========================================
+
+        if (
+            assignedStudents.length === 0
+        ) {
+
+            studentsArea.innerHTML = `
+
+                <div
+                    class="teacher-result-empty-state"
+                >
+
+                    <i class="fas fa-user-slash"></i>
+
+                    <h4>
+                        No Students Found
+                    </h4>
+
+                    <p>
+                        No students are registered
+                        in ${className}${sectionName ? "-" + sectionName : ""}.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        // =========================================
+        // STUDENT TABLE
+        // =========================================
+
+        studentsArea.innerHTML = `
+
+            <div class="teacher-result-student-header">
+
+                <div>
+
+                    <h4>
+                        Student Results
+                    </h4>
+
+                    <p>
+                        ${assignedStudents.length}
+                        student(s) found
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="teacher-results-table-wrapper">
+
+                <table class="teacher-results-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>#</th>
+
+                            <th>
+                                Student
+                            </th>
+
+                            <th>
+                                Student ID
+                            </th>
+
+                            <th>
+                                Total Marks
+                            </th>
+
+                            <th>
+                                Obtained Marks
+                            </th>
+
+                            <th>
+                                Percentage
+                            </th>
+
+                            <th>
+                                Grade
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="teacherResultStudentsTableBody"
+                    >
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        `;
+
+
+        const tableBody =
+            document.getElementById(
+                "teacherResultStudentsTableBody"
+            );
+
+
+        const totalMarks =
+            Number(
+                document.getElementById(
+                    "teacherResultTotalMarks"
+                )?.value
+            ) || 0;
+
+
+        assignedStudents.forEach(
+            function(student, index) {
+
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                row.innerHTML = `
+
+                    <td>
+                        ${index + 1}
+                    </td>
+
+                    <td>
+                        <strong>
+                            ${
+                                student.full_name ||
+                                student.name ||
+                                "—"
+                            }
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${
+                            student.student_id ||
+                            "—"
+                        }
+                    </td>
+
+                    <td>
+
+                        <span
+                            class="result-total-marks"
+                        >
+                            ${
+                                totalMarks ||
+                                "—"
+                            }
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <input
+                            type="number"
+                            class="teacher-obtained-marks"
+                            data-student-id="${student.id}"
+                            min="0"
+                            ${
+                                totalMarks
+                                    ? `max="${totalMarks}"`
+                                    : ""
+                            }
+                            placeholder="Enter marks"
+                        >
+
+                    </td>
+
+                    <td>
+
+                        <span
+                            class="teacher-result-percentage"
+                            data-percentage-for="${student.id}"
+                        >
+                            0%
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <span
+                            class="teacher-result-grade"
+                            data-grade-for="${student.id}"
+                        >
+                            —
+                        </span>
+
+                    </td>
+
+                `;
+
+
+                tableBody.appendChild(
+                    row
+                );
+
+            }
+        );
+
+    }
+);
 // =========================================================
 // CALCULATE PERCENTAGE
 // =========================================================
