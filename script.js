@@ -1377,6 +1377,45 @@ document.addEventListener("DOMContentLoaded", async function () {
             "loggedInRole"
         );
 
+        const lastActivityAt =
+    Number(
+        localStorage.getItem(
+            "lastActivityAt"
+        )
+    );
+
+const INACTIVITY_LIMIT =
+    10 * 60 * 1000;
+
+
+// =============================================
+// CHECK SESSION BEFORE RESTORING DASHBOARD
+// =============================================
+
+if (isLoggedIn === "true") {
+
+    if (
+        !lastActivityAt ||
+        Date.now() - lastActivityAt >= INACTIVITY_LIMIT
+    ) {
+
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("loggedInRole");
+
+        localStorage.removeItem("adminAccount");
+        localStorage.removeItem("loggedInTeacher");
+        localStorage.removeItem("loggedInStudent");
+        localStorage.removeItem("studentAccount");
+        localStorage.removeItem("currentStudent");
+
+        localStorage.removeItem("lastActivityAt");
+        localStorage.removeItem("sessionStartedAt");
+
+        eduPortalShowLogin();
+
+        return;
+    }
+}
     // =================================================
     // NO ACTIVE LOGIN
     // =================================================
