@@ -20638,6 +20638,52 @@ async function loadNoticeClasses() {
 }
 
 // ==========================================
+// NOTICE AUDIENCE CHANGE
+// ==========================================
+
+if (noticeAudience) {
+
+    noticeAudience.addEventListener(
+        "change",
+        function() {
+
+            if (
+                this.value === "Class"
+            ) {
+
+                if (noticeClassGroup) {
+
+                    noticeClassGroup.style.display =
+                        "block";
+
+                }
+
+                loadNoticeClasses();
+
+            } else {
+
+                if (noticeClassGroup) {
+
+                    noticeClassGroup.style.display =
+                        "none";
+
+                }
+
+                if (noticeClass) {
+
+                    noticeClass.value =
+                        "";
+
+                }
+
+            }
+
+        }
+    );
+
+}
+
+// ==========================================
 // OPEN NOTICE FORM
 // ==========================================
 
