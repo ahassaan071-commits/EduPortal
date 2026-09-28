@@ -1212,14 +1212,14 @@ async function toggleTeacherPassword(
                 )
             );
 
+if (isLoggedIn !== "true") {
+    return;
+}
 
-        if (
-            isLoggedIn !== "true" ||
-            !lastActivityAt
-        ) {
-            return;
-        }
-
+if (!lastActivityAt) {
+    eduPortalAutoLogout();
+    return;
+}
 
         const inactiveTime =
             Date.now() -
