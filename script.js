@@ -31012,23 +31012,53 @@ document.addEventListener(
         }
 
 
-        const subjectRow =
-            (subjectRows || []).find(
-                function(row) {
+       const normalizedSubject =
+    String(
+        subject || ""
+    )
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ");
 
-                    return (
-                        String(
-                            row.name || ""
-                        )
-                        .trim()
-                        .toLowerCase() ===
-                        subject
-                            .trim()
-                            .toLowerCase()
-                    );
 
-                }
+const subjectRow =
+    (subjectRows || []).find(
+        function(row) {
+
+            const rowName =
+                String(
+                    row.name || ""
+                )
+                .trim()
+                .toLowerCase()
+                .replace(
+                    /\s+/g,
+                    " "
+                );
+
+
+            const rowCode =
+                String(
+                    row.code || ""
+                )
+                .trim()
+                .toLowerCase()
+                .replace(
+                    /\s+/g,
+                    " "
+                );
+
+
+            return (
+                rowName ===
+                normalizedSubject ||
+
+                rowCode ===
+                normalizedSubject
             );
+
+        }
+    );
 
 
         if (!subjectRow) {
