@@ -30686,7 +30686,7 @@ const savedResult =
     );
 
 
-            const savedObtained =
+    const savedObtained =
     savedResult
         ? savedResult.marks
         : "";
