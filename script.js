@@ -26129,26 +26129,30 @@ return (
                     }
                 </td>
 
-               student.student_class
-    ? String(
+               <td>
+    ${
         student.student_class
-    )
-    .replace(
-        /^Class\s*/i,
-        ""
-    )
-    +
-    (
-        student.section
-            ? "-" +
-              String(
-                  student.section
-              )
-              .trim()
-              .toUpperCase()
-            : ""
-    )
-    : "—"
+            ? String(
+                student.student_class
+            )
+            .replace(
+                /^Class\s*/i,
+                ""
+            )
+            +
+            (
+                student.section
+                    ? "-" +
+                      String(
+                          student.section
+                      )
+                      .trim()
+                      .toUpperCase()
+                    : ""
+            )
+            : "—"
+    }
+</td>
 
                 <td>
 
