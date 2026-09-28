@@ -38388,69 +38388,98 @@ const notices =
         function(notice) {
 
             const audience =
-                String(
-                    notice.audience ||
-                    "All"
-                )
-                .trim()
-                .toLowerCase();
+    String(
+        notice.target_role ||
+        ""
+    )
+    .trim()
+    .toLowerCase();
 
 
-            // -------------------------------
-            // ALL STUDENTS
-            // -------------------------------
+// -------------------------------
+// ALL STUDENTS
+// -------------------------------
 
-            if (
-                audience === "all" ||
-                audience === "all students" ||
-                audience === "everyone"
-            ) {
+if (
+    audience === "all" ||
+    audience === "all students" ||
+    audience === "everyone" ||
+    audience === "students"
+) {
 
-                return true;
+    return true;
 
-            }
-
-
-            // -------------------------------
-            // STUDENT ID
-            // -------------------------------
-
-            if (
-                audience ===
-                studentId.toLowerCase() ||
-
-                audience ===
-                studentCode.toLowerCase()
-            ) {
-
-                return true;
-
-            }
+}
 
 
-            // -------------------------------
-            // CLASS
-            // -------------------------------
+// -------------------------------
+// STUDENT
+// -------------------------------
 
-            if (
-                studentClass &&
-                (
-                    audience ===
-                    studentClass ||
+if (
+    audience === "student"
+) {
 
-                    audience ===
-                    "class " +
-                    studentClass
-                )
-            ) {
+    return true;
 
-                return true;
-
-            }
+}
 
 
-            return false;
+// -------------------------------
+// SPECIFIC CLASS + SECTION
+// -------------------------------
 
+if (
+    audience.startsWith("class:")
+) {
+
+    const noticeClassKey =
+        audience
+            .replace(
+                /^class:/i,
+                ""
+            )
+            .trim()
+            .toLowerCase();
+
+
+    const studentSection =
+        String(
+            dbStudent?.section ||
+            student?.section ||
+            ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+    const normalizedStudentClass =
+        studentClass
+            .replace(
+                /^class\s*/i,
+                ""
+            )
+            .trim();
+
+
+    const studentClassKey =
+        `${normalizedStudentClass}||${studentSection}`
+            .toLowerCase();
+
+
+    return (
+        noticeClassKey ===
+        studentClassKey
+    );
+
+}
+
+
+// -------------------------------
+// NO MATCH
+// -------------------------------
+
+return false;
         }
     );
     // ==========================================
