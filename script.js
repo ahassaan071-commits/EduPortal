@@ -21720,6 +21720,40 @@ editInstitutionInfoBtn.addEventListener(
 "click",
 function () {
 
+const savedInstitution =
+JSON.parse(
+localStorage.getItem(
+"adminInstitutionSettings"
+)
+);
+
+
+if (savedInstitution) {
+
+if (institutionNameInput) {
+
+institutionNameInput.value =
+savedInstitution.name || "";
+
+}
+
+if (institutionAddressInput) {
+
+institutionAddressInput.value =
+savedInstitution.address || "";
+
+}
+
+if (institutionPhoneInput) {
+
+institutionPhoneInput.value =
+savedInstitution.phone || "";
+
+}
+
+}
+
+
 institutionInfoModal.style.display = "flex";
 
 }
