@@ -9859,6 +9859,7 @@ async function renderUserManagementStudents() {
             mobile,
             status,
             username,
+            password,
             created_at
         `)
         .order(
