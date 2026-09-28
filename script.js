@@ -31913,16 +31913,7 @@ async function loadTeacherSavedResults() {
         results.length === 0
     ) {
 
-        tableBody.innerHTML = `
-            <tr>
-                <td
-                    colspan="11"
-                    class="teacher-module-loading"
-                >
-                    No result records found.
-                </td>
-            </tr>
-        `;
+  tableBody.innerHTML = "";
 
 
         if (countElement) {

@@ -46594,3 +46594,35 @@ html.edu-session-restoring.edu-role-student #studentDashboard {
     }
 
 }
+/* =========================================================
+   REMOVE RESULT FORM OUTER BOX
+   ========================================================= */
+
+#teacherDashboard #teacherResultFormCard {
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    overflow: visible !important;
+}
+
+#teacherDashboard #teacherResultFormCard
+.teacher-card-heading {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    border-bottom: none !important;
+    background: transparent !important;
+}
+
+#teacherDashboard #teacherResultFormCard
+.teacher-results-form {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+#teacherDashboard #teacherResultFormCard
+.teacher-results-footer {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    background: transparent !important;
+}
