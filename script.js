@@ -31506,7 +31506,7 @@ if (!subjectRow) {
             // REAL DATABASE RECORD
             // =====================================
 
-      const record = {
+     const record = {
 
     teacher_id:
         dbTeacher.id,
@@ -31521,13 +31521,7 @@ if (!subjectRow) {
         totalMarks,
 
     marks:
-        obtainedMarks,
-
-    percentage:
-        percentage,
-
-    grade:
-        grade
+        obtainedMarks
 
 };
 
