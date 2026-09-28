@@ -33108,7 +33108,113 @@ await loadTeacherSavedResults();
     }
 );
 
+// =========================================================
+// LIVE TOTAL MARKS UPDATE
+// =========================================================
 
+document.addEventListener(
+    "input",
+    function(event) {
+
+        if (
+            event.target.id !==
+            "teacherResultTotalMarks"
+        ) {
+            return;
+        }
+
+        const totalMarks =
+            Number(event.target.value) || 0;
+
+        // Update Total Marks column
+        document
+            .querySelectorAll(
+                ".result-total-marks"
+            )
+            .forEach(
+                function(element) {
+
+                    element.textContent =
+                        totalMarks > 0
+                            ? totalMarks
+                            : "—";
+
+                }
+            );
+
+        // Update maximum allowed marks
+        document
+            .querySelectorAll(
+                ".teacher-obtained-marks"
+            )
+            .forEach(
+                function(input) {
+
+                    if (totalMarks > 0) {
+
+                        input.max =
+                            totalMarks;
+
+                        if (
+                            Number(input.value) >
+                            totalMarks
+                        ) {
+                            input.value =
+                                totalMarks;
+                        }
+
+                    } else {
+
+                        input.removeAttribute(
+                            "max"
+                        );
+
+                    }
+
+                    // Recalculate percentage
+                    const studentId =
+                        input.dataset.studentId;
+
+                    const percentage =
+                        calculateTeacherResultPercentage(
+                            input.value,
+                            totalMarks
+                        );
+
+                    const grade =
+                        calculateTeacherResultGrade(
+                            percentage
+                        );
+
+                    const percentageElement =
+                        document.querySelector(
+                            `[data-percentage-for="${studentId}"]`
+                        );
+
+                    const gradeElement =
+                        document.querySelector(
+                            `[data-grade-for="${studentId}"]`
+                        );
+
+                    if (percentageElement) {
+
+                        percentageElement.textContent =
+                            percentage + "%";
+
+                    }
+
+                    if (gradeElement) {
+
+                        gradeElement.textContent =
+                            grade;
+
+                    }
+
+                }
+            );
+
+    }
+);
 // =========================================================
 // LIVE RESULT CALCULATION
 // =========================================================
