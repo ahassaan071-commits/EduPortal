@@ -47988,23 +47988,22 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        if (
-            sectionId ===
-            "teacherResultsSection"
-        ) {
+       if (
+    sectionId ===
+    "teacherResultsSection"
+) {
 
-            if (
-                typeof loadTeacherResults ===
-                "function"
-            ) {
+    if (
+        typeof loadTeacherSavedResults ===
+        "function"
+    ) {
 
-                loadTeacherResults();
+        loadTeacherSavedResults();
 
-            }
+    }
 
-            return;
-        }
-
+    return;
+}
 
         if (
             sectionId ===
