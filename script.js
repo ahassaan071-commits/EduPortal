@@ -22,14 +22,54 @@ console.log("EduPortal Supabase connected ✅");
 
 function formatClassSection(className, section) {
 
-    const cls = String(className || "").trim();
-    const sec = String(section || "").trim();
+    let cls =
+        String(className || "")
+            .trim()
+            .replace(/^Class\s*/i, "");
 
-    if (!cls) return "—";
+    let sec =
+        String(section || "")
+            .trim()
+            .toUpperCase();
 
-    if (!sec) return cls;
 
-    return `${cls} ${sec}`;
+    // ==========================================
+    // IF SECTION IS ALREADY INSIDE CLASS VALUE
+    // Example: "Class 9 A"
+    // ==========================================
+
+    if (!sec) {
+
+        const match =
+            cls.match(/^(.+?)\s+([A-Za-z])$/);
+
+        if (match) {
+
+            cls =
+                match[1]
+                    .trim();
+
+            sec =
+                match[2]
+                    .trim()
+                    .toUpperCase();
+
+        }
+
+    }
+
+
+    if (!cls) {
+        return "—";
+    }
+
+
+    if (!sec) {
+        return cls;
+    }
+
+
+    return `${cls} - ${sec}`;
 }
 
 
@@ -18559,7 +18599,9 @@ const {
     .from("students")
     .select(`
         id,
-        student_id
+        student_id,
+        student_class,
+        section
     `);
 
 if (studentsListError) {
