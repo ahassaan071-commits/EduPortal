@@ -18548,6 +18548,47 @@ async function renderFeeRecords() {
                 }
             );
 
+// ==========================================
+// LOAD REAL STUDENT IDs
+// ==========================================
+
+const {
+    data: studentsList,
+    error: studentsListError
+} = await supabaseClient
+    .from("students")
+    .select(`
+        id,
+        student_id
+    `);
+
+if (studentsListError) {
+
+    console.error(
+        "STUDENT ID LOAD ERROR:",
+        studentsListError
+    );
+
+}
+
+
+// ==========================================
+// CREATE STUDENT ID MAP
+// ==========================================
+
+const studentIdMap = {};
+
+(studentsList || []).forEach(
+    function(student) {
+
+        studentIdMap[
+            String(student.id)
+        ] =
+            student.student_id || "";
+
+    }
+);
+
 
     if (error) {
 
@@ -18662,18 +18703,24 @@ async function renderFeeRecords() {
                     }
                 </td>
 
-                <td>
-                    ${record.month || ""}
-                </td>
+            <td>
+    ${record.month || ""}
+</td>
 
-                <td>
-                    Rs.
-                    ${
-                        Number(
-                            record.fee_amount
-                        ).toLocaleString()
-                    }
-                </td>
+<td>
+    ${
+        record.fee_generated_date
+            ? new Date(
+                record.fee_generated_date
+              ).toLocaleDateString("en-GB")
+            : "—"
+    }
+</td>
+
+<td>
+    Rs.
+    ${Number(record.fee_amount).toLocaleString()}
+</td>
 
                 <td>
                     Rs.
