@@ -30687,9 +30687,9 @@ const savedResult =
 
 
             const savedObtained =
-                savedResult
-                    ? savedResult.obtained_marks
-                    : "";
+    savedResult
+        ? savedResult.marks
+        : "";
 
 
             const savedTotal =
