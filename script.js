@@ -764,45 +764,81 @@ if (selectedRole === "student") {
     };
 
 
-    // ==========================================
-    // SAVE NORMALIZED STUDENT SESSION
-    // ==========================================
+  // ==========================================
+// SAVE NORMALIZED STUDENT SESSION
+// ==========================================
 
-    localStorage.setItem(
-        "loggedInStudent",
-        JSON.stringify(
-            studentSession
+localStorage.setItem(
+    "loggedInStudent",
+    JSON.stringify(studentSession)
+);
+
+localStorage.setItem(
+    "studentAccount",
+    JSON.stringify(studentSession)
+);
+
+// Keep one consistent current student
+localStorage.setItem(
+    "currentStudent",
+    JSON.stringify(studentSession)
+);
+
+
+// ==========================================
+// SHOW STUDENT DASHBOARD
+// ==========================================
+
+eduPortalShowOnly(
+    "studentDashboard"
+);
+
+
+// ==========================================
+// RESET STUDENT SIDEBAR STATE
+// ==========================================
+
+if (
+    typeof StudentDashboard !== "undefined"
+) {
+
+    // Remove old active state
+    document
+        .querySelectorAll(
+            "#studentDashboard .sidebar ul li"
         )
-    );
+        .forEach(function (item) {
+
+            item.classList.remove("active");
+
+        });
+
+}
 
 
-    // Also keep compatibility with old code
-    localStorage.setItem(
-        "studentAccount",
-        JSON.stringify(
-            studentSession
-        )
-    );
-
+// ==========================================
+// LOAD COMPLETE STUDENT DASHBOARD
+// ==========================================
 
 setTimeout(async function () {
 
-    eduPortalShowOnly("studentDashboard");
+    if (
+        typeof StudentDashboard !== "undefined" &&
+        typeof StudentDashboard.init === "function"
+    ) {
 
-    if (typeof updateDashboardStats === "function") {
-        updateDashboardStats();
+        await StudentDashboard.init();
+
     }
 
     if (
-        typeof StudentDashboard !== "undefined" &&
-        typeof StudentDashboard.loadDashboard === "function"
+        typeof updateDashboardStats ===
+        "function"
     ) {
-        await StudentDashboard.loadDashboard(
-            studentSession
-        );
-    }
 
-  
+        updateDashboardStats();
+
+    }
 
 }, 300);
 
@@ -810,46 +846,163 @@ setTimeout(async function () {
 
 });
 // ===============================
-// Logout
+// STUDENT LOGOUT - CLEAN SESSION
 // ===============================
 
-const logoutBtn = document.getElementById("logoutBtn");
+const logoutBtn =
+    document.getElementById("logoutBtn");
 
-logoutBtn.addEventListener("click", function () {
-localStorage.removeItem("isLoggedIn");
-eduPortalShowLogin();
+if (logoutBtn) {
 
-localStorage.removeItem("loggedInRole");
-localStorage.removeItem("loggedInStudent");
+    logoutBtn.addEventListener(
+        "click",
+        function () {
 
-document.getElementById("studentDashboard").style.setProperty(
-    "display",
-    "none",
-    "important"
-);
+            // ==========================================
+            // CLEAR LOGIN SESSION
+            // ==========================================
 
-document.querySelector(".container").style.setProperty(
-    "display",
-    "flex",
-    "important"
-);
+            localStorage.removeItem(
+                "isLoggedIn"
+            );
 
-document.querySelector(".container").style.setProperty(
-    "visibility",
-    "visible",
-    "important"
-);
+            localStorage.removeItem(
+                "loggedInRole"
+            );
 
-document.querySelector(".container").style.setProperty(
-    "opacity",
-    "1",
-    "important"
-);
-username.value = "";
-password.value = "";
-message.textContent = "";
+            localStorage.removeItem(
+                "loggedInStudent"
+            );
 
-});
+            localStorage.removeItem(
+                "studentAccount"
+            );
+
+            localStorage.removeItem(
+                "currentStudent"
+            );
+
+            localStorage.removeItem(
+                "lastActivityAt"
+            );
+
+            localStorage.removeItem(
+                "sessionStartedAt"
+            );
+
+
+            // ==========================================
+            // RESET STUDENT SECTIONS
+            // ==========================================
+
+            const sections = [
+                "profileSection",
+                "attendanceSection",
+                "subjectsSection",
+                "assignmentsSection",
+                "resultsSection",
+                "feeSection",
+                "settingsSection"
+            ];
+
+            sections.forEach(
+                function (id) {
+
+                    const section =
+                        document.getElementById(id);
+
+                    if (section) {
+
+                        section.style.setProperty(
+                            "display",
+                            "none",
+                            "important"
+                        );
+
+                    }
+
+                }
+            );
+
+
+            // ==========================================
+            // RESET SIDEBAR ACTIVE STATE
+            // ==========================================
+
+            document
+                .querySelectorAll(
+                    "#studentDashboard .sidebar ul li"
+                )
+                .forEach(
+                    function (item) {
+
+                        item.classList.remove(
+                            "active"
+                        );
+
+                    }
+                );
+
+
+            // ==========================================
+            // HIDE STUDENT DASHBOARD
+            // ==========================================
+
+            const studentDashboard =
+                document.getElementById(
+                    "studentDashboard"
+                );
+
+            if (studentDashboard) {
+
+                studentDashboard.style.setProperty(
+                    "display",
+                    "none",
+                    "important"
+                );
+
+                studentDashboard.style.setProperty(
+                    "visibility",
+                    "hidden",
+                    "important"
+                );
+
+                studentDashboard.style.setProperty(
+                    "opacity",
+                    "0",
+                    "important"
+                );
+
+            }
+
+
+            // ==========================================
+            // SHOW LOGIN SCREEN
+            // ==========================================
+
+            eduPortalShowLogin();
+
+
+            // ==========================================
+            // RESET LOGIN FORM
+            // ==========================================
+
+            if (username) {
+                username.value = "";
+            }
+
+            if (password) {
+                password.value = "";
+            }
+
+            if (message) {
+                message.textContent = "";
+            }
+
+        }
+    );
+
+}
 // ===============================
 // Show / Hide Password
 // ===============================
@@ -34725,18 +34878,21 @@ function openIndividualAttendance(studentId) {
 
 const StudentDashboard = {
 
-    /* -------------------------
-       Student Data
-    ------------------------- */
+   getStudent() {
 
-    getStudent() {
-        const student =
-            JSON.parse(localStorage.getItem("currentStudent")) ||
-            JSON.parse(localStorage.getItem("loggedInStudent"));
+    const student =
+        JSON.parse(
+            localStorage.getItem("loggedInStudent")
+        ) ||
+        JSON.parse(
+            localStorage.getItem("studentAccount")
+        ) ||
+        JSON.parse(
+            localStorage.getItem("currentStudent")
+        );
 
-        return student || null;
-    },
-
+    return student || null;
+},
 
     /* -------------------------
        Dashboard Initialization
