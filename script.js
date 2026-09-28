@@ -32151,6 +32151,595 @@ document.addEventListener(
     }
 );
 // =========================================================
+// LOAD SAVED TEACHER RESULT RECORDS
+// =========================================================
+
+async function loadTeacherSavedResults() {
+
+    const tableBody =
+        document.getElementById(
+            "teacherSavedResultsTableBody"
+        );
+
+    const countElement =
+        document.getElementById(
+            "teacherSavedResultsCount"
+        );
+
+
+    if (!tableBody) {
+        return;
+    }
+
+
+    // =========================================
+    // SUPABASE CHECK
+    // =========================================
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+
+        tableBody.innerHTML = `
+            <tr>
+                <td
+                    colspan="11"
+                    class="teacher-module-loading"
+                >
+                    Supabase connection is missing.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    // =========================================
+    // GET LOGGED-IN TEACHER
+    // =========================================
+
+    const teacher =
+        JSON.parse(
+            localStorage.getItem(
+                "loggedInTeacher"
+            )
+        ) || {};
+
+
+    let dbTeacher = null;
+
+
+    // =========================================
+    // FIND TEACHER
+    // =========================================
+
+    if (
+        teacher.teacherId ||
+        teacher.teacher_id
+    ) {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("teachers")
+                .select(
+                    "id, teacher_id, name"
+                )
+                .eq(
+                    "teacher_id",
+                    String(
+                        teacher.teacherId ||
+                        teacher.teacher_id
+                    )
+                )
+                .maybeSingle();
+
+
+        if (error) {
+
+            console.error(
+                "Saved results teacher error:",
+                error
+            );
+
+            return;
+        }
+
+
+        dbTeacher =
+            data;
+    }
+
+
+    if (
+        !dbTeacher &&
+        teacher.id
+    ) {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("teachers")
+                .select(
+                    "id, teacher_id, name"
+                )
+                .eq(
+                    "id",
+                    teacher.id
+                )
+                .maybeSingle();
+
+
+        if (error) {
+
+            console.error(
+                "Saved results teacher ID error:",
+                error
+            );
+
+            return;
+        }
+
+
+        dbTeacher =
+            data;
+    }
+
+
+    if (!dbTeacher) {
+
+        tableBody.innerHTML = `
+            <tr>
+                <td
+                    colspan="11"
+                    class="teacher-module-loading"
+                >
+                    Teacher account not found.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    // =========================================
+    // LOAD RESULTS
+    // =========================================
+
+    const {
+        data: results,
+        error: resultsError
+    } =
+        await supabaseClient
+            .from("results")
+            .select(
+                "id, teacher_id, student_id, subject_id, total_marks, marks, result_type"
+            )
+            .eq(
+                "teacher_id",
+                dbTeacher.id
+            )
+            .order(
+                "id",
+                {
+                    ascending: false
+                }
+            );
+
+
+    if (resultsError) {
+
+        console.error(
+            "Saved results load error:",
+            resultsError
+        );
+
+        tableBody.innerHTML = `
+            <tr>
+                <td
+                    colspan="11"
+                    class="teacher-module-loading"
+                >
+                    Unable to load result records.
+                    <br>
+                    ${resultsError.message}
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    // =========================================
+    // EMPTY RESULTS
+    // =========================================
+
+    if (
+        !results ||
+        results.length === 0
+    ) {
+
+        tableBody.innerHTML = `
+            <tr>
+                <td
+                    colspan="11"
+                    class="teacher-module-loading"
+                >
+                    No result records found.
+                </td>
+            </tr>
+        `;
+
+
+        if (countElement) {
+            countElement.textContent = "0";
+        }
+
+        return;
+    }
+
+
+    // =========================================
+    // LOAD STUDENTS
+    // =========================================
+
+    const studentIds =
+        [
+            ...new Set(
+                results
+                    .map(
+                        function(result) {
+                            return result.student_id;
+                        }
+                    )
+                    .filter(
+                        function(id) {
+                            return (
+                                id !== null &&
+                                id !== undefined
+                            );
+                        }
+                    )
+            )
+        ];
+
+
+    const {
+        data: students,
+        error: studentsError
+    } =
+        await supabaseClient
+            .from("students")
+            .select(
+                "id, name, student_name, student_id, student_class, section"
+            )
+            .in(
+                "id",
+                studentIds
+            );
+
+
+    if (studentsError) {
+
+        console.error(
+            "Saved result students error:",
+            studentsError
+        );
+
+        return;
+    }
+
+
+    // =========================================
+    // LOAD SUBJECTS
+    // =========================================
+
+    const subjectIds =
+        [
+            ...new Set(
+                results
+                    .map(
+                        function(result) {
+                            return result.subject_id;
+                        }
+                    )
+                    .filter(
+                        function(id) {
+                            return (
+                                id !== null &&
+                                id !== undefined
+                            );
+                        }
+                    )
+            )
+        ];
+
+
+    const {
+        data: subjects,
+        error: subjectsError
+    } =
+        await supabaseClient
+            .from("subjects")
+            .select(
+                "id, name"
+            )
+            .in(
+                "id",
+                subjectIds
+            );
+
+
+    if (subjectsError) {
+
+        console.error(
+            "Saved result subjects error:",
+            subjectsError
+        );
+
+        return;
+    }
+
+
+    // =========================================
+    // BUILD LOOKUP MAPS
+    // =========================================
+
+    const studentMap =
+        new Map();
+
+    (
+        students || []
+    ).forEach(
+        function(student) {
+
+            studentMap.set(
+                String(student.id),
+                student
+            );
+
+        }
+    );
+
+
+    const subjectMap =
+        new Map();
+
+    (
+        subjects || []
+    ).forEach(
+        function(subject) {
+
+            subjectMap.set(
+                String(subject.id),
+                subject
+            );
+
+        }
+    );
+
+
+    // =========================================
+    // UPDATE COUNT
+    // =========================================
+
+    if (countElement) {
+
+        countElement.textContent =
+            results.length;
+
+    }
+
+
+    // =========================================
+    // RENDER RECORDS
+    // =========================================
+
+    tableBody.innerHTML = "";
+
+
+    results.forEach(
+        function(result, index) {
+
+            const student =
+                studentMap.get(
+                    String(
+                        result.student_id
+                    )
+                ) || {};
+
+
+            const subject =
+                subjectMap.get(
+                    String(
+                        result.subject_id
+                    )
+                ) || {};
+
+
+            const totalMarks =
+                Number(
+                    result.total_marks
+                ) || 0;
+
+
+            const obtainedMarks =
+                Number(
+                    result.marks
+                ) || 0;
+
+
+            const percentage =
+                calculateTeacherResultPercentage(
+                    obtainedMarks,
+                    totalMarks
+                );
+
+
+            const grade =
+                calculateTeacherResultGrade(
+                    percentage
+                );
+
+
+            const studentClass =
+                String(
+                    student.student_class ||
+                    ""
+                )
+                .trim()
+                .replace(
+                    /^class\s*/i,
+                    ""
+                );
+
+
+            const section =
+                String(
+                    student.section ||
+                    ""
+                )
+                .trim();
+
+
+            const classDisplay =
+                studentClass
+                    ? (
+                        studentClass +
+                        (
+                            section
+                                ? "-" + section
+                                : ""
+                        )
+                    )
+                    : "—";
+
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            row.innerHTML = `
+                <td>
+                    ${index + 1}
+                </td>
+
+                <td>
+                    <strong>
+                        ${
+                            student.name ||
+                            student.student_name ||
+                            "—"
+                        }
+                    </strong>
+                </td>
+
+                <td>
+                    ${
+                        student.student_id ||
+                        "—"
+                    }
+                </td>
+
+                <td>
+                    ${classDisplay}
+                </td>
+
+                <td>
+                    ${
+                        subject.name ||
+                        "—"
+                    }
+                </td>
+
+                <td>
+                    <span class="result-type-badge">
+                        ${
+                            result.result_type ||
+                            "—"
+                        }
+                    </span>
+                </td>
+
+                <td>
+                    ${totalMarks}
+                </td>
+
+                <td>
+                    ${obtainedMarks}
+                </td>
+
+                <td>
+                    ${percentage}%
+                </td>
+
+                <td>
+                    <strong>
+                        ${grade}
+                    </strong>
+                </td>
+
+                <td>
+                    <button
+                        type="button"
+                        class="teacher-result-edit-btn"
+                        data-result-id="${result.id}"
+                    >
+                        <i class="fas fa-edit"></i>
+                        Edit
+                    </button>
+                </td>
+            `;
+
+
+            tableBody.appendChild(
+                row
+            );
+
+        }
+    );
+
+}
+// =========================================================
+// OPEN TEACHER RESULTS PAGE
+// LOAD SAVED RECORDS
+// =========================================================
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        const resultsMenu =
+            event.target.closest(
+                "#teacherResultsMenu"
+            );
+
+        if (!resultsMenu) {
+            return;
+        }
+
+        setTimeout(
+            function() {
+
+                loadTeacherSavedResults();
+
+            },
+            100
+        );
+
+    }
+);
+// =========================================================
 // CALCULATE PERCENTAGE
 // =========================================================
 
