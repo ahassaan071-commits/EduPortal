@@ -39007,7 +39007,7 @@ document.addEventListener(
 
         const rows =
             document.querySelectorAll(
-                "#teacherResultsTableBody tr"
+                "#teacherSavedResultsTableBody tr"
             );
 
         rows.forEach(
