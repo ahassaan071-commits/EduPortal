@@ -32937,6 +32937,20 @@ document.addEventListener(
                     continue;
                 }
 
+// =========================================
+// EDIT MODE — ONLY UPDATE EDITED STUDENT
+// =========================================
+
+if (
+    teacherEditingResultId &&
+    String(studentId) !==
+        String(teacherEditingStudentId)
+) {
+
+    continue;
+
+}
+
 
                 const obtainedMarks =
                     Number(
@@ -32993,6 +33007,45 @@ document.addEventListener(
 
                 };
 
+
+
+// =========================================
+// EDIT MODE — UPDATE EXACT RESULT
+// =========================================
+
+if (teacherEditingResultId) {
+
+    const {
+        error
+    } =
+        await supabaseClient
+            .from("results")
+            .update(record)
+            .eq(
+                "id",
+                teacherEditingResultId
+            );
+
+    if (error) {
+
+        console.error(
+            "EDIT RESULT UPDATE ERROR:",
+            error
+        );
+
+        alert(
+            "Result update failed.\n\n" +
+            error.message
+        );
+
+        return;
+
+    }
+
+    savedCount++;
+
+    continue;
+}
 
                 // =================================
                 // CHECK EXISTING RESULT
