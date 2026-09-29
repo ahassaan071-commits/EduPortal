@@ -9771,20 +9771,70 @@ async function openEditResult(resultId) {
         }
 
 
-        // Give the Add Result loader time
-        // to load assigned classes/subjects
+      // ==========================================
+// WAIT FOR ASSIGNED CLASSES/SUBJECTS
+// ==========================================
 
-        await new Promise(
-            function(resolve) {
+await new Promise(
+    function(resolve) {
 
-                setTimeout(
-                    resolve,
-                    500
-                );
+        let attempts = 0;
 
-            }
-        );
+        const waitForOptions =
+            setInterval(
+                function() {
 
+                    attempts++;
+
+                    const classSelect =
+                        document.getElementById(
+                            "teacherResultClass"
+                        );
+
+                    const subjectSelect =
+                        document.getElementById(
+                            "teacherResultSubject"
+                        );
+
+                    const classesLoaded =
+                        classSelect &&
+                        classSelect.options.length > 1;
+
+                    const subjectsLoaded =
+                        subjectSelect &&
+                        subjectSelect.options.length > 1;
+
+                    if (
+                        classesLoaded &&
+                        subjectsLoaded
+                    ) {
+
+                        clearInterval(
+                            waitForOptions
+                        );
+
+                        resolve();
+
+                        return;
+                    }
+
+                    // Maximum 10 seconds
+                    if (attempts >= 100) {
+
+                        clearInterval(
+                            waitForOptions
+                        );
+
+                        resolve();
+
+                    }
+
+                },
+                100
+            );
+
+    }
+);
 
         // ==========================================
         // GET FORM FIELDS
@@ -10038,10 +10088,10 @@ document.addEventListener(
     "click",
     function(event) {
 
-        const editButton =
-            event.target.closest(
-                ".result-edit-btn"
-            );
+       const editButton =
+    event.target.closest(
+        ".teacher-result-edit-btn"
+    );
 
         if (!editButton) {
             return;
