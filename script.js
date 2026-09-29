@@ -8149,6 +8149,350 @@ calculateResultGrade
 
 
 // ==========================================
+// ADMIN RESULTS - EDIT RESULT
+// ==========================================
+
+async function editResult(resultId) {
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+
+        alert(
+            "Supabase connection is missing."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        // ==========================================
+        // LOAD RESULT
+        // ==========================================
+
+        const {
+            data: result,
+            error: resultError
+        } =
+            await supabaseClient
+                .from("results")
+                .select(`
+                    id,
+                    student_id,
+                    subject_id,
+                    total_marks,
+                    marks,
+                    result_type
+                `)
+                .eq(
+                    "id",
+                    resultId
+                )
+                .maybeSingle();
+
+
+        if (resultError) {
+
+            console.error(
+                "ADMIN EDIT RESULT ERROR:",
+                resultError
+            );
+
+            alert(
+                "Unable to load result.\n\n" +
+                resultError.message
+            );
+
+            return;
+        }
+
+
+        if (!result) {
+
+            alert(
+                "Result record not found."
+            );
+
+            return;
+        }
+
+
+        // ==========================================
+        // LOAD STUDENTS
+        // ==========================================
+
+        if (
+            typeof loadStudentsIntoResultsDropdown ===
+            "function"
+        ) {
+
+            await loadStudentsIntoResultsDropdown();
+
+        }
+
+
+        // ==========================================
+        // GET FORM ELEMENTS
+        // ==========================================
+
+        const studentSelect =
+            document.getElementById(
+                "resultStudent"
+            );
+
+        const classInput =
+            document.getElementById(
+                "resultStudentClass"
+            );
+
+        const examSelect =
+            document.getElementById(
+                "resultExam"
+            );
+
+        const subjectSelect =
+            document.getElementById(
+                "resultSubject"
+            );
+
+        const totalMarksInput =
+            document.getElementById(
+                "resultTotalMarks"
+            );
+
+        const obtainedMarksInput =
+            document.getElementById(
+                "resultObtainedMarks"
+            );
+
+        const addResultModal =
+            document.getElementById(
+                "addResultModal"
+            );
+
+
+        if (
+            !studentSelect ||
+            !examSelect ||
+            !subjectSelect ||
+            !totalMarksInput ||
+            !obtainedMarksInput ||
+            !addResultModal
+        ) {
+
+            alert(
+                "Result edit form could not be found."
+            );
+
+            return;
+        }
+
+
+        // ==========================================
+        // SET STUDENT
+        // ==========================================
+
+        studentSelect.value =
+            String(
+                result.student_id
+            );
+
+
+        // ==========================================
+        // LOAD STUDENT CLASS / SECTION
+        // ==========================================
+
+        const {
+            data: student,
+            error: studentError
+        } =
+            await supabaseClient
+                .from("students")
+                .select(`
+                    id,
+                    student_id,
+                    student_class,
+                    section
+                `)
+                .eq(
+                    "id",
+                    result.student_id
+                )
+                .maybeSingle();
+
+
+        if (
+            !studentError &&
+            student &&
+            classInput
+        ) {
+
+            classInput.value =
+                (
+                    student.student_class ||
+                    ""
+                ) +
+                (
+                    student.section
+                        ? " - " +
+                          student.section
+                        : ""
+                );
+
+        }
+
+
+        // ==========================================
+        // SET EXAM TYPE
+        // ==========================================
+
+        examSelect.value =
+            result.result_type ||
+            "";
+
+
+        // ==========================================
+        // LOAD SUBJECT NAME
+        // ==========================================
+
+        const {
+            data: subject,
+            error: subjectError
+        } =
+            await supabaseClient
+                .from("subjects")
+                .select(`
+                    id,
+                    name
+                `)
+                .eq(
+                    "id",
+                    result.subject_id
+                )
+                .maybeSingle();
+
+
+        if (
+            !subjectError &&
+            subject
+        ) {
+
+            subjectSelect.value =
+                subject.name || "";
+
+        }
+
+
+        // ==========================================
+        // SET MARKS
+        // ==========================================
+
+        totalMarksInput.value =
+            result.total_marks ??
+            "";
+
+        obtainedMarksInput.value =
+            result.marks ??
+            "";
+
+
+        // ==========================================
+        // CALCULATE PREVIEW
+        // ==========================================
+
+        obtainedMarksInput.dispatchEvent(
+            new Event(
+                "input",
+                {
+                    bubbles: true
+                }
+            )
+        );
+
+
+        // ==========================================
+        // ENABLE EDIT MODE
+        // ==========================================
+
+        window.adminEditingResultId =
+            result.id;
+
+
+        // ==========================================
+        // CHANGE MODAL TITLE
+        // ==========================================
+
+        const modalTitle =
+            addResultModal.querySelector(
+                ".result-modal-header h3"
+            );
+
+        if (modalTitle) {
+
+            modalTitle.textContent =
+                "✏️ Edit Result";
+
+        }
+
+
+        const modalDescription =
+            addResultModal.querySelector(
+                ".result-modal-header p"
+            );
+
+        if (modalDescription) {
+
+            modalDescription.textContent =
+                "Update student examination result";
+
+        }
+
+
+        // ==========================================
+        // CHANGE SAVE BUTTON
+        // ==========================================
+
+        const saveButton =
+            document.getElementById(
+                "saveResultBtn"
+            );
+
+        if (saveButton) {
+
+            saveButton.innerHTML =
+                "💾 Update Result";
+
+        }
+
+
+        // ==========================================
+        // SHOW MODAL
+        // ==========================================
+
+        addResultModal.style.display =
+            "flex";
+
+    }
+    catch (error) {
+
+        console.error(
+            "ADMIN EDIT RESULT ERROR:",
+            error
+        );
+
+        alert(
+            "Unable to open result for editing.\n\n" +
+            error.message
+        );
+
+    }
+
+}
+
+// ==========================================
 // RESULTS - SAVE
 // SUPABASE LIVE DATA
 // ==========================================
