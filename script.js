@@ -9410,7 +9410,7 @@ if (resultsClassFilter) {
                             type="button"
                             class="result-action-btn result-edit-btn"
                             title="Edit result"
-                           onclick="openEditResult('${result.id}')"
+                           data-result-id="${result.id}"
                         >
                             ✏️
                         </button>
@@ -10029,6 +10029,44 @@ async function openEditResult(resultId) {
     }
 
 }
+
+// ==========================================
+// TEACHER RESULT EDIT BUTTON CLICK
+// ==========================================
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        const editButton =
+            event.target.closest(
+                ".result-edit-btn"
+            );
+
+        if (!editButton) {
+            return;
+        }
+
+
+        const resultId =
+            editButton.getAttribute(
+                "data-result-id"
+            );
+
+        if (!resultId) {
+            console.error(
+                "Result ID missing from Edit button."
+            );
+            return;
+        }
+
+
+        openEditResult(
+            resultId
+        );
+
+    }
+);
 
 // ==========================================
 // DELETE RESULT
