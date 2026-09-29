@@ -48161,39 +48161,39 @@ async function loadTeacherStudentsDistribution() {
 
 console.log("CURRENT TEACHER OBJECT:", teacher);
 
-    const teacherClass =
-        String(
-            teacher.teacherClass ||
-            teacher.teacher_class ||
-            teacher.class ||
-            ""
-        )
-        .trim()
-        .toLowerCase()
-        .replace(
-            /^class\s+/,
-            ""
-        );
+   const teacherClass =
+    String(
+        dbTeacher?.teacher_class ||
+        teacher.teacherClass ||
+        teacher.teacher_class ||
+        teacher.class ||
+        ""
+    )
+    .trim()
+    .toLowerCase()
+    .replace(
+        /^class\s+/,
+        ""
+    );
 
 
-    if (!teacherClass) {
+if (!teacherClass) {
 
-        totalEl.textContent = "0";
-        presentEl.textContent = "0";
-        absentEl.textContent = "0";
+    totalEl.textContent = "0";
+    presentEl.textContent = "0";
+    absentEl.textContent = "0";
 
-        if (donut) {
-            donut.style.background =
-                "#e2e8f0";
-        }
-
-        console.warn(
-            "Teacher class not found."
-        );
-
-        return;
+    if (donut) {
+        donut.style.background =
+            "#e2e8f0";
     }
 
+    console.warn(
+        "Teacher class not found."
+    );
+
+    return;
+}
 
     // =========================================
     // LOAD REAL STUDENTS FROM SUPABASE
