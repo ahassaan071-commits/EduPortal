@@ -33976,12 +33976,14 @@ async function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
-                showModule(
-                    "settingsSection",
-                    "settingsMenu"
-                );
+            showModule(
+    "settingsSection",
+    "settingsMenu"
+);
 
-                return;
+loadStudentAccountSettings();
+
+return;
             }
 
         },
