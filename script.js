@@ -9308,14 +9308,9 @@ if (resultsClassFilter) {
                         result.marks ??
                         0,
 
-                    percentage:
-                        Number(
-                            result.percentage
-                        ) || 0,
+                   
 
-                    grade:
-                        result.grade ||
-                        "—"
+                        
                 };
             }
         );
@@ -9394,38 +9389,18 @@ if (resultsClassFilter) {
 
                 <td>
 
-                    <div class="result-actions">
+                 <div class="result-actions">
 
-                        <button
-                            type="button"
-                            class="result-action-btn"
-                            title="View all subjects"
-                            onclick="viewStudentResults('${result.studentId}')"
-                        >
-                            👁️
-                        </button>
+    <button
+        type="button"
+        class="result-action-btn result-edit-btn"
+        title="Edit result"
+        data-result-id="${result.id}"
+    >
+        ✏️
+    </button>
 
-
-                        <button
-                            type="button"
-                            class="result-action-btn result-edit-btn"
-                            title="Edit result"
-                           data-result-id="${result.id}"
-                        >
-                            ✏️
-                        </button>
-
-
-                        <button
-                            type="button"
-                            class="result-action-btn"
-                            title="Delete result"
-                            onclick="deleteResult('${result.id}')"
-                        >
-                            🗑️
-                        </button>
-
-                    </div>
+</div>
 
                 </td>
 
