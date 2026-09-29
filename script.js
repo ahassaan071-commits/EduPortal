@@ -8102,7 +8102,7 @@ grade = "B";
 
 grade = "C";
 
-} else if (percentage >= 50) {
+} else if (percentage >= 40) {
 
 grade = "D";
 
@@ -32982,9 +32982,9 @@ function calculateTeacherResultGrade(
     }
 
 
-    if (marks >= 50) {
-        return "D";
-    }
+  if (marks >= 40) {
+    return "D";
+}
 
 
     if (marks > 0) {
