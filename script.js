@@ -48163,7 +48163,7 @@ console.log("CURRENT TEACHER OBJECT:", teacher);
 
    const teacherClass =
     String(
-        dbTeacher?.teacher_class ||
+        
         teacher.teacherClass ||
         teacher.teacher_class ||
         teacher.class ||
