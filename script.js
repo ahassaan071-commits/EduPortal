@@ -31601,7 +31601,7 @@ document.addEventListener(
 
 document.addEventListener(
     "click",
-    function(event) {
+    async function(event) {
 
         const cancelButton =
             event.target.closest(
@@ -31612,12 +31612,42 @@ document.addEventListener(
             return;
         }
 
+        // =========================================
+        // EDIT MODE = DELETE RESULT
+        // =========================================
+
+        if (teacherEditingResultId) {
+
+            await deleteResult(
+                teacherEditingResultId
+            );
+
+            teacherEditingResultId = null;
+            teacherEditingStudentId = null;
+
+            const formCard =
+                document.getElementById(
+                    "teacherResultFormCard"
+                );
+
+            if (formCard) {
+
+                formCard.style.display =
+                    "none";
+
+            }
+
+            return;
+        }
+
+        // =========================================
+        // NORMAL ADD MODE = CANCEL
+        // =========================================
 
         const formCard =
             document.getElementById(
                 "teacherResultFormCard"
             );
-
 
         if (formCard) {
 
