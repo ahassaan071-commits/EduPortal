@@ -9652,8 +9652,7 @@ document.addEventListener(
             subject:
                 subject,
 
-            teacher_class:
-                teacherClass,
+           
 
             qualification:
                 qualification,
