@@ -9313,6 +9313,10 @@ const calculatedGrade =
                             )
                             : "—",
 
+                            resultType:
+    result.result_type ||
+    "—",
+
                     totalMarks:
                         result.total_marks ||
                         0,
