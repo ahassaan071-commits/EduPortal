@@ -39647,9 +39647,17 @@ async function loadRealStudentAttendance() {
             return;
         }
 
-       const records =
-    attendanceRows || [];
+     const todayDateKey =
+    new Date().toISOString().split("T")[0];
 
+const records =
+    (attendanceRows || []).filter(function(record) {
+
+        const attendanceDate =
+            String(record.attendance_date || "").trim();
+
+        return attendanceDate <= todayDateKey;
+    });
 
 
     
