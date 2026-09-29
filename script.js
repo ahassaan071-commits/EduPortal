@@ -484,6 +484,8 @@ else if (selectedRole === "teacher") {
     const savedPassword =
         String(account.password || "");
 
+
+
     if (
         enteredPassword !==
         savedPassword
@@ -499,19 +501,20 @@ else if (selectedRole === "teacher") {
     // ==========================================
     // STATUS CHECK
     // ==========================================
-
-    if (
+if (
+    ["inactive", "disabled"].includes(
         String(account.status || "Active")
             .trim()
-            .toLowerCase() === "inactive"
-    ) {
+            .toLowerCase()
+    )
+) {
 
-        messageElement.style.color = "red";
-        messageElement.textContent =
-            "This account is inactive.";
+    messageElement.style.color = "red";
+    messageElement.textContent =
+        "This account is inactive.";
 
-        return;
-    }
+    return;
+}
 
     // ==========================================
     // LOGIN SUCCESS
