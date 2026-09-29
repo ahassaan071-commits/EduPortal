@@ -31766,20 +31766,9 @@ document.addEventListener(
         // STUDENT TABLE
         // =========================================
 
-        studentsArea.innerHTML = `
-            <div class="teacher-result-student-header">
-                <div>
-                    <h4>Student Results</h4>
-                    <p>
-                        ${
-                            assignedStudents.length
-                        }
-                        student(s) found
-                    </p>
-                </div>
-            </div>
-
-            <div class="teacher-results-table-wrapper">
+       studentsArea.innerHTML = `
+    <div class="teacher-results-table-wrapper">
+    
                 <table class="teacher-results-table">
 
                     <thead>
