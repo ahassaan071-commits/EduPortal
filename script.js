@@ -34030,83 +34030,6 @@ async function (event) {
     showDashboard();
 
 })();
-// =========================================================
-// FINAL FIX - Student ID Card sirf Dashboard par show ho
-// =========================================================
-(function () {
-
-    const dashboardOnlyIds = [
-        "studentIdCardSection",
-        "welcomeBanner",
-        "noticeBoard",
-        "analyticsSection",
-        "quickSection",
-        "notificationPanel"
-    ];
-
-    function toggleDashboardOnlyElements(showThem) {
-
-        dashboardOnlyIds.forEach(function (id) {
-
-            const el = document.getElementById(id);
-
-            if (!el) return;
-
-            if (showThem) {
-
-                const display =
-                    (id === "analyticsSection")
-                        ? "grid"
-                        : (id === "quickSection" || id === "notificationPanel" || id === "noticeBoard")
-                            ? "block"
-                            : "flex";
-
-                el.style.setProperty("display", display, "important");
-
-            } else {
-
-                el.style.setProperty("display", "none", "important");
-
-            }
-
-        });
-
-        const dashboardCards =
-            document.querySelector("#studentDashboard .dashboard-cards");
-
-        if (dashboardCards) {
-
-            dashboardCards.style.setProperty(
-                "display",
-                showThem ? "grid" : "none",
-                "important"
-            );
-
-        }
-
-    }
-
-    document
-        .querySelectorAll("#studentDashboard .sidebar ul li")
-        .forEach(function (menuItem) {
-
-            menuItem.addEventListener("click", function () {
-
-                if (menuItem.id === "dashboardMenu") {
-
-                    toggleDashboardOnlyElements(true);
-
-                } else if (menuItem.id !== "logoutBtn") {
-
-                    toggleDashboardOnlyElements(false);
-
-                }
-
-            });
-
-        });
-
-})();
 
 // =========================================================
 // REAL STUDENT FEE CHART
@@ -35250,90 +35173,6 @@ document.addEventListener(
 
     }
 );
-// =========================================================
-// ADMIN ATTENDANCE - LOAD ALL REGISTERED STUDENTS
-// =========================================================
-
-async function loadRealAdminAttendance() {
-
-    console.log("Loading Admin Attendance...");
-
-    // Use the main attendance renderer.
-    // This renderer loads ALL registered students
-    // and then matches attendance records against them.
-
-    if (
-        typeof renderAttendanceTable ===
-        "function"
-    ) {
-
-        await renderAttendanceTable();
-
-    } else {
-
-        console.error(
-            "renderAttendanceTable() function not found."
-        );
-
-    }
-
-}
-
-// =========================================================
-// LOAD ADMIN ATTENDANCE WHEN SECTION OPENS
-// =========================================================
-
-document.addEventListener(
-    "click",
-    function(event) {
-
-        const attendanceMenu =
-            event.target.closest(
-                "#adminAttendanceMenu"
-            );
-
-
-        if (!attendanceMenu) {
-            return;
-        }
-
-
-        setTimeout(
-            function() {
-
-                loadRealAdminAttendance();
-
-            },
-            300
-        );
-
-    }
-);
-
-
-// =========================================================
-// REFRESH ADMIN ATTENDANCE
-// =========================================================
-
-document.addEventListener(
-    "click",
-    function(event) {
-
-        const refreshButton =
-            event.target.closest(
-                "#refreshAttendance"
-            );
-
-
-        if (!refreshButton) {
-            return;
-        }
-
-
-        loadRealAdminAttendance();
-
-    }
-);
 
 // =========================================================
 // EXPORT ADMIN ATTENDANCE TO EXCEL
@@ -35486,29 +35325,7 @@ document.addEventListener(
 
     }
 );
-// =========================================================
-// APPLY ADMIN ATTENDANCE FILTERS
-// =========================================================
 
-document.addEventListener(
-    "click",
-    function(event) {
-
-        const filterButton =
-            event.target.closest(
-                "#applyAttendanceFilters"
-            );
-
-
-        if (!filterButton) {
-            return;
-        }
-
-
-        loadRealAdminAttendance();
-
-    }
-);
 // =========================================================
 // ADMIN ATTENDANCE DATE
 // TODAY BY DEFAULT
