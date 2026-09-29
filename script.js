@@ -858,7 +858,21 @@ setTimeout(async function () {
 
     eduPortalShowOnly("studentDashboard");
 
+    // ==========================================
+    // LOAD FRESH STUDENT DATA AFTER LOGIN
+    // ==========================================
+
+    if (
+        typeof StudentDashboard !== "undefined" &&
+        typeof StudentDashboard.init === "function"
+    ) {
+        await StudentDashboard.init();
+    }
+
+    // ==========================================
     // ALWAYS OPEN MAIN DASHBOARD AFTER LOGIN
+    // ==========================================
+
     if (
         typeof StudentDashboard !== "undefined" &&
         typeof StudentDashboard.openModule === "function"
@@ -866,7 +880,13 @@ setTimeout(async function () {
         StudentDashboard.openModule("dashboard");
     }
 
-    if (typeof updateDashboardStats === "function") {
+    // ==========================================
+    // REFRESH DASHBOARD STATS
+    // ==========================================
+
+    if (
+        typeof updateDashboardStats === "function"
+    ) {
         updateDashboardStats();
     }
 
@@ -39383,13 +39403,13 @@ cleanResults.forEach(
                 subjectGrade = "C";
             }
             else if (
-                subjectPercentage >= 50
-            ) {
-                subjectGrade = "D";
-            }
-            else {
-                subjectGrade = "F";
-            }
+    subjectPercentage >= 40
+) {
+    subjectGrade = "D";
+}
+else {
+    subjectGrade = "F";
+}
 
         }
 
