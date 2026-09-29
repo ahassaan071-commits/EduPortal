@@ -9869,6 +9869,34 @@ await new Promise(
                 "teacherResultTotalMarks"
             );
 
+// ==========================================
+// CHANGE BUTTONS FOR EDIT MODE
+// ==========================================
+
+const saveButton =
+    document.getElementById(
+        "teacherSaveResultsBtn"
+    );
+
+const cancelButton =
+    document.getElementById(
+        "teacherCancelResultBtn"
+    );
+
+if (saveButton) {
+
+    saveButton.innerHTML =
+        `<i class="fas fa-save"></i> Update Results`;
+
+}
+
+if (cancelButton) {
+
+    cancelButton.innerHTML =
+        `<i class="fas fa-trash"></i> Delete`;
+
+}
+
 
         if (!subjectSelect ||
             !classSelect ||
