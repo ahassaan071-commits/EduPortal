@@ -9665,20 +9665,21 @@ async function openEditResult(resultId) {
         // LOAD RESULT
         // ==========================================
 
-        const {
-            data: result,
-            error
-        } =
-            await supabaseClient
-                .from("results")
-                .select(`
-                    id,
-                    student_id,
-                    subject_id,
-                    total_marks,
-                    marks,
-                    result_type
-                `)
+       const {
+    data: result,
+    error
+} =
+    await supabaseClient
+        .from("results")
+        .select(`
+            id,
+            teacher_id,
+            student_id,
+            subject_id,
+            total_marks,
+            marks,
+            result_type
+        `)
                 .eq(
                     "id",
                     resultId
@@ -9759,21 +9760,26 @@ teacherEditingResultId =
 
 teacherEditingStudentId =
     String(result.student_id);
+// ==========================================
+// OPEN RESULT FORM FOR ADMIN EDIT
+// ==========================================
 
-        // ==========================================
-        // OPEN NEW RESULT FORM
-        // ==========================================
+const addButton =
+    document.getElementById(
+        "teacherAddResultBtn"
+    );
 
-        const addButton =
-            document.getElementById(
-                "teacherAddResultBtn"
-            );
+if (addButton) {
 
-        if (addButton) {
+    window.adminEditingResultId =
+        result.id;
 
-            addButton.click();
+    window.adminEditingTeacherId =
+        result.teacher_id;
 
-        }
+    addButton.click();
+
+}
 
 
       // ==========================================
@@ -31160,7 +31166,9 @@ document.addEventListener(
         // =========================================
 
         let teacherDbId =
-            teacher.id || null;
+    window.adminEditingTeacherId ||
+    teacher.id ||
+    null;
 
 
         if (!teacherDbId) {
@@ -31235,12 +31243,12 @@ document.addEventListener(
 
         if (!teacherDbId) {
 
-            alert(
-                "Logged-in teacher could not be verified."
-            );
+    alert(
+        "Teacher record could not be verified."
+    );
 
-            return;
-        }
+    return;
+}
 
 
         // =========================================
