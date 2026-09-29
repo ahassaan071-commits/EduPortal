@@ -48159,6 +48159,8 @@ async function loadTeacherStudentsDistribution() {
     // TEACHER CLASS
     // =========================================
 
+console.log("CURRENT TEACHER OBJECT:", teacher);
+
     const teacherClass =
         String(
             teacher.teacherClass ||
