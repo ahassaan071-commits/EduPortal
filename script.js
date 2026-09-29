@@ -1926,54 +1926,7 @@ const headerProfileIcon = document.getElementById("headerProfileIcon");
 const idCardName = document.getElementById("idCardName");
 const idCardClass = document.getElementById("idCardClass");
 const studentId = document.getElementById("studentId");
-// Load saved image
-const savedImage = localStorage.getItem("profileImage");
 
-if (savedImage) {
-
-profileImage.src = savedImage;
-headerProfileImage.src = savedImage;
-idCardImage.src = savedImage;
-
-profileImage.style.display = "block";
-headerProfileImage.style.display = "block";
-idCardImage.style.display = "block";
-profileIcon.style.display = "none";
-headerProfileIcon.style.display = "none";
-idCardIcon.style.display = "none";
-}
-
-// Upload new image
-profileImageInput.addEventListener("change", function () {
-
-const file = this.files[0];
-
-if (!file) return;
-
-const reader = new FileReader();
-
-reader.onload = function (e) {
-
-const imageData = e.target.result;
-
-localStorage.setItem("profileImage", imageData);
-
-profileImage.src = imageData;
-headerProfileImage.src = imageData;
-idCardImage.src = imageData;
-
-profileImage.style.display = "block";
-headerProfileImage.style.display = "block";
-idCardImage.style.display = "block";
-
-profileIcon.style.display = "none";
-headerProfileIcon.style.display = "none";
-idCardIcon.style.display = "none";
-};
-
-reader.readAsDataURL(file);
-
-});
 // =====================================================
 // STUDENT PROFILE
 // SUPABASE LIVE SAVE
