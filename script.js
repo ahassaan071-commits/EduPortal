@@ -40396,3 +40396,573 @@ async function deleteAcademicAssignment(assignmentId) {
 
     loadAcademicAssignments();
 }
+// ==========================================================
+// EDUPORTAL — CENTRAL 5 SECOND DASHBOARD LIVE SYNC
+// ADMIN + TEACHER + STUDENT
+// ONE CENTRAL ENGINE
+// ==========================================================
+
+(function () {
+
+    "use strict";
+
+
+    // ======================================================
+    // SETTINGS
+    // ======================================================
+
+    const REFRESH_INTERVAL = 5000;
+
+    let refreshTimer = null;
+    let refreshRunning = false;
+
+
+    // ======================================================
+    // GET CURRENT LOGIN ROLE
+    // ======================================================
+
+    function getCurrentUserRole() {
+
+        const isLoggedIn =
+            localStorage.getItem("isLoggedIn");
+
+        if (isLoggedIn !== "true") {
+            return null;
+        }
+
+        return (
+            localStorage.getItem(
+                "loggedInRole"
+            ) || ""
+        ).toLowerCase().trim();
+
+    }
+
+
+    // ======================================================
+    // CHECK DASHBOARD VISIBILITY
+    // ======================================================
+
+    function isDashboardVisible() {
+
+        if (
+            document.visibilityState !==
+            "visible"
+        ) {
+            return false;
+        }
+
+        return true;
+
+    }
+
+
+    // ======================================================
+    // ADMIN REFRESH
+    // ======================================================
+
+    async function refreshAdminDashboard() {
+
+        try {
+
+            if (
+                typeof AdminDashboard !==
+                "undefined" &&
+                typeof AdminDashboard.loadData ===
+                "function"
+            ) {
+
+                await AdminDashboard.loadData();
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Admin Dashboard Refresh Error:",
+                error
+            );
+
+        }
+
+    }
+
+
+    // ======================================================
+    // TEACHER REFRESH
+    // ======================================================
+
+    async function refreshTeacherDashboard() {
+
+        try {
+
+            // Main teacher dashboard
+            if (
+                typeof loadTeacherDashboardData ===
+                "function"
+            ) {
+
+                await loadTeacherDashboardData();
+
+            }
+
+
+            // Teacher attendance overview
+            if (
+                typeof renderTeacherAttendanceOverview ===
+                "function"
+            ) {
+
+                await renderTeacherAttendanceOverview();
+
+            }
+
+
+            // Teacher students distribution
+            if (
+                typeof loadTeacherStudentsDistribution ===
+                "function"
+            ) {
+
+                await loadTeacherStudentsDistribution();
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Teacher Dashboard Refresh Error:",
+                error
+            );
+
+        }
+
+    }
+
+
+    // ======================================================
+    // STUDENT REFRESH
+    // ======================================================
+
+    async function refreshStudentDashboard() {
+
+        try {
+
+            const loggedInStudent =
+                localStorage.getItem(
+                    "loggedInStudent"
+                );
+
+            if (!loggedInStudent) {
+                return;
+            }
+
+
+            // Student profile
+            if (
+                typeof StudentDashboard !==
+                "undefined"
+            ) {
+
+                if (
+                    typeof StudentDashboard.loadProfile ===
+                    "function"
+                ) {
+
+                    const student =
+                        StudentDashboard.getStudent
+                            ? StudentDashboard.getStudent()
+                            : JSON.parse(
+                                loggedInStudent
+                            );
+
+                    if (student) {
+
+                        await StudentDashboard.loadProfile(
+                            student
+                        );
+
+                    }
+
+                }
+
+
+                // Dashboard cards
+                if (
+                    typeof StudentDashboard.loadDashboard ===
+                    "function"
+                ) {
+
+                    const student =
+                        StudentDashboard.getStudent
+                            ? StudentDashboard.getStudent()
+                            : JSON.parse(
+                                loggedInStudent
+                            );
+
+                    if (student) {
+
+                        await StudentDashboard.loadDashboard(
+                            student
+                        );
+
+                    }
+
+                }
+
+
+                // Attendance
+                if (
+                    typeof StudentDashboard.loadAttendance ===
+                    "function"
+                ) {
+
+                    const student =
+                        StudentDashboard.getStudent
+                            ? StudentDashboard.getStudent()
+                            : JSON.parse(
+                                loggedInStudent
+                            );
+
+                    if (student) {
+
+                        await StudentDashboard.loadAttendance(
+                            student
+                        );
+
+                    }
+
+                }
+
+
+                // Subjects
+                if (
+                    typeof StudentDashboard.loadSubjects ===
+                    "function"
+                ) {
+
+                    const student =
+                        StudentDashboard.getStudent
+                            ? StudentDashboard.getStudent()
+                            : JSON.parse(
+                                loggedInStudent
+                            );
+
+                    if (student) {
+
+                        await StudentDashboard.loadSubjects(
+                            student
+                        );
+
+                    }
+
+                }
+
+
+                // Results
+                if (
+                    typeof StudentDashboard.loadResults ===
+                    "function"
+                ) {
+
+                    const student =
+                        StudentDashboard.getStudent
+                            ? StudentDashboard.getStudent()
+                            : JSON.parse(
+                                loggedInStudent
+                            );
+
+                    if (student) {
+
+                        await StudentDashboard.loadResults(
+                            student
+                        );
+
+                    }
+
+                }
+
+
+                // Fees
+                if (
+                    typeof StudentDashboard.loadFees ===
+                    "function"
+                ) {
+
+                    const student =
+                        StudentDashboard.getStudent
+                            ? StudentDashboard.getStudent()
+                            : JSON.parse(
+                                loggedInStudent
+                            );
+
+                    if (student) {
+
+                        await StudentDashboard.loadFees(
+                            student
+                        );
+
+                    }
+
+                }
+
+
+                // Assignments
+                if (
+                    typeof StudentDashboard.loadAssignments ===
+                    "function"
+                ) {
+
+                    const student =
+                        StudentDashboard.getStudent
+                            ? StudentDashboard.getStudent()
+                            : JSON.parse(
+                                loggedInStudent
+                            );
+
+                    if (student) {
+
+                        await StudentDashboard.loadAssignments(
+                            student
+                        );
+
+                    }
+
+                }
+
+
+                // Assignment results
+                if (
+                    typeof StudentDashboard.loadAssignmentResults ===
+                    "function"
+                ) {
+
+                    const student =
+                        StudentDashboard.getStudent
+                            ? StudentDashboard.getStudent()
+                            : JSON.parse(
+                                loggedInStudent
+                            );
+
+                    if (student) {
+
+                        await StudentDashboard.loadAssignmentResults(
+                            student
+                        );
+
+                    }
+
+                }
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Student Dashboard Refresh Error:",
+                error
+            );
+
+        }
+
+    }
+
+
+    // ======================================================
+    // CENTRAL REFRESH ENGINE
+    // ======================================================
+
+    async function refreshActiveDashboard() {
+
+        // Prevent overlapping refreshes
+        if (refreshRunning) {
+            return;
+        }
+
+
+        // Do not refresh hidden tab
+        if (!isDashboardVisible()) {
+            return;
+        }
+
+
+        const role =
+            getCurrentUserRole();
+
+        if (!role) {
+            return;
+        }
+
+
+        refreshRunning = true;
+
+
+        try {
+
+            // ==============================================
+            // ADMIN
+            // ==============================================
+
+            if (
+                role === "admin" ||
+                role === "administrator"
+            ) {
+
+                await refreshAdminDashboard();
+
+            }
+
+
+            // ==============================================
+            // TEACHER
+            // ==============================================
+
+            else if (
+                role === "teacher"
+            ) {
+
+                await refreshTeacherDashboard();
+
+            }
+
+
+            // ==============================================
+            // STUDENT
+            // ==============================================
+
+            else if (
+                role === "student"
+            ) {
+
+                await refreshStudentDashboard();
+
+            }
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "EduPortal Central Sync Error:",
+                error
+            );
+
+        }
+
+        finally {
+
+            refreshRunning = false;
+
+        }
+
+    }
+
+
+    // ======================================================
+    // START CENTRAL 5 SECOND ENGINE
+    // ======================================================
+
+    function startCentralRefresh() {
+
+        // Remove previous timer
+        if (refreshTimer) {
+
+            clearInterval(
+                refreshTimer
+            );
+
+            refreshTimer = null;
+
+        }
+
+
+        // Start ONE timer
+        refreshTimer =
+            setInterval(
+                function () {
+
+                    refreshActiveDashboard();
+
+                },
+                REFRESH_INTERVAL
+            );
+
+
+        console.log(
+            "EduPortal Central 5 Second Sync Started ✅"
+        );
+
+    }
+
+
+    // ======================================================
+    // LOGIN → IMMEDIATE REFRESH
+    // ======================================================
+
+    window.addEventListener(
+        "load",
+        function () {
+
+            setTimeout(
+                async function () {
+
+                    await refreshActiveDashboard();
+
+                    startCentralRefresh();
+
+                },
+                500
+            );
+
+        }
+    );
+
+
+    // ======================================================
+    // TAB BECOMES ACTIVE
+    // ======================================================
+
+    document.addEventListener(
+        "visibilitychange",
+        function () {
+
+            if (
+                document.visibilityState ===
+                "visible"
+            ) {
+
+                refreshActiveDashboard();
+
+            }
+
+        }
+    );
+
+
+    // ======================================================
+    // INTERNET CONNECTION RESTORED
+    // ======================================================
+
+    window.addEventListener(
+        "online",
+        function () {
+
+            refreshActiveDashboard();
+
+        }
+    );
+
+
+    // ======================================================
+    // EXPOSE CENTRAL REFRESH
+    // ======================================================
+
+    window.eduPortalCentralRefresh =
+        refreshActiveDashboard;
+
+
+    console.log(
+        "EduPortal Central Dashboard Engine Loaded ✅"
+    );
+
+})();
