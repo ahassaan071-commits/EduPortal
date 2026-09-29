@@ -9320,7 +9320,11 @@ const calculatedGrade =
                         result.obtained_marks ??
                         result.marks ??
                         0,
+percentage:
+    calculatedPercentage,
 
+grade:
+    calculatedGrade,
                    
 
                         
