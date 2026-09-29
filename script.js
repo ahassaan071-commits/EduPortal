@@ -9639,11 +9639,11 @@ const totalStudents =
 }
 
 // ==========================================
-// RESULT EDIT + DELETE
-// SUPABASE LIVE DATA
+// TEACHER RESULT EDIT MODE
 // ==========================================
 
-
+let teacherEditingResultId = null;
+let teacherEditingStudentId = null;
 // ==========================================
 // OPEN EDIT RESULT - NEW TEACHER FORM
 // ==========================================
@@ -9754,6 +9754,15 @@ async function openEditResult(resultId) {
             return;
         }
 
+// ==========================================
+// ENABLE EDIT MODE
+// ==========================================
+
+teacherEditingResultId =
+    String(result.id);
+
+teacherEditingStudentId =
+    String(result.student_id);
 
         // ==========================================
         // OPEN NEW RESULT FORM
@@ -9998,19 +10007,53 @@ await new Promise(
             )
         );
 
+// Wait until student result input is actually loaded
 
-        // Wait for students table
+await new Promise(
+    function(resolve) {
 
-        await new Promise(
-            function(resolve) {
+        let attempts = 0;
 
-                setTimeout(
-                    resolve,
-                    500
-                );
+        const waitForStudentInput =
+            setInterval(
+                function() {
 
-            }
-        );
+                    attempts++;
+
+                    const marksInput =
+                        document.querySelector(
+                            '#teacherResultStudentsTableBody ' +
+                            `.teacher-obtained-marks[data-student-id="${student.id}"]`
+                        );
+
+                    if (marksInput) {
+
+                        clearInterval(
+                            waitForStudentInput
+                        );
+
+                        resolve();
+
+                        return;
+                    }
+
+                    // Maximum 10 seconds
+                    if (attempts >= 100) {
+
+                        clearInterval(
+                            waitForStudentInput
+                        );
+
+                        resolve();
+
+                    }
+
+                },
+                100
+            );
+
+    }
+);
 
 
         // ==========================================
@@ -31768,7 +31811,7 @@ document.addEventListener(
 
        studentsArea.innerHTML = `
     <div class="teacher-results-table-wrapper">
-    
+
                 <table class="teacher-results-table">
 
                     <thead>
