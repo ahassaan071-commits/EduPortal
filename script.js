@@ -9645,7 +9645,7 @@ const totalStudents =
 
 
 // ==========================================
-// OPEN EDIT RESULT
+// OPEN EDIT RESULT - NEW TEACHER FORM
 // ==========================================
 
 async function openEditResult(resultId) {
@@ -9654,14 +9654,20 @@ async function openEditResult(resultId) {
         typeof supabaseClient ===
         "undefined"
     ) {
+
         alert(
             "Supabase connection is missing."
         );
+
         return;
     }
 
 
     try {
+
+        // ==========================================
+        // LOAD RESULT
+        // ==========================================
 
         const {
             data: result,
@@ -9675,9 +9681,7 @@ async function openEditResult(resultId) {
                     subject_id,
                     total_marks,
                     marks,
-                    
-                    percentage,
-                    grade
+                    result_type
                 `)
                 .eq(
                     "id",
@@ -9713,75 +9717,38 @@ async function openEditResult(resultId) {
 
 
         // ==========================================
-        // LOAD STUDENTS
+        // LOAD STUDENT
         // ==========================================
 
         const {
-            data: students
+            data: student,
+            error: studentError
         } =
             await supabaseClient
                 .from("students")
-                .select(
-                    "id, student_id, name"
-                );
+                .select(`
+                    id,
+                    student_id,
+                    student_class,
+                    section
+                `)
+                .eq(
+                    "id",
+                    result.student_id
+                )
+                .maybeSingle();
 
 
-        // ==========================================
-        // LOAD SUBJECTS
-        // ==========================================
+        if (studentError) {
 
-        const {
-            data: subjects
-        } =
-            await supabaseClient
-                .from("subjects")
-                .select(
-                    "id, name"
-                );
-
-
-        const student =
-            (students || []).find(
-                function(item) {
-
-                    return String(
-                        item.id
-                    ) ===
-                    String(
-                        result.student_id
-                    );
-                }
+            console.error(
+                "EDIT STUDENT LOAD ERROR:",
+                studentError
             );
-
-
-        const subject =
-            (subjects || []).find(
-                function(item) {
-
-                    return String(
-                        item.id
-                    ) ===
-                    String(
-                        result.subject_id
-                    );
-                }
-            );
-
-
-        // ==========================================
-        // OPEN EXISTING RESULT MODAL
-        // ==========================================
-
-        const modal =
-            document.getElementById(
-                "addResultModal"
-            );
-
-
-        if (!modal) {
 
             alert(
-                "Result modal not found."
+                "Unable to load student.\n\n" +
+                studentError.message
             );
 
             return;
@@ -9789,113 +9756,261 @@ async function openEditResult(resultId) {
 
 
         // ==========================================
-        // LOAD STUDENTS INTO DROPDOWN
+        // OPEN NEW RESULT FORM
         // ==========================================
 
-        await loadStudentsIntoResultsDropdown();
-
-
-        const studentField =
+        const addButton =
             document.getElementById(
-                "resultStudent"
+                "teacherAddResultBtn"
             );
 
+        if (addButton) {
 
-        const subjectField =
+            addButton.click();
+
+        }
+
+
+        // Give the Add Result loader time
+        // to load assigned classes/subjects
+
+        await new Promise(
+            function(resolve) {
+
+                setTimeout(
+                    resolve,
+                    500
+                );
+
+            }
+        );
+
+
+        // ==========================================
+        // GET FORM FIELDS
+        // ==========================================
+
+        const subjectSelect =
             document.getElementById(
-                "resultSubject"
+                "teacherResultSubject"
             );
 
-
-        const totalMarksField =
+        const classSelect =
             document.getElementById(
-                "resultTotalMarks"
+                "teacherResultClass"
             );
 
-
-        const obtainedMarksField =
+        const resultTypeSelect =
             document.getElementById(
-                "resultObtainedMarks"
+                "teacherResultType"
+            );
+
+        const totalMarksInput =
+            document.getElementById(
+                "teacherResultTotalMarks"
             );
 
 
-        if (studentField) {
-
-            studentField.value =
-                student
-                    ? (
-                        student.student_id ||
-                        student.id
-                    )
-                    : "";
-        }
-
-
-        if (subjectField) {
-
-            subjectField.value =
-                subject
-                    ? (
-                        subject.name ||
-                        ""
-                    )
-                    : "";
-        }
-
-
-        if (totalMarksField) {
-
-            totalMarksField.value =
-                result.total_marks ||
-                0;
-        }
-
-
-        if (obtainedMarksField) {
-
-            obtainedMarksField.value =
-                result.obtained_marks ??
-                result.marks ??
-                0;
-        }
-
-
-        // ==========================================
-        // REMEMBER EDITING RESULT
-        // ==========================================
-
-        window.adminEditingResultId =
-            result.id;
-
-
-        // ==========================================
-        // CHANGE MODAL TITLE
-        // ==========================================
-
-        const modalTitle =
-            modal.querySelector(
-                "h2, h3, .modal-title"
-            );
-
-
-        if (modalTitle) {
-
-            modalTitle.textContent =
-                "Edit Result";
-        }
-
-
-        modal.style.display =
-            "flex";
-
-
-        // Recalculate preview
-
-        if (
-            typeof calculateResultGrade ===
-            "function"
+        if (!subjectSelect ||
+            !classSelect ||
+            !resultTypeSelect ||
+            !totalMarksInput
         ) {
-            calculateResultGrade();
+
+            alert(
+                "Result edit form could not be loaded."
+            );
+
+            return;
+        }
+
+
+        // ==========================================
+        // SET SUBJECT
+        // ==========================================
+
+        subjectSelect.value =
+            String(
+                result.subject_id
+            );
+
+
+        // ==========================================
+        // SET RESULT TYPE
+        // ==========================================
+
+        resultTypeSelect.value =
+            result.result_type || "";
+
+
+        // ==========================================
+        // SET TOTAL MARKS
+        // ==========================================
+
+        totalMarksInput.value =
+            result.total_marks || "";
+
+
+        // ==========================================
+        // FIND STUDENT CLASS
+        // ==========================================
+
+        const cleanValue =
+            function(value) {
+
+                return String(
+                    value || ""
+                )
+                .trim()
+                .toLowerCase()
+                .replace(
+                    /^class\s*/i,
+                    ""
+                )
+                .replace(
+                    /[^a-z0-9]/g,
+                    ""
+                );
+
+            };
+
+
+        const studentClassKey =
+            cleanValue(
+                student?.student_class
+            ) +
+            cleanValue(
+                student?.section
+            );
+
+
+        // ==========================================
+        // FIND CORRECT CLASS OPTION
+        // ==========================================
+
+        let matchingClass = null;
+
+
+        Array.from(
+            classSelect.options
+        ).forEach(
+            function(option) {
+
+                const optionKey =
+                    cleanValue(
+                        option.dataset.class
+                    ) +
+                    cleanValue(
+                        option.dataset.section
+                    );
+
+
+                if (
+                    optionKey ===
+                    studentClassKey
+                ) {
+
+                    matchingClass =
+                        option;
+
+                }
+
+            }
+        );
+
+
+        if (!matchingClass) {
+
+            alert(
+                "The student's assigned class is not available for this teacher."
+            );
+
+            return;
+        }
+
+
+        // ==========================================
+        // SELECT CLASS
+        // ==========================================
+
+        classSelect.value =
+            matchingClass.value;
+
+
+        // Trigger existing class loader
+
+        classSelect.dispatchEvent(
+            new Event(
+                "change",
+                {
+                    bubbles: true
+                }
+            )
+        );
+
+
+        // Wait for students table
+
+        await new Promise(
+            function(resolve) {
+
+                setTimeout(
+                    resolve,
+                    500
+                );
+
+            }
+        );
+
+
+        // ==========================================
+        // FIND STUDENT MARKS INPUT
+        // ==========================================
+
+        const marksInput =
+            document.querySelector(
+                '#teacherResultStudentsTableBody ' +
+                `.teacher-obtained-marks[data-student-id="${student.id}"]`
+            );
+
+
+        if (marksInput) {
+
+            marksInput.value =
+                result.marks ?? "";
+
+
+            marksInput.dispatchEvent(
+                new Event(
+                    "input",
+                    {
+                        bubbles: true
+                    }
+                )
+            );
+
+        }
+
+
+        // ==========================================
+        // SHOW FORM
+        // ==========================================
+
+        const formCard =
+            document.getElementById(
+                "teacherResultFormCard"
+            );
+
+        if (formCard) {
+
+            formCard.style.display =
+                "block";
+
+            formCard.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
         }
 
 
@@ -9907,12 +10022,13 @@ async function openEditResult(resultId) {
         );
 
         alert(
-            "Unable to open result for editing."
+            "Unable to open result for editing.\n\n" +
+            error.message
         );
+
     }
+
 }
-
-
 
 // ==========================================
 // DELETE RESULT
