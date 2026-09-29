@@ -32879,27 +32879,7 @@ StudentDashboard.openModule = function (moduleName) {
     }
 
 };
-/* =========================================================
-   SIDEBAR CLICK HANDLER
-   ========================================================= */
 
-document.addEventListener("click", function (event) {
-
-    const menuItem =
-        event.target.closest(
-            "#studentDashboard .sidebar li[data-module]"
-        );
-
-    if (!menuItem) return;
-
-    const moduleName =
-        menuItem.dataset.module;
-
-    if (!moduleName) return;
-
-    StudentDashboard.openModule(moduleName);
-
-});
 /* =========================================================
    STUDENT ACCOUNT SETTINGS
    USERNAME + PASSWORD SYNC WITH ADMIN
