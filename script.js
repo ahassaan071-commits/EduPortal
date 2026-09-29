@@ -9253,6 +9253,19 @@ if (resultsClassFilter) {
                     );
 
 
+
+const calculatedPercentage =
+    calculateTeacherResultPercentage(
+        result.marks,
+        result.total_marks
+    );
+
+const calculatedGrade =
+    calculateTeacherResultGrade(
+        calculatedPercentage
+    );
+
+
                 return {
 
                     id:
