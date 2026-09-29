@@ -33272,6 +33272,57 @@ await loadTeacherSavedResults();
 
             }
 
+// =====================================
+// CLOSE RESULT FORM AFTER SAVE/UPDATE
+// =====================================
+
+const formCard =
+    document.getElementById(
+        "teacherResultFormCard"
+    );
+
+if (formCard) {
+
+    formCard.style.display =
+        "none";
+
+}
+
+// =====================================
+// RESET EDIT MODE
+// =====================================
+
+teacherEditingResultId = null;
+teacherEditingStudentId = null;
+
+// =====================================
+// RESET BUTTONS
+// =====================================
+
+const saveButtonElement =
+    document.getElementById(
+        "teacherSaveResultsBtn"
+    );
+
+const cancelButtonElement =
+    document.getElementById(
+        "teacherCancelResultBtn"
+    );
+
+if (saveButtonElement) {
+
+    saveButtonElement.innerHTML =
+        `<i class="fas fa-save"></i> Save Results`;
+
+}
+
+if (cancelButtonElement) {
+
+    cancelButtonElement.innerHTML =
+        `Cancel`;
+
+}
+
 
         }
         catch (error) {
