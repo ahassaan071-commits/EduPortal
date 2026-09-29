@@ -34850,16 +34850,18 @@ try {
                                         ""
                                     ).trim();
 
-                                if (
-                                    className &&
-                                    section
-                                ) {
-                                    return (
-                                        className +
-                                        " " +
-                                        section
-                                    );
-                                }
+                               if (
+    className &&
+    section
+) {
+    return (
+        className.replace(
+            /^class\s*/i,
+            ""
+        ).trim() +
+        section
+    );
+}
 
                                 return (
                                     className ||
