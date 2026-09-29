@@ -17412,7 +17412,7 @@ if (
         await supabaseClient
             .from("students")
             .select(
-                "id, student_id, student_class, class, section"
+                "id, student_id, student_class, section"
             )
             .eq(
                 "id",
@@ -29425,7 +29425,7 @@ const StudentDashboard = {
     this.loadSubjects(student),
     this.loadResults(student),
     this.loadFees(student),
-    this.loadNotices(student)
+    loadLatestAdminNotice()
 
 ]);
 
