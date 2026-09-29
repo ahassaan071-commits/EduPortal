@@ -239,7 +239,7 @@ const rememberMe = document.getElementById("rememberMe");
 
 document.addEventListener("keydown", function (event) {
 
-if (event.key === "Enter" && loginForm.style.display !== "none") {
+if (event.key === "Enter" && event.target.closest("#loginForm")) {
 
 event.preventDefault();
 loginBtn.click();
