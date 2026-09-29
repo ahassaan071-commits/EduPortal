@@ -38473,6 +38473,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 loadTeacherDashboardData();
 
+if (typeof renderTeacherAttendanceOverview === "function") {
+    renderTeacherAttendanceOverview();
+}
+
+if (typeof loadTeacherStudentsDistribution === "function") {
+    loadTeacherStudentsDistribution();
+}
+
+
             }
 
             return;
