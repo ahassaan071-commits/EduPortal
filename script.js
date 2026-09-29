@@ -45589,20 +45589,19 @@ const results =
 
     }
 
-    else if (
-        overallPercentage >= 50
-    ) {
+   else if (
+    overallPercentage >= 40
+) {
 
-        overallGrade = "D";
+    overallGrade = "D";
 
-    }
+}
 
-    else {
+else {
 
-        overallGrade = "F";
+    overallGrade = "F";
 
-    }
-
+}
 
     // ==========================================
     // CREATE MODAL
