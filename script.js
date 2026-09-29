@@ -10107,8 +10107,7 @@ document.getElementById("adminTeacherPhone");
 const teacherSubject =
 document.getElementById("adminTeacherSubject");
 
-const teacherClass =
-document.getElementById("adminTeacherClass");
+
 
 const teacherQualification =
 document.getElementById("adminTeacherQualification");
@@ -10171,22 +10170,6 @@ this.value = this.value.replace(
 }
 
 
-// ------------------------------------------
-// CLASS
-// ------------------------------------------
-
-if (teacherClass) {
-
-teacherClass.addEventListener("input", function () {
-
-this.value = this.value.replace(
-/[^a-zA-Z0-9\s-]/g,
-""
-);
-
-});
-
-}
 
 
 // ------------------------------------------
@@ -10207,8 +10190,7 @@ teacherPhone.value.trim();
 const subject =
 teacherSubject.value.trim();
 
-const teacherClassValue =
-teacherClass.value.trim();
+
 
 const qualification =
 teacherQualification.value.trim();
@@ -10277,19 +10259,7 @@ return;
 }
 
 
-// Class
-if (teacherClassValue.length < 1) {
 
-event.preventDefault();
-
-alert(
-"Please enter the class. ⚠️"
-);
-
-teacherClass.focus();
-
-return;
-}
 
 
 // Qualification
