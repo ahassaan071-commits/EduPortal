@@ -8,25 +8,6 @@
 
 
 <script>
-    (function () {
-        const isLoggedIn =
-            localStorage.getItem("isLoggedIn");
-
-        const role =
-            localStorage.getItem("loggedInRole");
-
-        if (
-            isLoggedIn === "true" &&
-            role
-        ) {
-            document.documentElement.classList.add(
-                "edu-session-restoring"
-            );
-        }
-    })();
-</script>
-
-<script>
 (function () {
 
     const isLoggedIn =
