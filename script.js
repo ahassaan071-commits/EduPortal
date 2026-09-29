@@ -2872,24 +2872,7 @@ if (studentResults) {
 }
 
 
-// ===============================
-// SHOW ONLY ONE STUDENT SECTION
-// ===============================
 
-function showSection(section) {
-
-    if (!section) return;
-
-    // First hide everything
-    hideAllSections();
-
-    // Show selected section
-    section.classList.remove("student-section-hidden");
-
-    // Make sure inline display does not interfere
-    section.style.display = "block";
-
-}
 
 
 window.addEventListener("load", updateDashboardStats);
