@@ -9755,17 +9755,7 @@ grade:
 
                 <td>
 
-                 <div class="result-actions">
-
-   <button
-    type="button"
-    class="result-action-btn result-edit-btn"
-    title="Edit result"
-    onclick="openEditResult('${result.id}')"
->
-    ✏️
-</button>
-</div>
+   
 
                 </td>
 
