@@ -9398,13 +9398,7 @@ document.addEventListener(
                 .value
                 .trim();
 
-        const teacherClass =
-            document
-                .getElementById(
-                    "adminTeacherClass"
-                )
-                .value
-                .trim();
+      
 
         const qualification =
             document
