@@ -8998,11 +8998,12 @@ async function renderResultsTable() {
         await supabaseClient
             .from("results")
             .select(`
-               id,
+id,
 student_id,
 subject_id,
 total_marks,
-marks
+marks,
+result_type
             `)
             .order(
                 "id",
