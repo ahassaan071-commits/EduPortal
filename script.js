@@ -9944,40 +9944,6 @@ async function renderAdminTeachers() {
 // SUPABASE LIVE SYNC
 // ==========================================
 
-document.addEventListener(
-    "click",
-    function (event) {
-
-        const teachersMenu =
-            event.target.closest(
-                "#adminTeachersMenu"
-            );
-
-
-        if (!teachersMenu) {
-            return;
-        }
-
-
-        setTimeout(
-            async function () {
-
-                if (
-                    typeof renderAdminTeachers ===
-                    "function"
-                ) {
-
-                    await renderAdminTeachers();
-
-                }
-
-            },
-            100
-        );
-
-    }
-);
-
 
 // ==========================================
 // TEACHERS REALTIME LISTENER
