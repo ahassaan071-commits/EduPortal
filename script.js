@@ -1922,8 +1922,7 @@ const headerProfileIcon = document.getElementById("headerProfileIcon");
 // Student ID Card Elements
 // ===============================
 
-const idCardImage = document.getElementById("idCardImage");
-const idCardIcon = document.getElementById("idCardIcon");
+
 const idCardName = document.getElementById("idCardName");
 const idCardClass = document.getElementById("idCardClass");
 const studentId = document.getElementById("studentId");
