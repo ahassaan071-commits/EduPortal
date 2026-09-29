@@ -21993,36 +21993,7 @@ return (
     }
 }
 
-// =========================================================
-// OPEN TEACHER MY STUDENTS
-// =========================================================
 
-document.addEventListener(
-    "click",
-    function(event) {
-
-        const menu =
-            event.target.closest(
-                "#teacherStudentsMenu"
-            );
-
-
-        if (!menu) {
-            return;
-        }
-
-
-        setTimeout(
-            function() {
-
-                loadTeacherMyStudents();
-
-            },
-            50
-        );
-
-    }
-);
 // =========================================================
 // TEACHER STUDENT SEARCH
 // =========================================================
