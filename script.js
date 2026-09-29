@@ -9382,8 +9382,8 @@ grade:
                 </td>
 
                 <td>
-                    ${result.subject || "—"}
-                </td>
+    ${result.resultType || "—"}
+</td>
 
                 <td>
                     ${result.totalMarks}
@@ -9413,15 +9413,14 @@ grade:
 
                  <div class="result-actions">
 
-    <button
-        type="button"
-        class="result-action-btn result-edit-btn"
-        title="Edit result"
-        data-result-id="${result.id}"
-    >
-        ✏️
-    </button>
-
+   <button
+    type="button"
+    class="result-action-btn result-edit-btn"
+    title="Edit result"
+    onclick="openEditResult('${result.id}')"
+>
+    ✏️
+</button>
 </div>
 
                 </td>
