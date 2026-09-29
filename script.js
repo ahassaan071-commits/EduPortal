@@ -39244,36 +39244,6 @@ document.addEventListener(
             500
         );
 
-// =========================================================
-// AUTO REFRESH ATTENDANCE OVERVIEW + STUDENTS DISTRIBUTION
-// EVERY 30 SECONDS
-// =========================================================
-
-setInterval(
-    async function() {
-
-        console.log(
-            "AUTO REFRESH: Attendance Dashboard"
-        );
-
-        if (
-            typeof renderTeacherAttendanceOverview ===
-            "function"
-        ) {
-            await renderTeacherAttendanceOverview();
-        }
-
-        if (
-            typeof loadTeacherStudentsDistribution ===
-            "function"
-        ) {
-            await loadTeacherStudentsDistribution();
-        }
-
-    },
-    30000
-);
-
     }
 );
 // =========================================================
