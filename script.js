@@ -14,7 +14,7 @@ const supabaseClient =
         SUPABASE_PUBLISHABLE_KEY
     );
 
-console.log("EduPortal Supabase connected ");
+console.log("EduPortal Supabase connected ✅");
 
 // =====================================================
 // CLASS + SECTION DISPLAY HELPER
@@ -493,7 +493,7 @@ else if (selectedRole === "teacher") {
 
         messageElement.style.color = "red";
         messageElement.textContent =
-            "Invalid Username or Password ";
+            "Invalid Username or Password ❌";
 
         return;
     }
@@ -522,7 +522,7 @@ if (
 
     messageElement.style.color = "green";
     messageElement.textContent =
-        "Login Successful ";
+        "Login Successful ✅";
 
     localStorage.setItem(
         "isLoggedIn",
@@ -585,7 +585,7 @@ const adminName =
                 account.name ||
                 "Administrator"
             ) +
-            " ";
+            " 👋";
     }
 
     if (
@@ -1072,7 +1072,7 @@ if (input.type === "password") {
 
 input.type = "text";
 
-icon.textContent = "";
+icon.textContent = "🙈";
 
 } else {
 
@@ -1505,7 +1505,7 @@ setTimeout(function () {
                         admin.name ||
                         "Administrator"
                     ) +
-                    " ";
+                    " 👋";
             }
 
 
@@ -1737,7 +1737,7 @@ setTimeout(function () {
                     student.name ||
                     "Student"
                 ) +
-                " ";
+                " 👋";
         }
 
 
@@ -2321,7 +2321,7 @@ if (saveProfileBtn) {
                 studentName.textContent =
                     "Welcome, " +
                     fullName +
-                    " ";
+                    " 👋";
 
             }
 
@@ -2336,7 +2336,7 @@ if (saveProfileBtn) {
                 greetingText.textContent =
                     "Welcome, " +
                     fullName +
-                    " ";
+                    " 👋";
 
             }
 
@@ -2365,7 +2365,7 @@ if (saveProfileBtn) {
 
 
             alert(
-                "Profile Updated Successfully "
+                "Profile Updated Successfully ✅"
             );
 
         }
@@ -2691,7 +2691,7 @@ if (saveProfileImageBtn) {
 
 
             alert(
-                "Profile Picture Saved Successfully "
+                "Profile Picture Saved Successfully ✅"
             );
 
         }
@@ -3636,7 +3636,7 @@ if (
                     "text";
 
                 toggleCurrentPassword.textContent =
-                    "";
+                    "🙈";
 
                 toggleCurrentPassword.title =
                     "Hide Password";
@@ -4147,7 +4147,7 @@ status:
         // ==========================================
 
         alert(
-            "Student account created successfully! "
+            "Student account created successfully! ✅"
         );
     }
 );
@@ -7109,7 +7109,7 @@ async function deleteResult(resultId) {
 
 
         alert(
-            "Result deleted successfully. "
+            "Result deleted successfully. ✅"
         );
 
 
@@ -7341,7 +7341,7 @@ async function renderUserManagementStudents() {
 
             role: "Student",
 
-            roleIcon: "",
+            roleIcon: "🎓",
 
             recordId:
                 student.id,
@@ -7467,7 +7467,7 @@ async function renderUserManagementStudents() {
                         color:#64748b;
                     "
                 >
-                     No Student or Teacher
+                    👥 No Student or Teacher
                     accounts found.
                 </td>
             </tr>
@@ -7786,7 +7786,7 @@ async function toggleUserManagementPassword(index, button) {
         passwordElement.textContent =
             data?.password || "Not Set";
 
-        button.textContent = "";
+        button.textContent = "🙈";
         button.title = "Hide Password";
 
     } catch (error) {
@@ -8667,8 +8667,8 @@ if (!error && (!data || data.length === 0)) {
 
                 alert(
                     userType === "teacher"
-                        ? "Teacher deleted successfully. "
-                        : "Student deleted successfully. "
+                        ? "Teacher deleted successfully. ✅"
+                        : "Student deleted successfully. ✅"
                 );
 
 
@@ -8819,7 +8819,7 @@ function showAdminUserDetails(
                     font-size:18px;
                 "
             >
-                
+                ✕
             </button>
 
 
@@ -8832,7 +8832,7 @@ function showAdminUserDetails(
                 ${
                     userType === "Teacher"
                         ? "👨‍🏫"
-                        : ""
+                        : "🎓"
                 }
             </div>
 
@@ -9076,7 +9076,7 @@ async function renderAdminAssignments() {
             <div class="admin-empty-state">
 
                 <h3>
-                     Unable to Load Assignments
+                    ❌ Unable to Load Assignments
                 </h3>
 
                 <p>
@@ -9103,7 +9103,7 @@ async function renderAdminAssignments() {
             <div class="admin-empty-state">
 
                 <h3>
-                     No Assignments Yet
+                    📚 No Assignments Yet
                 </h3>
 
               
@@ -9137,7 +9137,7 @@ async function renderAdminAssignments() {
                             <div>
 
                                 <h3>
-                                    
+                                    📚
                                     ${
                                         assignment.title ||
                                         "Untitled Assignment"
@@ -9773,7 +9773,7 @@ document.addEventListener(
         // ==========================================
 
         alert(
-            "Teacher account created successfully! \n\n" +
+            "Teacher account created successfully! ✅\n\n" +
             "Teacher ID: " +
             (
                 savedTeacher.teacher_id ||
@@ -9800,7 +9800,7 @@ async function renderAdminTeachers() {
 
     teachersList.innerHTML = `
         <div class="admin-empty-state">
-            <h3> Loading Teachers...</h3>
+            <h3>⏳ Loading Teachers...</h3>
         </div>
     `;
 
@@ -9834,7 +9834,7 @@ async function renderAdminTeachers() {
 
         teachersList.innerHTML = `
             <div class="admin-empty-state">
-                <h3> Unable to Load Teachers</h3>
+                <h3>❌ Unable to Load Teachers</h3>
                 <p>${error.message}</p>
             </div>
         `;
@@ -11989,7 +11989,7 @@ async function updateStudentAttendanceUI() {
                 true;
 
             checkInButton.innerHTML =
-                " Attendance Marked";
+                "✓ Attendance Marked";
 
 
             if (
@@ -12045,7 +12045,7 @@ async function updateStudentAttendanceUI() {
                 true;
 
             checkInButton.innerHTML =
-                " Absent";
+                "✕ Absent";
 
 
             message.textContent =
@@ -12098,7 +12098,7 @@ async function updateStudentAttendanceUI() {
         false;
 
     checkInButton.innerHTML =
-        " Check In";
+        "🟢 Check In";
 
 
     message.textContent =
@@ -12340,7 +12340,7 @@ if (
         updateStudentAttendanceUI();
 
         alert(
-            "You have already checked in today. "
+            "You have already checked in today. ✅"
         );
 
         return;
@@ -12412,7 +12412,7 @@ if (
 
 
         alert(
-            "Attendance marked successfully! \n\n" +
+            "Attendance marked successfully! ✅\n\n" +
             "Check In: " +
             checkInTime
         );
@@ -12537,7 +12537,7 @@ if (
     // ==========================================
 
     alert(
-        "Attendance marked successfully! \n\n" +
+        "Attendance marked successfully! ✅\n\n" +
         "Check In: " +
         checkInTime
     );
@@ -14247,7 +14247,7 @@ const studentClassMap = {};
                     <div class="fee-empty-state">
 
                         <div>
-                            
+                            💰
                         </div>
 
                         <h3>
@@ -14766,7 +14766,7 @@ async function deleteFeeRecord(
 
 
     alert(
-        "Fee record deleted successfully! "
+        "Fee record deleted successfully! ✅"
     );
 
 }
@@ -14868,7 +14868,7 @@ async function openFeePaymentForm(recordId) {
     if (remaining <= 0) {
 
         alert(
-            "This fee is already fully Paid. "
+            "This fee is already fully Paid. ✅"
         );
 
         return;
@@ -14986,7 +14986,7 @@ async function openFeePaymentForm(recordId) {
                         font-size:18px;
                     "
                 >
-                    
+                    ✕
                 </button>
 
             </div>
@@ -15242,7 +15242,7 @@ async function openFeePaymentForm(recordId) {
                         cursor:pointer;
                     "
                 >
-                     Save Payment
+                    💾 Save Payment
                 </button>
 
             </div>
@@ -15525,7 +15525,7 @@ async function openFeePaymentForm(recordId) {
                         false;
 
                     saveButton.textContent =
-                        " Save Payment";
+                        "💾 Save Payment";
 
                     validation.textContent =
                         updateError.message;
@@ -15548,7 +15548,7 @@ async function openFeePaymentForm(recordId) {
 
 
                 alert(
-                    "Payment recorded successfully! \n\n" +
+                    "Payment recorded successfully! ✅\n\n" +
 
                     "Paid Now: Rs. " +
                     amount.toLocaleString() +
@@ -16248,14 +16248,14 @@ if (resetNoticeClassGroup) {
 
 
     saveNoticeBtn.textContent =
-        " Save Notice";
+        "💾 Save Notice";
 
 
     closeNoticeFormBox();
 
 
     alert(
-        "Notice saved successfully! "
+        "Notice saved successfully! ✅"
     );
 
 }
@@ -16385,7 +16385,7 @@ document.addEventListener(
 
 
         saveNoticeBtn.textContent =
-            " Update Notice";
+            "💾 Update Notice";
 
 
         // ==========================================
@@ -16461,7 +16461,7 @@ noticeTableBody.innerHTML = `
 <div class="admin-empty-state">
 
 <h3>
- Unable to Load Notices
+❌ Unable to Load Notices
 </h3>
 
 <p>
@@ -16690,7 +16690,7 @@ noticeTableBody.innerHTML = `
 <div class="admin-empty-state">
 
 <h3>
-     No Notices Yet
+    📢 No Notices Yet
 </h3>
 
 <p>
@@ -16898,7 +16898,7 @@ editButton.addEventListener(
         if (saveNoticeBtn) {
 
             saveNoticeBtn.textContent =
-                " Update Notice";
+                "💾 Update Notice";
 
         }
 
@@ -16983,7 +16983,7 @@ if (deleteButton) {
 
 
             alert(
-                "Notice deleted successfully! "
+                "Notice deleted successfully! ✅"
             );
 
         }
@@ -17670,7 +17670,7 @@ latestNotice.innerHTML = `
     <div class="latest-notice-content">
 
         <div class="latest-notice-title">
-             ${notice.title || "Notice"}
+            📢 ${notice.title || "Notice"}
         </div>
 
         <div class="latest-notice-message">
@@ -17681,7 +17681,7 @@ latestNotice.innerHTML = `
             noticeDate
                 ? `
                     <div class="latest-notice-time">
-                         ${noticeDate}
+                        🕐 ${noticeDate}
                     </div>
                 `
                 : ""
@@ -17967,7 +17967,7 @@ closeInstitutionModal();
 // SUCCESS MESSAGE
 
 alert(
-"Institution information updated successfully. "
+"Institution information updated successfully. ✅"
 );
 
 }
@@ -18635,7 +18635,7 @@ closePasswordModal();
 
 
 alert(
-"Administrator username and password updated successfully. "
+"Administrator username and password updated successfully. ✅"
 );
 
 }
@@ -20289,7 +20289,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             passwordInput.type = "text";
 
-            passwordToggle.textContent = "";
+            passwordToggle.textContent = "🙈";
             passwordToggle.title = "Hide Password";
 
         } else {
@@ -20864,7 +20864,7 @@ return (
                         color:#64748b;
                     "
                 >
-                    
+                    🎓
                     <br><br>
                     No students found
                     for your class.
@@ -22118,7 +22118,7 @@ async function loadTeacherAssignments() {
             <div class="teacher-assignment-empty">
 
                 <div class="teacher-assignment-empty-icon">
-                    
+                    ❌
                 </div>
 
                 <strong>
@@ -22241,7 +22241,7 @@ const myAssignments =
                 <div
                     class="teacher-assignment-empty-icon"
                 >
-                    
+                    📝
                 </div>
 
                 <strong>
@@ -22334,7 +22334,7 @@ const myAssignments =
                 >
 
                     <span>
-                         Due:
+                        📅 Due:
                         ${
                             assignment.dueDate ||
                             "—"
@@ -22343,7 +22343,7 @@ const myAssignments =
 
 
                     <span>
-                         Marks:
+                        🎯 Marks:
                         ${
                             assignment.marks ||
                             0
@@ -22352,7 +22352,7 @@ const myAssignments =
 
 
                     <span>
-                         Class:
+                        📚 Class:
                         ${
                             assignment.className ||
                             teacherClass
@@ -22375,7 +22375,7 @@ const myAssignments =
                         "
                         data-id="${assignment.id}"
                     >
-                         Edit
+                        ✏ Edit
                     </button>
 
 
@@ -22386,14 +22386,14 @@ const myAssignments =
                         "
                         data-id="${assignment.id}"
                     >
-                         Delete
+                        🗑 Delete
                     </button>
 <button
     type="button"
     class="teacher-assignment-submissions"
     data-id="${assignment.id}"
 >
-     Student Submissions
+    📥 Student Submissions
 </button>
                 </div>
 
@@ -22695,7 +22695,7 @@ document.addEventListener(
                         <h2 style="
                             margin:0 0 5px;
                         ">
-                             Student Submissions
+                            📥 Student Submissions
                         </h2>
 
                         <small>
@@ -22718,7 +22718,7 @@ document.addEventListener(
                             cursor:pointer;
                         "
                     >
-                        
+                        ✕
                     </button>
 
                 </div>
@@ -22882,7 +22882,7 @@ const rollNumber =
                                         : ""
                                 }
                             >
-                                 Save Result
+                                💾 Save Result
                             </button>
 
                         </div>
@@ -23090,7 +23090,7 @@ document.addEventListener(
             }
 
             button.textContent =
-                " Saved";
+                "✅ Saved";
 // Close Student Submissions modal after successful save
 const submissionModal =
     document.getElementById("teacherSubmissionModal");
@@ -23106,7 +23106,7 @@ if (submissionModal) {
 
 
             alert(
-                "Marks and feedback saved successfully! "
+                "Marks and feedback saved successfully! ✅"
             );
 
         }
@@ -23127,7 +23127,7 @@ if (submissionModal) {
 
             if (
                 button.textContent !==
-                " Saved"
+                "✅ Saved"
             ) {
 
                 button.disabled =
@@ -24033,7 +24033,7 @@ if (editButtonAfterSave) {
         // =========================================
 
         alert(
-            "Assignment created successfully! "
+            "Assignment created successfully! ✅"
         );
 
     }
@@ -24296,7 +24296,7 @@ const dueDateInput =
         }
 
         alert(
-            "Assignment deleted successfully! "
+            "Assignment deleted successfully! ✅"
         );
 
     }
@@ -26423,7 +26423,7 @@ if (teacherEditingResultId) {
 
             alert(
                 savedCount +
-                " student result(s) saved successfully! "
+                " student result(s) saved successfully! ✅"
             );
 await loadTeacherSavedResults();
 
@@ -26902,7 +26902,7 @@ async function loadTeacherNotices() {
                     <div>
 
                         <h4>
-                            
+                            📢
                             ${
                                 notice.title ||
                                 "Administrator Notice"
@@ -26942,12 +26942,12 @@ async function loadTeacherNotices() {
                 >
 
                     <span>
-                        
+                        📅
                         ${noticeDate}
                     </span>
 
                     <span>
-                        
+                        👤
                         Administrator
                     </span>
 
@@ -28140,7 +28140,7 @@ async function loadTeacherDashboardData() {
         teacherNameElement.textContent =
             "Welcome, " +
             teacherName +
-            " ";
+            " 👋";
 
     }
 
@@ -29367,7 +29367,7 @@ if (editingUserType === "student") {
         // ==========================================
 
         alert(
-            "User updated successfully. "
+            "User updated successfully. ✅"
         );
     }
 );
@@ -30444,7 +30444,7 @@ matchingSubjects.forEach(
             <div>
 
                 <strong>
-                     ${name}
+                    📚 ${name}
                 </strong>
 
                 ${
@@ -31056,8 +31056,8 @@ this.setText(
         ? "No Result"
         : (
             status === "Passed"
-                ? "Pass "
-                : "Failed "
+                ? "Pass ✅"
+                : "Failed ❌"
         )
 );
 // ==========================================
@@ -31394,7 +31394,7 @@ StudentDashboard.loadAssignments = async function(student) {
             <div class="student-assignment-empty">
 
                 <div class="student-assignment-empty-icon">
-                    
+                    📚
                 </div>
 
                 <h3>
@@ -31528,7 +31528,7 @@ StudentDashboard.loadAssignments = async function(student) {
                         <div
                             class="student-assignment-subject"
                         >
-                             ${subject}
+                            📘 ${subject}
                         </div>
 
                     </div>
@@ -31562,7 +31562,7 @@ StudentDashboard.loadAssignments = async function(student) {
                     >
 
                         <small>
-                             Due Date
+                            📅 Due Date
                         </small>
 
                         <strong>
@@ -31577,7 +31577,7 @@ StudentDashboard.loadAssignments = async function(student) {
                     >
 
                         <small>
-                             Marks
+                            🎯 Marks
                         </small>
 
                         <strong>
@@ -31592,7 +31592,7 @@ StudentDashboard.loadAssignments = async function(student) {
                     >
 
                         <small>
-                             Subject
+                            📚 Subject
                         </small>
 
                         <strong>
@@ -31638,7 +31638,7 @@ StudentDashboard.loadAssignments = async function(student) {
                         "
                         data-assignment-id="${assignment.id}"
                     >
-                         View Assignment
+                        👁 View Assignment
                     </button>
 
 
@@ -31650,7 +31650,7 @@ StudentDashboard.loadAssignments = async function(student) {
                         "
                         data-assignment-id="${assignment.id}"
                     >
-                         Submit Assignment
+                        📤 Submit Assignment
                     </button>
 
                 </div>
@@ -31839,7 +31839,7 @@ if (!studentDbId) {
             result.innerHTML = `
 
                 <div>
-                     Status:
+                    📤 Status:
                     <strong>
                         ${
                             submission.status ||
@@ -31853,7 +31853,7 @@ if (!studentDbId) {
                     submission.marks !== undefined
                         ? `
                             <div>
-                                 Marks:
+                                🎯 Marks:
                                 <strong>
                                     ${submission.marks}
                                 </strong>
@@ -31866,7 +31866,7 @@ if (!studentDbId) {
                     submission.teacher_feedback
                         ? `
                             <div>
-                                 Teacher Feedback:
+                                💬 Teacher Feedback:
                                 <strong>
                                     ${submission.teacher_feedback}
                                 </strong>
@@ -32364,7 +32364,7 @@ if (
 ) {
 
     alert(
-        "You have already submitted this assignment. \n\n" +
+        "You have already submitted this assignment. ❌\n\n" +
         "You cannot submit it again."
     );
 
@@ -32466,7 +32466,7 @@ submission_text:
                 Number(assignmentId)
             );
         alert(
-            " Assignment submitted successfully!"
+            "✅ Assignment submitted successfully!"
         );
 
     }
@@ -32523,7 +32523,7 @@ document.addEventListener(
         }
 
         alert(
-            " " +
+            "📚 " +
             (assignment.title || "Assignment") +
             "\n\n" +
             "Subject: " +
@@ -33346,7 +33346,7 @@ async function saveStudentAccountSettings() {
 
 
     alert(
-        "Account settings updated successfully! "
+        "Account settings updated successfully! ✅"
     );
 }
 
@@ -33831,7 +33831,7 @@ async function (event) {
                         <div
                             class="notice-history-icon"
                         >
-                            
+                            📢
                         </div>
                     </div>
 
@@ -33897,7 +33897,7 @@ async function (event) {
                                         >
 
                                             <h3>
-                                                
+                                                📢
                                                 ${
                                                     notice.title ||
                                                     "Notice"
@@ -33935,7 +33935,7 @@ async function (event) {
                                         >
 
                                             <span>
-                                                
+                                                📅
                                                 ${noticeDate}
                                             </span>
 
@@ -33943,7 +33943,7 @@ async function (event) {
                                                 expiry
                                                     ? `
                                                         <span>
-                                                            
+                                                            ⏳
                                                             Expiry:
                                                             ${expiry}
                                                         </span>
@@ -34875,7 +34875,7 @@ function renderStudentAttendanceHistory() {
 
                     <div class="attendance-empty-state">
 
-                        <div></div>
+                        <div>📅</div>
 
                         <strong>
                             No attendance record yet
@@ -35700,7 +35700,7 @@ else {
                     <div>
 
                         <h2>
-                             ${studentName}
+                            📊 ${studentName}
                         </h2>
 
                         <p>
@@ -35718,7 +35718,7 @@ else {
                         class="student-results-close-btn"
                         id="closeStudentResultsView"
                     >
-                        
+                        ✕
                     </button>
 
                 </div>
@@ -35838,7 +35838,7 @@ else {
                 >
 
                     <h3>
-                         Subject Results
+                        📚 Subject Results
                     </h3>
 
 
@@ -36556,7 +36556,7 @@ document.addEventListener(
         document.body.style.overflow = "auto";
 
         console.log(
-            "Admin Recovery Screen Opened "
+            "Admin Recovery Screen Opened ✅"
         );
     },
     true
@@ -37723,7 +37723,7 @@ if (
 
                     heatmapIcons[index]
                         .textContent =
-                            "";
+                            "✓";
 
                 }
 
@@ -38632,7 +38632,7 @@ if (typeof loadTeacherStudentsDistribution === "function") {
 
 
     console.log(
-        "EduPortal Teacher Navigation Ready "
+        "EduPortal Teacher Navigation Ready ✅"
     );
 
 });
@@ -40285,7 +40285,7 @@ if (!classList) return;
             <div class="academic-setup-card">
                 
                 <div class="academic-setup-card-header">
-                    <strong> ${className}</strong>
+                    <strong>🏫 ${className}</strong>
                 </div>
 
                 <div style="margin-top:15px;">
@@ -40321,7 +40321,7 @@ if (!classList) return;
                 ">
 
                     <div>
-                        <strong> ${subjectName}</strong>
+                        <strong>📖 ${subjectName}</strong>
                         <span style="margin-left:10px;">
                             → 👨‍🏫 ${teacherName}${teacherCode}
                         </span>
@@ -40889,7 +40889,7 @@ async function deleteAcademicAssignment(assignmentId) {
 
 
         console.log(
-            "EduPortal Central 5 Second Sync Started "
+            "EduPortal Central 5 Second Sync Started ✅"
         );
 
     }
@@ -40962,7 +40962,7 @@ async function deleteAcademicAssignment(assignmentId) {
 
 
     console.log(
-        "EduPortal Central Dashboard Engine Loaded "
+        "EduPortal Central Dashboard Engine Loaded ✅"
     );
 
 })();
