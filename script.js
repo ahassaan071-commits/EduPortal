@@ -13881,6 +13881,33 @@ if (error) {
 
 }
 
+// ==========================================
+// CREATE AUDIT LOG — FEE INSERT
+// ==========================================
+
+await createAuditLog({
+
+    module:
+        "Fees",
+
+    action:
+        "INSERT",
+
+    recordId:
+        feeRecord.id,
+
+    oldData:
+        null,
+
+    newData:
+        data?.[0] || feeRecord,
+
+    description:
+        "New fee record created"
+
+});
+
+
 // Render immediately
 
 renderFeeRecords();
