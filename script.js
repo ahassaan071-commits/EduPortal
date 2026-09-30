@@ -10928,18 +10928,22 @@ async function autoMarkAbsentAfterNoon() {
 // TODAY DATE
 // -----------------------------------------
 
-const today =
-    getStudentAttendanceDate();
+const attendanceDateFilter =
+    document.getElementById(
+        "attendanceDateFilter"
+    );
 
-// -----------------------------------------
-// WEEKEND / HOLIDAY = NO AUTO ABSENT
-// -----------------------------------------
+const selectedDate =
+    attendanceDateFilter &&
+    attendanceDateFilter.value
+        ? attendanceDateFilter.value
+        : getTodayDate();
 
 const isLeaveDate =
     await checkAttendanceLeaveDate(
-        today
+        selectedDate
     );
-
+    
 if (isLeaveDate) {
 
     console.log(
