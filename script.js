@@ -51,7 +51,99 @@ function escapeHtml(value) {
             "&#039;"
         );
 }
+// =====================================================
+// EDUPORTAL - GLOBAL TOAST NOTIFICATION
+// =====================================================
 
+function showToast(message, type = "info") {
+
+    let container =
+        document.getElementById("eduToastContainer");
+
+    if (!container) {
+
+        container =
+            document.createElement("div");
+
+        container.id =
+            "eduToastContainer";
+
+        container.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        `;
+
+        document.body.appendChild(container);
+    }
+
+    const toast =
+        document.createElement("div");
+
+    const icon =
+        type === "success"
+            ? "✅"
+            : type === "error"
+                ? "❌"
+                : type === "warning"
+                    ? "⚠️"
+                    : "ℹ️";
+
+    toast.innerHTML =
+        `<span>${icon}</span><span>${escapeHtml(message)}</span>`;
+
+    toast.style.cssText = `
+        min-width: 280px;
+        max-width: 380px;
+        padding: 14px 18px;
+        border-radius: 10px;
+        background: #1f2937;
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 500;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.18);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        pointer-events: auto;
+        opacity: 0;
+        transform: translateX(30px);
+        transition: all 0.25s ease;
+    `;
+
+    container.appendChild(toast);
+
+    requestAnimationFrame(function () {
+
+        toast.style.opacity = "1";
+        toast.style.transform =
+            "translateX(0)";
+
+    });
+
+    setTimeout(function () {
+
+        toast.style.opacity = "0";
+        toast.style.transform =
+            "translateX(30px)";
+
+        setTimeout(function () {
+
+            toast.remove();
+
+            if (!container.children.length) {
+                container.remove();
+            }
+
+        }, 250);
+
+    }, 3000);
+}
 // =====================================================
 // EDUPORTAL - AUDIT LOG HELPER
 // =====================================================
