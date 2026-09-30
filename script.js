@@ -21801,12 +21801,20 @@ function updateTeacherAttendanceCounts() {
                 absent++;
             }
 
-            else if (
-                status === "late" ||
-                status === "l"
-            ) {
-                late++;
-            }
+           else if (
+    status === "late" ||
+    status === "l"
+) {
+    late++;
+}
+
+else if (
+    status === "leave"
+) {
+    // Leave is display-only.
+    // It must not affect attendance counts.
+    return;
+}
 
         });
     }
