@@ -32967,9 +32967,9 @@ if (paymentMethodElement) {
     }
 
 };
-// ==========================================
+// =====================================================
 // STUDENT SUBMIT ASSIGNMENT
-// ==========================================
+// =====================================================
 
 document.addEventListener(
     "click",
@@ -32980,22 +32980,16 @@ document.addEventListener(
                 ".submit-assignment-btn"
             );
 
-        if (!button) {
-            return;
-        }
+        if (!button) return;
 
         const assignmentId =
             button.dataset.assignmentId;
 
-        if (!assignmentId) {
-            return;
-        }
+        if (!assignmentId) return;
 
         const student =
             JSON.parse(
-                localStorage.getItem(
-                    "loggedInStudent"
-                )
+                localStorage.getItem("loggedInStudent")
             ) || {};
 
         const studentId =
@@ -33004,180 +32998,578 @@ document.addEventListener(
             "";
 
         const studentName =
-    student.name ||
-    student.full_name ||
-    student.studentName ||
-    student.student_name ||
-    "Student";
+            student.name ||
+            student.full_name ||
+            student.studentName ||
+            student.student_name ||
+            "Student";
 
-const studentRollNumber =
-    student.rollNumber ||
-    student.roll_number ||
-    "";
+        const studentRollNumber =
+            student.rollNumber ||
+            student.roll_number ||
+            "";
 
         if (!studentId) {
-            alert(
-                "Student information not found."
+
+            showToast(
+                "Student information not found.",
+                "error"
             );
+
             return;
         }
 
-       // ==========================================
-// CHECK IF STUDENT ALREADY SUBMITTED
-// ==========================================
+        try {
 
-const {
-    data: existingSubmission,
-    error: existingSubmissionError
-} = await supabaseClient
-    .from("assignment_submissions")
-    .select("id, status")
-    .eq(
-        "assignment_id",
-        Number(assignmentId)
-    )
-    .eq(
-        "student_id",
-        Number(studentId)
-    )
-    .limit(1);
+            // ---------------------------------------------
+            // CHECK PREVIOUS SUBMISSION
+            // ---------------------------------------------
 
-if (existingSubmissionError) {
+            const {
+                data: existingSubmission,
+                error: existingSubmissionError
+            } =
+                await supabaseClient
+                    .from("assignment_submissions")
+                    .select("id, status")
+                    .eq(
+                        "assignment_id",
+                        Number(assignmentId)
+                    )
+                    .eq(
+                        "student_id",
+                        Number(studentId)
+                    )
+                    .limit(1);
 
-    console.error(
-        "SUBMISSION CHECK ERROR:",
-        existingSubmissionError
-    );
+            if (existingSubmissionError) {
 
-    alert(
-        "Unable to check previous submission.\n\n" +
-        existingSubmissionError.message
-    );
+                console.error(
+                    "SUBMISSION CHECK ERROR:",
+                    existingSubmissionError
+                );
 
-    return;
-}
+                showToast(
+                    "Unable to check previous submission.",
+                    "error"
+                );
 
+                return;
+            }
 
-// ==========================================
-// ALREADY SUBMITTED
-// ==========================================
+            if (
+                existingSubmission &&
+                existingSubmission.length > 0
+            ) {
 
-if (
-    existingSubmission &&
-    existingSubmission.length > 0
-) {
+                showToast(
+                    "You have already submitted this assignment.",
+                    "warning"
+                );
 
-    alert(
-        "You have already submitted this assignment. ❌\n\n" +
-        "You cannot submit it again."
-    );
-
-    return;
-}
+                return;
+            }
 
 
-// ==========================================
-// NEW SUBMISSION
-// ==========================================
+            // ---------------------------------------------
+            // CREATE SUBMISSION MODAL
+            // ---------------------------------------------
 
-const submissionText =
-    prompt(
-        "Enter your assignment submission:"
-    );
+            let modal =
+                document.getElementById(
+                    "studentAssignmentSubmitModal"
+                );
 
-        if (submissionText === null) {
-            return;
-        }
+            if (modal) {
+                modal.remove();
+            }
 
-        if (!submissionText.trim()) {
-            alert(
-                "Please enter your submission."
-            );
-            return;
-        }
+            modal =
+                document.createElement("div");
 
-        if (
-            typeof supabaseClient ===
-            "undefined"
-        ) {
-            alert(
-                "Supabase connection is missing."
-            );
-            return;
-        }
+            modal.id =
+                "studentAssignmentSubmitModal";
 
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .from(
-                    "assignment_submissions"
+            modal.style.cssText = `
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.55);
+                backdrop-filter: blur(4px);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 99998;
+                padding: 20px;
+            `;
+
+            modal.innerHTML = `
+
+                <div
+                    style="
+                        width: min(650px, 100%);
+                        background: #ffffff;
+                        border-radius: 18px;
+                        box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+                        overflow: hidden;
+                    "
+                >
+
+                    <!-- HEADER -->
+
+                    <div
+                        style="
+                            padding: 20px 24px;
+                            background: linear-gradient(
+                                135deg,
+                                #2563eb,
+                                #4f46e5
+                            );
+                            color: white;
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                        "
+                    >
+
+                        <div>
+
+                            <div
+                                style="
+                                    font-size: 13px;
+                                    opacity: 0.85;
+                                    margin-bottom: 4px;
+                                "
+                            >
+                                📤 Assignment Submission
+                            </div>
+
+                            <h2
+                                style="
+                                    margin: 0;
+                                    font-size: 21px;
+                                "
+                            >
+                                Submit Your Assignment
+                            </h2>
+
+                        </div>
+
+                        <button
+                            type="button"
+                            id="closeStudentSubmitModal"
+                            style="
+                                width: 36px;
+                                height: 36px;
+                                border: none;
+                                border-radius: 50%;
+                                background: rgba(255,255,255,0.18);
+                                color: white;
+                                font-size: 22px;
+                                cursor: pointer;
+                            "
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+
+                    <!-- BODY -->
+
+                    <div
+                        style="
+                            padding: 24px;
+                        "
+                    >
+
+                        <label
+                            for="studentAssignmentSubmissionText"
+                            style="
+                                display: block;
+                                font-size: 14px;
+                                font-weight: 600;
+                                color: #334155;
+                                margin-bottom: 8px;
+                            "
+                        >
+                            📝 Your Submission
+                        </label>
+
+                        <textarea
+                            id="studentAssignmentSubmissionText"
+                            placeholder="Write your assignment submission here..."
+                            rows="9"
+                            style="
+                                width: 100%;
+                                box-sizing: border-box;
+                                resize: vertical;
+                                min-height: 180px;
+                                padding: 14px;
+                                border: 1px solid #cbd5e1;
+                                border-radius: 12px;
+                                outline: none;
+                                font-family: inherit;
+                                font-size: 14px;
+                                line-height: 1.6;
+                                color: #334155;
+                            "
+                        ></textarea>
+
+
+                        <div
+                            style="
+                                margin-top: 7px;
+                                font-size: 12px;
+                                color: #64748b;
+                            "
+                        >
+                            Please enter your complete assignment
+                            submission before clicking Submit.
+                        </div>
+
+
+                        <!-- BUTTONS -->
+
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: flex-end;
+                                gap: 10px;
+                                margin-top: 22px;
+                            "
+                        >
+
+                            <button
+                                type="button"
+                                id="cancelStudentSubmitModal"
+                                style="
+                                    padding: 11px 20px;
+                                    border: 1px solid #cbd5e1;
+                                    border-radius: 10px;
+                                    background: #ffffff;
+                                    color: #475569;
+                                    font-weight: 600;
+                                    cursor: pointer;
+                                "
+                            >
+                                Cancel
+                            </button>
+
+
+                            <button
+                                type="button"
+                                id="confirmStudentAssignmentSubmit"
+                                style="
+                                    padding: 11px 22px;
+                                    border: none;
+                                    border-radius: 10px;
+                                    background: #2563eb;
+                                    color: white;
+                                    font-weight: 600;
+                                    cursor: pointer;
+                                "
+                            >
+                                📤 Submit Assignment
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+
+
+            // ---------------------------------------------
+            // CLOSE MODAL
+            // ---------------------------------------------
+
+            function closeSubmitModal() {
+
+                const currentModal =
+                    document.getElementById(
+                        "studentAssignmentSubmitModal"
+                    );
+
+                if (currentModal) {
+                    currentModal.remove();
+                }
+            }
+
+
+            document
+                .getElementById(
+                    "closeStudentSubmitModal"
                 )
-                .insert([
-                    {
-                        assignment_id:
-                            Number(
-                                assignmentId
-                            ),
+                ?.addEventListener(
+                    "click",
+                    closeSubmitModal
+                );
 
-                        student_id:
-                            Number(
-                                studentId
-                            ),
 
-                       student_name:
-    studentName,
+            document
+                .getElementById(
+                    "cancelStudentSubmitModal"
+                )
+                ?.addEventListener(
+                    "click",
+                    closeSubmitModal
+                );
 
-roll_number:
-    studentRollNumber,
 
-submission_text:
-    submissionText,
+            modal.addEventListener(
+                "click",
+                function (event) {
 
-                        status:
-                            "Submitted"
+                    if (event.target === modal) {
+                        closeSubmitModal();
                     }
-                ])
-                .select()
-                .single();
 
-        if (error) {
+                }
+            );
+
+
+            // ---------------------------------------------
+            // SUBMIT BUTTON
+            // ---------------------------------------------
+
+            document
+                .getElementById(
+                    "confirmStudentAssignmentSubmit"
+                )
+                ?.addEventListener(
+                    "click",
+                    async function () {
+
+                        const textarea =
+                            document.getElementById(
+                                "studentAssignmentSubmissionText"
+                            );
+
+                        const submissionText =
+                            textarea
+                                ? textarea.value.trim()
+                                : "";
+
+                        if (!submissionText) {
+
+                            showToast(
+                                "Please enter your submission.",
+                                "warning"
+                            );
+
+                            textarea?.focus();
+
+                            return;
+                        }
+
+
+                        const submitButton =
+                            document.getElementById(
+                                "confirmStudentAssignmentSubmit"
+                            );
+
+                        if (submitButton) {
+
+                            submitButton.disabled = true;
+
+                            submitButton.innerHTML =
+                                "⏳ Submitting...";
+
+                            submitButton.style.opacity =
+                                "0.7";
+
+                            submitButton.style.cursor =
+                                "not-allowed";
+                        }
+
+
+                        try {
+
+                            const {
+                                data,
+                                error
+                            } =
+                                await supabaseClient
+                                    .from(
+                                        "assignment_submissions"
+                                    )
+                                    .insert([{
+                                        assignment_id:
+                                            Number(
+                                                assignmentId
+                                            ),
+
+                                        student_id:
+                                            Number(
+                                                studentId
+                                            ),
+
+                                        student_name:
+                                            studentName,
+
+                                        roll_number:
+                                            studentRollNumber,
+
+                                        submission_text:
+                                            submissionText,
+
+                                        status:
+                                            "Submitted"
+                                    }])
+                                    .select()
+                                    .single();
+
+
+                            if (error) {
+
+                                console.error(
+                                    "SUBMISSION ERROR:",
+                                    error
+                                );
+
+                                if (submitButton) {
+
+                                    submitButton.disabled =
+                                        false;
+
+                                    submitButton.innerHTML =
+                                        "📤 Submit Assignment";
+
+                                    submitButton.style.opacity =
+                                        "1";
+
+                                    submitButton.style.cursor =
+                                        "pointer";
+                                }
+
+                                showToast(
+                                    "Submission failed: " +
+                                    error.message,
+                                    "error"
+                                );
+
+                                return;
+                            }
+
+
+                            // ---------------------------------
+                            // UPDATE ASSIGNMENT STATUS
+                            // ---------------------------------
+
+                            const {
+                                error:
+                                    assignmentUpdateError
+                            } =
+                                await supabaseClient
+                                    .from("assignments")
+                                    .update({
+                                        status: "Submitted"
+                                    })
+                                    .eq(
+                                        "id",
+                                        Number(assignmentId)
+                                    );
+
+
+                            if (
+                                assignmentUpdateError
+                            ) {
+
+                                console.error(
+                                    "ASSIGNMENT STATUS UPDATE ERROR:",
+                                    assignmentUpdateError
+                                );
+
+                            }
+
+
+                            // ---------------------------------
+                            // CLOSE MODAL
+                            // ---------------------------------
+
+                            closeSubmitModal();
+
+
+                            // ---------------------------------
+                            // SUCCESS TOAST
+                            // ---------------------------------
+
+                            showToast(
+                                "Assignment submitted successfully!",
+                                "success"
+                            );
+
+                        }
+                        catch (error) {
+
+                            console.error(
+                                "SUBMISSION ERROR:",
+                                error
+                            );
+
+                            if (submitButton) {
+
+                                submitButton.disabled =
+                                    false;
+
+                                submitButton.innerHTML =
+                                    "📤 Submit Assignment";
+
+                                submitButton.style.opacity =
+                                    "1";
+
+                                submitButton.style.cursor =
+                                    "pointer";
+                            }
+
+                            showToast(
+                                "Submission failed. Please try again.",
+                                "error"
+                            );
+
+                        }
+
+                    }
+                );
+
+
+            // ---------------------------------------------
+            // AUTO FOCUS
+            // ---------------------------------------------
+
+            setTimeout(function () {
+
+                document
+                    .getElementById(
+                        "studentAssignmentSubmissionText"
+                    )
+                    ?.focus();
+
+            }, 100);
+
+        }
+        catch (error) {
 
             console.error(
-                "SUBMISSION ERROR:",
+                "SUBMISSION MODAL ERROR:",
                 error
             );
 
-            alert(
-                "Submission failed:\n" +
-                error.message
+            showToast(
+                "Unable to open submission form.",
+                "error"
             );
 
-            return;
         }
-// ==========================================
-        // NEW: UPDATE ASSIGNMENT STATUS
-        // ==========================================
-
-        await supabaseClient
-            .from("assignments")
-            .update({
-                status: "Submitted"
-            })
-            .eq(
-                "id",
-                Number(assignmentId)
-            );
-        alert(
-            "✅ Assignment submitted successfully!"
-        );
 
     }
 );
-// ==========================================
+// =====================================================
 // STUDENT VIEW ASSIGNMENT
-// ==========================================
+// =====================================================
 
 document.addEventListener(
     "click",
@@ -33188,70 +33580,388 @@ document.addEventListener(
                 ".view-assignment-btn"
             );
 
-        if (!button) {
-            return;
-        }
+        if (!button) return;
 
         const assignmentId =
             button.dataset.assignmentId;
 
-        if (!assignmentId) {
-            return;
-        }
+        if (!assignmentId) return;
 
-        const {
-            data: assignment,
-            error
-        } =
-            await supabaseClient
-                .from("assignments")
-                .select("*")
-                .eq(
-                    "id",
-                    assignmentId
+        try {
+
+            const {
+                data: assignment,
+                error
+            } =
+                await supabaseClient
+                    .from("assignments")
+                    .select("*")
+                    .eq("id", assignmentId)
+                    .single();
+
+            if (error) {
+
+                console.error(
+                    "Assignment View Error:",
+                    error
+                );
+
+                showToast(
+                    "Unable to load assignment.",
+                    "error"
+                );
+
+                return;
+            }
+
+            let modal =
+                document.getElementById(
+                    "studentAssignmentViewModal"
+                );
+
+            if (!modal) {
+
+                modal =
+                    document.createElement("div");
+
+                modal.id =
+                    "studentAssignmentViewModal";
+
+                modal.style.cssText = `
+                    position: fixed;
+                    inset: 0;
+                    background: rgba(0,0,0,0.55);
+                    backdrop-filter: blur(4px);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 99998;
+                    padding: 20px;
+                `;
+
+                document.body.appendChild(modal);
+            }
+
+            modal.innerHTML = `
+
+                <div
+                    style="
+                        width: min(600px, 100%);
+                        max-height: 85vh;
+                        overflow-y: auto;
+                        background: #ffffff;
+                        border-radius: 18px;
+                        box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+                        overflow: hidden;
+                    "
+                >
+
+                    <div
+                        style="
+                            padding: 20px 24px;
+                            background: linear-gradient(
+                                135deg,
+                                #2563eb,
+                                #4f46e5
+                            );
+                            color: white;
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                        "
+                    >
+
+                        <div>
+                            <div
+                                style="
+                                    font-size: 13px;
+                                    opacity: 0.85;
+                                    margin-bottom: 4px;
+                                "
+                            >
+                                📚 Assignment Details
+                            </div>
+
+                            <h2
+                                style="
+                                    margin: 0;
+                                    font-size: 22px;
+                                "
+                            >
+                                ${escapeHtml(
+                                    assignment.title ||
+                                    "Assignment"
+                                )}
+                            </h2>
+
+                        </div>
+
+                        <button
+                            type="button"
+                            id="closeStudentAssignmentModal"
+                            style="
+                                width: 36px;
+                                height: 36px;
+                                border: none;
+                                border-radius: 50%;
+                                background: rgba(255,255,255,0.18);
+                                color: white;
+                                font-size: 22px;
+                                cursor: pointer;
+                            "
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            padding: 24px;
+                        "
+                    >
+
+                        <div
+                            style="
+                                display: grid;
+                                grid-template-columns:
+                                    repeat(2, minmax(0,1fr));
+                                gap: 14px;
+                                margin-bottom: 22px;
+                            "
+                        >
+
+                            <div
+                                style="
+                                    padding: 15px;
+                                    background: #f8fafc;
+                                    border-radius: 12px;
+                                    border: 1px solid #e5e7eb;
+                                "
+                            >
+                                <div
+                                    style="
+                                        font-size: 12px;
+                                        color: #64748b;
+                                        margin-bottom: 5px;
+                                    "
+                                >
+                                    📖 Subject
+                                </div>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        assignment.subject ||
+                                        "—"
+                                    )}
+                                </strong>
+                            </div>
+
+
+                            <div
+                                style="
+                                    padding: 15px;
+                                    background: #f8fafc;
+                                    border-radius: 12px;
+                                    border: 1px solid #e5e7eb;
+                                "
+                            >
+                                <div
+                                    style="
+                                        font-size: 12px;
+                                        color: #64748b;
+                                        margin-bottom: 5px;
+                                    "
+                                >
+                                    👨‍🏫 Teacher
+                                </div>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        assignment.teacher_name ||
+                                        "—"
+                                    )}
+                                </strong>
+                            </div>
+
+
+                            <div
+                                style="
+                                    padding: 15px;
+                                    background: #f8fafc;
+                                    border-radius: 12px;
+                                    border: 1px solid #e5e7eb;
+                                "
+                            >
+                                <div
+                                    style="
+                                        font-size: 12px;
+                                        color: #64748b;
+                                        margin-bottom: 5px;
+                                    "
+                                >
+                                    📅 Due Date
+                                </div>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        assignment.due_date ||
+                                        "—"
+                                    )}
+                                </strong>
+                            </div>
+
+
+                            <div
+                                style="
+                                    padding: 15px;
+                                    background: #f8fafc;
+                                    border-radius: 12px;
+                                    border: 1px solid #e5e7eb;
+                                "
+                            >
+                                <div
+                                    style="
+                                        font-size: 12px;
+                                        color: #64748b;
+                                        margin-bottom: 5px;
+                                    "
+                                >
+                                    🎯 Marks
+                                </div>
+
+                                <strong>
+                                    ${assignment.marks ?? 0}
+                                </strong>
+                            </div>
+
+                        </div>
+
+
+                        <div>
+
+                            <div
+                                style="
+                                    font-size: 14px;
+                                    font-weight: 600;
+                                    color: #334155;
+                                    margin-bottom: 8px;
+                                "
+                            >
+                                📝 Description
+                            </div>
+
+                            <div
+                                style="
+                                    padding: 16px;
+                                    background: #f8fafc;
+                                    border: 1px solid #e5e7eb;
+                                    border-radius: 12px;
+                                    line-height: 1.7;
+                                    color: #475569;
+                                    white-space: pre-wrap;
+                                "
+                            >
+                                ${escapeHtml(
+                                    assignment.description ||
+                                    "No description provided."
+                                )}
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            style="
+                                margin-top: 22px;
+                                text-align: right;
+                            "
+                        >
+
+                            <button
+                                type="button"
+                                id="closeStudentAssignmentModalBottom"
+                                style="
+                                    border: none;
+                                    padding: 11px 22px;
+                                    border-radius: 10px;
+                                    background: #2563eb;
+                                    color: white;
+                                    font-weight: 600;
+                                    cursor: pointer;
+                                "
+                            >
+                                Close
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            `;
+
+            modal.style.display = "flex";
+
+            function closeAssignmentModal() {
+
+                const currentModal =
+                    document.getElementById(
+                        "studentAssignmentViewModal"
+                    );
+
+                if (currentModal) {
+                    currentModal.remove();
+                }
+            }
+
+            document
+                .getElementById(
+                    "closeStudentAssignmentModal"
                 )
-                .single();
+                ?.addEventListener(
+                    "click",
+                    closeAssignmentModal
+                );
 
-        if (error) {
+            document
+                .getElementById(
+                    "closeStudentAssignmentModalBottom"
+                )
+                ?.addEventListener(
+                    "click",
+                    closeAssignmentModal
+                );
+
+            modal.addEventListener(
+                "click",
+                function (event) {
+
+                    if (event.target === modal) {
+                        closeAssignmentModal();
+                    }
+
+                }
+            );
+
+        }
+        catch (error) {
 
             console.error(
                 "Assignment View Error:",
                 error
             );
 
-            alert(
-                "Unable to load assignment."
+            showToast(
+                "Unable to load assignment.",
+                "error"
             );
 
-            return;
         }
-
-        alert(
-            "📚 " +
-            (assignment.title || "Assignment") +
-            "\n\n" +
-            "Subject: " +
-            (assignment.subject || "—") +
-            "\n\n" +
-            "Teacher: " +
-            (assignment.teacher_name || "—") +
-            "\n\n" +
-            "Due Date: " +
-            (assignment.due_date || "—") +
-            "\n\n" +
-            "Marks: " +
-            (assignment.marks ?? 0) +
-            "\n\n" +
-            "Description:\n" +
-            (
-                assignment.description ||
-                "No description provided."
-            )
-        );
 
     }
 );
-
 /* =========================================================
    AUTO INITIALIZE
    ========================================================= */
