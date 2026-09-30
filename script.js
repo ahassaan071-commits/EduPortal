@@ -29641,26 +29641,46 @@ if (assignedStudents.length > 0) {
                 attendanceRecords || [];
 
 
-            markedStudents =
-                records.length;
+          const realAttendanceRecords =
+    records.filter(
+        function (record) {
+
+            const status =
+                String(
+                    record.status || ""
+                )
+                .trim()
+                .toLowerCase();
+
+            return (
+                status !== "leave"
+            );
+
+        }
+    );
 
 
-            presentStudents =
-                records.filter(
-                    function (record) {
+markedStudents =
+    realAttendanceRecords.length;
 
-                        return String(
-                            record.status || ""
-                        )
-                        .trim()
-                        .toLowerCase() ===
-                        "present";
 
-                    }
-                ).length;
+presentStudents =
+    realAttendanceRecords.filter(
+        function (record) {
+
+            return String(
+                record.status || ""
+            )
+            .trim()
+            .toLowerCase() ===
+            "present";
+
+        }
+    ).length;
+
 
 absentStudents =
-    records.filter(
+    realAttendanceRecords.filter(
         function (record) {
 
             return String(
