@@ -10943,7 +10943,7 @@ const isLeaveDate =
     await checkAttendanceLeaveDate(
         selectedDate
     );
-    
+
 if (isLeaveDate) {
 
     console.log(
@@ -12095,20 +12095,32 @@ if (
         ).length;
 
 
-    // ==========================================
-    // TOTAL
-    // ==========================================
+ // ==========================================
+// LEAVE DATE = NO ATTENDANCE CALCULATION
+// ==========================================
 
-    const total =
-        filteredStudents.length;
+const isSelectedDateLeave =
+    await checkAttendanceLeaveDate(
+        selectedDate
+    );
 
+// ==========================================
+// TOTAL
+// ==========================================
 
-    // ==========================================
-    // ATTENDANCE RATE
-    // ==========================================
+const total =
+    isSelectedDateLeave
+        ? 0
+        : filteredStudents.length;
 
-    const rate =
-        total > 0
+// ==========================================
+// ATTENDANCE RATE
+// ==========================================
+
+const rate =
+    isSelectedDateLeave
+        ? 0
+        : total > 0
             ? Math.round(
                 (
                     present /
@@ -12116,8 +12128,6 @@ if (
                 ) * 100
             )
             : 0;
-
-
     // ==========================================
     // UPDATE UI
     // ==========================================
