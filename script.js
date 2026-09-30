@@ -26425,6 +26425,43 @@ if (
 
 if (teacherEditingResultId) {
 
+    // =========================================
+    // LOAD OLD RESULT FOR AUDIT
+    // =========================================
+
+    const {
+        data: oldResult,
+        error: oldResultError
+    } =
+        await supabaseClient
+            .from("results")
+            .select("*")
+            .eq(
+                "id",
+                teacherEditingResultId
+            )
+            .maybeSingle();
+
+    if (oldResultError) {
+
+        console.error(
+            "OLD RESULT LOAD ERROR:",
+            oldResultError
+        );
+
+        alert(
+            "Unable to load old result before update.\n\n" +
+            oldResultError.message
+        );
+
+        return;
+    }
+
+
+    // =========================================
+    // UPDATE RESULT
+    // =========================================
+
     const {
         error
     } =
@@ -26435,6 +26472,7 @@ if (teacherEditingResultId) {
                 "id",
                 teacherEditingResultId
             );
+
 
     if (error) {
 
@@ -26451,6 +26489,34 @@ if (teacherEditingResultId) {
         return;
 
     }
+
+
+    // =========================================
+    // CREATE AUDIT LOG
+    // =========================================
+
+    await createAuditLog({
+
+        module:
+            "Results",
+
+        action:
+            "UPDATE",
+
+        recordId:
+            teacherEditingResultId,
+
+        oldData:
+            oldResult,
+
+        newData:
+            record,
+
+        description:
+            "Result updated"
+
+    });
+
 
     savedCount++;
 
@@ -26513,37 +26579,101 @@ if (teacherEditingResultId) {
 
                 if (existingResult) {
 
-                    const {
-                        error
-                    } =
-                        await supabaseClient
-                            .from("results")
-                            .update(
-                                record
-                            )
-                            .eq(
-                                "id",
-                                existingResult.id
-                            );
+    // =========================================
+    // LOAD OLD RESULT FOR AUDIT
+    // =========================================
+
+    const {
+        data: oldResult,
+        error: oldResultError
+    } =
+        await supabaseClient
+            .from("results")
+            .select("*")
+            .eq(
+                "id",
+                existingResult.id
+            )
+            .maybeSingle();
 
 
-                    if (error) {
+    if (oldResultError) {
 
-                        console.error(
-                            "Result update error:",
-                            error
-                        );
+        console.error(
+            "OLD RESULT LOAD ERROR:",
+            oldResultError
+        );
 
-                        alert(
-                            "Result update failed.\n\n" +
-                            error.message
-                        );
+        alert(
+            "Unable to load old result before update.\n\n" +
+            oldResultError.message
+        );
 
-                        return;
-                    }
+        return;
+    }
 
-                }
 
+    // =========================================
+    // UPDATE EXISTING RESULT
+    // =========================================
+
+    const {
+        error
+    } =
+        await supabaseClient
+            .from("results")
+            .update(
+                record
+            )
+            .eq(
+                "id",
+                existingResult.id
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Result update error:",
+            error
+        );
+
+        alert(
+            "Result update failed.\n\n" +
+            error.message
+        );
+
+        return;
+    }
+
+
+    // =========================================
+    // CREATE AUDIT LOG
+    // =========================================
+
+    await createAuditLog({
+
+        module:
+            "Results",
+
+        action:
+            "UPDATE",
+
+        recordId:
+            existingResult.id,
+
+        oldData:
+            oldResult,
+
+        newData:
+            record,
+
+        description:
+            "Result updated"
+
+    });
+
+}
 
                 // =================================
                 // INSERT NEW RESULT
