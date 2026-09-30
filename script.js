@@ -16889,12 +16889,20 @@ editButton.addEventListener(
             notice.target_role || "";
 
 
-        document.getElementById(
-            "adminNoticeDate"
-        ).value =
-            notice.created_at
-                ? notice.created_at.slice(0, 10)
-                : "";
+       document.getElementById(
+    "adminNoticeDate"
+).value =
+    notice.notice_date ||
+    (
+        notice.created_at
+            ? notice.created_at.slice(0, 10)
+            : ""
+    );
+
+document.getElementById(
+    "adminNoticeExpiryDate"
+).value =
+    notice.expiry_date || "";
 
 
         document.getElementById(
