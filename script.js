@@ -16159,6 +16159,12 @@ const noticeId =
     // ==========================================
 
 const noticeRecord = {
+    ...(noticeId
+        ? {
+            id: noticeId
+        }
+        : {}),
+
     title: title,
 
     message: description,
@@ -16168,26 +16174,17 @@ const noticeRecord = {
             ? "Class:" + selectedClass
             : audience,
 
-    expiry_date: date,
+    notice_date: date,
 
-    created_at:
-        new Date().toISOString()
+    expiry_date: expiryDate,
+
+    ...(noticeId
+        ? {}
+        : {
+            created_at:
+                new Date().toISOString()
+        })
 };
-
-    const {
-        data,
-        error
-    } =
-        await supabaseClient
-            .from("notices")
-            .upsert(
-                noticeRecord,
-                {
-                    onConflict:
-                        "id"
-                }
-            )
-            .select();
 
 
     // ==========================================
