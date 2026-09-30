@@ -17,6 +17,131 @@ const supabaseClient =
 console.log("EduPortal Supabase connected ✅");
 
 // =====================================================
+// EDUPORTAL - AUDIT LOG HELPER
+// =====================================================
+
+async function createAuditLog({
+    module,
+    action,
+    recordId = null,
+    oldData = null,
+    newData = null,
+    description = ""
+}) {
+
+    try {
+
+        const role =
+            localStorage.getItem(
+                "loggedInRole"
+            ) || "";
+
+        let user = null;
+
+        if (role === "administrator") {
+
+            user =
+                JSON.parse(
+                    localStorage.getItem(
+                        "adminAccount"
+                    )
+                ) || null;
+
+        }
+        else if (role === "teacher") {
+
+            user =
+                JSON.parse(
+                    localStorage.getItem(
+                        "loggedInTeacher"
+                    )
+                ) || null;
+
+        }
+        else if (role === "student") {
+
+            user =
+                JSON.parse(
+                    localStorage.getItem(
+                        "loggedInStudent"
+                    )
+                ) || null;
+
+        }
+
+
+        const auditRecord = {
+
+            user_id:
+                user?.id
+                    ? String(user.id)
+                    : null,
+
+            user_name:
+                user?.name ||
+                user?.full_name ||
+                user?.username ||
+                "Unknown User",
+
+            user_role:
+                role || "unknown",
+
+            module:
+                module,
+
+            action:
+                action,
+
+            record_id:
+                recordId !== null &&
+                recordId !== undefined
+                    ? String(recordId)
+                    : null,
+
+            old_data:
+                oldData,
+
+            new_data:
+                newData,
+
+            description:
+                description
+
+        };
+
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .from("audit_logs")
+                .insert(
+                    auditRecord
+                );
+
+
+        if (error) {
+
+            console.error(
+                "AUDIT LOG ERROR:",
+                error
+            );
+
+        }
+
+    }
+    catch (error) {
+
+        console.error(
+            "AUDIT LOGGER FAILED:",
+            error
+        );
+
+    }
+
+}
+
+// =====================================================
 // CLASS + SECTION DISPLAY HELPER
 // =====================================================
 
