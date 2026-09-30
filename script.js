@@ -16253,6 +16253,10 @@ if (resetNoticeClassGroup) {
         "adminNoticeDate"
     ).value = "";
 
+    document.getElementById(
+    "adminNoticeExpiryDate"
+).value = "";
+
 
     document.getElementById(
         "adminNoticeDescription"
