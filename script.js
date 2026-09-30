@@ -26679,37 +26679,68 @@ if (teacherEditingResultId) {
                 // INSERT NEW RESULT
                 // =================================
 
-                else {
+              else {
 
-                    const {
-                        error
-                    } =
-                        await supabaseClient
-                            .from("results")
-                            .insert([
-                                record
-                            ]);
+    // =========================================
+    // INSERT NEW RESULT
+    // =========================================
 
-
-                    if (error) {
-
-                        console.error(
-                            "Result insert error:",
-                            error
-                        );
-
-                        alert(
-                            "Result save failed.\n\n" +
-                            error.message
-                        );
-
-                        return;
-                    }
-
-                }
+    const {
+        data: insertedResult,
+        error
+    } =
+        await supabaseClient
+            .from("results")
+            .insert([
+                record
+            ])
+            .select()
+            .single();
 
 
-                savedCount++;
+    if (error) {
+
+        console.error(
+            "Result insert error:",
+            error
+        );
+
+        alert(
+            "Result save failed.\n\n" +
+            error.message
+        );
+
+        return;
+    }
+
+
+    // =========================================
+    // CREATE AUDIT LOG
+    // =========================================
+
+    await createAuditLog({
+
+        module:
+            "Results",
+
+        action:
+            "INSERT",
+
+        recordId:
+            insertedResult?.id || null,
+
+        oldData:
+            null,
+
+        newData:
+            insertedResult || record,
+
+        description:
+            "New result added"
+
+    });
+
+}                savedCount++;
 
             }
 
