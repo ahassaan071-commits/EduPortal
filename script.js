@@ -12100,6 +12100,21 @@ const isSelectedDateLeave =
     );
 
 // ==========================================
+// LEAVE DATE = ALL ATTENDANCE COUNTS ZERO
+// ==========================================
+
+const displayPresent =
+    isSelectedDateLeave
+        ? 0
+        : present;
+
+const displayAbsent =
+    isSelectedDateLeave
+        ? 0
+        : absent;
+
+
+// ==========================================
 // TOTAL
 // ==========================================
 
@@ -12107,6 +12122,7 @@ const total =
     isSelectedDateLeave
         ? 0
         : filteredStudents.length;
+
 
 // ==========================================
 // ATTENDANCE RATE
@@ -12157,15 +12173,15 @@ const rate =
 
     if (presentElement) {
 
-        presentElement.textContent =
-            present;
+       presentElement.textContent =
+            displayPresent;
     }
 
 
     if (absentElement) {
 
         absentElement.textContent =
-            absent;
+            displayAbsent;
     }
 
 
