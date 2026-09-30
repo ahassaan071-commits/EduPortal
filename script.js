@@ -14273,6 +14273,8 @@ async function generateMonthlyStudentFees() {
                     });
 
 
+
+                    
             if (feeInsertError) {
 
                 console.error(
@@ -14283,6 +14285,42 @@ async function generateMonthlyStudentFees() {
                 continue;
             }
 
+
+// ==========================================
+// AUDIT LOG — AUTO MONTHLY FEE
+// ==========================================
+
+await createAuditLog({
+    module: "Fees",
+    action: "AUTO_GENERATE",
+    recordId:
+        "AUTO-" +
+        student.student_id +
+        "-" +
+        feePeriod,
+
+    oldData: null,
+
+    newData: {
+        student_id: student.id,
+        student_code: student.student_id,
+        student_name: student.name,
+        student_class: student.student_class,
+        section: student.section,
+        month: currentMonth,
+        fee_period: feePeriod,
+        fee_generated_date: pakistanDate,
+        fee_amount: totalPayable,
+        paid_amount: 0,
+        remaining_amount: totalPayable,
+        due_date: dueDate,
+        status: "Unpaid",
+        fee_source: "Auto - Monthly"
+    },
+
+    description:
+        `Automatic monthly fee generated for ${student.name} - ${currentMonth} ${currentYear}`
+});
 
             console.log(
                 "Monthly fee generated:",
