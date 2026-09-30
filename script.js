@@ -51,6 +51,78 @@ function escapeHtml(value) {
             "&#039;"
         );
 }
+
+// =========================================================
+// EDU PORTAL — HOLIDAY / LEAVE HELPERS
+// =========================================================
+
+let currentAttendanceIsLeave = false;
+
+async function checkAttendanceLeaveDate(dateValue) {
+
+    try {
+
+        if (!dateValue) {
+            return false;
+        }
+
+        // Saturday / Sunday
+        const date =
+            new Date(
+                `${dateValue}T00:00:00`
+            );
+
+        const day =
+            date.getDay();
+
+        if (
+            day === 0 ||
+            day === 6
+        ) {
+            return true;
+        }
+
+        // Official holiday from Supabase
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("holidays")
+                .select("id")
+                .eq(
+                    "holiday_date",
+                    dateValue
+                )
+                .eq(
+                    "is_active",
+                    true
+                )
+                .maybeSingle();
+
+        if (error) {
+
+            console.error(
+                "HOLIDAY LOOKUP ERROR:",
+                error
+            );
+
+            return false;
+        }
+
+        return !!data;
+
+    }
+    catch (error) {
+
+        console.error(
+            "LEAVE DATE CHECK ERROR:",
+            error
+        );
+
+        return false;
+    }
+}
 // =====================================================
 // EDUPORTAL - GLOBAL TOAST NOTIFICATION
 // =====================================================
@@ -10849,26 +10921,63 @@ async function autoMarkAbsentAfterNoon() {
         const currentHour =
             now.getHours();
 
-        const currentMinute =
-            now.getMinutes();
+       const currentMinute =
+    now.getMinutes();
 
-        // -----------------------------------------
-        // BEFORE 12:00 PM
-        // -----------------------------------------
+// -----------------------------------------
+// TODAY DATE
+// -----------------------------------------
 
-        if (
-            currentHour < 12
-        ) {
-            return;
-        }
+const today =
+    getStudentAttendanceDate();
 
-        // -----------------------------------------
-        // TODAY DATE
-        // -----------------------------------------
+// -----------------------------------------
+// WEEKEND / HOLIDAY = NO AUTO ABSENT
+// -----------------------------------------
 
-        const today =
-            getStudentAttendanceDate();
+const isLeaveDate =
+    await checkAttendanceLeaveDate(
+        today
+    );
 
+if (isLeaveDate) {
+
+    console.log(
+        "LEAVE DATE DETECTED:",
+        today,
+        "— Auto Absent skipped."
+    );
+
+    return;
+}
+
+// -----------------------------------------
+// HOLIDAY = NO AUTO ABSENT
+// -----------------------------------------
+
+if (holiday) {
+
+    console.log(
+        "HOLIDAY DETECTED:",
+        holiday.title,
+        "— Auto Absent skipped."
+    );
+
+    return;
+}
+
+// -----------------------------------------
+// BEFORE 12:00 PM
+// NORMAL WORKING DAY ONLY
+// -----------------------------------------
+
+if (
+    currentHour < 12
+) {
+    return;
+}
+
+     
         // -----------------------------------------
         // GET ALL REGISTERED STUDENTS
         // -----------------------------------------
@@ -11036,6 +11145,7 @@ async function renderAttendanceTable() {
         );
 
     await autoMarkAbsentAfterNoon();
+
 
     if (!tableBody) {
         return;
@@ -11306,6 +11416,11 @@ const selectedDate =
     attendanceDateFilter.value
         ? attendanceDateFilter.value
         : getTodayDate();
+
+        const isLeaveDate =
+    await checkAttendanceLeaveDate(
+        selectedDate
+    );
    // ==========================================
 // GET ATTENDANCE FROM SUPABASE
 // ==========================================
@@ -11651,7 +11766,7 @@ if (
 
     <td>
 
-        ${
+                ${
             attendanceRecord &&
             attendanceRecord.status
                 ? `
@@ -11661,12 +11776,19 @@ if (
                         ${attendanceRecord.status}
                     </span>
                   `
-                : `
-                    <span
-                        class="attendance-status-badge pending">
-                         Not Marked
-                    </span>
-                  `
+                : isLeaveDate
+                    ? `
+                        <span
+                            class="attendance-status-badge leave">
+                            Leave
+                        </span>
+                      `
+                    : `
+                        <span
+                            class="attendance-status-badge pending">
+                            Not Marked
+                        </span>
+                      `
         }
 
     </td>
@@ -12977,16 +13099,31 @@ async function updateStudentAttendanceSummary() {
     // TOTAL CLASSES
     // ==========================================
 
-    const totalClasses =
-        records.length;
+    const attendanceRecordsOnly =
+    records.filter(
+        function(record) {
 
+            const status =
+                String(
+                    record.status || ""
+                )
+                .trim()
+                .toLowerCase();
 
+            return (
+                status !== "leave"
+            );
+        }
+    );
+
+const totalClasses =
+    attendanceRecordsOnly.length;
     // ==========================================
     // PRESENT CLASSES
     // ==========================================
 
     const presentClasses =
-        records.filter(
+        attendanceRecordsOnly.filter(
             function(record) {
 
                 return String(
@@ -13003,7 +13140,7 @@ async function updateStudentAttendanceSummary() {
     // ==========================================
 
     const absentClasses =
-        records.filter(
+        attendanceRecordsOnly.filter(
             function(record) {
 
                 return String(
@@ -21436,8 +21573,13 @@ return (
                 );
 
             const status =
-                attendance?.status ||
-                "Absent";
+    attendance?.status ||
+    (
+        typeof isTodayHoliday === "function" &&
+        isTodayHoliday
+            ? "Leave"
+            : "Absent"
+    );
 
             const normalizedStatus =
                 String(status)
@@ -36104,24 +36246,75 @@ async function loadStudentTodayAttendanceTable(
 // ==========================================
 
 const pakistanTime =
+
     new Date().toLocaleString(
+
         "en-US",
+
         {
             timeZone: "Asia/Karachi"
         }
+
     );
 
 const pakistanNow =
+
     new Date(pakistanTime);
 
 const today =
+
     getStudentAttendanceDate();
 
 let historyRecords =
+
     Array.isArray(records)
+
         ? [...records]
+
         : [];
 
+// ==========================================
+// HOLIDAY / WEEKEND = LEAVE
+// ==========================================
+
+const isTodayLeave =
+    await checkAttendanceLeaveDate(
+        today
+    );
+
+if (isTodayLeave) {
+
+    const todayRecord =
+        historyRecords.find(
+            function(record) {
+
+                return String(
+                    record.attendance_date || ""
+                ) === String(today);
+
+            }
+        );
+
+    // If no real attendance exists,
+    // show virtual Leave row only.
+    if (!todayRecord) {
+
+        historyRecords.unshift({
+
+            attendance_date:
+                today,
+
+            status:
+                "Leave",
+
+            check_in_time:
+                null
+
+        });
+
+    }
+
+}
 
 // Before 12 PM:
 // Today's Absent record must NOT appear.
