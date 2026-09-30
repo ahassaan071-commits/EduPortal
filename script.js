@@ -16185,7 +16185,23 @@ const noticeRecord = {
                 new Date().toISOString()
         })
 };
+// ==========================================
+// SAVE NOTICE TO SUPABASE
+// ==========================================
 
+const {
+    data,
+    error
+} =
+    await supabaseClient
+        .from("notices")
+        .upsert(
+            noticeRecord,
+            {
+                onConflict: "id"
+            }
+        )
+        .select();
 
     // ==========================================
     // ERROR
