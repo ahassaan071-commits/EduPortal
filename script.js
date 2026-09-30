@@ -15713,6 +15713,54 @@ async function openFeePaymentForm(recordId) {
                     "Saving...";
 
 
+
+// ==========================================
+// LOAD OLD FEE FOR AUDIT
+// ==========================================
+
+const {
+    data: oldFeeRecord,
+    error: oldFeeError
+} =
+    await supabaseClient
+        .from("fee_records")
+        .select("*")
+        .eq(
+            "id",
+            String(recordId)
+        )
+        .maybeSingle();
+
+
+if (oldFeeError) {
+
+    console.error(
+        "OLD FEE LOAD ERROR:",
+        oldFeeError
+    );
+
+    validation.textContent =
+        "Unable to load old fee record.\n\n" +
+        oldFeeError.message;
+
+    validation.style.display =
+        "block";
+
+    return;
+}
+
+
+if (!oldFeeRecord) {
+
+    validation.textContent =
+        "Fee record was not found.";
+
+    validation.style.display =
+        "block";
+
+    return;
+}
+
                 // SUPABASE UPDATE
 
                 const {
