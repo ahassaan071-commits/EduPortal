@@ -16729,7 +16729,7 @@ noticeTableBody.innerHTML = `
 
 <tr>
 
-<td colspan="4">
+<td colspan="5">
 
 <div class="admin-empty-state">
 
@@ -16789,6 +16789,12 @@ notice.audience
 <td>
 ${formatNoticeDate(
 notice.date
+)}
+</td>
+
+<td>
+${formatNoticeDate(
+notice.expiryDate
 )}
 </td>
 
