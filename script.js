@@ -7187,6 +7187,54 @@ async function deleteResult(resultId) {
 
     try {
 
+        // ==========================================
+        // LOAD RESULT BEFORE DELETE
+        // ==========================================
+
+        const {
+            data: oldResult,
+            error: oldResultError
+        } =
+            await supabaseClient
+                .from("results")
+                .select("*")
+                .eq(
+                    "id",
+                    resultId
+                )
+                .maybeSingle();
+
+
+        if (oldResultError) {
+
+            console.error(
+                "OLD RESULT LOAD ERROR:",
+                oldResultError
+            );
+
+            alert(
+                "Unable to load result before delete.\n\n" +
+                oldResultError.message
+            );
+
+            return;
+        }
+
+
+        if (!oldResult) {
+
+            alert(
+                "Result was not found."
+            );
+
+            return;
+        }
+
+
+        // ==========================================
+        // DELETE RESULT
+        // ==========================================
+
         const {
             error
         } =
@@ -7214,6 +7262,37 @@ async function deleteResult(resultId) {
             return;
         }
 
+
+        // ==========================================
+        // CREATE AUDIT LOG
+        // ==========================================
+
+        await createAuditLog({
+
+            module:
+                "Results",
+
+            action:
+                "DELETE",
+
+            recordId:
+                resultId,
+
+            oldData:
+                oldResult,
+
+            newData:
+                null,
+
+            description:
+                "Result deleted"
+
+        });
+
+
+        // ==========================================
+        // REFRESH RESULTS TABLE
+        // ==========================================
 
         if (
             typeof renderResultsTable ===
