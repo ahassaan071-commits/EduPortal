@@ -10951,20 +10951,6 @@ if (isLeaveDate) {
     return;
 }
 
-// -----------------------------------------
-// HOLIDAY = NO AUTO ABSENT
-// -----------------------------------------
-
-if (holiday) {
-
-    console.log(
-        "HOLIDAY DETECTED:",
-        holiday.title,
-        "— Auto Absent skipped."
-    );
-
-    return;
-}
 
 // -----------------------------------------
 // BEFORE 12:00 PM
