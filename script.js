@@ -16,6 +16,42 @@ const supabaseClient =
 
 console.log("EduPortal Supabase connected ✅");
 
+// ==========================================
+// HTML ESCAPE HELPER
+// ==========================================
+
+function escapeHtml(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+        return "";
+    }
+
+    return String(value)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+}
+
 // =====================================================
 // EDUPORTAL - AUDIT LOG HELPER
 // =====================================================
@@ -36628,7 +36664,8 @@ window.showAdminModuleDirect = function (module) {
     assignments: "adminAssignmentsSection",
     notices: "adminNoticesSection",
     users: "adminUsersStudentsSection",
-    settings: "adminSettingsSection"
+    settings: "adminSettingsSection",
+    auditLogs: "adminAuditLogsSection",
 
 };
 
@@ -36854,6 +36891,18 @@ window.showAdminModuleDirect = function (module) {
                     await loadEmailSettings();
                 }
 
+if (
+    module ===
+    "auditLogs" &&
+    typeof renderAdminAuditLogs ===
+    "function"
+) {
+
+    await renderAdminAuditLogs();
+
+}
+
+
             }
             catch (error) {
 
@@ -36870,6 +36919,476 @@ window.showAdminModuleDirect = function (module) {
     );
 
 };
+
+// ==========================================
+// ADMIN AUDIT LOGS
+// SUPABASE LIVE DATA
+// ==========================================
+
+async function renderAdminAuditLogs() {
+
+    const tableBody =
+        document.getElementById(
+            "adminAuditLogsTableBody"
+        );
+
+    const entriesText =
+        document.getElementById(
+            "auditLogsEntriesText"
+        );
+
+    if (!tableBody) {
+        return;
+    }
+
+
+    // ==========================================
+    // LOADING
+    // ==========================================
+
+    tableBody.innerHTML = `
+        <tr>
+            <td
+                colspan="8"
+                style="
+                    text-align:center;
+                    padding:30px;
+                "
+            >
+                Loading audit logs...
+            </td>
+        </tr>
+    `;
+
+
+    // ==========================================
+    // SUPABASE CHECK
+    // ==========================================
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+
+        tableBody.innerHTML = `
+            <tr>
+                <td
+                    colspan="8"
+                    style="
+                        text-align:center;
+                        padding:30px;
+                    "
+                >
+                    ❌ Supabase connection is missing.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    // ==========================================
+    // LOAD AUDIT LOGS
+    // ==========================================
+
+    const {
+        data: auditLogs,
+        error
+    } =
+        await supabaseClient
+            .from("audit_logs")
+            .select("*")
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+    // ==========================================
+    // ERROR
+    // ==========================================
+
+    if (error) {
+
+        console.error(
+            "AUDIT LOG LOAD ERROR:",
+            error
+        );
+
+        tableBody.innerHTML = `
+            <tr>
+                <td
+                    colspan="8"
+                    style="
+                        text-align:center;
+                        padding:30px;
+                    "
+                >
+
+                    ❌ Unable to load audit logs.
+
+                    <br><br>
+
+                    ${error.message}
+
+                </td>
+            </tr>
+        `;
+
+        if (entriesText) {
+            entriesText.textContent =
+                "Showing 0 audit logs";
+        }
+
+        return;
+    }
+
+
+    // ==========================================
+    // STORE DATA
+    // ==========================================
+
+    window.adminAuditLogsData =
+        auditLogs || [];
+
+
+    // ==========================================
+    // APPLY FILTERS
+    // ==========================================
+
+    filterAdminAuditLogs();
+
+
+    // ==========================================
+    // SEARCH EVENT
+    // ==========================================
+
+    const searchInput =
+        document.getElementById(
+            "auditLogsSearch"
+        );
+
+    const moduleFilter =
+        document.getElementById(
+            "auditLogsModuleFilter"
+        );
+
+    const actionFilter =
+        document.getElementById(
+            "auditLogsActionFilter"
+        );
+
+    const clearButton =
+        document.getElementById(
+            "clearAuditLogsFilters"
+        );
+
+
+    if (searchInput) {
+
+        searchInput.oninput =
+            filterAdminAuditLogs;
+
+    }
+
+
+    if (moduleFilter) {
+
+        moduleFilter.onchange =
+            filterAdminAuditLogs;
+
+    }
+
+
+    if (actionFilter) {
+
+        actionFilter.onchange =
+            filterAdminAuditLogs;
+
+    }
+
+
+    if (clearButton) {
+
+        clearButton.onclick =
+            function () {
+
+                if (searchInput) {
+                    searchInput.value = "";
+                }
+
+                if (moduleFilter) {
+                    moduleFilter.value = "all";
+                }
+
+                if (actionFilter) {
+                    actionFilter.value = "all";
+                }
+
+                filterAdminAuditLogs();
+
+            };
+
+    }
+
+}
+
+
+// ==========================================
+// FILTER AUDIT LOGS
+// ==========================================
+
+function filterAdminAuditLogs() {
+
+    const tableBody =
+        document.getElementById(
+            "adminAuditLogsTableBody"
+        );
+
+    const entriesText =
+        document.getElementById(
+            "auditLogsEntriesText"
+        );
+
+    if (!tableBody) {
+        return;
+    }
+
+
+    const logs =
+        window.adminAuditLogsData || [];
+
+
+    const searchInput =
+        document.getElementById(
+            "auditLogsSearch"
+        );
+
+    const moduleFilter =
+        document.getElementById(
+            "auditLogsModuleFilter"
+        );
+
+    const actionFilter =
+        document.getElementById(
+            "auditLogsActionFilter"
+        );
+
+
+    const searchText =
+        (
+            searchInput?.value ||
+            ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+    const selectedModule =
+        moduleFilter?.value ||
+        "all";
+
+
+    const selectedAction =
+        actionFilter?.value ||
+        "all";
+
+
+    // ==========================================
+    // FILTER
+    // ==========================================
+
+    const filteredLogs =
+        logs.filter(
+            function (log) {
+
+                const searchableText =
+                    [
+                        log.user_name,
+                        log.user_role,
+                        log.module,
+                        log.action,
+                        log.record_id,
+                        log.description
+                    ]
+                    .filter(Boolean)
+                    .join(" ")
+                    .toLowerCase();
+
+
+                const matchesSearch =
+                    !searchText ||
+                    searchableText.includes(
+                        searchText
+                    );
+
+
+                const matchesModule =
+                    selectedModule ===
+                    "all" ||
+                    log.module ===
+                    selectedModule;
+
+
+                const matchesAction =
+                    selectedAction ===
+                    "all" ||
+                    log.action ===
+                    selectedAction;
+
+
+                return (
+                    matchesSearch &&
+                    matchesModule &&
+                    matchesAction
+                );
+
+            }
+        );
+
+
+    // ==========================================
+    // EMPTY
+    // ==========================================
+
+    if (
+        filteredLogs.length ===
+        0
+    ) {
+
+        tableBody.innerHTML = `
+            <tr>
+
+                <td
+                    colspan="8"
+                    style="
+                        text-align:center;
+                        padding:35px;
+                    "
+                >
+
+                    📋 No audit logs found.
+
+                </td>
+
+            </tr>
+        `;
+
+        if (entriesText) {
+
+            entriesText.textContent =
+                "Showing 0 audit logs";
+
+        }
+
+        return;
+    }
+
+
+    // ==========================================
+    // RENDER TABLE
+    // ==========================================
+
+    tableBody.innerHTML =
+        filteredLogs
+            .map(
+                function (
+                    log,
+                    index
+                ) {
+
+                    const date =
+                        log.created_at
+                            ? new Date(
+                                log.created_at
+                            ).toLocaleString(
+                                "en-GB"
+                            )
+                            : "—";
+
+
+                    return `
+
+                        <tr>
+
+                            <td>
+                                ${index + 1}
+                            </td>
+
+                            <td>
+                                ${date}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(
+                                    log.user_name ||
+                                    "Unknown User"
+                                )}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(
+                                    log.user_role ||
+                                    "—"
+                                )}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(
+                                    log.module ||
+                                    "—"
+                                )}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(
+                                    log.action ||
+                                    "—"
+                                )}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(
+                                    log.record_id ||
+                                    "—"
+                                )}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(
+                                    log.description ||
+                                    "—"
+                                )}
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                }
+            )
+            .join("");
+
+
+    // ==========================================
+    // ENTRY COUNT
+    // ==========================================
+
+    if (entriesText) {
+
+        entriesText.textContent =
+            `Showing ${
+                filteredLogs.length
+            } of ${
+                logs.length
+            } audit logs`;
+
+    }
+
+}
 // ==========================================
 // ADMINISTRATOR LIVE DATE
 // ==========================================

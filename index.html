@@ -3386,6 +3386,12 @@ Administrator Dashboard
     onclick="setTimeout(function(){ window.showAdminModuleDirect('settings'); }, 0)">
     ⚙️ Settings
 </li>
+
+<li id="adminAuditLogsMenu"
+    onclick="setTimeout(function(){ window.showAdminModuleDirect('auditLogs'); }, 0)">
+    📋 Audit Logs
+</li>
+
 <li id="adminLogoutBtn">
 🚪 Logout
 </li>
@@ -5823,6 +5829,277 @@ SECURITY SETTINGS
 
 </div>
 </div>
+
+</div>
+
+
+<!-- ==========================================
+ADMIN AUDIT LOGS SECTION
+========================================== -->
+
+<div id="adminAuditLogsSection" style="display:none;">
+
+    <div class="admin-settings-container">
+
+        <!-- HEADER -->
+        <div class="admin-settings-header">
+
+            <div>
+
+                <h2>📋 Audit Logs</h2>
+
+                <p style="margin-top:6px;">
+                    Track administrator, teacher and student activities.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- FILTERS -->
+        <div class="admin-settings-card"
+             style="margin-bottom:20px;">
+
+            <div
+                style="
+                    display:grid;
+                    grid-template-columns:
+                        repeat(auto-fit,minmax(220px,1fr));
+                    gap:15px;
+                    align-items:end;
+                "
+            >
+
+                <!-- SEARCH -->
+                <div>
+
+                    <label
+                        style="
+                            display:block;
+                            margin-bottom:6px;
+                            font-weight:600;
+                        "
+                    >
+                        🔍 Search
+                    </label>
+
+                    <input
+                        type="text"
+                        id="auditLogsSearch"
+                        placeholder="Search user, module, action..."
+                        style="
+                            width:100%;
+                            padding:12px;
+                            border-radius:8px;
+                            border:1px solid #ddd;
+                        "
+                    >
+
+                </div>
+
+
+                <!-- MODULE FILTER -->
+                <div>
+
+                    <label
+                        style="
+                            display:block;
+                            margin-bottom:6px;
+                            font-weight:600;
+                        "
+                    >
+                        Module
+                    </label>
+
+                    <select
+                        id="auditLogsModuleFilter"
+                        style="
+                            width:100%;
+                            padding:12px;
+                            border-radius:8px;
+                            border:1px solid #ddd;
+                        "
+                    >
+
+                        <option value="all">
+                            All Modules
+                        </option>
+
+                        <option value="Results">
+                            Results
+                        </option>
+
+                        <option value="Fees">
+                            Fees
+                        </option>
+
+                        <option value="Students">
+                            Students
+                        </option>
+
+                        <option value="Teachers">
+                            Teachers
+                        </option>
+
+                        <option value="Attendance">
+                            Attendance
+                        </option>
+
+                        <option value="Assignments">
+                            Assignments
+                        </option>
+
+                        <option value="Notices">
+                            Notices
+                        </option>
+
+                        <option value="Users">
+                            User Management
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- ACTION FILTER -->
+                <div>
+
+                    <label
+                        style="
+                            display:block;
+                            margin-bottom:6px;
+                            font-weight:600;
+                        "
+                    >
+                        Action
+                    </label>
+
+                    <select
+                        id="auditLogsActionFilter"
+                        style="
+                            width:100%;
+                            padding:12px;
+                            border-radius:8px;
+                            border:1px solid #ddd;
+                        "
+                    >
+
+                        <option value="all">
+                            All Actions
+                        </option>
+
+                        <option value="INSERT">
+                            INSERT
+                        </option>
+
+                        <option value="UPDATE">
+                            UPDATE
+                        </option>
+
+                        <option value="DELETE">
+                            DELETE
+                        </option>
+
+                        <option value="AUTO_GENERATE">
+                            AUTO GENERATE
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- CLEAR -->
+                <div>
+
+                    <button
+                        type="button"
+                        id="clearAuditLogsFilters"
+                        style="
+                            width:100%;
+                            padding:12px;
+                            border:none;
+                            border-radius:8px;
+                            cursor:pointer;
+                        "
+                    >
+                        🔄 Clear Filters
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- TABLE -->
+        <div
+            class="admin-students-table-container"
+            style="overflow-x:auto;"
+        >
+
+            <table class="admin-students-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+
+                        <th>Date / Time</th>
+
+                        <th>User</th>
+
+                        <th>Role</th>
+
+                        <th>Module</th>
+
+                        <th>Action</th>
+
+                        <th>Record ID</th>
+
+                        <th>Description</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="adminAuditLogsTableBody">
+
+                    <tr>
+
+                        <td
+                            colspan="8"
+                            style="text-align:center;"
+                        >
+                            Loading audit logs...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- ENTRY COUNT -->
+        <div
+            id="auditLogsEntriesText"
+            style="
+                margin-top:15px;
+                font-weight:600;
+            "
+        >
+            Showing 0 audit logs
+        </div>
+
+    </div>
 
 </div>
 
