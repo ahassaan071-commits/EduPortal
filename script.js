@@ -16558,9 +16558,17 @@ notice.title || "",
         ),
 
 date:
-notice.created_at
-? notice.created_at
-.slice(0, 10)
+notice.notice_date
+? notice.notice_date
+: (
+    notice.created_at
+    ? notice.created_at.slice(0, 10)
+    : ""
+),
+
+expiryDate:
+notice.expiry_date
+? notice.expiry_date
 : "",
 
 description:
