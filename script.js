@@ -21442,7 +21442,19 @@ return (
         new Date().toLocaleDateString(
             "en-CA"
         );
+// ==========================================
+// SELECTED ATTENDANCE DATE LEAVE CHECK
+// ==========================================
 
+const teacherAttendanceDate =
+    dateInput && dateInput.value
+        ? dateInput.value
+        : getStudentAttendanceDate();
+
+const isLeaveDate =
+    await checkAttendanceLeaveDate(
+        teacherAttendanceDate
+    );
     // =========================================
     // STUDENT IDS
     // =========================================
@@ -21476,10 +21488,10 @@ return (
                     check_in_time,
                     check_out_time
                 `)
-                .eq(
-                    "attendance_date",
-                    today
-                )
+               .eq(
+    "attendance_date",
+    teacherAttendanceDate
+)
                 .in(
                     "student_id",
                     assignedStudentIds
