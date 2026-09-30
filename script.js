@@ -15815,7 +15815,47 @@ if (!oldFeeRecord) {
                     return;
                 }
 
+// ==========================================
+// CREATE AUDIT LOG — FEE PAYMENT UPDATE
+// ==========================================
 
+await createAuditLog({
+
+    module:
+        "Fees",
+
+    action:
+        "UPDATE",
+
+    recordId:
+        recordId,
+
+    oldData:
+        oldFeeRecord,
+
+    newData: {
+
+        paid_amount:
+            newPaidAmount,
+
+        remaining_amount:
+            newRemainingAmount,
+
+        status:
+            newStatus,
+
+        payment_method:
+            "Cash",
+
+        payment_date:
+            selectedDate
+
+    },
+
+    description:
+        "Fee payment updated"
+
+});
                 // CLOSE
 
                 closeModal();
