@@ -19830,45 +19830,61 @@ const todayAttendance =
         }
     );
 
+const realTodayAttendance =
+    todayAttendance.filter(
+        function (record) {
 
-            let present = 0;
-            let absent = 0;
+            const status =
+                String(
+                    record.status || ""
+                )
+                .trim()
+                .toLowerCase();
 
-
-            todayAttendance.forEach(
-                function (record) {
-
-                    const status =
-                        String(
-                            record.status || ""
-                        )
-                        .trim()
-                        .toLowerCase();
-
-
-                    if (
-                        status === "present" ||
-                        status === "p"
-                    ) {
-
-                        present++;
-
-                    }
-
-
-                    if (
-                        status === "absent" ||
-                        status === "a"
-                    ) {
-
-                        absent++;
-
-                    }
-
-                }
+            return (
+                status !== "leave"
             );
 
+        }
+    );
 
+
+let present = 0;
+let absent = 0;
+
+
+realTodayAttendance.forEach(
+    function (record) {
+
+        const status =
+            String(
+                record.status || ""
+            )
+            .trim()
+            .toLowerCase();
+
+
+        if (
+            status === "present" ||
+            status === "p"
+        ) {
+
+            present++;
+
+        }
+
+
+        if (
+            status === "absent" ||
+            status === "a"
+        ) {
+
+            absent++;
+
+        }
+
+    }
+);
             const attendanceTotal =
                 present + absent;
 
