@@ -41705,32 +41705,57 @@ const donutPercentage =
 // COUNT REAL ATTENDANCE
 // =========================================
 
+const attendanceRecordsOnly =
+    overviewRecords.filter(
+        function(record) {
+
+            const status =
+                String(
+                    record.status || ""
+                )
+                .trim()
+                .toLowerCase();
+
+            return (
+                status !== "leave"
+            );
+
+        }
+    );
+
+
 const totalAttendance =
-    overviewRecords.length;
+    attendanceRecordsOnly.length;
+
 
 const presentCount =
-   overviewRecords.filter(function(record) {
+    attendanceRecordsOnly.filter(
+        function(record) {
 
-        return String(
-            record.status || ""
-        )
-        .trim()
-        .toLowerCase() === "present";
+            return String(
+                record.status || ""
+            )
+            .trim()
+            .toLowerCase() ===
+            "present";
 
-    }).length;
+        }
+    ).length;
+
 
 const absentCount =
-    overviewRecords.filter(function(record) {
+    attendanceRecordsOnly.filter(
+        function(record) {
 
-        return String(
-            record.status || ""
-        )
-        .trim()
-        .toLowerCase() === "absent";
+            return String(
+                record.status || ""
+            )
+            .trim()
+            .toLowerCase() ===
+            "absent";
 
-    }).length;
-
-
+        }
+    ).length;
 
 
 // =========================================
