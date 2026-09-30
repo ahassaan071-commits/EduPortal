@@ -5115,11 +5115,35 @@ body.dark-mode .login-side-panel {
     left: 0;
     width: 260px;
     height: 100vh;
+        box-sizing: border-box;
+
+    overflow-y: auto;
+
+    overflow-x: hidden;
     padding: 28px 16px;
     background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
     color: white;
     z-index: 3000;
     box-shadow: 8px 0 30px rgba(0,0,0,.15);
+}
+
+/* Admin Sidebar Scrollbar */
+
+.admin-sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.admin-sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.admin-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.25);
+    border-radius: 10px;
+}
+
+.admin-sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.40);
 }
 
 .admin-sidebar h2 {
