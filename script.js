@@ -21584,11 +21584,10 @@ const isLeaveDate =
                     String(student.id)
                 );
 
-            const status =
+    const status =
     attendance?.status ||
     (
-        typeof isTodayHoliday === "function" &&
-        isTodayHoliday
+        isLeaveDate
             ? "Leave"
             : "Absent"
     );
@@ -21605,7 +21604,10 @@ const isLeaveDate =
                     : normalizedStatus ===
                       "late"
                         ? "late"
-                        : "absent";
+                        : normalizedStatus ===
+  "leave"
+    ? "leave"
+    : "absent";
 
             const checkInTime =
                 attendance?.check_in_time
