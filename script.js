@@ -16043,10 +16043,15 @@ async function () {
     ).value
     : "";
 
-    const date =
-        document.getElementById(
-            "adminNoticeDate"
-        ).value;
+   const date =
+    document.getElementById(
+        "adminNoticeDate"
+    ).value;
+
+const expiryDate =
+    document.getElementById(
+        "adminNoticeExpiryDate"
+    ).value;
 
     const description =
         document.getElementById(
@@ -16102,6 +16107,20 @@ if (
 
         return;
     }
+
+if (!expiryDate) {
+    alert(
+        "Please select expiry date."
+    );
+    return;
+}
+
+if (expiryDate < date) {
+    alert(
+        "Expiry date cannot be before notice date."
+    );
+    return;
+}
 
 
     if (!description) {
