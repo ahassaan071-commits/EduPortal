@@ -17,16 +17,16 @@ const supabaseClient =
 console.log("EduPortal Supabase connected ✅");
 
 // =====================================================
-// EDUPORTAL - FINAL FULL SCREEN LAYOUT
+// EDUPORTAL - FINAL DASHBOARD UI SYSTEM
+// CHATGPT STYLE FULL SCREEN LAYOUT
 // ADMIN + TEACHER + STUDENT
-// ONE MAIN SCROLLBAR
 // =====================================================
 
 (function () {
 
     if (
         document.getElementById(
-            "eduPortalFinalLayout"
+            "eduPortalFinalDashboardUI"
         )
     ) {
         return;
@@ -36,12 +36,12 @@ console.log("EduPortal Supabase connected ✅");
         document.createElement("style");
 
     style.id =
-        "eduPortalFinalLayout";
+        "eduPortalFinalDashboardUI";
 
     style.textContent = `
 
 /* =====================================================
-   GLOBAL
+   GLOBAL RESET
 ===================================================== */
 
 html,
@@ -50,28 +50,43 @@ body {
     width:100%;
     height:100%;
 
-    margin:0;
-    padding:0;
+    margin:0 !important;
+    padding:0 !important;
 
     overflow:hidden !important;
 
 }
 
+*,
+*::before,
+*::after {
+
+    box-sizing:border-box;
+
+}
+
 
 /* =====================================================
-   ADMIN DASHBOARD
+   ADMIN
 ===================================================== */
 
 #adminDashboard {
 
     position:fixed !important;
 
-    inset:0 !important;
+    top:0 !important;
+    left:0 !important;
+    right:0 !important;
+    bottom:0 !important;
 
     width:100vw !important;
     height:100vh !important;
 
-    min-height:100vh !important;
+    min-width:0 !important;
+    min-height:0 !important;
+
+    margin:0 !important;
+    padding:0 !important;
 
     display:flex !important;
 
@@ -80,133 +95,155 @@ body {
 }
 
 
-/* =====================================================
-   ADMIN SIDEBAR
-===================================================== */
+/* ADMIN SIDEBAR */
 
 #adminDashboard .admin-sidebar {
 
-    flex:0 0 300px;
+    position:relative !important;
 
-    width:300px;
+    flex:0 0 300px !important;
 
-    height:100vh;
-
-    box-sizing:border-box;
-
-    overflow:hidden;
-
-    display:flex;
-
-    flex-direction:column;
-
-}
-
-
-/* ADMIN LOGO */
-
-#adminDashboard .admin-sidebar h2 {
-
-    flex-shrink:0;
-
-}
-
-
-/* ADMIN MENU */
-
-#adminDashboard .admin-sidebar > ul {
-
-    flex:1;
-
-    min-height:0;
-
-    margin:0;
-
-    padding:10px 0 14px;
-
-    display:flex;
-
-    flex-direction:column;
-
-    overflow:hidden;
-
-}
-
-
-/* ADMIN MENU ITEMS */
-
-#adminDashboard .admin-sidebar > ul > li {
-
-    flex-shrink:0;
-
-}
-
-
-/* ADMIN LOGOUT ALWAYS AT BOTTOM */
-
-#adminDashboard #adminLogoutBtn {
-
-    margin-top:auto !important;
-
-    flex-shrink:0 !important;
-
-}
-
-
-/* =====================================================
-   ADMIN MAIN CONTENT
-===================================================== */
-
-#adminDashboard .admin-main-content {
-
-    flex:1;
-
-    min-width:0;
-
-    height:100vh;
-
-    box-sizing:border-box;
-
-    overflow-y:auto;
-
-    overflow-x:auto;
-
-    scrollbar-gutter:stable;
-
-}
-
-
-/* =====================================================
-   TEACHER DASHBOARD
-===================================================== */
-
-#teacherDashboard {
-
-    position:fixed !important;
-
-    inset:0 !important;
-
-    width:100vw !important;
+    width:300px !important;
     height:100vh !important;
 
-    min-height:100vh !important;
+    min-height:0 !important;
+
+    margin:0 !important;
+
+    display:flex !important;
+    flex-direction:column !important;
 
     overflow:hidden !important;
 
 }
 
 
-/* TEACHER MAIN CONTENT */
+/* ADMIN MENU AREA */
 
-#teacherDashboard .teacher-main-content {
+#adminDashboard .admin-sidebar > ul {
 
-    height:100vh;
+    flex:1 1 auto !important;
 
-    min-width:0;
+    min-height:0 !important;
 
-    overflow-y:auto;
+    margin:0 !important;
 
-    overflow-x:auto;
+    padding:10px 0 12px !important;
+
+    overflow-y:auto !important;
+    overflow-x:hidden !important;
+
+}
+
+
+/* ADMIN MENU SCROLLBAR */
+
+#adminDashboard .admin-sidebar > ul {
+
+    scrollbar-width:thin;
+
+    scrollbar-color:
+        #8993a3
+        transparent;
+
+}
+
+#adminDashboard .admin-sidebar > ul::-webkit-scrollbar {
+
+    width:7px;
+
+}
+
+#adminDashboard .admin-sidebar > ul::-webkit-scrollbar-track {
+
+    background:transparent;
+
+}
+
+#adminDashboard .admin-sidebar > ul::-webkit-scrollbar-thumb {
+
+    background:#8993a3;
+
+    border-radius:10px;
+
+}
+
+#adminDashboard .admin-sidebar > ul::-webkit-scrollbar-button {
+
+    display:none;
+
+}
+
+
+/* ADMIN LOGOUT */
+
+#adminDashboard #adminLogoutBtn {
+
+    position:sticky !important;
+
+    bottom:0 !important;
+
+    z-index:20 !important;
+
+    margin-top:auto !important;
+
+    flex-shrink:0 !important;
+
+    background:#1e293b !important;
+
+}
+
+
+/* ADMIN MAIN */
+
+#adminDashboard .admin-main-content {
+
+    flex:1 1 auto !important;
+
+    width:auto !important;
+
+    min-width:0 !important;
+
+    height:100vh !important;
+
+    min-height:0 !important;
+
+    margin:0 !important;
+
+    padding:0 !important;
+
+    overflow-y:auto !important;
+
+    overflow-x:auto !important;
+
+}
+
+
+/* =====================================================
+   TEACHER
+===================================================== */
+
+#teacherDashboard {
+
+    position:fixed !important;
+
+    top:0 !important;
+    left:0 !important;
+    right:0 !important;
+    bottom:0 !important;
+
+    width:100vw !important;
+    height:100vh !important;
+
+    min-width:0 !important;
+    min-height:0 !important;
+
+    margin:0 !important;
+    padding:0 !important;
+
+    display:flex !important;
+
+    overflow:hidden !important;
 
 }
 
@@ -215,9 +252,69 @@ body {
 
 #teacherDashboard .teacher-sidebar {
 
-    height:100vh;
+    flex:0 0 280px !important;
 
-    overflow:hidden;
+    width:280px !important;
+
+    height:100vh !important;
+
+    min-height:0 !important;
+
+    margin:0 !important;
+
+    overflow:hidden !important;
+
+    display:flex !important;
+
+    flex-direction:column !important;
+
+}
+
+
+/* TEACHER NAV */
+
+#teacherDashboard .teacher-sidebar-nav {
+
+    flex:1 1 auto !important;
+
+    min-height:0 !important;
+
+    overflow-y:auto !important;
+
+    overflow-x:hidden !important;
+
+}
+
+
+/* TEACHER NAV SCROLLBAR */
+
+#teacherDashboard .teacher-sidebar-nav {
+
+    scrollbar-width:thin;
+
+    scrollbar-color:
+        #8993a3
+        transparent;
+
+}
+
+#teacherDashboard .teacher-sidebar-nav::-webkit-scrollbar {
+
+    width:7px;
+
+}
+
+#teacherDashboard .teacher-sidebar-nav::-webkit-scrollbar-track {
+
+    background:transparent;
+
+}
+
+#teacherDashboard .teacher-sidebar-nav::-webkit-scrollbar-thumb {
+
+    background:#8993a3;
+
+    border-radius:10px;
 
 }
 
@@ -226,29 +323,61 @@ body {
 
 #teacherDashboard .teacher-sidebar-bottom {
 
-    margin-top:auto;
+    flex-shrink:0 !important;
+
+    margin-top:auto !important;
+
+}
+
+
+/* TEACHER MAIN */
+
+#teacherDashboard .teacher-main-content {
+
+    flex:1 1 auto !important;
+
+    width:auto !important;
+
+    min-width:0 !important;
+
+    height:100vh !important;
+
+    min-height:0 !important;
+
+    margin:0 !important;
+
+    overflow-y:auto !important;
+
+    overflow-x:auto !important;
 
 }
 
 
 /* =====================================================
-   STUDENT DASHBOARD
+   STUDENT
 ===================================================== */
 
 #studentDashboard {
 
     position:fixed !important;
 
-    inset:0 !important;
+    top:0 !important;
+    left:0 !important;
+    right:0 !important;
+    bottom:0 !important;
 
     width:100vw !important;
     height:100vh !important;
 
-    min-height:100vh !important;
+    min-width:0 !important;
+    min-height:0 !important;
+
+    margin:0 !important;
+    padding:0 !important;
+
+    display:flex !important;
 
     overflow:hidden !important;
-
-    display:flex;
 
 }
 
@@ -257,43 +386,84 @@ body {
 
 #studentDashboard .sidebar {
 
-    flex:0 0 300px;
+    flex:0 0 280px !important;
 
-    width:300px;
+    width:280px !important;
 
-    height:100vh;
+    height:100vh !important;
 
-    box-sizing:border-box;
+    min-height:0 !important;
 
-    overflow:hidden;
+    margin:0 !important;
 
-    display:flex;
+    overflow:hidden !important;
 
-    flex-direction:column;
+    display:flex !important;
+
+    flex-direction:column !important;
 
 }
 
 
-/* STUDENT SIDEBAR MENU */
+/* STUDENT MENU */
 
 #studentDashboard .sidebar > ul {
 
-    flex:1;
+    flex:1 1 auto !important;
 
-    min-height:0;
+    min-height:0 !important;
 
-    display:flex;
+    margin:0 !important;
 
-    flex-direction:column;
+    overflow-y:auto !important;
 
-    overflow:hidden;
+    overflow-x:hidden !important;
 
 }
 
 
-/* STUDENT LOGOUT ALWAYS BOTTOM */
+/* STUDENT SCROLLBAR */
+
+#studentDashboard .sidebar > ul {
+
+    scrollbar-width:thin;
+
+    scrollbar-color:
+        #8993a3
+        transparent;
+
+}
+
+#studentDashboard .sidebar > ul::-webkit-scrollbar {
+
+    width:7px;
+
+}
+
+#studentDashboard .sidebar > ul::-webkit-scrollbar-track {
+
+    background:transparent;
+
+}
+
+#studentDashboard .sidebar > ul::-webkit-scrollbar-thumb {
+
+    background:#8993a3;
+
+    border-radius:10px;
+
+}
+
+
+/* STUDENT LOGOUT */
 
 #studentDashboard #logoutBtn {
+
+    position:sticky !important;
+
+    bottom:0 !important;
+
+    z-index:20 !important;
 
     margin-top:auto !important;
 
@@ -302,29 +472,31 @@ body {
 }
 
 
-/* STUDENT MAIN CONTENT */
+/* STUDENT MAIN */
 
 #studentDashboard .main-content {
 
-    flex:1;
+    flex:1 1 auto !important;
 
-    min-width:0;
+    width:auto !important;
 
-    height:100vh;
+    min-width:0 !important;
 
-    box-sizing:border-box;
+    height:100vh !important;
 
-    overflow-y:auto;
+    min-height:0 !important;
 
-    overflow-x:auto;
+    margin:0 !important;
 
-    scrollbar-gutter:stable;
+    overflow-y:auto !important;
+
+    overflow-x:auto !important;
 
 }
 
 
 /* =====================================================
-   ALL DASHBOARD SCROLLBARS
+   MAIN CONTENT SCROLLBAR
 ===================================================== */
 
 #adminDashboard .admin-main-content,
@@ -347,7 +519,6 @@ body {
 #studentDashboard .main-content::-webkit-scrollbar {
 
     width:8px;
-
     height:8px;
 
 }
@@ -382,6 +553,8 @@ body {
 }
 
 
+/* REMOVE SCROLLBAR ARROWS */
+
 #adminDashboard .admin-main-content::-webkit-scrollbar-button,
 #teacherDashboard .teacher-main-content::-webkit-scrollbar-button,
 #studentDashboard .main-content::-webkit-scrollbar-button {
@@ -392,27 +565,12 @@ body {
 
 
 /* =====================================================
-   PREVENT RANDOM CHILD ELEMENTS FROM MAKING
-   ANOTHER FULL PAGE SCROLL
+   MODULES MUST USE MAIN CONTENT SCROLL
 ===================================================== */
 
-#adminDashboard,
-#teacherDashboard,
-#studentDashboard {
-
-    overscroll-behavior:none;
-
-}
-
-
-/* =====================================================
-   TABLES
-   HORIZONTAL SCROLL ONLY WHEN REQUIRED
-===================================================== */
-
-#adminDashboard table,
-#teacherDashboard table,
-#studentDashboard table {
+#adminDashboard .admin-main-content > *,
+#teacherDashboard .teacher-main-content > *,
+#studentDashboard .main-content > * {
 
     max-width:100%;
 
@@ -420,19 +578,14 @@ body {
 
 
 /* =====================================================
-   MOBILE / SMALL SCREEN
+   NO RANDOM FULL-PAGE SCROLL
 ===================================================== */
 
-@media (max-width:900px) {
+#adminDashboard,
+#teacherDashboard,
+#studentDashboard {
 
-    #adminDashboard .admin-sidebar,
-    #studentDashboard .sidebar {
-
-        flex-basis:240px;
-
-        width:240px;
-
-    }
+    overscroll-behavior:none;
 
 }
 
@@ -2352,23 +2505,7 @@ setTimeout(function () {
                 "important"
             );
 
-            teacherDashboard.style.setProperty(
-                "position",
-                "relative",
-                "important"
-            );
-
-            teacherDashboard.style.setProperty(
-                "width",
-                "100%",
-                "important"
-            );
-
-            teacherDashboard.style.setProperty(
-                "min-height",
-                "100vh",
-                "important"
-            );
+           
         }
 
 
