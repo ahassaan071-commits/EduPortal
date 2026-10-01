@@ -13055,7 +13055,7 @@ height: 25px;
 /* ---------- WELCOME BANNER ---------- */
 
 #adminDashboard .admin-welcome-banner {
-    max-width: 1200px;
+    
 
     margin:
         25px auto;
@@ -13110,7 +13110,7 @@ height: 25px;
 /* ---------- STATISTICS GRID ---------- */
 
 #adminDashboard .admin-stats-grid {
-    max-width: 1200px;
+    
 
     margin:
         25px auto;
@@ -13223,7 +13223,7 @@ height: 25px;
 /* ---------- QUICK ACTION SECTION ---------- */
 
 #adminDashboard .admin-quick-section {
-    max-width: 1200px;
+    
 
     margin:
         32px auto;
@@ -20331,16 +20331,19 @@ button[onclick*="Delete"]:hover {
 .results-page-header {
 
     width:
-        100%;
+        100% !important;
 
     max-width:
-        1200px;
+        none !important;
 
     margin-left:
-        auto;
+        0 !important;
 
     margin-right:
-        auto;
+        0 !important;
+
+    box-sizing:
+        border-box !important;
 
 }
 
