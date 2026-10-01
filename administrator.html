@@ -1,0 +1,2832 @@
+<!-- ===========================
+Administrator Dashboard
+=========================== -->
+
+<div id="adminDashboard" style="display:none;">
+
+<!-- Admin Sidebar -->
+<div class="admin-sidebar">
+
+<h2>🛡️ EduPortal Admin</h2>
+
+<ul>
+
+<li id="adminDashboardMenu"
+    onclick="setTimeout(function(){ window.showAdminModuleDirect('dashboard'); }, 0)">
+    🏠 Dashboard
+</li>
+
+<li id="adminStudentsMenu"
+    onclick="setTimeout(function(){ window.showAdminModuleDirect('students'); }, 0)">
+    👨‍🎓 Students
+</li>
+
+<li id="adminTeachersMenu"
+    onclick="setTimeout(function(){ window.showAdminModuleDirect('teachers'); }, 0)">
+    👨‍🏫 Teachers
+</li>
+
+<li id="adminAcademicSetupMenu"
+    onclick="setTimeout(function(){ window.showAdminModuleDirect('academicSetup'); }, 0)">
+    📚 Academic Setup
+</li>
+
+<li id="adminAttendanceMenu"
+    onclick="setTimeout(function(){ window.showAdminModuleDirect('attendance'); }, 0)">
+    📅 Attendance
+</li>
+
+<li id="adminResultsMenu"
+    onclick="setTimeout(function(){ window.showAdminModuleDirect('results'); }, 0)">
+    📝 Results
+</li>
+
+<li id="adminFeesMenu"
+    onclick="setTimeout(function(){ window.showAdminModuleDirect('fees'); }, 0)">
+    💰 Fee Management
+</li>
+
+<li id="adminAssignmentsMenu"
+    onclick="setTimeout(function(){ window.showAdminModuleDirect('assignments'); }, 0)">
+    📚 Assignments
+</li>
+
+<li id="adminNoticesMenu"
+    onclick="setTimeout(function(){ window.showAdminModuleDirect('notices'); }, 0)">
+    📢 Notices
+</li>
+
+<li id="adminUsersMenu"
+    onclick="setTimeout(function(){ window.showAdminModuleDirect('users'); }, 0)">
+    👥 User Management
+</li>
+
+<li id="adminSettingsMenu"
+    onclick="setTimeout(function(){ window.showAdminModuleDirect('settings'); }, 0)">
+    ⚙️ Settings
+</li>
+
+<li id="adminAuditLogsMenu"
+    onclick="setTimeout(function(){ window.showAdminModuleDirect('auditLogs'); }, 0)">
+    📋 Audit Logs
+</li>
+
+<li id="adminAiAssistantMenu"
+    onclick="setTimeout(function(){ window.showAdminModuleDirect('aiAssistant'); }, 0)">
+    🤖 AI Assistant
+</li>
+
+<li id="adminLogoutBtn">
+🚪 Logout
+</li>
+
+</ul>
+
+</div>
+
+<!-- Admin Main Content -->
+<div class="admin-main-content">
+
+<!-- Admin Header -->
+<div class="admin-top-header">
+
+    <div class="admin-header-left">
+        <h1>Administrator Dashboard</h1>
+    </div>
+
+    <div class="admin-header-right">
+
+    
+
+        <!-- Admin Profile -->
+        <div class="admin-profile-circle">
+            🛡️
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+     ADMIN DASHBOARD HOME
+     PROFESSIONAL ANALYTICS
+========================================== -->
+
+<div id="adminHomeSection">
+
+    <!-- Dashboard Heading -->
+   <div class="admin-dashboard-title">
+
+    <div>
+        <h2>Dashboard Analytics</h2>
+    </div>
+
+    <div class="admin-dashboard-date">
+        <span class="dashboard-date-icon">📅</span>
+
+        <input
+            type="date"
+            id="adminDashboardDate"
+            class="dashboard-date-input"
+        >
+    </div>
+
+</div>
+
+
+    <!-- ==========================================
+         TOP STATISTICS
+    ========================================== -->
+
+    <div class="admin-analytics-stats">
+
+        <!-- TOTAL STUDENTS -->
+        <div class="admin-analytics-stat students">
+
+            <div class="analytics-stat-icon">
+                👨‍🎓
+            </div>
+
+            <div class="analytics-stat-content">
+
+                <span>Total Students</span>
+
+                <strong id="analyticsTotalStudents">
+                    0
+                </strong>
+
+                <small>
+                    Registered Students
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- TOTAL TEACHERS -->
+        <div class="admin-analytics-stat teachers">
+
+            <div class="analytics-stat-icon">
+                👨‍🏫
+            </div>
+
+            <div class="analytics-stat-content">
+
+                <span>Total Teachers</span>
+
+                <strong id="analyticsTotalTeachers">
+                    0
+                </strong>
+
+                <small>
+                    Active Teachers
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- TODAY ATTENDANCE -->
+        <div class="admin-analytics-stat attendance">
+
+            <div class="analytics-stat-icon">
+                📅
+            </div>
+
+            <div class="analytics-stat-content">
+
+                <span>Today Attendance</span>
+
+                <strong id="analyticsAttendance">
+                    0
+                </strong>
+
+                <small>
+                    Students Present Today
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- TOTAL COLLECTION -->
+        <div class="admin-analytics-stat fees">
+
+            <div class="analytics-stat-icon">
+                💰
+            </div>
+
+            <div class="analytics-stat-content">
+
+                <span>Total Collections</span>
+
+                <strong id="analyticsTotalCollected">
+                    Rs. 0
+                </strong>
+
+                <small>
+                    Fee Collection
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         ANALYTICS GRID
+    ========================================== -->
+
+    <div class="admin-analytics-grid">
+
+
+        <!-- ======================================
+             TODAY ATTENDANCE
+        ====================================== -->
+
+        <div class="admin-analytics-card">
+
+            <div class="analytics-card-header">
+
+                <div>
+                    <h3> Today Attendance</h3>
+
+                  
+                </div>
+
+                <span class="analytics-badge green">
+                    Today
+                </span>
+
+            </div>
+
+
+            <div class="attendance-chart-area">
+
+                <div
+                    class="attendance-donut"
+                    id="attendanceDonut"
+                >
+
+                    <div class="attendance-donut-center">
+
+                        <strong id="attendanceDonutValue">
+                            0%
+                        </strong>
+
+                        <span>
+                            Present
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="attendance-legend">
+
+                    <div>
+
+                        <span
+                            class="legend-dot present">
+                        </span>
+
+                        <span>
+                            Present
+                        </span>
+
+                        <strong id="attendancePresentCount">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span
+                            class="legend-dot absent">
+                        </span>
+
+                        <span>
+                            Absent
+                        </span>
+
+                        <strong id="attendanceAbsentCount">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ======================================
+             FEE COLLECTION
+        ====================================== -->
+
+        <div class="admin-analytics-card">
+
+            <div class="analytics-card-header">
+
+                <div>
+
+                    <h3> Fee Collection</h3>
+
+                   
+
+                </div>
+
+                <span class="analytics-badge orange">
+                    Fees
+                </span>
+
+            </div>
+
+
+            <div class="fee-chart">
+
+                <div class="fee-chart-header">
+
+                    <div>
+
+                        <span>
+                            Collection Rate
+                        </span>
+
+                        <strong id="feeCollectionRate">
+                            0%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="fee-total">
+
+                        <span>
+                            Collected
+                        </span>
+
+                        <strong id="feeCollectedAmount">
+                            Rs. 0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="fee-progress">
+
+                    <div
+                        id="feeProgressBar"
+                        class="fee-progress-fill">
+                    </div>
+
+                </div>
+
+
+                <div class="fee-chart-footer">
+
+                    <span>
+                        Total Fee
+                    </span>
+
+                    <strong id="feeTotalAmount">
+                        Rs. 0
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         QUICK ACTIONS
+    ========================================== -->
+
+    <div class="admin-dashboard-actions">
+
+        <h3>Quick Actions</h3>
+
+        <div class="admin-dashboard-action-grid">
+
+
+            <!-- ADD / MANAGE STUDENTS -->
+            <button
+                type="button"
+                onclick="
+                    document
+                        .getElementById('adminStudentsMenu')
+                        .click()
+                "
+            >
+
+                👨‍🎓
+
+                <span>
+                     Manage Students
+                </span>
+
+            </button>
+
+
+            <!-- ADD / MANAGE TEACHERS -->
+            <button
+                type="button"
+                onclick="
+                    document
+                        .getElementById('adminTeachersMenu')
+                        .click()
+                "
+            >
+
+                👨‍🏫
+
+                <span>
+                    Manage Teachers
+                </span>
+
+            </button>
+
+
+            <!-- PUBLISH NOTICE -->
+            <button
+                type="button"
+                onclick="
+                    document
+                        .getElementById('adminNoticesMenu')
+                        .click()
+                "
+            >
+
+                📢
+
+                <span>
+                    Publish Notice
+                </span>
+
+            </button>
+
+
+        </div>
+
+    </div>
+
+</div>
+<!-- ===========================
+ADMIN TEACHERS MANAGEMENT
+=========================== -->
+
+<div id="adminTeachersSection" style="display:none;">
+
+<div class="admin-section-header">
+
+<div>
+<h2>👨‍🏫 Teachers Management</h2>
+
+
+</div>
+
+
+
+</div>
+
+
+<div id="adminTeachersList">
+
+<div class="admin-empty-state">
+
+<h3>👨‍🏫 No Teachers Yet</h3>
+
+<p>
+Click <strong>Add Teacher</strong>
+to add a new teacher.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ==========================================
+     ADMIN ACADEMIC SETUP
+     CLASSES + SUBJECTS + TEACHER ASSIGNMENT
+========================================== -->
+
+<div id="adminAcademicSetupSection" style="display:none;">
+
+    <!-- HEADER -->
+
+    <div class="admin-section-header">
+
+        <div>
+
+            <h2>📚 Academic Setup</h2>
+
+            
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==========================================
+         TEACHER ASSIGNMENT TAB
+    ========================================== -->
+
+<div
+    id="academicAssignmentTab"
+    class="academic-setup-tab-content"
+    style="display:block;"
+>
+        <div class="academic-setup-card">
+
+            <div class="academic-setup-card-header">
+
+                <div>
+ 
+
+                </div>
+
+            </div>
+
+
+            <div class="academic-assignment-grid">
+
+
+                <!-- CLASS -->
+
+                <div class="input-group">
+
+                    <label>Class</label>
+
+                    <select id="academicAssignmentClass">
+
+                        <option value="">
+                            Select Class
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- SUBJECT -->
+
+                <div class="input-group">
+
+                    <label>Subject</label>
+
+                    <select id="academicAssignmentSubject">
+
+                        <option value="">
+                            Select Subject
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- TEACHER -->
+
+                <div class="input-group">
+
+                    <label>Teacher</label>
+
+                    <select id="academicAssignmentTeacher">
+
+                        <option value="">
+                            Select Teacher
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="academic-assignment-action">
+
+                <button
+                    type="button"
+                    id="saveAcademicAssignmentBtn"
+                    class="academic-primary-btn"
+                >
+                    🔗 Assign Teacher
+                </button>
+
+            </div>
+
+        </div>
+
+
+      <!-- ALL TEACHER ASSIGNMENTS -->
+
+<div class="academic-setup-card academic-assignment-view">
+
+    <div class="academic-setup-card-header">
+
+        <div>
+
+            <h3> Class & Teacher Assignments</h3>
+
+           
+
+        </div>
+
+    </div>
+
+    <div
+        id="academicClassAssignmentList"
+        class="academic-setup-list"
+    ></div>
+
+</div>
+
+    </div>
+
+</div>
+<!-- ==========================================
+ADMIN ATTENDANCE MANAGEMENT
+========================================== -->
+
+<div id="adminAttendanceSection" style="display:none;">
+
+<!-- Attendance Header -->
+<div class="attendance-page-header">
+
+<div>
+<h2>📅 Attendance</h2>
+
+</div>
+
+<div class="attendance-header-actions">
+
+
+
+</div>
+
+</div>
+
+
+<!-- Attendance Statistics -->
+<div class="attendance-stats-grid">
+
+<div class="attendance-stat-card">
+
+<div class="attendance-stat-icon students-icon">
+👥
+</div>
+
+<div>
+<span>Total Students</span>
+
+<strong id="attendanceTotalStudents">
+0
+</strong>
+
+<small>
+All Registered Students
+</small>
+</div>
+
+</div>
+
+
+<div class="attendance-stat-card">
+
+<div class="attendance-stat-icon present-icon">
+✓
+</div>
+
+<div>
+<span>Present Today</span>
+
+<strong id="attendancePresentToday">
+0
+</strong>
+
+
+</div>
+
+</div>
+
+
+<div class="attendance-stat-card">
+
+<div class="attendance-stat-icon absent-icon">
+×
+</div>
+
+<div>
+<span>Absent Today</span>
+
+<strong id="attendanceAbsentToday">
+0
+</strong>
+
+
+</div>
+
+</div>
+
+
+<div class="attendance-stat-card">
+
+<div class="attendance-stat-icon rate-icon">
+📅
+</div>
+
+<div>
+<span>Attendance Rate</span>
+
+<strong id="attendanceRate">
+0%
+</strong>
+
+<small>
+Today's Attendance
+</small>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- Attendance Filters -->
+<div class="attendance-filter-card">
+
+<div class="attendance-filter-field">
+
+    <label for="attendanceClassFilter">
+        Class
+    </label>
+
+    <select id="attendanceClassFilter">
+
+        <option value="all">
+            All Classes
+        </option>
+
+    </select>
+
+</div>
+
+
+
+
+
+<div class="attendance-filter-field">
+
+<label for="attendanceDateFilter">
+Date
+</label>
+
+<div class="attendance-date-input">
+
+
+
+<input type="date" id="attendanceDateFilter">
+
+</div>
+
+</div>
+
+
+<button type="button" id="applyAttendanceFilters" class="attendance-filter-btn">
+
+🔎 Apply Filters
+
+</button>
+
+</div>
+
+
+<!-- Attendance List -->
+<div class="attendance-list-card">
+
+<div class="attendance-list-header">
+
+<div>
+
+<h3>
+Attendance List
+</h3>
+
+
+
+</div>
+
+
+<div class="attendance-export-actions">
+
+<button type="button" id="exportAttendanceExcel" class="attendance-export-btn">
+📊 Export Excel
+</button>
+
+
+
+
+
+</div>
+
+</div>
+
+
+<!-- Attendance Table -->
+<div class="attendance-table-wrapper">
+
+<table class="attendance-table">
+
+<thead>
+
+<tr>
+
+    <th>#</th>
+
+    <th>Roll No.</th>
+
+    <th>Student Name</th>
+
+    <th>Class</th>
+
+    
+
+    <th>Status</th>
+
+    <th>Check In Time</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="attendanceTableBody">
+
+<tr class="attendance-empty-row">
+
+    <td colspan="6">
+
+        <div class="attendance-empty-state">
+
+            <div>
+                📅
+            </div>
+
+            <h3>
+                No Attendance Records
+            </h3>
+
+            <p>
+                Mark attendance to see
+                student records here.
+            </p>
+
+        </div>
+
+    </td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<!-- Attendance Footer -->
+<div class="attendance-table-footer">
+
+<span id="attendanceEntriesText">
+Showing 0 entries
+</span>
+
+
+
+
+</div>
+
+</div>
+
+</div>
+<!-- ==========================================
+ADMIN RESULTS MANAGEMENT
+========================================== -->
+
+<div id="adminResultsSection" style="display:none;">
+
+<!-- Results Header -->
+<div class="results-page-header">
+
+<div>
+<h2>Results</h2>
+
+</div>
+
+<div class="results-header-actions">
+
+<div class="results-search-box">
+<span>🔍</span>
+
+<input type="text" id="adminResultsSearch" placeholder="Search students...">
+</div>
+
+<button type="button" id="exportResultsBtn" class="results-secondary-btn">
+📥 Export Results
+</button>
+
+
+
+</div>
+
+</div>
+
+
+<!-- Results Filters -->
+
+<div class="results-filter-card">
+
+<div class="results-filter-field">
+
+<label>Select Class</label>
+
+<select id="resultsClassFilter">
+
+<option value="all">
+All Classes
+</option>
+
+</select>
+
+</div>
+
+
+<div class="results-filter-field">
+
+<label>Select Exam</label>
+
+<select id="resultsExamFilter">
+
+<option value="all">
+All Exams
+</option>
+
+<option value="Mid Term">
+Mid Term
+</option>
+
+<option value="Final Term">
+Final Term
+</option>
+
+<option value="Monthly Test">
+Monthly Test
+</option>
+
+</select>
+
+</div>
+
+
+<button type="button" id="applyResultsFilters" class="results-filter-btn">
+
+🔎 Filter
+
+</button>
+
+
+
+
+</div>
+
+
+<!-- Results Statistics -->
+
+<div class="results-stats-grid">
+
+<div class="results-stat-card students-stat">
+
+<div class="results-stat-icon">
+👥
+</div>
+
+<div>
+
+<span>Total Students</span>
+
+<strong id="resultsTotalStudents">
+0
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="results-stat-card average-stat">
+
+<div class="results-stat-icon">
+📈
+</div>
+
+<div>
+
+<span>Average Percentage</span>
+
+<strong id="resultsAveragePercentage">
+0%
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="results-stat-card highest-stat">
+
+<div class="results-stat-icon">
+🏆
+</div>
+
+<div>
+
+<span>Highest Percentage</span>
+
+<strong id="resultsHighestPercentage">
+0%
+</strong>
+
+<small id="resultsHighestStudent">
+—
+</small>
+
+</div>
+
+</div>
+
+
+<div class="results-stat-card pass-stat">
+
+<div class="results-stat-icon">
+🥇
+</div>
+
+<div>
+
+<span>Pass Percentage</span>
+
+<strong id="resultsPassPercentage">
+0%
+</strong>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- Results Main Area -->
+
+<div class="results-main-grid">
+
+<!-- Results List -->
+
+<div class="results-list-card">
+
+<div class="results-list-header">
+
+<div>
+
+<h3>
+    Results List
+</h3>
+
+
+
+</div>
+
+</div>
+
+
+<div class="results-table-wrapper">
+
+<table class="results-table">
+
+<thead>
+
+    <tr>
+
+        <th>#</th>
+
+        <th>Student ID</th>
+
+        <th>Student Name</th>
+
+        <th>Class - Section</th>
+
+        <th>Exam</th>
+
+        <th>Total Marks</th>
+
+        <th>Obtained Marks</th>
+
+        <th>Percentage</th>
+
+        <th>Grade</th>
+
+        
+
+    </tr>
+
+</thead>
+
+
+<tbody id="resultsTableBody">
+
+    <tr class="results-empty-row">
+
+        <td colspan="10">
+
+            <div class="results-empty-state">
+
+                <div>📊</div>
+
+                <h3>
+                    No Results Found
+                </h3>
+
+                <p>
+                    Add student results to see
+                    records here.
+                </p>
+
+            </div>
+
+        </td>
+
+    </tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+
+
+</div>
+
+
+
+</div>
+
+</div>
+
+<!-- ==========================================
+ADMIN FEE MANAGEMENT
+========================================== -->
+<section id="adminFeesSection" class="admin-content-section" style="display:none;">
+
+<!-- HEADER -->
+<div class="admin-section-header">
+
+<div>
+<h2>💰 Fee Management</h2>
+
+
+</div>
+
+<button type="button" id="addMonthlyFeeBtn" class="admin-primary-btn">
+
+➕ Add Monthly Fee
+
+</button>
+
+</div>
+
+
+<!-- ==========================================
+FEE SUMMARY CARDS
+========================================== -->
+
+<div class="fee-summary-grid">
+
+<div class="fee-summary-card">
+
+<div class="fee-summary-icon">
+💰
+</div>
+
+<div>
+<span>Total Fees</span>
+
+<strong id="adminTotalMonthlyFees">
+Rs. 0
+</strong>
+</div>
+
+</div>
+
+
+<div class="fee-summary-card">
+
+<div class="fee-summary-icon">
+✅
+</div>
+
+<div>
+<span>Total Paid</span>
+
+<strong id="adminTotalPaidFees">
+Rs. 0
+</strong>
+</div>
+
+</div>
+
+
+<div class="fee-summary-card">
+
+<div class="fee-summary-icon">
+⏳
+</div>
+
+<div>
+<span>Pending</span>
+
+<strong id="adminTotalPendingFees">
+Rs. 0
+</strong>
+</div>
+
+</div>
+
+
+<div class="fee-summary-card">
+
+<div class="fee-summary-icon">
+⚠️
+</div>
+
+<div>
+<span>Overdue</span>
+
+<strong id="adminTotalOverdueFees">
+Rs. 0
+</strong>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ==========================================
+ADD MONTHLY FEE FORM
+========================================== -->
+
+<div id="monthlyFeeForm" class="monthly-fee-form" style="display:none;">
+
+<div class="fee-form-header">
+
+<div>
+
+<h3>
+➕ Add Monthly Fee
+</h3>
+
+
+
+</div>
+
+<button type="button" id="closeMonthlyFeeForm">
+
+✕
+
+</button>
+
+</div>
+
+
+<div class="fee-form-grid">
+
+
+<!-- STUDENT -->
+
+<div class="fee-input-group">
+
+<label>
+Student <span>*</span>
+</label>
+
+<select id="feeStudent">
+
+<option value="">
+    Select Student
+</option>
+
+</select>
+
+</div>
+
+
+<!-- CLASS / SECTION -->
+
+<div class="fee-input-group">
+
+<label>
+Class / Section
+</label>
+
+<input type="text" id="feeStudentClass" readonly placeholder="Auto filled">
+
+</div>
+
+
+<!-- FEE MONTH -->
+
+<div class="fee-input-group">
+
+<label>
+Fee Month <span>*</span>
+</label>
+
+<select id="feeMonth">
+
+<option value="">
+    Select Month
+</option>
+
+<option value="January">January</option>
+<option value="February">February</option>
+<option value="March">March</option>
+<option value="April">April</option>
+<option value="May">May</option>
+<option value="June">June</option>
+<option value="July">July</option>
+<option value="August">August</option>
+<option value="September">September</option>
+<option value="October">October</option>
+<option value="November">November</option>
+<option value="December">December</option>
+
+</select>
+
+</div>
+
+
+<!-- TOTAL FEE -->
+
+<div class="fee-input-group">
+
+<label>
+Total Fee
+</label>
+
+<input
+    type="number"
+    id="monthlyFeeAmount"
+    min="0"
+    placeholder="Automatically fetched"
+    readonly
+    style="
+        background:#f8fafc;
+        color:#334155;
+        font-weight:600;
+    "
+>
+
+</div>
+
+<!-- DUE DATE -->
+
+<div class="fee-input-group">
+
+<label>
+Due Date <span>*</span>
+</label>
+
+id="adminFeeDueDate"
+
+</div>
+
+
+<!-- PAID AMOUNT -->
+
+<div class="fee-input-group">
+
+<label>
+Paid Amount
+</label>
+
+<input type="number" id="feePaidAmount" min="0" placeholder="Enter paid amount">
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+<!-- REMAINING AMOUNT -->
+
+<div class="fee-calculation-box">
+
+<span>
+Remaining Amount
+</span>
+
+<strong id="feeRemainingAmount">
+Rs. 0
+</strong>
+
+</div>
+
+
+<!-- BUTTONS -->
+
+<div class="fee-form-actions">
+
+<button type="button" id="resetMonthlyFeeBtn">
+
+↻ Reset
+
+</button>
+
+<button type="button" id="saveMonthlyFeeBtn">
+
+💾 Save Fee Record
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- ==========================================
+MONTHLY FEE RECORDS
+========================================== -->
+
+<div class="fee-records-card">
+
+<div class="fee-records-header">
+
+<div>
+
+<h3>
+📋 Monthly Fee Records
+</h3>
+
+
+
+</div>
+
+</div>
+
+
+<!-- FILTERS -->
+
+<div class="fee-filter-row">
+
+<input type="text" id="feeSearch" placeholder="🔍 Search student or ID...">
+
+
+<select id="feeStatusFilter">
+
+<option value="all">
+All Status
+</option>
+
+<option value="Paid">
+Paid
+</option>
+
+<option value="Partial">
+Partial
+</option>
+
+<option value="Unpaid">
+Unpaid
+</option>
+
+
+
+</select>
+
+
+<select id="feeMonthFilter">
+
+<option value="all">
+All Months
+</option>
+
+<option value="January">January</option>
+<option value="February">February</option>
+<option value="March">March</option>
+<option value="April">April</option>
+<option value="May">May</option>
+<option value="June">June</option>
+<option value="July">July</option>
+<option value="August">August</option>
+<option value="September">September</option>
+<option value="October">October</option>
+<option value="November">November</option>
+<option value="December">December</option>
+
+</select>
+
+</div>
+
+
+<!-- TABLE -->
+
+<div class="fee-table-wrapper">
+
+<table class="fee-table">
+
+<thead>
+
+<tr>
+
+    <th>#</th>
+    <th>Student</th>
+    <th>Student ID</th>
+    <th>Class / Section</th>
+    <th>Month</th>
+    <th>Fee Date</th>
+    <th>Fee Amount</th>
+    <th>Monthly Fee</th>
+    <th>Paid</th>
+    <th>Remaining</th>
+<th>Due Date</th>
+<th>Payment Date</th>
+<th>Status</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="feeTableBody">
+
+<tr>
+
+    <td colspan="13">
+
+        <div class="fee-empty-state">
+
+            <div>
+                💰
+            </div>
+
+            <h3>
+                No Fee Records
+            </h3>
+
+          
+
+        </div>
+
+    </td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<div class="fee-table-footer">
+
+<span id="feeEntriesText">
+Showing 0 entries
+</span>
+
+</div>
+
+</div>
+
+</section>
+<!-- ==========================================
+ADMIN STUDENTS MANAGEMENT
+========================================== -->
+
+<div id="adminStudentsSection" style="display:none;">
+
+<div class="admin-section-card students-admin-card">
+
+<!-- PAGE HEADER -->
+<div class="admin-section-header">
+
+<div>
+
+<h2> Students Management</h2>
+
+
+
+</div>
+
+</div>
+
+
+<!-- SEARCH & FILTER -->
+<div class="students-toolbar">
+
+<div class="students-search-box">
+
+<span>🔍</span>
+
+<input type="text" id="adminStudentSearch" placeholder="Search student...">
+
+</div>
+
+
+<select id="adminStudentClassFilter">
+
+    <option value="all">
+        All Classes
+    </option>
+
+</select>
+
+</div>
+
+
+<!-- STUDENTS TABLE -->
+<div class="students-table-wrapper">
+
+<table class="students-admin-table">
+
+<thead>
+
+<tr>
+
+    <th>#</th>
+
+    <th>Student ID</th>
+
+    <th>Student Name</th>
+
+    <th>Father Name</th>
+
+    <th>Class</th>
+
+
+    <th>Roll No.</th>
+
+    <th>Date of Birth</th>
+
+    <th>Email</th>
+
+    <th>Mobile</th>
+
+
+
+</tr>
+
+</thead>
+
+
+<tbody id="adminStudentsTableBody">
+
+<tr>
+
+    <td colspan="9">
+
+        <div class="admin-empty-state">
+
+            <h3>
+                👨‍🎓 No Student Records
+            </h3>
+
+            <p>
+                No student records are currently available.
+            </p>
+
+        </div>
+
+    </td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<!-- TABLE FOOTER -->
+<div class="students-table-footer">
+
+<span id="adminStudentsEntriesText">
+Showing 0 students
+</span>
+
+</div>
+
+</div>
+
+</div>
+<!-- ==========================================
+ADMIN ASSIGNMENTS SECTION
+========================================== -->
+
+<div id="adminAssignmentsSection" style="display:none;">
+
+<div class="admin-section-card">
+
+<div class="admin-section-header">
+<div>
+<h2> Assignment Management</h2>
+
+</div>
+
+
+</div>
+
+<hr>
+
+<div id="adminAssignmentsList">
+
+<div class="admin-empty-state">
+<h3>
+    📚 No Assignments Yet
+</h3>
+
+<p>
+    Assignments created by teachers will appear here.
+</p>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<!-- ==========================================
+ADMIN NOTICES SECTION
+========================================== -->
+
+<div id="adminNoticesSection" style="display:none;">
+
+<div class="admin-section-card notice-admin-card">
+
+<!-- HEADER -->
+<div class="admin-section-header notice-admin-header">
+
+<div>
+<h2>📢 Notices Management</h2>
+
+
+</div>
+
+<button id="adminAddNoticeBtn" type="button">
+
+➕ Add Notice
+
+</button>
+
+</div>
+
+
+<!-- SUMMARY -->
+<div class="notice-summary">
+
+<div class="notice-summary-card">
+
+<div class="notice-summary-icon">
+📢
+</div>
+
+<div>
+
+<span>
+    Total Notices
+</span>
+
+<strong id="adminTotalNotices">
+    0
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="notice-summary-card">
+
+<div class="notice-summary-icon">
+📅
+</div>
+
+<div>
+
+<span>
+    This Month
+</span>
+
+<strong id="adminMonthlyNotices">
+    0
+</strong>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ==========================================
+ADD NOTICE FORM
+========================================== -->
+
+<div id="adminNoticeForm" class="admin-notice-form" style="display:none;">
+
+<div class="notice-form-header">
+
+<div>
+<h3>➕ Create New Notice</h3>
+<p>Enter the notice information below.</p>
+</div>
+
+<button type="button" id="closeAdminNoticeForm">
+✕
+</button>
+
+</div>
+
+
+<div class="notice-form-grid">
+
+<div class="notice-form-group">
+
+<label>
+    Notice Title
+</label>
+
+<input type="text" id="adminNoticeTitle" placeholder="Enter notice title">
+
+</div>
+
+
+<div class="notice-form-group">
+
+<label>
+    Audience
+</label>
+
+<select id="adminNoticeAudience">
+
+    <option value="">
+        Select Audience
+    </option>
+
+    <option value="All Students">
+        All Students
+    </option>
+
+   
+
+    <option value="All Teachers">
+        All Teachers
+    </option>
+
+    <option value="Class">
+        Specific Class
+    </option>
+
+</select>
+
+<div
+    class="notice-form-group"
+    id="adminNoticeClassGroup"
+    style="display:none;"
+>
+
+    <label>
+        Select Class
+    </label>
+
+    <select id="adminNoticeClass">
+        <option value="">
+            Select Class
+        </option>
+    </select>
+
+</div>
+
+
+</div>
+
+
+<div class="notice-form-group">
+
+<label>
+    Notice Date
+</label>
+
+<input type="date" id="adminNoticeDate">
+
+</div>
+
+<div class="notice-form-group">
+
+<label>
+    Expiry Date
+</label>
+
+<input type="date" id="adminNoticeExpiryDate">
+
+</div>
+
+<!-- ==========================================
+HOLIDAY AUTOMATION
+========================================== -->
+
+<div class="notice-form-group notice-form-full">
+
+    <label
+        style="
+            display:flex;
+            align-items:center;
+            gap:10px;
+            cursor:pointer;
+            font-weight:600;
+        "
+    >
+
+        <input
+            type="checkbox"
+            id="adminNoticeHoliday"
+            style="
+                width:18px;
+                height:18px;
+                cursor:pointer;
+            "
+        >
+
+        <span>
+            🏖️ This is a Holiday Notice
+        </span>
+
+    </label>
+
+    <small
+        style="
+            display:block;
+            margin-top:7px;
+            color:#64748b;
+        "
+    >
+        The next day will automatically be treated as Leave in attendance.
+    </small>
+
+</div>
+
+
+<div class="notice-form-group notice-form-full">
+
+<label>
+    Notice Description
+</label>
+
+<textarea id="adminNoticeDescription" rows="5"
+    placeholder="Write notice details..."></textarea>
+
+</div>
+
+</div>
+
+
+<div class="notice-form-actions">
+
+<button type="button" id="cancelAdminNotice">
+Cancel
+</button>
+
+<button type="button" id="saveAdminNotice">
+💾 Save Notice
+</button>
+
+</div>
+
+</div>
+<!-- SEARCH / FILTER -->
+
+<div class="notice-filter-row">
+
+<input type="text" id="adminNoticeSearch" placeholder="🔍 Search notices...">
+
+<select id="adminNoticeAudienceFilter">
+
+<option value="all">
+All Audiences
+</option>
+
+<option value="All Students">
+All Students
+</option>
+
+
+
+<option value="All Teachers">
+All Teachers
+</option>
+
+<option value="Class">
+Specific Class
+</option>
+
+</select>
+
+<select id="adminNoticeSort">
+
+<option value="latest">
+Latest
+</option>
+
+<option value="oldest">
+Oldest
+</option>
+
+<option value="title">
+Title
+</option>
+
+</select>
+
+</div>
+
+
+<!-- NOTICE TABLE -->
+
+<div class="notice-table-wrapper">
+
+<table class="notice-admin-table">
+
+<thead>
+
+<tr>
+
+    <th>#</th>
+
+    <th>Title</th>
+
+    <th>Audience</th>
+
+   <th>Date</th>
+<th>Expiry Date</th>
+
+</tr>
+
+</thead>
+
+<tbody id="adminNoticesTableBody">
+
+<tr>
+
+    <td colspan="4">
+
+        <div class="admin-empty-state">
+
+            <h3>
+                📢 No Notices Yet
+            </h3>
+
+            <p>
+                Click
+                <strong>Add Notice</strong>
+                to create a new notice.
+            </p>
+
+        </div>
+
+    </td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<!-- ENTRY COUNT -->
+
+<div id="adminNoticeEntriesText" class="notice-entry-count">
+
+Showing 0 notices
+
+</div>
+
+</div>
+
+</div>
+<!-- ==========================================
+USER MANAGEMENT - STUDENTS
+========================================== -->
+
+<div id="adminUsersStudentsSection" style="display:none;">
+
+<div class="admin-page-header">
+
+<div>
+<h2> Student User Management</h2>
+
+<div class="user-management-actions">
+
+ <button type="button" id="adminAddStudentBtn">
+    ➕ Add New Student
+</button>
+
+  <button
+    type="button"
+    id="adminUsersAddTeacherBtn"
+    onclick="openAdminTeacherModalDirect()">
+
+    ➕ Add Teacher
+
+</button>
+
+</div>
+</div>
+
+</div>
+
+
+<div class="admin-students-table-container">
+
+<table class="admin-students-table">
+
+<thead>
+<tr>
+    <th>#</th>
+    <th>Role</th>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Class / Subject</th>
+    <th>Username</th>
+    <th>Password</th>
+    <th>Status</th>
+    <th>Actions</th>
+</tr>
+</thead>
+
+<tbody id="adminUsersStudentsTableBody">
+
+<tr>
+<td colspan="8">
+    No student accounts found.
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+
+</div>
+<!-- ==========================================
+ADMIN SETTINGS SECTION
+========================================== -->
+
+<div id="adminSettingsSection" style="display:none;">
+
+<div class="admin-settings-container">
+
+<!-- HEADER -->
+
+<div class="admin-settings-header">
+
+<div>
+
+<h2>⚙️ Settings</h2>
+
+
+
+</div>
+
+</div>
+
+
+<!-- SETTINGS GRID -->
+
+<div class="admin-settings-grid">
+
+
+<!-- SCHOOL / COLLEGE INFO -->
+
+<div class="admin-settings-card">
+
+<div class="admin-settings-icon">
+🏫
+</div>
+
+<div class="admin-settings-content">
+
+<h3 id="institutionSettingsTitle">
+    Institution Info
+</h3>
+
+<p>
+    <strong>Name:</strong>
+    <span id="settingsInstitutionName">
+        EduPortal
+    </span>
+</p>
+
+<p>
+    <strong>Address:</strong>
+    <span id="settingsInstitutionAddress">
+        Not Added
+    </span>
+</p>
+
+<p>
+    <strong>Phone:</strong>
+    <span id="settingsInstitutionPhone">
+        Not Added
+    </span>
+</p>
+
+<button type="button" id="editInstitutionInfoBtn" class="settings-edit-btn">
+
+    ✏️ Edit
+
+</button>
+
+</div>
+
+</div>
+<!-- ==========================================
+EDIT INSTITUTION INFO MODAL
+========================================== -->
+
+<div id="institutionInfoModal" class="settings-modal">
+
+<div class="settings-modal-box">
+
+    <button type="button" id="closeInstitutionInfoModal"
+        class="settings-modal-close">
+
+        ✕
+
+    </button>
+
+
+    <div class="settings-modal-header">
+
+        <div class="settings-modal-icon">
+            🏫
+        </div>
+
+        <div>
+
+            <h2 id="institutionModalTitle">
+                School Information
+            </h2>
+
+            
+
+        </div>
+
+    </div>
+
+
+    <div class="settings-form">
+
+
+        <div class="settings-input-group">
+
+            <label>
+                School / College Name
+            </label>
+
+            <input type="text" id="institutionNameInput"
+                placeholder="Enter institution name">
+
+        </div>
+
+
+        <div class="settings-input-group">
+
+            <label>
+                Address
+            </label>
+
+            <input type="text" id="institutionAddressInput"
+                placeholder="Enter address">
+
+        </div>
+
+
+        <div class="settings-input-group">
+
+            <label>
+                Phone Number
+            </label>
+
+            <input type="text" id="institutionPhoneInput"
+                placeholder="Enter phone number">
+
+        </div>
+
+
+    </div>
+
+
+    <div class="settings-modal-actions">
+
+        <button type="button" id="cancelInstitutionInfoBtn"
+            class="settings-cancel-btn">
+
+            Cancel
+
+        </button>
+
+
+        <button type="button" id="saveInstitutionInfoBtn" class="settings-save-btn">
+
+            💾 Save Changes
+
+        </button>
+
+    </div>
+
+</div>
+
+</div>
+</div>
+<!-- ==========================================
+EMAIL SETTINGS
+========================================== -->
+
+<div class="admin-settings-card">
+
+<div class="admin-settings-icon">
+📧
+</div>
+
+<div class="admin-settings-content">
+
+<h3>
+    Email
+</h3>
+
+<p>
+    <strong>Email Address:</strong>
+    <span id="settingsEmailValue">
+        admin@eduportal.com
+    </span>
+</p>
+
+<p>
+    <strong>Updated Email:</strong>
+    <span id="settingsUpdatedEmailValue">
+        Not Added
+    </span>
+</p>
+
+<p>
+    <strong>Phone:</strong>
+    <span id="settingsPhoneValue">
+        Not Added
+    </span>
+</p>
+
+<button type="button" id="editEmailSettingsBtn" class="settings-manage-btn">
+
+    ✏️ Edit
+
+</button>
+
+</div>
+
+</div>
+<!-- ==========================================
+EMAIL SETTINGS MODAL
+========================================== -->
+
+<div id="emailSettingsModal" class="settings-modal">
+
+<div class="settings-modal-box">
+
+<button type="button" id="closeEmailSettingsModal" class="settings-modal-close">
+
+    ✕
+
+</button>
+
+
+<div class="settings-modal-header">
+
+    <div class="settings-modal-icon">
+        📧
+    </div>
+
+    <div>
+
+        <h2>Email Settings</h2>
+
+        
+
+    </div>
+
+</div>
+
+
+<div class="settings-form">
+
+    <div class="settings-input-group">
+
+        <label>
+            New Email Address
+        </label>
+
+        <input type="email" id="newSettingsEmail"
+            placeholder="Enter new email address">
+
+    </div>
+
+
+    <div class="settings-input-group">
+
+        <label>
+            Phone Number
+        </label>
+
+        <input type="text" id="settingsPhoneInput" placeholder="Enter phone number">
+
+    </div>
+
+</div>
+
+
+<div class="settings-modal-actions">
+
+    <button type="button" id="cancelEmailSettingsBtn" class="settings-cancel-btn">
+
+        Cancel
+
+    </button>
+
+
+    <button type="button" id="saveEmailSettingsBtn" class="settings-save-btn">
+
+        💾 Save Changes
+
+    </button>
+
+</div>
+
+</div>
+
+</div>
+<!-- ==========================================
+SECURITY SETTINGS
+========================================== -->
+
+<div class="admin-settings-card">
+
+<div class="admin-settings-icon">
+🔐
+</div>
+
+<div class="admin-settings-content">
+
+<h3>
+    Security
+</h3>
+
+<p>
+    <strong>Password:</strong>
+    ••••••••
+</p>
+
+<p>
+    <strong>Login Security:</strong>
+    <span id="loginSecurityValue">
+        Enabled
+    </span>
+</p>
+
+<button type="button" id="changePasswordBtn" class="settings-manage-btn">
+
+    🔑 Change Password
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+<!-- ==========================================
+ADMIN AUDIT LOGS SECTION
+========================================== -->
+
+<div id="adminAuditLogsSection" style="display:none;">
+
+    <div class="admin-settings-container">
+
+        <!-- HEADER -->
+        <div class="admin-settings-header">
+
+            <div>
+
+                <h2>📋 Audit Logs</h2>
+
+                <p style="margin-top:6px;">
+                    
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- FILTERS -->
+        <div class="admin-settings-card"
+             style="margin-bottom:20px;">
+
+        <div
+    style="
+        display:grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap:15px;
+        align-items:end;
+    "
+>
+
+                <!-- SEARCH -->
+                <div>
+
+                    <label
+                        style="
+                            display:block;
+                            margin-bottom:6px;
+                            font-weight:600;
+                        "
+                    >
+                        🔍 Search
+                    </label>
+
+                    <input
+                        type="text"
+                        id="auditLogsSearch"
+                        placeholder="Search user, module, action..."
+                        style="
+                            width:100%;
+                            padding:12px;
+                            border-radius:8px;
+                            border:1px solid #ddd;
+                        "
+                    >
+
+                </div>
+
+
+                <!-- MODULE FILTER -->
+                <div>
+
+                    <label
+                        style="
+                            display:block;
+                            margin-bottom:6px;
+                            font-weight:600;
+                        "
+                    >
+                        Module
+                    </label>
+
+                    <select
+                        id="auditLogsModuleFilter"
+                        style="
+                            width:100%;
+                            padding:12px;
+                            border-radius:8px;
+                            border:1px solid #ddd;
+                        "
+                    >
+
+                        <option value="all">
+                            All Modules
+                        </option>
+
+                        <option value="Results">
+                            Results
+                        </option>
+
+                        <option value="Fees">
+                            Fees
+                        </option>
+
+                        <option value="Students">
+                            Students
+                        </option>
+
+                        <option value="Teachers">
+                            Teachers
+                        </option>
+
+                        <option value="Attendance">
+                            Attendance
+                        </option>
+
+                        <option value="Assignments">
+                            Assignments
+                        </option>
+
+                        <option value="Notices">
+                            Notices
+                        </option>
+
+                        <option value="Users">
+                            User Management
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- ACTION FILTER -->
+                <div>
+
+                    <label
+                        style="
+                            display:block;
+                            margin-bottom:6px;
+                            font-weight:600;
+                        "
+                    >
+                        Action
+                    </label>
+
+                    <select
+                        id="auditLogsActionFilter"
+                        style="
+                            width:100%;
+                            padding:12px;
+                            border-radius:8px;
+                            border:1px solid #ddd;
+                        "
+                    >
+
+                        <option value="all">
+                            All Actions
+                        </option>
+
+                        <option value="INSERT">
+                            INSERT
+                        </option>
+
+                        <option value="UPDATE">
+                            UPDATE
+                        </option>
+
+                        <option value="DELETE">
+                            DELETE
+                        </option>
+
+                        <option value="AUTO_GENERATE">
+                            AUTO GENERATE
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- CLEAR -->
+                <div>
+
+                    <button
+                        type="button"
+                        id="clearAuditLogsFilters"
+                        style="
+                            width:100%;
+                            padding:12px;
+                            border:none;
+                            border-radius:8px;
+                            cursor:pointer;
+                        "
+                    >
+                        🔄 Clear Filters
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- TABLE -->
+        <div
+            class="admin-students-table-container"
+            style="overflow-x:auto;"
+        >
+
+            <table class="admin-students-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+
+                        <th>Date / Time</th>
+
+                        <th>User</th>
+
+                        <th>Role</th>
+
+                        <th>Module</th>
+
+                        <th>Action</th>
+
+                        <th>Record ID</th>
+
+                        <th>Description</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="adminAuditLogsTableBody">
+
+                    <tr>
+
+                        <td
+                            colspan="8"
+                            style="text-align:center;"
+                        >
+                            Loading audit logs...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- ENTRY COUNT -->
+        <div
+            id="auditLogsEntriesText"
+            style="
+                margin-top:15px;
+                font-weight:600;
+            "
+        >
+            Showing 0 audit logs
+        </div>
+
+    </div>
+
+</div>
+
+</div>
