@@ -13268,32 +13268,7 @@ updateStudentAttendanceSummary();
 // Supabase pg_cron handles the server-side write.
 // ==========================================
 
-setInterval(
-    async function() {
 
-        // Supabase pg_cron handles auto-absent; this interval only refreshes the UI.
-
-        // Refresh Admin Attendance table
-        if (
-            typeof renderAttendanceTable ===
-            "function"
-        ) {
-
-            const attendanceTable =
-                document.getElementById(
-                    "attendanceTableBody"
-                );
-
-            if (attendanceTable) {
-
-                await renderAttendanceTable();
-
-            }
-        }
-
-    },
-    60 * 1000
-);
 
 }
 );
