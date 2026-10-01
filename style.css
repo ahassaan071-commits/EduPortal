@@ -5095,7 +5095,371 @@ body.dark-mode .login-side-panel {
 
     font-size: 13px;
 }
+/* ==========================================
+   EDU PORTAL - ADMINISTRATOR DASHBOARD
+========================================== */
 
+#adminDashboard {
+    display: none;
+    width: 100%;
+    min-height: 100vh;
+    background: #f1f5f9;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Admin Sidebar */
+.admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 100vh;
+        box-sizing: border-box;
+
+    overflow-y: auto;
+
+    overflow-x: hidden;
+    padding: 28px 16px;
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    color: white;
+    z-index: 3000;
+    box-shadow: 8px 0 30px rgba(0,0,0,.15);
+}
+
+/* Admin Sidebar Scrollbar */
+
+.admin-sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.admin-sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.admin-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.25);
+    border-radius: 10px;
+}
+
+.admin-sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.40);
+}
+
+.admin-sidebar h2 {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 35px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,.15);
+}
+
+.admin-sidebar ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.admin-sidebar ul li {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    padding: 13px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    color: rgba(255,255,255,.88);
+    font-size: 15px;
+    font-weight: 500;
+    transition: all .25s ease;
+}
+
+.admin-sidebar ul li:hover {
+    background: rgba(255,255,255,.12);
+    color: white;
+    transform: translateX(5px);
+}
+
+.admin-sidebar ul li.active {
+    background: #2563eb;
+    color: white;
+    transform: translateX(5px);
+    box-shadow: 0 8px 20px rgba(37,99,235,.35);
+}
+
+/* Admin Logout */
+#adminLogoutBtn {
+    margin-top: auto;
+    background: rgba(239,68,68,.12);
+    color: #fecaca;
+}
+
+#adminLogoutBtn:hover {
+    background: #dc2626;
+    color: white;
+}
+
+/* Admin Main Content */
+.admin-main-content {
+    margin-left: 260px;
+    width: calc(100% - 260px);
+    min-height: 100vh;
+    padding: 25px 35px 50px;
+    background: #f8fafc;
+}
+
+/* Admin Header */
+.admin-top-header {
+    margin: -25px -35px 30px;
+    padding: 20px 35px;
+    min-height: 100px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: linear-gradient(
+        135deg,
+        #dbe7ff,
+        #eef4ff
+    );
+
+    border-bottom: 1px solid rgba(37,99,235,.12);
+    box-shadow: 0 8px 25px rgba(0,0,0,.07);
+}
+
+.admin-top-header h1 {
+    margin: 0 0 5px;
+    font-size: 30px;
+    color: #172554;
+}
+
+.admin-top-header p {
+    margin: 0;
+    color: #64748b;
+    font-size: 15px;
+}
+
+/* Admin Profile Circle */
+.admin-profile-circle {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #2563eb;
+    color: white;
+    font-size: 28px;
+
+    border: 3px solid rgba(37,99,235,.18);
+    box-shadow: 0 5px 15px rgba(0,0,0,.12);
+}
+
+/* Admin Welcome */
+.admin-welcome-banner {
+    max-width: 1100px;
+    margin: 20px auto;
+
+    padding: 30px;
+
+    background: linear-gradient(
+        135deg,
+        #1e3a8a,
+        #2563eb
+    );
+
+    color: white;
+    border-radius: 20px;
+
+    box-shadow: 0 12px 30px rgba(37,99,235,.22);
+}
+
+.admin-welcome-banner h2 {
+    margin-bottom: 10px;
+    font-size: 26px;
+}
+
+.admin-welcome-banner p {
+    margin: 0;
+    opacity: .9;
+}
+
+/* Admin Statistics */
+.admin-stats-grid {
+    max-width: 1100px;
+    margin: 25px auto;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.admin-stat-card {
+    background: white;
+    padding: 25px;
+    border-radius: 18px;
+
+    border: 1px solid #e2e8f0;
+
+    box-shadow: 0 10px 25px rgba(15,23,42,.07);
+
+    transition: all .3s ease;
+}
+
+.admin-stat-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 15px 30px rgba(15,23,42,.12);
+}
+
+.admin-stat-card h3 {
+    color: #1e3a8a;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.admin-stat-card p {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2563eb;
+}
+
+/* Admin Quick Actions */
+.admin-quick-section {
+    max-width: 1100px;
+    margin: 30px auto;
+}
+
+.admin-quick-section h2 {
+    color: #1e3a8a;
+    margin-bottom: 20px;
+}
+
+.admin-quick-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.admin-quick-card {
+    background: white;
+    padding: 25px;
+
+    border-radius: 18px;
+    text-align: center;
+
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 10px 20px rgba(0,0,0,.07);
+
+    cursor: pointer;
+    transition: all .3s ease;
+}
+
+.admin-quick-card:hover {
+    transform: translateY(-7px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0,0,0,.12);
+}
+
+.admin-quick-card:first-letter {
+    font-size: 35px;
+}
+
+.admin-quick-card h3 {
+    color: #2563eb;
+    margin: 12px 0;
+}
+
+.admin-quick-card p {
+    color: #64748b;
+    font-size: 14px;
+}
+
+/* ==========================================
+   ADMIN RESPONSIVE DESIGN
+========================================== */
+
+@media (max-width: 900px) {
+
+    .admin-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .admin-quick-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .admin-sidebar {
+        width: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .admin-main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px;
+    }
+
+    .admin-top-header {
+        margin: -20px -20px 25px;
+        padding: 18px 20px;
+    }
+
+    .admin-top-header h1 {
+        font-size: 22px;
+    }
+
+    .admin-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-quick-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+/* ==============================
+   ADMIN DASHBOARD TEXT VISIBILITY FIX
+============================== */
+
+#adminDashboard .admin-top-header h1 {
+    color: #172554 !important;
+}
+
+#adminDashboard .admin-top-header p {
+    color: #64748b !important;
+}
+
+#adminDashboard .admin-stat-card h3 {
+    color: #1e3a8a !important;
+    opacity: 1 !important;
+}
+
+#adminDashboard .admin-stat-card p {
+    color: #2563eb !important;
+    opacity: 1 !important;
+}
+
+#adminDashboard .admin-quick-section h2 {
+    color: #1e3a8a !important;
+    opacity: 1 !important;
+}
+
+#adminDashboard .admin-quick-card h3 {
+    color: #2563eb !important;
+    opacity: 1 !important;
+}
+
+#adminDashboard .admin-quick-card p {
+    color: #64748b !important;
+    opacity: 1 !important;
+}
 /* ==========================================
    ADMIN ADD STUDENT MODAL - FINAL FIX
 ========================================== */
@@ -13055,7 +13419,7 @@ height: 25px;
 /* ---------- WELCOME BANNER ---------- */
 
 #adminDashboard .admin-welcome-banner {
-    
+    max-width: 1200px;
 
     margin:
         25px auto;
@@ -13110,7 +13474,7 @@ height: 25px;
 /* ---------- STATISTICS GRID ---------- */
 
 #adminDashboard .admin-stats-grid {
-    
+    max-width: 1200px;
 
     margin:
         25px auto;
@@ -13223,7 +13587,7 @@ height: 25px;
 /* ---------- QUICK ACTION SECTION ---------- */
 
 #adminDashboard .admin-quick-section {
-    
+    max-width: 1200px;
 
     margin:
         32px auto;
@@ -13592,13 +13956,13 @@ height: 25px;
 
     box-sizing: border-box;
 
-    padding: 20px;
+    padding: 24px;
 
     background: #ffffff;
 
     border: 1px solid #e2e8f0;
 
-    border-radius: 14px;
+    border-radius: 16px;
 
     box-shadow:
         0 5px 18px rgba(15,23,42,0.05);
@@ -20331,19 +20695,16 @@ button[onclick*="Delete"]:hover {
 .results-page-header {
 
     width:
-        100% !important;
+        100%;
 
     max-width:
-        none !important;
+        1200px;
 
     margin-left:
-        0 !important;
+        auto;
 
     margin-right:
-        0 !important;
-
-    box-sizing:
-        border-box !important;
+        auto;
 
 }
 
@@ -35121,7 +35482,144 @@ align-self: flex-end !important;
     width: 100% !important;
     text-align: center !important;
 }
+/* =========================================================
+   ADMIN MODULE VISIBILITY - FINAL FIX
+   ========================================================= */
 
+#adminDashboard .admin-main-content {
+    position: relative !important;
+    display: block !important;
+    width: calc(100% - 260px) !important;
+    min-height: 100vh !important;
+}
+
+
+/* ALL ADMIN MODULE SECTIONS */
+
+#adminDashboard .admin-main-content > #adminHomeSection,
+#adminDashboard .admin-main-content > #adminStudentsSection,
+#adminDashboard .admin-main-content > #adminTeachersSection,
+#adminDashboard .admin-main-content > #adminAttendanceSection,
+#adminDashboard .admin-main-content > #adminResultsSection,
+#adminDashboard .admin-main-content > #adminFeesSection,
+#adminDashboard .admin-main-content > #adminAssignmentsSection,
+#adminDashboard .admin-main-content > #adminNoticesSection,
+#adminDashboard .admin-main-content > #adminUsersStudentsSection,
+#adminDashboard .admin-main-content > #adminSettingsSection {
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    box-sizing: border-box !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+
+/* STUDENTS */
+
+#adminDashboard .admin-main-content > #adminStudentsSection {
+
+    position: relative !important;
+
+    visibility: visible !important;
+
+    opacity: 1 !important;
+
+    min-height: 300px !important;
+
+    overflow: visible !important;
+
+}
+
+
+/* FEES */
+
+#adminDashboard .admin-main-content > #adminFeesSection {
+
+    position: relative !important;
+
+    visibility: visible !important;
+
+    opacity: 1 !important;
+
+    min-height: 300px !important;
+
+}
+
+
+/* ASSIGNMENTS */
+
+#adminDashboard .admin-main-content > #adminAssignmentsSection {
+
+    position: relative !important;
+
+    visibility: visible !important;
+
+    opacity: 1 !important;
+
+    min-height: 300px !important;
+
+}
+
+
+/* NOTICES */
+
+#adminDashboard .admin-main-content > #adminNoticesSection {
+
+    position: relative !important;
+
+    visibility: visible !important;
+
+    opacity: 1 !important;
+
+    min-height: 300px !important;
+
+}
+
+
+/* USER MANAGEMENT */
+
+#adminDashboard .admin-main-content > #adminUsersStudentsSection {
+
+    position: relative !important;
+
+    visibility: visible !important;
+
+    opacity: 1 !important;
+
+    min-height: 300px !important;
+
+}
+
+
+/* SETTINGS */
+
+#adminDashboard .admin-main-content > #adminSettingsSection {
+
+    position: relative !important;
+
+    visibility: visible !important;
+
+    opacity: 1 !important;
+
+    min-height: 300px !important;
+
+}
+
+
+/* COMMON CARD */
+
+#adminDashboard .admin-section-card {
+
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    box-sizing: border-box !important;
+
+}
 /* =========================================================
    STUDENT ASSIGNMENTS - PROFESSIONAL UI
    ========================================================= */
