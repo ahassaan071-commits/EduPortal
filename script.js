@@ -153,6 +153,118 @@ console.log("EduPortal Supabase connected ✅");
 
 })();
 
+// =====================================================
+// EDUPORTAL - SINGLE PAGE SCROLL
+// REMOVE DUPLICATE DASHBOARD SCROLLBARS
+// =====================================================
+
+(function () {
+
+    const style =
+        document.createElement("style");
+
+    style.id =
+        "eduPortalSinglePageScroll";
+
+    style.textContent = `
+
+        /* ==========================================
+           ONLY THE PAGE SHOULD HANDLE MAIN SCROLL
+        ========================================== */
+
+        html,
+        body {
+
+            width: 100%;
+            min-height: 100%;
+            height: auto;
+
+            overflow-y: auto;
+            overflow-x: auto;
+
+        }
+
+
+        /* ==========================================
+           ADMIN DASHBOARD
+        ========================================== */
+
+        #adminDashboard {
+
+            height: auto !important;
+            min-height: 100vh !important;
+
+            overflow: visible !important;
+
+        }
+
+
+        /* ==========================================
+           TEACHER DASHBOARD
+        ========================================== */
+
+        #teacherDashboard {
+
+            height: auto !important;
+            min-height: 100vh !important;
+
+            overflow: visible !important;
+
+        }
+
+
+        /* ==========================================
+           STUDENT DASHBOARD
+        ========================================== */
+
+        #studentDashboard {
+
+            height: auto !important;
+            min-height: 100vh !important;
+
+            overflow: visible !important;
+
+        }
+
+
+        /* ==========================================
+           DASHBOARD CONTENT WRAPPERS
+           DO NOT CREATE ANOTHER PAGE SCROLL
+        ========================================== */
+
+        #adminDashboard > *,
+        #teacherDashboard > *,
+        #studentDashboard > * {
+
+            max-height: none;
+
+        }
+
+
+        /* ==========================================
+           SIDEBARS
+           NO INDEPENDENT PAGE SCROLL
+        ========================================== */
+
+        #adminSidebar,
+        #teacherSidebar,
+        #studentSidebar,
+        .admin-sidebar,
+        .teacher-sidebar,
+        .student-sidebar {
+
+            max-height: none;
+
+        }
+
+    `;
+
+    document.head.appendChild(
+        style
+    );
+
+})();
+
 // ==========================================
 // HTML ESCAPE HELPER
 // ==========================================
