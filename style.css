@@ -47199,3 +47199,145 @@ body {
 
     box-sizing: border-box !important;
 }
+/* =========================================================
+   EDUPORTAL ADMIN - STEP 5
+   PROFESSIONAL SIDEBAR FINAL LOCK
+   ========================================================= */
+
+#adminDashboard .admin-sidebar {
+    width: 250px !important;
+    padding: 20px 12px !important;
+
+    box-sizing: border-box !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    background:
+        linear-gradient(
+            180deg,
+            #0f172a 0%,
+            #172033 55%,
+            #1e293b 100%
+        ) !important;
+
+    border-right: 1px solid rgba(255,255,255,0.06) !important;
+
+    box-shadow:
+        8px 0 30px rgba(15,23,42,0.12) !important;
+}
+
+
+/* SIDEBAR SCROLLBAR */
+#adminDashboard .admin-sidebar::-webkit-scrollbar {
+    width: 5px !important;
+}
+
+#adminDashboard .admin-sidebar::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+
+#adminDashboard .admin-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.20) !important;
+    border-radius: 999px !important;
+}
+
+#adminDashboard .admin-sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.35) !important;
+}
+
+
+/* BRAND */
+#adminDashboard .admin-sidebar h2 {
+    margin: 0 0 22px !important;
+    padding: 0 8px 18px !important;
+
+    text-align: left !important;
+
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.3px !important;
+
+    color: #ffffff !important;
+
+    border-bottom:
+        1px solid rgba(255,255,255,0.10) !important;
+}
+
+
+/* MENU */
+#adminDashboard .admin-sidebar ul {
+    gap: 4px !important;
+}
+
+
+/* MENU ITEM */
+#adminDashboard .admin-sidebar ul li {
+    min-height: 43px !important;
+
+    padding:
+        9px 12px !important;
+
+    border-radius: 10px !important;
+
+    font-size: 14px !important;
+    font-weight: 500 !important;
+
+    color:
+        rgba(255,255,255,0.78) !important;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease !important;
+}
+
+
+/* HOVER */
+#adminDashboard .admin-sidebar ul li:hover {
+    background:
+        rgba(255,255,255,0.08) !important;
+
+    color: #ffffff !important;
+
+    transform:
+        translateX(2px) !important;
+}
+
+
+/* ACTIVE */
+#adminDashboard .admin-sidebar ul li.active {
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #1d4ed8
+        ) !important;
+
+    color: #ffffff !important;
+
+    transform: none !important;
+
+    box-shadow:
+        0 6px 16px rgba(37,99,235,0.22) !important;
+}
+
+
+/* LOGOUT */
+#adminDashboard #adminLogoutBtn {
+    margin-top: auto !important;
+
+    background:
+        rgba(239,68,68,0.10) !important;
+
+    color:
+        #fecaca !important;
+}
+
+#adminDashboard #adminLogoutBtn:hover {
+    background:
+        #dc2626 !important;
+
+    color:
+        #ffffff !important;
+}
