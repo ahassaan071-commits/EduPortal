@@ -37924,6 +37924,7 @@ window.showAdminModuleDirect = function (module) {
     users: "adminUsersStudentsSection",
     settings: "adminSettingsSection",
     auditLogs: "adminAuditLogsSection",
+    aiAssistant: "adminAiAssistantSection",
 
 };
 
