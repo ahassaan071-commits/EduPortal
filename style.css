@@ -2486,19 +2486,15 @@ overflow-x:hidden;
 ============================== */
 
 /* Main right-side workspace */
-#studentDashboard .main-content {
-    margin-left: 0 !important;
-    width: auto !important;
-    max-width: none !important;
-    min-width: 0 !important;
-    min-height: 0 !important;
-    height: 100% !important;
+.main-content {
+    margin-left: 260px !important;
+    width: calc(100% - 260px) !important;
+    min-height: 100vh;
     padding: 25px 35px 50px !important;
-    box-sizing: border-box !important;
 }
 
 /* Header uses full workspace */
-#studentDashboard .top-header {
+.top-header {
     width: auto !important;
     margin: -25px -35px 30px !important;
 }
@@ -2563,19 +2559,16 @@ overflow-x:hidden;
 
 #studentDashboard {
     width: 100% !important;
-    min-width: 0 !important;
-    min-height: 0 !important;
+    min-width: 100%;
 }
 
-/* Remove old sidebar offset */
-#studentDashboard .main-content {
-    margin-left: 0 !important;
+/* Remove empty space after sidebar */
+.main-content {
+    margin-left: 260px !important;
     width: auto !important;
     max-width: none !important;
-    min-width: 0 !important;
-    min-height: 0 !important;
-    height: 100% !important;
-    box-sizing: border-box !important;
+    min-height: 100vh;
+    padding: 25px 35px 50px !important;
 }
 
 /* Header should fill the workspace */
@@ -5208,14 +5201,11 @@ body.dark-mode .login-side-panel {
 
 /* Admin Main Content */
 .admin-main-content {
-    margin-left: 0;
-    width: auto;
-    min-width: 0;
-    min-height: 0;
-    height: 100%;
+    margin-left: 260px;
+    width: calc(100% - 260px);
+    min-height: 100vh;
     padding: 25px 35px 50px;
     background: #f8fafc;
-    box-sizing: border-box;
 }
 
 /* Admin Header */
@@ -35499,12 +35489,8 @@ align-self: flex-end !important;
 #adminDashboard .admin-main-content {
     position: relative !important;
     display: block !important;
-    width: auto !important;
-    min-width: 0 !important;
-    min-height: 0 !important;
-    height: 100% !important;
-    margin-left: 0 !important;
-    box-sizing: border-box !important;
+    width: calc(100% - 260px) !important;
+    min-height: 100vh !important;
 }
 
 
@@ -42819,12 +42805,10 @@ align-self: flex-end !important;
    ========================================================= */
 
 #teacherDashboard .teacher-main-content {
-    margin-left: 0 !important;
-    width: auto !important;
-    min-width: 0 !important;
+    margin-left: 260px !important;
+    width: calc(100% - 260px) !important;
 
-    min-height: 0 !important;
-    height: 100% !important;
+    min-height: 100vh !important;
 
     padding: 0 35px 50px !important;
 
@@ -43519,12 +43503,10 @@ align-self: flex-end !important;
    Actual HTML class is .teacher-main-content
 */
 #teacherDashboard > .teacher-main-content {
-    width: auto !important;
-    margin-left: 0 !important;
+    width: calc(100% - 260px) !important;
+    margin-left: 260px !important;
 
-    min-width: 0 !important;
-    min-height: 0 !important;
-    height: 100% !important;
+    min-height: 100vh !important;
 
     padding: 0 35px 50px !important;
 
@@ -43533,7 +43515,7 @@ align-self: flex-end !important;
     box-sizing: border-box !important;
 
     overflow-x: hidden !important;
-    overflow-y: auto !important;
+    overflow-y: visible !important;
 }
 
 /* =========================================================
@@ -46676,4 +46658,747 @@ html.edu-session-restoring.edu-role-student #studentDashboard {
     padding: 0 22px !important;
     margin-left: auto;
     flex: 0 0 auto !important;
+}
+/* =========================================================
+   EDU PORTAL — MASTER PROFESSIONAL FULLSCREEN LAYOUT
+   FINAL VERSION
+   ADMIN + TEACHER + STUDENT
+========================================================= */
+
+:root {
+    --portal-sidebar-width: 250px;
+    --portal-bg: #f6f8fc;
+    --portal-card: #ffffff;
+    --portal-border: #e2e8f0;
+    --portal-text: #172554;
+    --portal-muted: #64748b;
+    --portal-primary: #2563eb;
+    --portal-primary-dark: #1d4ed8;
+}
+
+
+/* =========================================================
+   GLOBAL VIEWPORT
+========================================================= */
+
+html,
+body {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden !important;
+}
+
+body {
+    background: #f6f8fc !important;
+}
+
+
+/* =========================================================
+   COMMON DASHBOARD ROOT
+========================================================= */
+
+#studentDashboard,
+#adminDashboard,
+#teacherDashboard {
+
+    position: relative !important;
+
+    width: 100vw !important;
+    max-width: 100vw !important;
+
+    height: 100vh !important;
+    min-height: 100vh !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    overflow: hidden !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* =========================================================
+   ==================== STUDENT =============================
+========================================================= */
+
+#studentDashboard {
+
+    background: var(--portal-bg) !important;
+
+}
+
+
+/* Student Sidebar */
+
+#studentDashboard .sidebar {
+
+    position: fixed !important;
+
+    top: 0 !important;
+    left: 0 !important;
+
+    width: var(--portal-sidebar-width) !important;
+    height: 100vh !important;
+
+    margin: 0 !important;
+
+    padding: 22px 14px !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    box-sizing: border-box !important;
+
+    z-index: 5000 !important;
+
+}
+
+
+/* Student Main */
+
+#studentDashboard .main-content {
+
+    position: relative !important;
+
+    margin-left: var(--portal-sidebar-width) !important;
+
+    width: calc(100vw - var(--portal-sidebar-width)) !important;
+
+    height: 100vh !important;
+    min-height: 100vh !important;
+
+    padding: 0 28px 35px !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    box-sizing: border-box !important;
+
+}
+
+
+/* Student Header */
+
+#studentDashboard .top-header {
+
+    width: calc(100% + 56px) !important;
+
+    margin: 0 -28px 28px !important;
+
+    min-height: 82px !important;
+
+    padding: 18px 28px !important;
+
+    box-sizing: border-box !important;
+
+}
+
+
+/* Student Sections */
+
+#studentDashboard #profileSection,
+#studentDashboard #attendanceSection,
+#studentDashboard #subjectsSection,
+#studentDashboard #resultsSection,
+#studentDashboard #assignmentsSection,
+#studentDashboard #feeSection,
+#studentDashboard #settingsSection {
+
+    width: 100% !important;
+    max-width: none !important;
+
+    margin: 0 0 22px 0 !important;
+    padding: 0 !important;
+
+    display: block !important;
+
+    box-sizing: border-box !important;
+
+}
+
+
+/* Student Cards */
+
+#studentDashboard #profileSection .profile-card,
+#studentDashboard #attendanceSection .profile-card,
+#studentDashboard #subjectsSection .profile-card,
+#studentDashboard #resultsSection .profile-card,
+#studentDashboard #assignmentsSection .profile-card,
+#studentDashboard #feeSection .profile-card,
+#studentDashboard #settingsSection .profile-card {
+
+    width: 100% !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+
+    box-sizing: border-box !important;
+
+}
+
+
+/* Student Dashboard Grids */
+
+#studentDashboard .dashboard-cards,
+#studentDashboard .analytics-section,
+#studentDashboard .quick-actions,
+#studentDashboard .notification-panel,
+#studentDashboard .student-id-card,
+#studentDashboard .welcome-banner,
+#studentDashboard .notice-board {
+
+    width: 100% !important;
+    max-width: none !important;
+
+    box-sizing: border-box !important;
+
+}
+
+
+/* =========================================================
+   ====================== ADMIN ==============================
+========================================================= */
+
+#adminDashboard {
+
+    background: var(--portal-bg) !important;
+
+}
+
+
+/* Admin Sidebar */
+
+#adminDashboard .admin-sidebar {
+
+    position: fixed !important;
+
+    top: 0 !important;
+    left: 0 !important;
+
+    width: var(--portal-sidebar-width) !important;
+    height: 100vh !important;
+
+    margin: 0 !important;
+
+    padding: 22px 14px !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    box-sizing: border-box !important;
+
+    z-index: 5000 !important;
+
+}
+
+
+/* Admin Main */
+
+#adminDashboard .admin-main-content {
+
+    position: relative !important;
+
+    margin-left: var(--portal-sidebar-width) !important;
+
+    width: calc(100vw - var(--portal-sidebar-width)) !important;
+
+    height: 100vh !important;
+    min-height: 100vh !important;
+
+    padding: 0 28px 35px !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    box-sizing: border-box !important;
+
+}
+
+
+/* Admin Header */
+
+#adminDashboard .admin-top-header {
+
+    width: calc(100% + 56px) !important;
+
+    margin: 0 -28px 26px !important;
+
+    min-height: 82px !important;
+
+    padding: 18px 28px !important;
+
+    box-sizing: border-box !important;
+
+}
+
+
+/* ALL ADMIN MODULES */
+
+#adminDashboard #adminHomeSection,
+#adminDashboard #adminStudentsSection,
+#adminDashboard #adminTeachersSection,
+#adminDashboard #adminAttendanceSection,
+#adminDashboard #adminResultsSection,
+#adminDashboard #adminFeesSection,
+#adminDashboard #adminFeeSection,
+#adminDashboard #adminAssignmentsSection,
+#adminDashboard #adminNoticesSection,
+#adminDashboard #adminUsersStudentsSection,
+#adminDashboard #adminUsersSection,
+#adminDashboard #adminUserManagementSection,
+#adminDashboard #adminSettingsSection {
+
+    width: 100% !important;
+    max-width: none !important;
+
+    margin: 0 0 22px 0 !important;
+    padding: 0 !important;
+
+    box-sizing: border-box !important;
+
+}
+
+
+/* Admin Cards */
+
+#adminDashboard .admin-section-card,
+#adminDashboard .students-admin-card,
+#adminDashboard .admin-fee-container,
+#adminDashboard .results-list-card,
+#adminDashboard .attendance-page-card {
+
+    width: 100% !important;
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    box-sizing: border-box !important;
+
+}
+
+
+/* Admin Page Headers */
+
+#adminDashboard .admin-section-header,
+#adminDashboard .attendance-page-header,
+#adminDashboard .results-page-header {
+
+    width: 100% !important;
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+}
+
+
+/* Admin Tables */
+
+#adminDashboard .students-table-wrapper,
+#adminDashboard .results-table-container,
+#adminDashboard .results-table-wrapper,
+#adminDashboard .attendance-table,
+#adminDashboard .attendance-table-wrapper {
+
+    width: 100% !important;
+
+    max-width: none !important;
+
+    overflow-x: auto !important;
+
+    box-sizing: border-box !important;
+
+}
+
+
+/* =========================================================
+   ===================== TEACHER =============================
+========================================================= */
+
+#teacherDashboard {
+
+    background: var(--portal-bg) !important;
+
+}
+
+
+/* Teacher Sidebar */
+
+#teacherDashboard .teacher-sidebar {
+
+    position: fixed !important;
+
+    top: 0 !important;
+    left: 0 !important;
+
+    width: var(--portal-sidebar-width) !important;
+    height: 100vh !important;
+
+    margin: 0 !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    box-sizing: border-box !important;
+
+    z-index: 5000 !important;
+
+}
+
+
+/* Teacher Main */
+
+#teacherDashboard .teacher-main-content {
+
+    position: relative !important;
+
+    margin-left: var(--portal-sidebar-width) !important;
+
+    width: calc(100vw - var(--portal-sidebar-width)) !important;
+
+    height: 100vh !important;
+    min-height: 100vh !important;
+
+    padding: 0 28px 35px !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    box-sizing: border-box !important;
+
+}
+
+
+/* Teacher Header */
+
+#teacherDashboard .teacher-top-header {
+
+    width: calc(100% + 56px) !important;
+
+    margin: 0 -28px 26px !important;
+
+    min-height: 82px !important;
+
+    padding: 18px 28px !important;
+
+    box-sizing: border-box !important;
+
+}
+
+
+/* Teacher Sections */
+
+#teacherDashboard .teacher-section-page,
+#teacherDashboard .teacher-page-section,
+#teacherDashboard .teacher-dashboard-section {
+
+    width: 100% !important;
+    max-width: none !important;
+
+    box-sizing: border-box !important;
+
+}
+
+
+/* Teacher Cards */
+
+#teacherDashboard .teacher-section-card,
+#teacherDashboard .admin-section-card,
+#teacherDashboard .teacher-today-card,
+#teacherDashboard .teacher-stat-card {
+
+    width: 100% !important;
+    max-width: none !important;
+
+    box-sizing: border-box !important;
+
+}
+
+
+/* =========================================================
+   PROFESSIONAL SIDEBAR
+========================================================= */
+
+#studentDashboard .sidebar,
+#adminDashboard .admin-sidebar,
+#teacherDashboard .teacher-sidebar {
+
+    scrollbar-width: thin;
+    scrollbar-color: rgba(148,163,184,.35) transparent;
+
+}
+
+
+/* Chrome / Edge */
+
+#studentDashboard .sidebar::-webkit-scrollbar,
+#adminDashboard .admin-sidebar::-webkit-scrollbar,
+#teacherDashboard .teacher-sidebar::-webkit-scrollbar {
+
+    width: 5px !important;
+}
+
+
+#studentDashboard .sidebar::-webkit-scrollbar-track,
+#adminDashboard .admin-sidebar::-webkit-scrollbar-track,
+#teacherDashboard .teacher-sidebar::-webkit-scrollbar-track {
+
+    background: transparent !important;
+
+}
+
+
+#studentDashboard .sidebar::-webkit-scrollbar-thumb,
+#adminDashboard .admin-sidebar::-webkit-scrollbar-thumb,
+#teacherDashboard .teacher-sidebar::-webkit-scrollbar-thumb {
+
+    background: rgba(148,163,184,.35) !important;
+
+    border-radius: 999px !important;
+
+}
+
+
+#studentDashboard .sidebar::-webkit-scrollbar-thumb:hover,
+#adminDashboard .admin-sidebar::-webkit-scrollbar-thumb:hover,
+#teacherDashboard .teacher-sidebar::-webkit-scrollbar-thumb:hover {
+
+    background: rgba(148,163,184,.55) !important;
+
+}
+
+
+/* =========================================================
+   MAIN WORKSPACE SCROLLBAR
+========================================================= */
+
+#studentDashboard .main-content::-webkit-scrollbar,
+#adminDashboard .admin-main-content::-webkit-scrollbar,
+#teacherDashboard .teacher-main-content::-webkit-scrollbar {
+
+    width: 6px !important;
+}
+
+
+#studentDashboard .main-content::-webkit-scrollbar-track,
+#adminDashboard .admin-main-content::-webkit-scrollbar-track,
+#teacherDashboard .teacher-main-content::-webkit-scrollbar-track {
+
+    background: transparent !important;
+
+}
+
+
+#studentDashboard .main-content::-webkit-scrollbar-thumb,
+#adminDashboard .admin-main-content::-webkit-scrollbar-thumb,
+#teacherDashboard .teacher-main-content::-webkit-scrollbar-thumb {
+
+    background: #cbd5e1 !important;
+
+    border-radius: 999px !important;
+
+}
+
+
+#studentDashboard .main-content::-webkit-scrollbar-thumb:hover,
+#adminDashboard .admin-main-content::-webkit-scrollbar-thumb:hover,
+#teacherDashboard .teacher-main-content::-webkit-scrollbar-thumb:hover {
+
+    background: #94a3b8 !important;
+
+}
+
+
+/* =========================================================
+   PROFESSIONAL CARD SYSTEM
+========================================================= */
+
+#studentDashboard .card,
+#studentDashboard .profile-card,
+#studentDashboard .analytics-card,
+#studentDashboard .quick-card,
+#studentDashboard .notification-box,
+#studentDashboard .student-id-card,
+#studentDashboard .notice-board,
+
+#adminDashboard .card,
+#adminDashboard .admin-section-card,
+#adminDashboard .students-admin-card,
+#adminDashboard .fee-card,
+#adminDashboard .fee-summary-card,
+#adminDashboard .results-list-card,
+
+#teacherDashboard .teacher-section-card,
+#teacherDashboard .admin-section-card,
+#teacherDashboard .teacher-today-card,
+#teacherDashboard .teacher-stat-card {
+
+    background: #ffffff !important;
+
+    border: 1px solid var(--portal-border) !important;
+
+    border-radius: 16px !important;
+
+    box-shadow:
+        0 6px 20px rgba(15,23,42,.05) !important;
+
+    backdrop-filter: none !important;
+
+}
+
+
+/* =========================================================
+   PROFESSIONAL STAT CARDS
+========================================================= */
+
+#studentDashboard .dashboard-cards,
+#adminDashboard .admin-stats-grid,
+#adminDashboard .dashboard-cards,
+#teacherDashboard .dashboard-cards,
+#teacherDashboard .teacher-statistics-grid {
+
+    gap: 16px !important;
+
+}
+
+
+#studentDashboard .card,
+#adminDashboard .admin-stat-card,
+#adminDashboard .stat-card,
+#teacherDashboard .teacher-stat-card {
+
+    min-width: 0 !important;
+
+    padding: 20px !important;
+
+    border-radius: 15px !important;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease !important;
+
+}
+
+
+#studentDashboard .card:hover,
+#adminDashboard .admin-stat-card:hover,
+#adminDashboard .stat-card:hover,
+#teacherDashboard .teacher-stat-card:hover {
+
+    transform: translateY(-2px) !important;
+
+    box-shadow:
+        0 12px 28px rgba(15,23,42,.08) !important;
+
+}
+
+
+/* =========================================================
+   REMOVE OLD MAX WIDTH RESTRICTIONS
+========================================================= */
+
+#studentDashboard .profile-card,
+#studentDashboard .analytics-card,
+#studentDashboard .quick-card,
+
+#adminDashboard .admin-section-card,
+#adminDashboard .admin-welcome-banner,
+#adminDashboard .students-admin-card,
+
+#teacherDashboard .teacher-section-card,
+#teacherDashboard .teacher-today-card {
+
+    max-width: none !important;
+
+}
+
+
+/* =========================================================
+   REMOVE UNNECESSARY GLASS EFFECT
+========================================================= */
+
+#studentDashboard .card,
+#studentDashboard .analytics-card,
+#studentDashboard .quick-card,
+#studentDashboard .profile-card,
+#studentDashboard .student-id-card,
+#studentDashboard .notice-board,
+#studentDashboard .notification-box {
+
+    backdrop-filter: none !important;
+
+}
+
+
+/* =========================================================
+   PREVENT CONTENT FROM BREAKING WORKSPACE
+========================================================= */
+
+#studentDashboard *,
+#adminDashboard *,
+#teacherDashboard * {
+
+    box-sizing: border-box;
+
+}
+
+
+#studentDashboard img,
+#adminDashboard img,
+#teacherDashboard img {
+
+    max-width: 100%;
+
+}
+
+
+#studentDashboard table,
+#adminDashboard table,
+#teacherDashboard table {
+
+    max-width: none;
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    :root {
+        --portal-sidebar-width: 0px;
+    }
+
+    #studentDashboard .sidebar,
+    #adminDashboard .admin-sidebar,
+    #teacherDashboard .teacher-sidebar {
+
+        width: 0 !important;
+
+        padding: 0 !important;
+
+        overflow: hidden !important;
+
+    }
+
+
+    #studentDashboard .main-content,
+    #adminDashboard .admin-main-content,
+    #teacherDashboard .teacher-main-content {
+
+        margin-left: 0 !important;
+
+        width: 100vw !important;
+
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+
+    }
+
 }
