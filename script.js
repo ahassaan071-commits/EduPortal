@@ -43348,3 +43348,1119 @@ async function deleteAcademicAssignment(assignmentId) {
     );
 
 })();
+// ==========================================================
+// EDUPORTAL ADMIN AI ASSISTANT
+// READ-ONLY DATABASE ASSISTANT
+// ==========================================================
+
+(function () {
+
+    "use strict";
+
+    // ------------------------------------------------------
+    // GET AI ELEMENTS
+    // ------------------------------------------------------
+
+    const aiInput =
+        document.getElementById("adminAiInput");
+
+    const aiSendBtn =
+        document.getElementById("adminAiSendBtn");
+
+    const aiMessages =
+        document.getElementById("adminAiMessages");
+
+    const aiTyping =
+        document.getElementById("adminAiTyping");
+
+
+    // ------------------------------------------------------
+    // AI SECTION NOT AVAILABLE
+    // ------------------------------------------------------
+
+    if (
+        !aiInput ||
+        !aiSendBtn ||
+        !aiMessages
+    ) {
+        console.log(
+            "EduPortal AI Assistant: HTML elements not found."
+        );
+
+        return;
+    }
+
+
+    // ======================================================
+    // CHECK ADMIN ACCESS
+    // ======================================================
+
+    function isAdmin() {
+
+        const role =
+            localStorage.getItem(
+                "loggedInRole"
+            );
+
+        const loggedIn =
+            localStorage.getItem(
+                "isLoggedIn"
+            );
+
+        return (
+            loggedIn === "true" &&
+            role === "administrator"
+        );
+
+    }
+
+
+    // ======================================================
+    // ESCAPE HTML
+    // ======================================================
+
+    function safeText(value) {
+
+        if (
+            typeof escapeHtml ===
+            "function"
+        ) {
+            return escapeHtml(
+                String(value ?? "")
+            );
+        }
+
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    // ======================================================
+    // ADD USER MESSAGE
+    // ======================================================
+
+    function addUserMessage(message) {
+
+        const wrapper =
+            document.createElement("div");
+
+        wrapper.className =
+            "admin-ai-message user";
+
+        wrapper.innerHTML = `
+            <div class="admin-ai-bubble">
+                <strong>You</strong>
+                <p>${safeText(message)}</p>
+            </div>
+        `;
+
+        aiMessages.appendChild(
+            wrapper
+        );
+
+        scrollToBottom();
+
+    }
+
+
+    // ======================================================
+    // ADD AI MESSAGE
+    // ======================================================
+
+    function addAiMessage(message) {
+
+        const wrapper =
+            document.createElement("div");
+
+        wrapper.className =
+            "admin-ai-message assistant";
+
+        wrapper.innerHTML = `
+            <div class="admin-ai-avatar">🤖</div>
+
+            <div class="admin-ai-bubble">
+                <strong>EduPortal AI</strong>
+                <p>${message}</p>
+            </div>
+        `;
+
+        aiMessages.appendChild(
+            wrapper
+        );
+
+        scrollToBottom();
+
+    }
+
+
+    // ======================================================
+    // SCROLL CHAT
+    // ======================================================
+
+    function scrollToBottom() {
+
+        aiMessages.scrollTop =
+            aiMessages.scrollHeight;
+
+    }
+
+
+    // ======================================================
+    // TYPING
+    // ======================================================
+
+    function showTyping() {
+
+        if (aiTyping) {
+
+            aiTyping.style.display =
+                "flex";
+
+        }
+
+    }
+
+
+    function hideTyping() {
+
+        if (aiTyping) {
+
+            aiTyping.style.display =
+                "none";
+
+        }
+
+    }
+
+
+    // ======================================================
+    // LOAD STUDENTS
+    // ======================================================
+
+    async function getStudents() {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("students")
+                .select("*")
+                .order(
+                    "id",
+                    {
+                        ascending: false
+                    }
+                );
+
+        if (error) {
+
+            throw error;
+
+        }
+
+        return data || [];
+
+    }
+
+
+    // ======================================================
+    // LOAD TEACHERS
+    // ======================================================
+
+    async function getTeachers() {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("teachers")
+                .select("*")
+                .order(
+                    "id",
+                    {
+                        ascending: false
+                    }
+                );
+
+        if (error) {
+
+            throw error;
+
+        }
+
+        return data || [];
+
+    }
+
+
+    // ======================================================
+    // LOAD ATTENDANCE
+    // ======================================================
+
+    async function getAttendance() {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("attendance")
+                .select("*")
+                .order(
+                    "id",
+                    {
+                        ascending: false
+                    }
+                );
+
+        if (error) {
+
+            throw error;
+
+        }
+
+        return data || [];
+
+    }
+
+
+    // ======================================================
+    // LOAD FEES
+    // ======================================================
+
+    async function getFees() {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("fee_records")
+                .select("*")
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+        if (error) {
+
+            throw error;
+
+        }
+
+        return data || [];
+
+    }
+
+
+    // ======================================================
+    // LOAD RESULTS
+    // ======================================================
+
+    async function getResults() {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("results")
+                .select("*")
+                .order(
+                    "id",
+                    {
+                        ascending: false
+                    }
+                );
+
+        if (error) {
+
+            throw error;
+
+        }
+
+        return data || [];
+
+    }
+
+
+    // ======================================================
+    // LOAD ASSIGNMENTS
+    // ======================================================
+
+    async function getAssignments() {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("assignments")
+                .select("*")
+                .order(
+                    "id",
+                    {
+                        ascending: false
+                    }
+                );
+
+        if (error) {
+
+            throw error;
+
+        }
+
+        return data || [];
+
+    }
+
+
+    // ======================================================
+    // LOAD NOTICES
+    // ======================================================
+
+    async function getNotices() {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("notices")
+                .select("*")
+                .order(
+                    "id",
+                    {
+                        ascending: false
+                    }
+                );
+
+        if (error) {
+
+            throw error;
+
+        }
+
+        return data || [];
+
+    }
+
+
+    // ======================================================
+    // TODAY DATE
+    // ======================================================
+
+    function getToday() {
+
+        const date =
+            new Date();
+
+        const year =
+            date.getFullYear();
+
+        const month =
+            String(
+                date.getMonth() + 1
+            ).padStart(2, "0");
+
+        const day =
+            String(
+                date.getDate()
+            ).padStart(2, "0");
+
+        return (
+            year +
+            "-" +
+            month +
+            "-" +
+            day
+        );
+
+    }
+
+
+    // ======================================================
+    // ATTENDANCE SUMMARY
+    // ======================================================
+
+    async function attendanceSummary() {
+
+        const attendance =
+            await getAttendance();
+
+        const today =
+            getToday();
+
+        const todayRecords =
+            attendance.filter(
+                function (record) {
+
+                    return String(
+                        record.attendance_date ||
+                        ""
+                    ).substring(0, 10)
+                    === today;
+
+                }
+            );
+
+
+        let present = 0;
+        let absent = 0;
+        let leave = 0;
+
+
+        todayRecords.forEach(
+            function (record) {
+
+                const status =
+                    String(
+                        record.status || ""
+                    )
+                    .trim()
+                    .toLowerCase();
+
+
+                if (
+                    status === "present" ||
+                    status === "late" ||
+                    status === "p"
+                ) {
+
+                    present++;
+
+                }
+                else if (
+                    status === "absent" ||
+                    status === "a"
+                ) {
+
+                    absent++;
+
+                }
+                else if (
+                    status === "leave"
+                ) {
+
+                    leave++;
+
+                }
+
+            }
+        );
+
+
+        return `
+            <strong>Today's Attendance</strong><br><br>
+
+            📅 Date: ${safeText(today)}<br>
+            🟢 Present: ${present}<br>
+            🔴 Absent: ${absent}<br>
+            🟡 Leave: ${leave}<br>
+            📊 Total Records: ${todayRecords.length}
+        `;
+
+    }
+
+
+    // ======================================================
+    // UNPAID FEES
+    // ======================================================
+
+    async function unpaidFees() {
+
+        const fees =
+            await getFees();
+
+        const unpaid =
+            fees.filter(
+                function (fee) {
+
+                    const status =
+                        String(
+                            fee.status || ""
+                        )
+                        .trim()
+                        .toLowerCase();
+
+                    return (
+                        status === "unpaid" ||
+                        status === "pending" ||
+                        Number(
+                            fee.remaining_amount || 0
+                        ) > 0
+                    );
+
+                }
+            );
+
+
+        if (!unpaid.length) {
+
+            return `
+                <strong>Unpaid Fees</strong><br><br>
+                No unpaid fee records found.
+            `;
+
+        }
+
+
+        let html =
+            `<strong>Unpaid Fee Records</strong><br><br>`;
+
+        unpaid
+            .slice(0, 30)
+            .forEach(
+                function (fee, index) {
+
+                    html += `
+                        ${index + 1}.
+                        Student ID:
+                        ${safeText(
+                            fee.student_id
+                        )}
+                        — Remaining:
+                        ${safeText(
+                            fee.remaining_amount ?? 0
+                        )}
+                        <br>
+                    `;
+
+                }
+            );
+
+
+        if (unpaid.length > 30) {
+
+            html += `
+                <br>
+                Showing first 30 of
+                ${unpaid.length} records.
+            `;
+
+        }
+
+
+        return html;
+
+    }
+
+
+    // ======================================================
+    // ALL STUDENTS
+    // ======================================================
+
+    async function allStudents() {
+
+        const students =
+            await getStudents();
+
+
+        if (!students.length) {
+
+            return `
+                <strong>Students</strong><br><br>
+                No students found.
+            `;
+
+        }
+
+
+        let html =
+            `<strong>Students (${students.length})</strong><br><br>`;
+
+
+        students
+            .slice(0, 50)
+            .forEach(
+                function (student, index) {
+
+                    const name =
+                        student.name ||
+                        student.full_name ||
+                        "Unnamed";
+
+                    const studentId =
+                        student.student_id ||
+                        student.roll_number ||
+                        student.id;
+
+                    const studentClass =
+                        student.student_class ||
+                        "-";
+
+
+                    html += `
+                        ${index + 1}.
+                        ${safeText(name)}
+                        — ID:
+                        ${safeText(studentId)}
+                        — Class:
+                        ${safeText(studentClass)}
+                        <br>
+                    `;
+
+                }
+            );
+
+
+        if (students.length > 50) {
+
+            html += `
+                <br>
+                Showing first 50 of
+                ${students.length} students.
+            `;
+
+        }
+
+
+        return html;
+
+    }
+
+
+    // ======================================================
+    // ALL TEACHERS
+    // ======================================================
+
+    async function allTeachers() {
+
+        const teachers =
+            await getTeachers();
+
+
+        if (!teachers.length) {
+
+            return `
+                <strong>Teachers</strong><br><br>
+                No teachers found.
+            `;
+
+        }
+
+
+        let html =
+            `<strong>Teachers (${teachers.length})</strong><br><br>`;
+
+
+        teachers
+            .slice(0, 50)
+            .forEach(
+                function (teacher, index) {
+
+                    const name =
+                        teacher.name ||
+                        teacher.full_name ||
+                        teacher.teacher_name ||
+                        "Unnamed";
+
+                    const username =
+                        teacher.username ||
+                        "-";
+
+
+                    html += `
+                        ${index + 1}.
+                        ${safeText(name)}
+                        — Username:
+                        ${safeText(username)}
+                        <br>
+                    `;
+
+                }
+            );
+
+
+        return html;
+
+    }
+
+
+    // ======================================================
+    // DATABASE OVERVIEW
+    // ======================================================
+
+    async function databaseOverview() {
+
+        const [
+            students,
+            teachers,
+            attendance,
+            results,
+            fees,
+            assignments,
+            notices
+        ] = await Promise.all([
+
+            getStudents(),
+            getTeachers(),
+            getAttendance(),
+            getResults(),
+            getFees(),
+            getAssignments(),
+            getNotices()
+
+        ]);
+
+
+        return `
+            <strong>EduPortal Overview</strong><br><br>
+
+            👨‍🎓 Students:
+            ${students.length}<br>
+
+            👨‍🏫 Teachers:
+            ${teachers.length}<br>
+
+            📅 Attendance Records:
+            ${attendance.length}<br>
+
+            📊 Result Records:
+            ${results.length}<br>
+
+            💰 Fee Records:
+            ${fees.length}<br>
+
+            📝 Assignments:
+            ${assignments.length}<br>
+
+            📢 Notices:
+            ${notices.length}
+        `;
+
+    }
+
+
+    // ======================================================
+    // PROCESS USER QUESTION
+    // ======================================================
+
+    async function processQuestion(question) {
+
+        const text =
+            question
+                .toLowerCase()
+                .trim();
+
+
+        // ----------------------------------------------
+        // ALL STUDENTS
+        // ----------------------------------------------
+
+        if (
+            text.includes("all students") ||
+            text.includes("students list") ||
+            text.includes("student list") ||
+            text === "students"
+        ) {
+
+            return await allStudents();
+
+        }
+
+
+        // ----------------------------------------------
+        // ALL TEACHERS
+        // ----------------------------------------------
+
+        if (
+            text.includes("all teachers") ||
+            text.includes("teachers list") ||
+            text.includes("teacher list") ||
+            text === "teachers"
+        ) {
+
+            return await allTeachers();
+
+        }
+
+
+        // ----------------------------------------------
+        // UNPAID FEES
+        // ----------------------------------------------
+
+        if (
+            text.includes("unpaid fee") ||
+            text.includes("unpaid fees") ||
+            text.includes("pending fee") ||
+            text.includes("pending fees")
+        ) {
+
+            return await unpaidFees();
+
+        }
+
+
+        // ----------------------------------------------
+        // TODAY ATTENDANCE
+        // ----------------------------------------------
+
+        if (
+            text.includes("today") &&
+            text.includes("attendance")
+        ) {
+
+            return await attendanceSummary();
+
+        }
+
+
+        // ----------------------------------------------
+        // OVERVIEW
+        // ----------------------------------------------
+
+        if (
+            text.includes("overview") ||
+            text.includes("summary") ||
+            text.includes("dashboard summary") ||
+            text.includes("database summary")
+        ) {
+
+            return await databaseOverview();
+
+        }
+
+
+        // ----------------------------------------------
+        // HELP
+        // ----------------------------------------------
+
+        if (
+            text === "help" ||
+            text.includes("what can you do") ||
+            text.includes("what can you ask")
+        ) {
+
+            return `
+                <strong>I can currently help with:</strong><br><br>
+
+                👨‍🎓 Students<br>
+                • Show all students<br><br>
+
+                👨‍🏫 Teachers<br>
+                • Show all teachers<br><br>
+
+                📅 Attendance<br>
+                • Show today's attendance summary<br><br>
+
+                💰 Fees<br>
+                • Show students with unpaid fees<br><br>
+
+                📊 Dashboard<br>
+                • Show EduPortal overview
+            `;
+
+        }
+
+
+        // ----------------------------------------------
+        // UNKNOWN QUESTION
+        // ----------------------------------------------
+
+        return `
+            I can search the EduPortal data, but I don't
+            understand this question yet.<br><br>
+
+            Try:<br>
+            • Show all students<br>
+            • Show all teachers<br>
+            • Show today's attendance summary<br>
+            • Show students with unpaid fees<br>
+            • Show EduPortal overview
+        `;
+
+    }
+
+
+    // ======================================================
+    // SEND MESSAGE
+    // ======================================================
+
+    async function sendMessage() {
+
+        const question =
+            aiInput.value.trim();
+
+
+        if (!question) {
+
+            return;
+
+        }
+
+
+        // ----------------------------------------------
+        // ADMIN SECURITY CHECK
+        // ----------------------------------------------
+
+        if (!isAdmin()) {
+
+            addAiMessage(
+                "🔒 Admin access required."
+            );
+
+            return;
+
+        }
+
+
+        // ----------------------------------------------
+        // CHECK SUPABASE
+        // ----------------------------------------------
+
+        if (
+            typeof supabaseClient ===
+            "undefined"
+        ) {
+
+            addAiMessage(
+                "❌ Supabase connection is not available."
+            );
+
+            return;
+
+        }
+
+
+        addUserMessage(
+            question
+        );
+
+
+        aiInput.value = "";
+
+        showTyping();
+
+
+        try {
+
+            const answer =
+                await processQuestion(
+                    question
+                );
+
+            hideTyping();
+
+            addAiMessage(
+                answer
+            );
+
+        }
+        catch (error) {
+
+            console.error(
+                "EduPortal AI error:",
+                error
+            );
+
+            hideTyping();
+
+            addAiMessage(
+                "❌ Data load karte waqt error aa gaya.<br><br>" +
+                safeText(
+                    error.message ||
+                    "Unknown error"
+                )
+            );
+
+        }
+
+    }
+
+
+    // ======================================================
+    // SEND BUTTON
+    // ======================================================
+
+    aiSendBtn.addEventListener(
+        "click",
+        sendMessage
+    );
+
+
+    // ======================================================
+    // ENTER TO SEND
+    // SHIFT + ENTER = NEW LINE
+    // ======================================================
+
+    aiInput.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Enter" &&
+                !event.shiftKey
+            ) {
+
+                event.preventDefault();
+
+                sendMessage();
+
+            }
+
+        }
+    );
+
+
+    // ======================================================
+    // SUGGESTION BUTTONS
+    // ======================================================
+
+    document.addEventListener(
+        "click",
+        function (event) {
+
+            const button =
+                event.target.closest(
+                    "[data-ai-prompt]"
+                );
+
+
+            if (!button) {
+
+                return;
+
+            }
+
+
+            const prompt =
+                button.getAttribute(
+                    "data-ai-prompt"
+                );
+
+
+            if (!prompt) {
+
+                return;
+
+            }
+
+
+            aiInput.value =
+                prompt;
+
+            sendMessage();
+
+        }
+    );
+
+
+    // ======================================================
+    // INITIAL MESSAGE
+    // ======================================================
+
+    console.log(
+        "EduPortal Admin AI Assistant loaded successfully."
+    );
+
+})();
