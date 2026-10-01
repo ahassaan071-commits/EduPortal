@@ -42812,7 +42812,7 @@ async function deleteAcademicAssignment(assignmentId) {
     // SETTINGS
     // ======================================================
 
-    const REFRESH_INTERVAL = 5000;
+    const REFRESH_INTERVAL = 60000;
 
     let refreshTimer = null;
     let refreshRunning = false;
@@ -43289,9 +43289,9 @@ async function deleteAcademicAssignment(assignmentId) {
             );
 
 
-        console.log(
-            "EduPortal Central 5 Second Sync Started ✅"
-        );
+      console.log(
+    "EduPortal Central 60 Second Backup Sync Started ✅"
+);
 
     }
 
