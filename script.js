@@ -16686,6 +16686,40 @@ const expiryDate =
         "adminNoticeExpiryDate"
     ).value;
 
+    // ==========================================
+// HOLIDAY AUTOMATION
+// ==========================================
+
+const holidayCheckbox =
+    document.getElementById(
+        "adminNoticeHoliday"
+    );
+
+const isHolidayNotice =
+    holidayCheckbox
+        ? holidayCheckbox.checked
+        : false;
+
+const holidayDate =
+    isHolidayNotice
+        ? (() => {
+
+            const d =
+                new Date(
+                    `${date}T00:00:00`
+                );
+
+            d.setDate(
+                d.getDate() + 1
+            );
+
+            return d
+                .toISOString()
+                .slice(0, 10);
+
+        })()
+        : null;
+
     const description =
         document.getElementById(
             "adminNoticeDescription"
@@ -16803,13 +16837,29 @@ const noticeRecord = {
     message: description,
 
     target_role:
-        audience === "Class"
-            ? "Class:" + selectedClass
-            : audience,
+        isHolidayNotice
+            ? "everyone"
+            : (
+                audience === "Class"
+                    ? "Class:" + selectedClass
+                    : audience
+            ),
 
     notice_date: date,
 
     expiry_date: expiryDate,
+
+    is_holiday_notice:
+        isHolidayNotice,
+
+    holiday_date:
+        holidayDate,
+
+    auto_generated:
+        false,
+
+    automation_key:
+        null,
 
     ...(noticeId
         ? {}
