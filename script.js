@@ -12252,9 +12252,9 @@ async function updateStudentAttendanceUI() {
         );
 
 
-    if (!checkInButton || !message) {
-        return;
-    }
+  if (!checkInButton) {
+    return;
+}
 
 
     const loggedInStudent =
@@ -12267,11 +12267,13 @@ async function updateStudentAttendanceUI() {
 
     if (!loggedInStudent) {
 
+    if (message) {
         message.textContent =
             "Student session not found.";
-
-        return;
     }
+
+    return;
+}
 
 
     // ==========================================
