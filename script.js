@@ -16952,6 +16952,22 @@ if (resetNoticeClassGroup) {
         "adminNoticeDate"
     ).value = "";
 
+    // ==========================================
+// RESET HOLIDAY CHECKBOX
+// ==========================================
+
+const resetHolidayNotice =
+    document.getElementById(
+        "adminNoticeHoliday"
+    );
+
+if (resetHolidayNotice) {
+
+    resetHolidayNotice.checked =
+        false;
+
+}
+
     document.getElementById(
     "adminNoticeExpiryDate"
 ).value = "";
