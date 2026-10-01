@@ -15719,6 +15719,35 @@ if (!monthlyFeeError && monthlyFeeStudent) {
 
                     </div>
 
+
+<div
+    style="
+        background:#eff6ff;
+        border:1px solid #bfdbfe;
+        border-radius:12px;
+        padding:14px;
+    "
+>
+
+    <div
+        style="
+            font-size:12px;
+            color:#1d4ed8;
+            margin-bottom:5px;
+        "
+    >
+        Monthly Fee
+    </div>
+
+    <strong
+        style="color:#1d4ed8;"
+    >
+        Rs.
+        ${monthlyFee.toLocaleString()}
+    </strong>
+
+</div>
+
                 </div>
 
 
