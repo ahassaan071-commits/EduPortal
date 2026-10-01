@@ -11095,7 +11095,7 @@ async function renderAttendanceTable() {
             "attendanceTableBody"
         );
 
-    await autoMarkAbsentAfterNoon();
+    // Auto-absent is now handled by Supabase pg_cron.\n    // No browser-triggered write is required here.
 
 
     if (!tableBody) {
