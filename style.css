@@ -42819,10 +42819,12 @@ align-self: flex-end !important;
    ========================================================= */
 
 #teacherDashboard .teacher-main-content {
-    margin-left: 260px !important;
-    width: calc(100% - 260px) !important;
+    margin-left: 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
 
-    min-height: 100vh !important;
+    min-height: 0 !important;
+    height: 100% !important;
 
     padding: 0 35px 50px !important;
 
@@ -43517,10 +43519,12 @@ align-self: flex-end !important;
    Actual HTML class is .teacher-main-content
 */
 #teacherDashboard > .teacher-main-content {
-    width: calc(100% - 260px) !important;
-    margin-left: 260px !important;
+    width: auto !important;
+    margin-left: 0 !important;
 
-    min-height: 100vh !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: 100% !important;
 
     padding: 0 35px 50px !important;
 
@@ -43529,7 +43533,7 @@ align-self: flex-end !important;
     box-sizing: border-box !important;
 
     overflow-x: hidden !important;
-    overflow-y: visible !important;
+    overflow-y: auto !important;
 }
 
 /* =========================================================
