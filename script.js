@@ -1026,11 +1026,29 @@ function eduPortalShowOnly(activeId) {
     allDashboards.forEach(function (id) {
         const el = document.getElementById(id);
         if (!el) return;
-        if (id === activeId) {
-            el.style.setProperty("display", "block", "important");
-            el.style.setProperty("visibility", "visible", "important");
-            el.style.setProperty("opacity", "1", "important");
-        } else {
+   if (id === activeId) {
+
+    el.style.setProperty(
+        "display",
+        "flex",
+        "important"
+    );
+
+    el.style.setProperty(
+        "visibility",
+        "visible",
+        "important"
+    );
+
+    el.style.setProperty(
+        "opacity",
+        "1",
+        "important"
+    );
+}
+
+
+        else {
             el.style.setProperty("display", "none", "important");
             el.style.setProperty("visibility", "hidden", "important");
             el.style.setProperty("opacity", "0", "important");
