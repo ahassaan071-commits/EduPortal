@@ -9809,17 +9809,16 @@ document.addEventListener(
         // VALIDATION
         // ==========================================
 
-        if (
-            !name ||
-            !email ||
-            !phone ||
-            !subject ||
-            !teacherClass ||
-            !qualification ||
-            !joiningDate ||
-            !username ||
-            !password
-        ) {
+       if (
+    !name ||
+    !email ||
+    !phone ||
+    !subject ||
+    !qualification ||
+    !joiningDate ||
+    !username ||
+    !password
+) {
 
             alert(
                 "Please fill all teacher fields. ⚠️"
@@ -20566,6 +20565,24 @@ if (analyticsFeeElement) {
     window.AdminDashboard =
         AdminDashboard;
 
+        AdminDashboard.refresh = () =>
+    AdminDashboard.loadData();
+
+        let _eduPortalRealtimeRefreshTimer;
+
+window.queueEduPortalRealtimeRefresh = () => {
+
+    clearTimeout(
+        _eduPortalRealtimeRefreshTimer
+    );
+
+    _eduPortalRealtimeRefreshTimer =
+        setTimeout(() => {
+
+            AdminDashboard.loadData();
+
+        }, 800);
+};
 
 // =====================================================
 // ADMIN DASHBOARD DATE FILTER
