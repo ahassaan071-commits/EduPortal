@@ -5208,11 +5208,14 @@ body.dark-mode .login-side-panel {
 
 /* Admin Main Content */
 .admin-main-content {
-    margin-left: 260px;
-    width: calc(100% - 260px);
-    min-height: 100vh;
+    margin-left: 0;
+    width: auto;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
     padding: 25px 35px 50px;
     background: #f8fafc;
+    box-sizing: border-box;
 }
 
 /* Admin Header */
@@ -35496,8 +35499,12 @@ align-self: flex-end !important;
 #adminDashboard .admin-main-content {
     position: relative !important;
     display: block !important;
-    width: calc(100% - 260px) !important;
-    min-height: 100vh !important;
+    width: auto !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    margin-left: 0 !important;
+    box-sizing: border-box !important;
 }
 
 
