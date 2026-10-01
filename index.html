@@ -6204,21 +6204,65 @@ ADMIN AI ASSISTANT SECTION
                 <span>EduPortal AI is thinking...</span>
             </div>
 
-            <div class="admin-ai-input-area">
-                <textarea
-                    id="adminAiInput"
-                    rows="1"
-                    placeholder="Ask anything about EduPortal..."
-                    autocomplete="off"></textarea>
+      <div class="admin-ai-input-area">
 
-                <button type="button" id="adminAiSendBtn" title="Send">
-                    ➤
-                </button>
-            </div>
+    <select id="adminAiQuestionSelect" class="admin-ai-question-select">
+        <option value="">Select a question...</option>
+
+        <option value="student_count">
+            👨‍🎓 How many students are registered?
+        </option>
+
+        <option value="all_students">
+            👨‍🎓 Show all students
+        </option>
+
+        <option value="teacher_count">
+            👨‍🏫 How many teachers are registered?
+        </option>
+
+        <option value="all_teachers">
+            👨‍🏫 Show all teachers
+        </option>
+
+        <option value="today_attendance">
+            📊 Show today's attendance summary
+        </option>
+
+        <option value="absent_today">
+            ❌ Show students absent today
+        </option>
+
+        <option value="unpaid_fees">
+            💰 Show students with unpaid fees
+        </option>
+
+        <option value="outstanding_fees">
+            💰 What is the total outstanding fee amount?
+        </option>
+
+        <option value="recent_results">
+            📝 Show recent student results
+        </option>
+
+        <option value="recent_activity">
+            📢 Show recent assignments and notices
+        </option>
+
+    </select>
+
+    <button
+        type="button"
+        id="adminAiSendBtn"
+        title="Ask AI">
+        Ask AI
+    </button>
+
+</div>
 
             <div class="admin-ai-footer">
                 <span>🔒 Read-only Admin Assistant</span>
-                <span>Enter to send • Shift+Enter for new line</span>
+                <span>Select a question and click Ask AI</span>
             </div>
 
         </div>
