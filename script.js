@@ -14916,6 +14916,18 @@ const studentMonthlyFeeMap = {};
     ${Number(record.fee_amount).toLocaleString()}
 </td>
 
+
+<td>
+    Rs.
+    ${
+        Number(
+            studentMonthlyFeeMap[
+                String(record.student_id)
+            ] || 0
+        ).toLocaleString()
+    }
+</td>
+
                 <td>
                     Rs.
                     ${
@@ -15434,6 +15446,33 @@ async function openFeePaymentForm(recordId) {
         Number(
             feeRecord.fee_amount || 0
         );
+
+// ==========================================
+// STUDENT MONTHLY FEE
+// ==========================================
+
+let monthlyFee = 0;
+
+const {
+    data: monthlyFeeStudent,
+    error: monthlyFeeError
+} = await supabaseClient
+    .from("students")
+    .select("monthly_fee")
+    .eq(
+        "id",
+        Number(feeRecord.student_id)
+    )
+    .single();
+
+if (!monthlyFeeError && monthlyFeeStudent) {
+
+    monthlyFee =
+        Number(
+            monthlyFeeStudent.monthly_fee || 0
+        );
+
+}
 
     const alreadyPaid =
         Number(
