@@ -16,6 +16,143 @@ const supabaseClient =
 
 console.log("EduPortal Supabase connected ✅");
 
+
+// =====================================================
+// EDUPORTAL - CHATGPT STYLE SCROLLBARS
+// ADMIN + TEACHER + STUDENT
+// VERTICAL + HORIZONTAL
+// =====================================================
+
+(function () {
+
+    if (
+        document.getElementById(
+            "eduPortalScrollbarStyle"
+        )
+    ) {
+        return;
+    }
+
+    const style =
+        document.createElement("style");
+
+    style.id =
+        "eduPortalScrollbarStyle";
+
+    style.textContent = `
+
+        /* ==========================================
+           UNIVERSAL SCROLLBAR
+        ========================================== */
+
+        html,
+        body,
+        *,
+        *::before,
+        *::after {
+
+            scrollbar-width: thin;
+            scrollbar-color:
+                #c1c1c1
+                transparent;
+
+        }
+
+
+        /* ==========================================
+           CHROME / EDGE / SAFARI
+        ========================================== */
+
+        ::-webkit-scrollbar {
+
+            width: 7px;
+            height: 7px;
+
+        }
+
+
+        /* ==========================================
+           TRACK
+        ========================================== */
+
+        ::-webkit-scrollbar-track {
+
+            background: transparent;
+
+        }
+
+
+        /* ==========================================
+           THUMB
+        ========================================== */
+
+        ::-webkit-scrollbar-thumb {
+
+            background:
+                #c1c1c1;
+
+            border-radius:
+                10px;
+
+            border:
+                1px solid transparent;
+
+            background-clip:
+                padding-box;
+
+        }
+
+
+        /* ==========================================
+           HOVER
+        ========================================== */
+
+        ::-webkit-scrollbar-thumb:hover {
+
+            background:
+                #a8a8a8;
+
+            border:
+                1px solid transparent;
+
+            background-clip:
+                padding-box;
+
+        }
+
+
+        /* ==========================================
+           REMOVE SCROLLBAR ARROWS
+        ========================================== */
+
+        ::-webkit-scrollbar-button {
+
+            display: none;
+            width: 0;
+            height: 0;
+
+        }
+
+
+        /* ==========================================
+           CORNER
+        ========================================== */
+
+        ::-webkit-scrollbar-corner {
+
+            background:
+                transparent;
+
+        }
+
+    `;
+
+    document.head.appendChild(
+        style
+    );
+
+})();
+
 // ==========================================
 // HTML ESCAPE HELPER
 // ==========================================
