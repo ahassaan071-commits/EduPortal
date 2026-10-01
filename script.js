@@ -2216,29 +2216,9 @@ setTimeout(function () {
 
             if (adminDashboard) {
 
-                adminDashboard.style.setProperty(
-                    "position",
-                    "relative",
-                    "important"
-                );
+               
 
-                adminDashboard.style.setProperty(
-                    "width",
-                    "100%",
-                    "important"
-                );
-
-                adminDashboard.style.setProperty(
-                    "min-height",
-                    "100vh",
-                    "important"
-                );
-
-                adminDashboard.style.setProperty(
-                    "overflow",
-                    "auto",
-                    "important"
-                );
+               
             }
 
 
