@@ -12705,6 +12705,26 @@ async function studentCheckIn() {
     const today =
         getStudentAttendanceDate();
 
+
+// ==========================================
+// HOLIDAY / LEAVE CHECK
+// ==========================================
+
+const isTodayLeave =
+    await checkAttendanceLeaveDate(today);
+
+if (isTodayLeave) {
+
+    await updateStudentAttendanceUI();
+
+    alert(
+        "Today is a holiday. " +
+        "Attendance is marked as Leave. 🏖️"
+    );
+
+    return;
+}
+
         // ==========================================
 // 12:00 PM ATTENDANCE CUTOFF
 // ==========================================
