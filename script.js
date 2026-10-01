@@ -16,18 +16,17 @@ const supabaseClient =
 
 console.log("EduPortal Supabase connected ✅");
 
-
 // =====================================================
-// EDUPORTAL - CHATGPT STYLE SCROLLBARS
+// EDUPORTAL - FINAL FULL SCREEN LAYOUT
 // ADMIN + TEACHER + STUDENT
-// VERTICAL + HORIZONTAL
+// ONE MAIN SCROLLBAR
 // =====================================================
 
 (function () {
 
     if (
         document.getElementById(
-            "eduPortalScrollbarStyle"
+            "eduPortalFinalLayout"
         )
     ) {
         return;
@@ -37,227 +36,407 @@ console.log("EduPortal Supabase connected ✅");
         document.createElement("style");
 
     style.id =
-        "eduPortalScrollbarStyle";
+        "eduPortalFinalLayout";
 
     style.textContent = `
 
-        /* ==========================================
-           UNIVERSAL SCROLLBAR
-        ========================================== */
+/* =====================================================
+   GLOBAL
+===================================================== */
 
-        html,
-        body,
-        *,
-        *::before,
-        *::after {
+html,
+body {
 
-            scrollbar-width: thin;
-            scrollbar-color:
-                #c1c1c1
-                transparent;
+    width:100%;
+    height:100%;
 
-        }
+    margin:0;
+    padding:0;
 
+    overflow:hidden !important;
 
-        /* ==========================================
-           CHROME / EDGE / SAFARI
-        ========================================== */
+}
 
-        ::-webkit-scrollbar {
 
-            width: 7px;
-            height: 7px;
+/* =====================================================
+   ADMIN DASHBOARD
+===================================================== */
 
-        }
+#adminDashboard {
 
+    position:fixed !important;
 
-        /* ==========================================
-           TRACK
-        ========================================== */
+    inset:0 !important;
 
-        ::-webkit-scrollbar-track {
+    width:100vw !important;
+    height:100vh !important;
 
-            background: transparent;
+    min-height:100vh !important;
 
-        }
+    display:flex !important;
 
+    overflow:hidden !important;
 
-        /* ==========================================
-           THUMB
-        ========================================== */
+}
 
-        ::-webkit-scrollbar-thumb {
 
-            background:
-                #c1c1c1;
+/* =====================================================
+   ADMIN SIDEBAR
+===================================================== */
 
-            border-radius:
-                10px;
+#adminDashboard .admin-sidebar {
 
-            border:
-                1px solid transparent;
+    flex:0 0 300px;
 
-            background-clip:
-                padding-box;
+    width:300px;
 
-        }
+    height:100vh;
 
+    box-sizing:border-box;
 
-        /* ==========================================
-           HOVER
-        ========================================== */
+    overflow:hidden;
 
-        ::-webkit-scrollbar-thumb:hover {
+    display:flex;
 
-            background:
-                #a8a8a8;
+    flex-direction:column;
 
-            border:
-                1px solid transparent;
+}
 
-            background-clip:
-                padding-box;
 
-        }
+/* ADMIN LOGO */
 
+#adminDashboard .admin-sidebar h2 {
 
-        /* ==========================================
-           REMOVE SCROLLBAR ARROWS
-        ========================================== */
+    flex-shrink:0;
 
-        ::-webkit-scrollbar-button {
+}
 
-            display: none;
-            width: 0;
-            height: 0;
 
-        }
+/* ADMIN MENU */
 
+#adminDashboard .admin-sidebar > ul {
 
-        /* ==========================================
-           CORNER
-        ========================================== */
+    flex:1;
 
-        ::-webkit-scrollbar-corner {
+    min-height:0;
 
-            background:
-                transparent;
+    margin:0;
 
-        }
+    padding:10px 0 14px;
 
-    `;
+    display:flex;
 
-    document.head.appendChild(
-        style
-    );
+    flex-direction:column;
 
-})();
+    overflow:hidden;
 
-// =====================================================
-// EDUPORTAL - SINGLE PAGE SCROLL
-// REMOVE DUPLICATE DASHBOARD SCROLLBARS
-// =====================================================
+}
 
-(function () {
 
-    const style =
-        document.createElement("style");
+/* ADMIN MENU ITEMS */
 
-    style.id =
-        "eduPortalSinglePageScroll";
+#adminDashboard .admin-sidebar > ul > li {
 
-    style.textContent = `
+    flex-shrink:0;
 
-        /* ==========================================
-           ONLY THE PAGE SHOULD HANDLE MAIN SCROLL
-        ========================================== */
+}
 
-        html,
-        body {
 
-            width: 100%;
-            min-height: 100%;
-            height: auto;
+/* ADMIN LOGOUT ALWAYS AT BOTTOM */
 
-            overflow-y: auto;
-            overflow-x: auto;
+#adminDashboard #adminLogoutBtn {
 
-        }
+    margin-top:auto !important;
 
+    flex-shrink:0 !important;
 
-        /* ==========================================
-           ADMIN DASHBOARD
-        ========================================== */
+}
 
-        #adminDashboard {
 
-            height: auto !important;
-            min-height: 100vh !important;
+/* =====================================================
+   ADMIN MAIN CONTENT
+===================================================== */
 
-            overflow: visible !important;
+#adminDashboard .admin-main-content {
 
-        }
+    flex:1;
 
+    min-width:0;
 
-        /* ==========================================
-           TEACHER DASHBOARD
-        ========================================== */
+    height:100vh;
 
-        #teacherDashboard {
+    box-sizing:border-box;
 
-            height: auto !important;
-            min-height: 100vh !important;
+    overflow-y:auto;
 
-            overflow: visible !important;
+    overflow-x:auto;
 
-        }
+    scrollbar-gutter:stable;
 
+}
 
-        /* ==========================================
-           STUDENT DASHBOARD
-        ========================================== */
 
-        #studentDashboard {
+/* =====================================================
+   TEACHER DASHBOARD
+===================================================== */
 
-            height: auto !important;
-            min-height: 100vh !important;
+#teacherDashboard {
 
-            overflow: visible !important;
+    position:fixed !important;
 
-        }
+    inset:0 !important;
 
+    width:100vw !important;
+    height:100vh !important;
 
-        /* ==========================================
-           DASHBOARD CONTENT WRAPPERS
-           DO NOT CREATE ANOTHER PAGE SCROLL
-        ========================================== */
+    min-height:100vh !important;
 
-        #adminDashboard > *,
-        #teacherDashboard > *,
-        #studentDashboard > * {
+    overflow:hidden !important;
 
-            max-height: none;
+}
 
-        }
 
+/* TEACHER MAIN CONTENT */
 
-        /* ==========================================
-           SIDEBARS
-           NO INDEPENDENT PAGE SCROLL
-        ========================================== */
+#teacherDashboard .teacher-main-content {
 
-        #adminSidebar,
-        #teacherSidebar,
-        #studentSidebar,
-        .admin-sidebar,
-        .teacher-sidebar,
-        .student-sidebar {
+    height:100vh;
 
-            max-height: none;
+    min-width:0;
 
-        }
+    overflow-y:auto;
 
-    `;
+    overflow-x:auto;
+
+}
+
+
+/* TEACHER SIDEBAR */
+
+#teacherDashboard .teacher-sidebar {
+
+    height:100vh;
+
+    overflow:hidden;
+
+}
+
+
+/* TEACHER LOGOUT */
+
+#teacherDashboard .teacher-sidebar-bottom {
+
+    margin-top:auto;
+
+}
+
+
+/* =====================================================
+   STUDENT DASHBOARD
+===================================================== */
+
+#studentDashboard {
+
+    position:fixed !important;
+
+    inset:0 !important;
+
+    width:100vw !important;
+    height:100vh !important;
+
+    min-height:100vh !important;
+
+    overflow:hidden !important;
+
+    display:flex;
+
+}
+
+
+/* STUDENT SIDEBAR */
+
+#studentDashboard .sidebar {
+
+    flex:0 0 300px;
+
+    width:300px;
+
+    height:100vh;
+
+    box-sizing:border-box;
+
+    overflow:hidden;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+
+/* STUDENT SIDEBAR MENU */
+
+#studentDashboard .sidebar > ul {
+
+    flex:1;
+
+    min-height:0;
+
+    display:flex;
+
+    flex-direction:column;
+
+    overflow:hidden;
+
+}
+
+
+/* STUDENT LOGOUT ALWAYS BOTTOM */
+
+#studentDashboard #logoutBtn {
+
+    margin-top:auto !important;
+
+    flex-shrink:0 !important;
+
+}
+
+
+/* STUDENT MAIN CONTENT */
+
+#studentDashboard .main-content {
+
+    flex:1;
+
+    min-width:0;
+
+    height:100vh;
+
+    box-sizing:border-box;
+
+    overflow-y:auto;
+
+    overflow-x:auto;
+
+    scrollbar-gutter:stable;
+
+}
+
+
+/* =====================================================
+   ALL DASHBOARD SCROLLBARS
+===================================================== */
+
+#adminDashboard .admin-main-content,
+#teacherDashboard .teacher-main-content,
+#studentDashboard .main-content {
+
+    scrollbar-width:thin;
+
+    scrollbar-color:
+        #aeb6c4
+        transparent;
+
+}
+
+
+/* CHROME / EDGE */
+
+#adminDashboard .admin-main-content::-webkit-scrollbar,
+#teacherDashboard .teacher-main-content::-webkit-scrollbar,
+#studentDashboard .main-content::-webkit-scrollbar {
+
+    width:8px;
+
+    height:8px;
+
+}
+
+
+#adminDashboard .admin-main-content::-webkit-scrollbar-track,
+#teacherDashboard .teacher-main-content::-webkit-scrollbar-track,
+#studentDashboard .main-content::-webkit-scrollbar-track {
+
+    background:transparent;
+
+}
+
+
+#adminDashboard .admin-main-content::-webkit-scrollbar-thumb,
+#teacherDashboard .teacher-main-content::-webkit-scrollbar-thumb,
+#studentDashboard .main-content::-webkit-scrollbar-thumb {
+
+    background:#aeb6c4;
+
+    border-radius:10px;
+
+}
+
+
+#adminDashboard .admin-main-content::-webkit-scrollbar-thumb:hover,
+#teacherDashboard .teacher-main-content::-webkit-scrollbar-thumb:hover,
+#studentDashboard .main-content::-webkit-scrollbar-thumb:hover {
+
+    background:#8f99aa;
+
+}
+
+
+#adminDashboard .admin-main-content::-webkit-scrollbar-button,
+#teacherDashboard .teacher-main-content::-webkit-scrollbar-button,
+#studentDashboard .main-content::-webkit-scrollbar-button {
+
+    display:none;
+
+}
+
+
+/* =====================================================
+   PREVENT RANDOM CHILD ELEMENTS FROM MAKING
+   ANOTHER FULL PAGE SCROLL
+===================================================== */
+
+#adminDashboard,
+#teacherDashboard,
+#studentDashboard {
+
+    overscroll-behavior:none;
+
+}
+
+
+/* =====================================================
+   TABLES
+   HORIZONTAL SCROLL ONLY WHEN REQUIRED
+===================================================== */
+
+#adminDashboard table,
+#teacherDashboard table,
+#studentDashboard table {
+
+    max-width:100%;
+
+}
+
+
+/* =====================================================
+   MOBILE / SMALL SCREEN
+===================================================== */
+
+@media (max-width:900px) {
+
+    #adminDashboard .admin-sidebar,
+    #studentDashboard .sidebar {
+
+        flex-basis:240px;
+
+        width:240px;
+
+    }
+
+}
+
+`;
 
     document.head.appendChild(
         style
@@ -2057,7 +2236,7 @@ setTimeout(function () {
 
                 adminDashboard.style.setProperty(
                     "overflow",
-                    "visible",
+                    "auto",
                     "important"
                 );
             }
