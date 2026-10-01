@@ -8,6 +8,9 @@ const SUPABASE_URL =
 const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_IHWuUtXJ3UlmKtQlSC3XXw_GbxKq-1s";
 
+window.SUPABASE_PUBLISHABLE_KEY =
+    SUPABASE_PUBLISHABLE_KEY;
+
 const supabaseClient =
     window.supabase.createClient(
         SUPABASE_URL,
@@ -11095,7 +11098,7 @@ async function renderAttendanceTable() {
             "attendanceTableBody"
         );
 
-    await autoMarkAbsentAfterNoon();
+    // Auto-absent is now handled by Supabase pg_cron.\n    // No browser-triggered write is required here.
 
 
     if (!tableBody) {
@@ -12713,8 +12716,7 @@ if (
     currentHour >= 12
 ) {
 
-    await autoMarkAbsentAfterNoon();
-
+    // Auto-absent is now handled by Supabase pg_cron.
     await updateStudentAttendanceUI();
 
     alert(
@@ -13261,15 +13263,14 @@ updateStudentAttendanceSummary();
 
 
 // ==========================================
-// AUTO ABSENT CHECK EVERY MINUTE
+// AUTO ABSENT IS DATABASE-SCHEDULED
+// Supabase pg_cron handles the server-side write.
 // ==========================================
-
-autoMarkAbsentAfterNoon();
 
 setInterval(
     async function() {
 
-        await autoMarkAbsentAfterNoon();
+        // Supabase pg_cron handles auto-absent; this interval only refreshes the UI.
 
         // Refresh Admin Attendance table
         if (
@@ -16326,15 +16327,8 @@ document.addEventListener(
         }
 
         // ==========================================
-// AUTO GENERATE MONTHLY FEES
-// ==========================================
-
-if (
-    typeof generateMonthlyStudentFees ===
-    "function"
-) {
-    await generateMonthlyStudentFees();
-}
+// MONTHLY FEES ARE DATABASE-SCHEDULED
+// Supabase pg_cron generates fees on the 1st; no page-open trigger is required.
 
         // ==========================================
         // SUPABASE CHECK
@@ -37933,6 +37927,7 @@ window.showAdminModuleDirect = function (module) {
     users: "adminUsersStudentsSection",
     settings: "adminSettingsSection",
     auditLogs: "adminAuditLogsSection",
+    aiAssistant: "adminAiAssistantSection",
 
 };
 
