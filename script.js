@@ -44694,98 +44694,290 @@ async function deleteAcademicAssignment(assignmentId) {
     // SEND MESSAGE
     // ======================================================
 
-    async function sendMessage() {
+   async function sendMessage() {
 
-        const question =
-            aiInput.value.trim();
+    const question =
+        adminAiInput.value.trim();
 
+    if (!question) {
+        return;
+    }
 
-        if (!question) {
+    // ==========================================
+    // ADMIN ACCESS CHECK
+    // ==========================================
 
-            return;
+    const isLoggedIn =
+        localStorage.getItem("isLoggedIn");
 
-        }
+    const role =
+        localStorage.getItem("loggedInRole");
 
+    if (
+        isLoggedIn !== "true" ||
+        role !== "administrator"
+    ) {
 
-        // ----------------------------------------------
-        // ADMIN SECURITY CHECK
-        // ----------------------------------------------
-
-        if (!isAdmin()) {
-
-            addAiMessage(
-                "🔒 Admin access required."
-            );
-
-            return;
-
-        }
-
-
-        // ----------------------------------------------
-        // CHECK SUPABASE
-        // ----------------------------------------------
-
-        if (
-            typeof supabaseClient ===
-            "undefined"
-        ) {
-
-            addAiMessage(
-                "❌ Supabase connection is not available."
-            );
-
-            return;
-
-        }
-
-
-        addUserMessage(
-            question
+        addAiMessage(
+            "You are not authorized to use the Admin AI Assistant.",
+            "assistant"
         );
 
+        return;
+    }
 
-        aiInput.value = "";
+    // ==========================================
+    // SHOW USER MESSAGE
+    // ==========================================
 
-        showTyping();
+    addAiMessage(
+        question,
+        "user"
+    );
 
+    adminAiInput.value = "";
 
-        try {
+    adminAiTyping.style.display =
+        "flex";
 
-            const answer =
-                await processQuestion(
-                    question
-                );
+    adminAiSendBtn.disabled =
+        true;
 
-            hideTyping();
+    try {
 
-            addAiMessage(
-                answer
+        // ==========================================
+        // LOAD EDUPORTAL DATA
+        // ==========================================
+
+        const [
+            students,
+            teachers,
+            attendance,
+            fees,
+            results,
+            assignments,
+            notices
+        ] = await Promise.all([
+
+            getStudents(),
+            getTeachers(),
+            getAttendance(),
+            getFees(),
+            getResults(),
+            getAssignments(),
+            getNotices()
+
+        ]);
+
+        // ==========================================
+        // TODAY
+        // ==========================================
+
+        const today =
+            getToday();
+
+        // ==========================================
+        // TODAY ATTENDANCE
+        // ==========================================
+
+        const todayAttendance =
+            Array.isArray(attendance)
+                ? attendance.filter(
+                    record =>
+                        String(
+                            record.attendance_date
+                        ).slice(0, 10) === today
+                )
+                : [];
+
+        // ==========================================
+        // UNPAID / PARTIAL FEES
+        // ==========================================
+
+        const outstandingFees =
+            Array.isArray(fees)
+                ? fees.filter(record => {
+
+                    const status =
+                        String(
+                            record.status || ""
+                        )
+                        .trim()
+                        .toLowerCase();
+
+                    const remaining =
+                        Number(
+                            record.remaining_amount || 0
+                        );
+
+                    return (
+                        status === "unpaid" ||
+                        status === "partial" ||
+                        remaining > 0
+                    );
+
+                })
+                : [];
+
+        // ==========================================
+        // CONTEXT FOR GEMINI
+        // ==========================================
+
+        const context = {
+
+            summary: {
+
+                totalStudents:
+                    students.length,
+
+                totalTeachers:
+                    teachers.length,
+
+                totalAttendanceRecords:
+                    attendance.length,
+
+                todayAttendanceRecords:
+                    todayAttendance.length,
+
+                totalFeeRecords:
+                    fees.length,
+
+                outstandingFeeRecords:
+                    outstandingFees.length,
+
+                totalResults:
+                    results.length,
+
+                totalAssignments:
+                    assignments.length,
+
+                totalNotices:
+                    notices.length
+
+            },
+
+            students:
+                students.slice(0, 300),
+
+            teachers:
+                teachers.slice(0, 150),
+
+            todayAttendance:
+                todayAttendance.slice(0, 500),
+
+            outstandingFees:
+                outstandingFees.slice(0, 300),
+
+            results:
+                results.slice(0, 300),
+
+            assignments:
+                assignments.slice(0, 200),
+
+            notices:
+                notices.slice(0, 200)
+
+        };
+
+        // ==========================================
+        // SUPABASE EDGE FUNCTION
+        // ==========================================
+
+        const functionUrl =
+            SUPABASE_URL +
+            "/functions/v1/admin-ai";
+
+        const response =
+            await fetch(
+                functionUrl,
+                {
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json",
+
+                        "apikey":
+                            SUPABASE_PUBLISHABLE_KEY,
+
+                        "Authorization":
+                            "Bearer " +
+                            SUPABASE_PUBLISHABLE_KEY
+
+                    },
+
+                    body: JSON.stringify({
+
+                        question:
+                            question,
+
+                        context:
+                            context
+
+                    })
+
+                }
             );
 
-        }
-        catch (error) {
+        const data =
+            await response.json();
+
+        // ==========================================
+        // HANDLE ERROR
+        // ==========================================
+
+        if (!response.ok) {
 
             console.error(
-                "EduPortal AI error:",
-                error
+                "ADMIN AI ERROR:",
+                data
             );
 
-            hideTyping();
-
-            addAiMessage(
-                "❌ Data load karte waqt error aa gaya.<br><br>" +
-                safeText(
-                    error.message ||
-                    "Unknown error"
-                )
+            throw new Error(
+                data?.error ||
+                "AI request failed."
             );
 
         }
+
+        // ==========================================
+        // SHOW GEMINI ANSWER
+        // ==========================================
+
+        addAiMessage(
+            data.answer ||
+            "I couldn't generate an answer.",
+            "assistant"
+        );
+
+    }
+    catch (error) {
+
+        console.error(
+            "EDUPORTAL AI ERROR:",
+            error
+        );
+
+        addAiMessage(
+            "Sorry, AI se response lene mein problem aa gayi. Please try again.",
+            "assistant"
+        );
+
+    }
+    finally {
+
+        adminAiTyping.style.display =
+            "none";
+
+        adminAiSendBtn.disabled =
+            false;
+
+        adminAiInput.focus();
 
     }
 
-
+}
     // ======================================================
     // SEND BUTTON
     // ======================================================
