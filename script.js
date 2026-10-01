@@ -17633,6 +17633,22 @@ document.getElementById(
 ).value =
     notice.expiry_date || "";
 
+    // ==========================================
+// LOAD HOLIDAY CHECKBOX
+// ==========================================
+
+const editHolidayNotice =
+    document.getElementById(
+        "adminNoticeHoliday"
+    );
+
+if (editHolidayNotice) {
+
+    editHolidayNotice.checked =
+        notice.is_holiday_notice === true;
+
+}
+
 
         document.getElementById(
             "adminNoticeDescription"
