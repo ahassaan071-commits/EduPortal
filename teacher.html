@@ -1,0 +1,1708 @@
+<div id="teacherDashboard" style="display:none;">
+
+    <!-- =========================
+         TEACHER SIDEBAR
+    ========================== -->
+
+    <aside class="teacher-sidebar" id="teacherSidebar">
+
+        <div class="teacher-sidebar-brand">
+
+ <div class="teacher-brand-icon">
+    <span>👨‍🏫</span>
+</div>
+
+          <div>
+    <h2>EduPortal</h2>
+</div>
+
+        </div>
+
+
+        <nav class="teacher-sidebar-nav">
+
+            <ul>
+
+                <li
+                    class="active"
+                    data-section="teacherDashboardHome"
+                    id="teacherDashboardMenu"
+                >
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </li>
+
+
+                <li
+                    data-section="teacherStudentsSection"
+                    id="teacherStudentsMenu"
+                >
+                    <i class="fas fa-user-graduate"></i>
+                    <span>My Students</span>
+                </li>
+
+
+                <li
+                    data-section="teacherAttendanceSection"
+                    id="teacherAttendanceMenu"
+                >
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Attendance</span>
+                </li>
+
+
+                <li
+                    data-section="teacherAssignmentsSection"
+                    id="teacherAssignmentsMenu"
+                >
+                    <i class="fas fa-book"></i>
+                    <span>Assignments</span>
+                </li>
+
+
+                <li
+                    data-section="teacherResultsSection"
+                    id="teacherResultsMenu"
+                >
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Results</span>
+                </li>
+
+
+                <li
+                    data-section="teacherNoticesSection"
+                    id="teacherNoticesMenu"
+                >
+                    <i class="fas fa-bullhorn"></i>
+                    <span>Notices</span>
+                </li>
+
+
+                <li
+                    data-section="teacherProfileSection"
+                    id="teacherProfileMenu"
+                >
+                    <i class="fas fa-user"></i>
+                    <span>My Profile</span>
+                </li>
+
+
+                <li
+                    data-section="teacherSettingsSection"
+                    id="teacherSettingsMenu"
+                >
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </li>
+
+            </ul>
+
+
+            <ul class="teacher-sidebar-bottom">
+
+                <li id="teacherLogoutMenu">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </li>
+
+            </ul>
+
+        </nav>
+
+    </aside>
+
+
+
+    <!-- =========================
+         TEACHER MAIN CONTENT
+    ========================== -->
+
+    <main class="teacher-main-content" id="teacherMainContent">
+
+
+    <!-- =========================
+     HEADER
+========================== -->
+
+<header class="teacher-top-header">
+
+    <div class="teacher-header-left">
+
+        <h1 id="teacherPageTitle">
+            Dashboard
+        </h1>
+
+    </div>
+
+
+    <div class="teacher-header-right">
+
+       <span class="teacher-portal-title">Teacher Portal</span>
+
+    </div>
+
+</header>
+
+        <!-- =================================================
+             DASHBOARD HOME
+        ================================================== -->
+
+        <section
+            id="teacherDashboardHome"
+            class="teacher-section-page active"
+        >
+
+
+           <!-- DASHBOARD FILTER BAR -->
+
+<div class="teacher-dashboard-heading">
+
+    <div class="teacher-session-title">
+
+        <h2>
+            Academic Session
+            <span>2025 – 2026</span>
+        </h2>
+
+    </div>
+
+
+    <div class="teacher-date-filter">
+
+        <label for="teacherDashboardDateFilter">
+            Date
+        </label>
+
+    <input
+    type="date"
+    id="teacherDashboardDateFilter"
+    onchange="loadTeacherDashboardData()"
+>
+
+    </div>
+
+</div>
+            <!-- =========================
+                 STATISTICS
+            ========================== -->
+
+            <div class="teacher-statistics-grid">
+
+
+                <!-- TOTAL STUDENTS -->
+
+                <div class="teacher-stat-card students-card">
+
+                    <div class="teacher-stat-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+
+                    <div class="teacher-stat-content">
+
+                        <strong id="teacherTotalStudents">
+                            0
+                        </strong>
+
+                        <span>
+                            Total Students
+                        </span>
+
+                     
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- TOTAL PRESENT -->
+
+                <div class="teacher-stat-card present-card">
+
+                    <div class="teacher-stat-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+
+                    <div class="teacher-stat-content">
+
+                        <strong id="teacherTotalPresent">
+                            0
+                        </strong>
+
+                        <span>
+                            Total Presents
+                        </span>
+
+                     
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- TOTAL ABSENT -->
+
+                <div class="teacher-stat-card absent-card">
+
+                    <div class="teacher-stat-icon">
+                        <i class="fas fa-times"></i>
+                    </div>
+
+                    <div class="teacher-stat-content">
+
+                        <strong id="teacherTotalAbsent">
+                            0
+                        </strong>
+
+                        <span>
+                            Total Absents
+                        </span>
+
+                        <small>
+                            Today's attendance
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- TOTAL CLASSES -->
+
+                <div class="teacher-stat-card classes-card">
+
+                    <div class="teacher-stat-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+
+                    <div class="teacher-stat-content">
+
+                        <strong id="teacherTotalClasses">
+                            0
+                        </strong>
+
+                        <span>
+                            Total Classes
+                        </span>
+
+                      
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =========================
+                 ANALYTICS
+            ========================== -->
+
+            <div class="teacher-analytics-grid">
+
+
+              <!-- ATTENDANCE OVERVIEW -->
+
+<div class="teacher-analytics-card">
+
+    <div class="teacher-card-heading">
+
+        <div>
+
+            <h3>
+                <i class="fas fa-calendar-check"></i>
+                Attendance Overview
+            </h3>
+
+            <p class="teacher-heatmap-subtitle">
+                
+            </p>
+
+        </div>
+
+
+        <select
+            id="teacherAttendancePeriod"
+        >
+
+            <option value="today">
+                Today
+            </option>
+
+            <option value="yesterday">
+                Yesterday
+            </option>
+
+            <option value="last7">
+                Last 7 Days
+            </option>
+
+            <option value="month">
+                Last Month
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- HEATMAP LEGEND -->
+
+    <div class="teacher-heatmap-legend">
+
+        <span>
+            <i class="heatmap-good"></i>
+            Good
+        </span>
+
+        <span>
+            <i class="heatmap-warning"></i>
+            Needs Attention
+        </span>
+
+        <span>
+            <i class="heatmap-danger"></i>
+            Low Attendance
+        </span>
+
+    </div>
+
+
+    <!-- ATTENDANCE HEATMAP -->
+
+    <div
+        class="teacher-attendance-heatmap"
+        id="teacherAttendanceChart"
+    >
+
+        <div class="teacher-heatmap-cell">
+
+            <div class="teacher-heatmap-day">
+                Mon
+            </div>
+
+            <div class="teacher-heatmap-icon">
+                ✓
+            </div>
+
+            <strong class="teacher-heatmap-percentage">
+                0%
+            </strong>
+
+           
+
+        </div>
+
+
+        <div class="teacher-heatmap-cell">
+
+            <div class="teacher-heatmap-day">
+                Tue
+            </div>
+
+            <div class="teacher-heatmap-icon">
+                ✓
+            </div>
+
+            <strong class="teacher-heatmap-percentage">
+                0%
+            </strong>
+
+           
+
+        </div>
+
+
+        <div class="teacher-heatmap-cell">
+
+            <div class="teacher-heatmap-day">
+                Wed
+            </div>
+
+            <div class="teacher-heatmap-icon">
+                ✓
+            </div>
+
+            <strong class="teacher-heatmap-percentage">
+                0%
+            </strong>
+
+          
+
+        </div>
+
+
+        <div class="teacher-heatmap-cell">
+
+            <div class="teacher-heatmap-day">
+                Thu
+            </div>
+
+            <div class="teacher-heatmap-icon">
+                ✓
+            </div>
+
+            <strong class="teacher-heatmap-percentage">
+                0%
+            </strong>
+
+          
+
+        </div>
+
+
+        <div class="teacher-heatmap-cell">
+
+            <div class="teacher-heatmap-day">
+                Fri
+            </div>
+
+            <div class="teacher-heatmap-icon">
+                ✓
+            </div>
+
+            <strong class="teacher-heatmap-percentage">
+                0%
+            </strong>
+
+        
+
+        </div>
+
+    </div>
+
+</div>
+
+                <!-- STUDENTS DISTRIBUTION -->
+
+                <div class="teacher-analytics-card">
+
+                    <div class="teacher-card-heading">
+
+                        <div>
+
+                            <h3>
+                                <i class="fas fa-chart-pie"></i>
+                                Students Distribution
+                            </h3>
+
+                       
+
+                        </div>
+
+
+<div
+    id="teacherClassFilter"
+    style="display:none;"
+>
+</div>
+
+                    </div>
+
+
+                    <div class="teacher-distribution">
+
+                        <div
+                            class="teacher-donut"
+                            id="teacherStudentsDonut"
+                        >
+
+                            <div class="teacher-donut-center">
+
+                                <strong id="teacherDistributionTotal">
+                                    0
+                                </strong>
+
+                                <span>
+                                    Students
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="teacher-distribution-legend">
+
+                            <div>
+
+                                <span class="teacher-dot present"></span>
+
+                                <span>
+                                    Present
+                                </span>
+
+                                <strong id="teacherDistributionPresent">
+                                    0
+                                </strong>
+
+                              
+
+                            </div>
+
+
+                            <div>
+
+                                <span class="teacher-dot absent"></span>
+
+                                <span>
+                                    Absent
+                                </span>
+
+                                <strong id="teacherDistributionAbsent">
+                                    0
+                                </strong>
+
+                             
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+        
+
+        </section>
+
+
+
+        <!-- =================================================
+             MY STUDENTS
+        ================================================== -->
+
+        <section
+            id="teacherStudentsSection"
+            class="teacher-section-page"
+            style="display:none;"
+        >
+<div class="teacher-page-heading">
+
+    <div>
+
+        <h2>
+            My Students
+        </h2>
+
+    </div>
+
+</div>
+
+
+            <div class="teacher-section-card">
+
+              <div class="teacher-card-heading">
+
+    <div>
+
+        <h3>
+            Students
+        </h3>
+
+    </div>
+
+
+                    <div class="teacher-search-box">
+
+                        <i class="fas fa-search"></i>
+
+                        <input
+                            type="text"
+                            id="teacherStudentSearch"
+                            placeholder="Search students..."
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="teacher-table-wrapper">
+
+                    <table
+                        class="teacher-data-table"
+                        id="teacherStudentsTable"
+                    >
+
+<thead>
+    <tr>
+
+        <th>#</th>
+
+        <th>Name</th>
+
+        <th>Student ID</th>
+
+        <th>Class</th>
+
+        
+
+        <th>Roll Number</th>
+
+        <th>Phone Number</th>
+
+        <th>Status</th>
+
+    </tr>
+</thead>
+                        <tbody id="teacherStudentsTableBody">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             ATTENDANCE
+        ================================================== -->
+
+        <section
+            id="teacherAttendanceSection"
+            class="teacher-section-page"
+            style="display:none;"
+        >
+
+            <div class="teacher-page-heading">
+
+                <div>
+
+                    <h2>
+                        Attendance
+                    </h2>
+
+                  
+
+                </div>
+
+            </div>
+
+
+            <div class="teacher-section-card">
+
+                <div class="teacher-card-heading">
+
+                    <div>
+
+                        <h3>
+                            Attendance Records
+                        </h3>
+
+                     
+
+                    </div>
+
+                </div>
+
+
+                <div class="teacher-table-wrapper">
+
+                    <table
+                        class="teacher-data-table"
+                        id="teacherAttendanceTable"
+                    >
+
+                       <thead>
+
+    <tr>
+
+        <th>
+            #
+        </th>
+
+        <th>
+            Name
+        </th>
+
+        <th>
+            Student ID
+        </th>
+
+        <th>
+            Class
+        </th>
+
+        <th>
+            Status
+        </th>
+
+        <th>
+            Check In
+        </th>
+
+    </tr>
+
+</thead>
+
+                        <tbody id="teacherAttendanceTableBody">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+      <!-- =================================================
+     ASSIGNMENTS
+================================================== -->
+
+<section
+    id="teacherAssignmentsSection"
+    class="teacher-section-page"
+    style="display:none;"
+>
+
+    <!-- PAGE HEADING -->
+    <div class="teacher-page-heading">
+
+        <div>
+
+            <h2>
+                Assignments
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <!-- CREATE ASSIGNMENT CARD -->
+    <div class="teacher-section-card">
+
+        <div class="teacher-card-heading">
+
+            <div>
+
+                <h3>
+                    Create Assignment
+                </h3>
+
+            </div>
+
+        </div>
+
+
+        <!-- ASSIGNMENT FORM -->
+        <div class="teacher-assignment-form">
+
+            <!-- CLASS -->
+            <div class="form-group">
+
+                <label for="teacherAssignmentClass">
+                    Class
+                </label>
+
+              <select
+    id="teacherAssignmentClass"
+    class="form-control"
+>
+    <option value="">
+        Loading Class...
+    </option>
+</select>
+
+            </div>
+
+
+           
+           
+
+
+            <!-- SUBJECT -->
+            <div class="form-group">
+
+                <label for="teacherAssignmentSubject">
+                    Subject
+                </label>
+
+        <input
+    type="text"
+    id="teacherAssignmentSubject"
+    class="form-control"
+    placeholder="Assigned Subject"
+    readonly
+>
+
+            </div>
+
+
+            <!-- TOTAL MARKS -->
+            <div class="form-group">
+
+                <label for="teacherAssignmentMarks">
+                    Total Marks
+                </label>
+
+                <input
+                    type="number"
+                    id="teacherAssignmentMarks"
+                    class="form-control"
+                    placeholder="Enter Total Marks"
+                    min="1"
+                >
+
+            </div>
+
+<div class="form-group">
+
+    <label for="assignmentDueDate">
+        Due Date
+    </label>
+
+    <input
+        type="date"
+        id="assignmentDueDate"
+        name="assignmentDueDate"
+        required
+    >
+
+</div>
+            <!-- DESCRIPTION -->
+            <div
+                class="form-group"
+                style="grid-column: 1 / -1;"
+            >
+
+                <label for="teacherAssignmentDescription">
+                    Description
+                </label>
+
+                <textarea
+                    id="teacherAssignmentDescription"
+                    class="form-control"
+                    rows="5"
+                    placeholder="Enter assignment description..."
+                ></textarea>
+
+            </div>
+
+
+            <!-- CREATE BUTTON -->
+      <div
+    class="form-group"
+    style="grid-column: 1 / -1;"
+>
+
+    <button
+        type="button"
+        id="createTeacherAssignmentBtn"
+    >
+
+        <i class="fas fa-plus"></i>
+
+        Create Assignment
+
+    </button>
+
+
+    <button
+        type="button"
+        id="teacherAssignmentEditBtn"
+    >
+
+        <i class="fas fa-edit"></i>
+
+        Edit Assignment
+
+    </button>
+
+</div>
+
+        </div>
+
+    </div>
+
+
+    <!-- MY ASSIGNMENTS -->
+    <div class="teacher-section-card">
+
+        <div class="teacher-card-heading">
+
+            <div>
+
+                <h3>
+                    My Assignments
+                </h3>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="teacherAssignmentsList"
+            class="teacher-assignments-list"
+        >
+
+            <div class="teacher-module-loading">
+
+                Loading assignments...
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+       <!-- =================================================
+     RESULTS
+================================================= -->
+
+<section
+    id="teacherResultsSection"
+    class="teacher-section-page"
+    style="display:none;"
+>
+
+    <!-- =========================================
+         RESULTS PAGE HEADER
+    ========================================== -->
+
+    <div class="teacher-page-heading">
+
+        <div>
+            <h2>
+                Results
+            </h2>
+
+           
+        </div>
+
+        <button
+            type="button"
+            id="teacherAddResultBtn"
+            class="teacher-primary-btn result-action-btn"
+        >
+            <i class="fas fa-plus"></i>
+            Add Result
+        </button>
+
+    </div>
+
+
+    <!-- =========================================
+         RESULT ENTRY FORM
+    ========================================== -->
+
+    <div
+        id="teacherResultFormCard"
+        class="teacher-section-card"
+        style="display:none;"
+    >
+
+        <div class="teacher-card-heading">
+
+            <div>
+
+                <h3>
+                    <i class="fas fa-file-signature"></i>
+                    Add Student Results
+                </h3>
+
+                
+
+            </div>
+
+        </div>
+
+
+        <div class="teacher-results-form">
+
+            <!-- =====================================
+                 SUBJECT
+            ====================================== -->
+
+            <div class="teacher-result-field">
+
+                <label for="teacherResultSubject">
+                    Subject
+                    <span>*</span>
+                </label>
+
+                <select
+                    id="teacherResultSubject"
+                    required
+                >
+
+                    <option value="">
+                        Select Subject
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- =====================================
+                 CLASS
+            ====================================== -->
+
+            <div class="teacher-result-field">
+
+                <label for="teacherResultClass">
+                    Class
+                    <span>*</span>
+                </label>
+
+                <select
+                    id="teacherResultClass"
+                    required
+                >
+
+                    <option value="">
+                        Select Assigned Class
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- =====================================
+                 RESULT TYPE
+            ====================================== -->
+
+            <div class="teacher-result-field">
+
+                <label for="teacherResultType">
+                    Result Type
+                    <span>*</span>
+                </label>
+
+                <select
+                    id="teacherResultType"
+                    required
+                >
+
+                    <option value="">
+                        Select Result Type
+                    </option>
+
+                    <option value="Monthly Test">
+                        Monthly Test
+                    </option>
+
+                    <option value="Mid Term">
+                        Mid Term
+                    </option>
+
+                    <option value="Final Term">
+                        Final Term
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- =====================================
+                 TOTAL MARKS
+            ====================================== -->
+
+            <div class="teacher-result-field">
+
+                <label for="teacherResultTotalMarks">
+                    Total Marks
+                    <span>*</span>
+                </label>
+
+                <input
+                    type="number"
+                    id="teacherResultTotalMarks"
+                    min="1"
+                    placeholder="Enter total marks"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================================
+             STUDENT RESULTS
+        ========================================== -->
+
+        <div
+            id="teacherResultStudentsArea"
+            class="teacher-result-students-area"
+        >
+
+            <div class="teacher-result-empty-state">
+
+                <i class="fas fa-users"></i>
+
+                <h4>
+                    Select a class
+                </h4>
+
+                <p>
+                    Students from the selected class will appear here.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================================
+             SAVE / CANCEL
+        ========================================== -->
+
+        <div class="teacher-results-footer">
+
+            <button
+                type="button"
+                id="teacherCancelResultBtn"
+                class="teacher-secondary-btn"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                id="teacherSaveResultsBtn"
+                class="teacher-primary-btn"
+            >
+                <i class="fas fa-save"></i>
+                Save Results
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         SAVED RESULTS
+    ========================================== -->
+
+    <div class="teacher-section-card">
+
+        <div class="teacher-card-heading">
+
+            <div>
+
+                
+
+                
+
+            </div>
+
+
+            <div class="teacher-results-record-count">
+
+                <span id="teacherSavedResultsCount">
+                    0
+                </span>
+
+                Records
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================
+             SEARCH
+        ====================================== -->
+
+        <div class="teacher-results-record-toolbar">
+
+            <div class="teacher-results-search-box">
+
+                <i class="fas fa-search"></i>
+
+                <input
+                    type="text"
+                    id="teacherResultSearch"
+                    placeholder="Search student, ID or subject..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================
+             TABLE
+        ====================================== -->
+
+        <div class="teacher-results-table-wrapper">
+
+            <table class="teacher-results-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+
+                        <th>
+                            Student
+                        </th>
+
+                        <th>
+                            Student ID
+                        </th>
+
+                        <th>
+                            Class
+                        </th>
+
+                        <th>
+                            Subject
+                        </th>
+
+                        <th>
+                            Result Type
+                        </th>
+
+                        <th>
+                            Total
+                        </th>
+
+                        <th>
+                            Obtained
+                        </th>
+
+                        <th>
+                            Percentage
+                        </th>
+
+                        <th>
+                            Grade
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="teacherSavedResultsTableBody"
+                >
+
+                    <tr>
+
+                        <td
+                            colspan="11"
+                            class="teacher-module-loading"
+                        >
+
+                            No result records found.
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+        <!-- =================================================
+             NOTICES
+        ================================================== -->
+
+        <section
+            id="teacherNoticesSection"
+            class="teacher-section-page"
+            style="display:none;"
+        >
+
+            <div class="teacher-page-heading">
+
+                <div>
+
+                    <h2>
+                        Administrator Notices
+                    </h2>
+
+                  
+
+                </div>
+
+            </div>
+
+
+            <div class="teacher-section-card">
+
+                <div class="teacher-card-heading">
+
+                    <div>
+
+                        <h3>
+                            Latest Updates
+                        </h3>
+
+                        <p>
+                            Notices published by Administrator
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+              <div
+    id="teacherNoticesList"
+    class="teacher-notices-list"
+>
+
+    <div class="teacher-module-loading">
+        Loading notices...
+    </div>
+
+</div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             MY PROFILE
+        ================================================== -->
+
+        <section
+            id="teacherProfileSection"
+            class="teacher-section-page"
+            style="display:none;"
+        >
+
+            <div class="teacher-page-heading">
+
+                <div>
+
+                    <h2>
+                        My Profile
+                    </h2>
+
+               
+
+                </div>
+
+            </div>
+
+
+            <div class="teacher-section-card">
+
+            <div
+    id="teacherProfileContent"
+    class="teacher-profile-layout"
+>
+
+   
+
+
+    <div class="teacher-profile-grid">
+
+
+        <div class="teacher-profile-item">
+
+    <span>
+        Teacher Name
+    </span>
+
+    <strong id="teacherProfileName">
+        —
+    </strong>
+
+</div>
+
+
+        <div class="teacher-profile-item">
+
+            
+
+            <span>
+                Teacher ID
+            </span>
+
+            <strong id="teacherProfileId">
+                —
+            </strong>
+
+        </div>
+
+
+        <div class="teacher-profile-item">
+
+            <span>
+                Email
+            </span>
+
+            <strong id="teacherProfileEmail">
+                —
+            </strong>
+
+        </div>
+
+
+        <div class="teacher-profile-item">
+
+            <span>
+                Phone
+            </span>
+
+            <strong id="teacherProfilePhone">
+                —
+            </strong>
+
+        </div>
+
+
+        <div class="teacher-profile-item">
+
+            <span>
+                Subject
+            </span>
+
+            <strong id="teacherProfileSubject">
+                —
+            </strong>
+
+        </div>
+
+
+        <div class="teacher-profile-item">
+
+            <span>
+                Class
+            </span>
+
+            <strong id="teacherProfileClass">
+                —
+            </strong>
+
+        </div>
+
+
+        <div class="teacher-profile-item">
+
+            <span>
+                Qualification
+            </span>
+
+            <strong id="teacherProfileQualification">
+                —
+            </strong>
+
+        </div>
+
+
+        <div class="teacher-profile-item">
+
+            <span>
+                Joining Date
+            </span>
+
+            <strong id="teacherProfileJoiningDate">
+                —
+            </strong>
+
+        </div>
+
+
+        <div class="teacher-profile-item">
+
+            <span>
+                Username
+            </span>
+
+            <strong id="teacherProfileUsername">
+                —
+            </strong>
+
+        </div>
+<div class="teacher-profile-item">
+
+    <span>
+         Academic Session
+    </span>
+
+    <strong id="teacherProfileSession">
+        —
+    </strong>
+
+</div>
+
+    </div>
+
+</div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SETTINGS
+        ================================================== -->
+
+        <section
+            id="teacherSettingsSection"
+            class="teacher-section-page"
+            style="display:none;"
+        >
+
+            <div class="teacher-page-heading">
+
+                <div>
+
+                    <h2>
+                        Settings
+                    </h2>
+
+                 
+
+                </div>
+
+            </div>
+
+
+            <div class="teacher-section-card">
+
+             <div
+    id="teacherSettingsContent"
+    class="teacher-settings-layout"
+>
+
+    <div class="teacher-section-card">
+
+        <div class="teacher-card-header">
+            <div>
+                <h3>Account Settings</h3>
+               
+            </div>
+        </div>
+
+
+        <div class="teacher-form-grid">
+
+
+            <div class="teacher-form-group">
+
+                <label for="teacherSettingsUsername">
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="teacherSettingsUsername"
+                    readonly
+                >
+
+            </div>
+
+
+            <div class="teacher-form-group">
+
+                <label for="teacherSettingsEmail">
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    id="teacherSettingsEmail"
+                    placeholder="Enter email"
+                >
+
+            </div>
+
+
+            <div class="teacher-form-group">
+
+                <label for="teacherSettingsPhone">
+                    Phone
+                </label>
+
+                <input
+                    type="text"
+                    id="teacherSettingsPhone"
+                    placeholder="Enter phone number"
+                    maxlength="11"
+                >
+
+            </div>
+
+
+            <div class="teacher-form-group">
+
+                <label for="teacherSettingsStatus">
+                    Account Status
+                </label>
+
+                <input
+                    type="text"
+                    id="teacherSettingsStatus"
+                    readonly
+                >
+
+<div class="teacher-settings-actions">
+
+    <button
+        type="button"
+        id="teacherSaveSettingsBtn"
+        class="teacher-primary-btn"
+    >
+        <i class="fas fa-save"></i>
+        Save Changes
+    </button>
+
+</div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
