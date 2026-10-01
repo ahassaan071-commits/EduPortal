@@ -44819,65 +44819,66 @@ async function deleteAcademicAssignment(assignmentId) {
                 })
                 : [];
 
-        // ==========================================
-        // CONTEXT FOR GEMINI
-        // ==========================================
+  // ==========================================
+// CONTEXT FOR GEMINI
+// ==========================================
 
-        const context = {
+const context = {
 
-            summary: {
+    summary: {
 
-                totalStudents:
-                    students.length,
+        totalStudents:
+            students.length,
 
-                totalTeachers:
-                    teachers.length,
+        totalTeachers:
+            teachers.length,
 
-                totalAttendanceRecords:
-                    attendance.length,
+        totalAttendanceRecords:
+            attendance.length,
 
-                todayAttendanceRecords:
-                    todayAttendance.length,
+        todayAttendanceRecords:
+            todayAttendance.length,
 
-                totalFeeRecords:
-                    fees.length,
+        totalFeeRecords:
+            fees.length,
 
-                outstandingFeeRecords:
-                    outstandingFees.length,
+        outstandingFeeRecords:
+            outstandingFees.length,
 
-                totalResults:
-                    results.length,
+        totalResults:
+            results.length,
 
-                totalAssignments:
-                    assignments.length,
+        totalAssignments:
+            assignments.length,
 
-                totalNotices:
-                    notices.length
+        totalNotices:
+            notices.length
 
-            },
+    },
 
-            students:
-                students.slice(0, 300),
+    // Only small samples are sent to Gemini
+    students:
+        students.slice(0, 30),
 
-            teachers:
-                teachers.slice(0, 150),
+    teachers:
+        teachers.slice(0, 20),
 
-            todayAttendance:
-                todayAttendance.slice(0, 500),
+    todayAttendance:
+        todayAttendance.slice(0, 50),
 
-            outstandingFees:
-                outstandingFees.slice(0, 300),
+    outstandingFees:
+        outstandingFees.slice(0, 50),
 
-            results:
-                results.slice(0, 300),
+    results:
+        results.slice(0, 50),
 
-            assignments:
-                assignments.slice(0, 200),
+    assignments:
+        assignments.slice(0, 30),
 
-            notices:
-                notices.slice(0, 200)
+    notices:
+        notices.slice(0, 30)
 
-        };
+};
 
         // ==========================================
         // SUPABASE EDGE FUNCTION
