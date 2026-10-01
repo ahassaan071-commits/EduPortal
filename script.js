@@ -43377,18 +43377,17 @@ async function deleteAcademicAssignment(assignmentId) {
     // AI SECTION NOT AVAILABLE
     // ------------------------------------------------------
 
-    if (
-        !aiInput ||
-        !aiSendBtn ||
-        !aiMessages
-    ) {
-        console.log(
-            "EduPortal AI Assistant: HTML elements not found."
-        );
+   if (
+    !aiSendBtn ||
+    !aiMessages ||
+    !aiTyping
+) {
+    console.log(
+        "EduPortal AI Assistant: HTML elements not found."
+    );
 
-        return;
-    }
-
+    return;
+}
 
     // ======================================================
     // CHECK ADMIN ACCESS
@@ -45428,73 +45427,8 @@ async function sendMessage() {
     );
 
 
-    // ======================================================
-    // ENTER TO SEND
-    // SHIFT + ENTER = NEW LINE
-    // ======================================================
-
-    aiInput.addEventListener(
-        "keydown",
-        function (event) {
-
-            if (
-                event.key === "Enter" &&
-                !event.shiftKey
-            ) {
-
-                event.preventDefault();
-
-                sendMessage();
-
-            }
-
-        }
-    );
-
-
-    // ======================================================
-    // SUGGESTION BUTTONS
-    // ======================================================
-
-    document.addEventListener(
-        "click",
-        function (event) {
-
-            const button =
-                event.target.closest(
-                    "[data-ai-prompt]"
-                );
-
-
-            if (!button) {
-
-                return;
-
-            }
-
-
-            const prompt =
-                button.getAttribute(
-                    "data-ai-prompt"
-                );
-
-
-            if (!prompt) {
-
-                return;
-
-            }
-
-
-            aiInput.value =
-                prompt;
-
-            sendMessage();
-
-        }
-    );
-
-
+  
+   
     // ======================================================
     // INITIAL MESSAGE
     // ======================================================
