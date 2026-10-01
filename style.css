@@ -47341,3 +47341,139 @@ body {
     color:
         #ffffff !important;
 }
+/* =========================================================
+   EDUPORTAL ADMIN - STEP 6
+   PROFESSIONAL TOP HEADER
+   ========================================================= */
+
+#adminDashboard .admin-top-header {
+    width: 100% !important;
+
+    min-height: 82px !important;
+
+    margin: 0 0 28px 0 !important;
+    padding: 0 28px !important;
+
+    box-sizing: border-box !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    background: rgba(255,255,255,0.96) !important;
+
+    border: 1px solid #e2e8f0 !important;
+    border-top: none !important;
+
+    border-radius: 0 0 14px 14px !important;
+
+    box-shadow:
+        0 4px 18px rgba(15,23,42,0.05) !important;
+
+    backdrop-filter: blur(10px);
+}
+
+
+/* HEADER TITLE */
+#adminDashboard .admin-top-header h1 {
+    margin: 0 !important;
+
+    font-size: 25px !important;
+    line-height: 1.3 !important;
+    font-weight: 700 !important;
+
+    letter-spacing: -0.4px !important;
+
+    color: #0f172a !important;
+}
+
+
+/* HEADER SUBTITLE */
+#adminDashboard .admin-top-header p {
+    margin: 4px 0 0 !important;
+
+    font-size: 13px !important;
+
+    color: #64748b !important;
+}
+
+
+/* ADMIN PROFILE */
+#adminDashboard .admin-profile-circle {
+    width: 48px !important;
+    height: 48px !important;
+
+    flex: 0 0 48px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border-radius: 12px !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #1d4ed8
+        ) !important;
+
+    border: 3px solid #dbeafe !important;
+
+    box-shadow:
+        0 5px 16px rgba(37,99,235,0.20) !important;
+
+    font-size: 22px !important;
+}
+/* =========================================================
+   EDUPORTAL ADMIN - STEP 7
+   ATTENDANCE FULL WIDTH FINAL LOCK
+   ========================================================= */
+
+#adminDashboard #adminAttendanceSection {
+    width: 100% !important;
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* ATTENDANCE HEADER */
+#adminDashboard #adminAttendanceSection .attendance-page-header {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+
+/* STATISTICS */
+#adminDashboard #adminAttendanceSection .attendance-stats-grid {
+    width: 100% !important;
+    max-width: none !important;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr)) !important;
+}
+
+
+/* FILTER */
+#adminDashboard #adminAttendanceSection .attendance-filter-card {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+
+/* ATTENDANCE LIST */
+#adminDashboard #adminAttendanceSection .attendance-list-card {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+
+/* TABLE */
+#adminDashboard #adminAttendanceSection .attendance-table {
+    width: 100% !important;
+    max-width: none !important;
+}
