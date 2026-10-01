@@ -2057,7 +2057,7 @@ setTimeout(function () {
 
                 adminDashboard.style.setProperty(
                     "overflow",
-                    "auto",
+                    "visible",
                     "important"
                 );
             }
