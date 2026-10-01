@@ -44145,142 +44145,550 @@ async function deleteAcademicAssignment(assignmentId) {
     // PROCESS USER QUESTION
     // ======================================================
 
-    async function processQuestion(question) {
+   async function processQuestion(question) {
 
-        const text =
+    const text = question
+        .toLowerCase()
+        .trim();
+
+
+    // ======================================================
+    // ALL STUDENTS
+    // ======================================================
+
+    if (
+        text.includes("all students") ||
+        text.includes("students list") ||
+        text.includes("student list") ||
+        text === "students"
+    ) {
+        return await allStudents();
+    }
+
+
+    // ======================================================
+    // STUDENT COUNT
+    // ======================================================
+
+    if (
+        text.includes("how many students") ||
+        text.includes("total students") ||
+        text.includes("number of students") ||
+        text.includes("students count")
+    ) {
+
+        const students =
+            await getStudents();
+
+        return `
+            <strong>Student Count</strong><br><br>
+
+            👨‍🎓 Total Students:
+            <strong>${students.length}</strong>
+        `;
+    }
+
+
+    // ======================================================
+    // STUDENTS BY CLASS
+    // ======================================================
+
+    const classMatch =
+        text.match(
+            /(?:class|grade)\s+([a-z0-9-]+)/i
+        );
+
+    if (
+        classMatch &&
+        (
+            text.includes("student") ||
+            text.includes("students")
+        )
+    ) {
+
+        const className =
+            classMatch[1];
+
+        const students =
+            await getStudents();
+
+        const matched =
+            students.filter(function(student) {
+
+                const studentClass =
+                    String(
+                        student.student_class ||
+                        ""
+                    )
+                    .toLowerCase();
+
+                return studentClass
+                    .includes(
+                        className.toLowerCase()
+                    );
+
+            });
+
+
+        return `
+            <strong>Class ${safeText(className)}</strong><br><br>
+
+            👨‍🎓 Students:
+            <strong>${matched.length}</strong>
+        `;
+    }
+
+
+    // ======================================================
+    // FIND STUDENT BY NAME
+    // ======================================================
+
+    if (
+        text.includes("find student") ||
+        text.includes("search student") ||
+        text.includes("student named") ||
+        text.startsWith("find ")
+    ) {
+
+        const cleanedName =
             question
-                .toLowerCase()
+                .replace(
+                    /find student/gi,
+                    ""
+                )
+                .replace(
+                    /search student/gi,
+                    ""
+                )
+                .replace(
+                    /student named/gi,
+                    ""
+                )
+                .replace(
+                    /^find/gi,
+                    ""
+                )
                 .trim();
 
 
-        // ----------------------------------------------
-        // ALL STUDENTS
-        // ----------------------------------------------
-
-        if (
-            text.includes("all students") ||
-            text.includes("students list") ||
-            text.includes("student list") ||
-            text === "students"
-        ) {
-
-            return await allStudents();
-
-        }
-
-
-        // ----------------------------------------------
-        // ALL TEACHERS
-        // ----------------------------------------------
-
-        if (
-            text.includes("all teachers") ||
-            text.includes("teachers list") ||
-            text.includes("teacher list") ||
-            text === "teachers"
-        ) {
-
-            return await allTeachers();
-
-        }
-
-
-        // ----------------------------------------------
-        // UNPAID FEES
-        // ----------------------------------------------
-
-        if (
-            text.includes("unpaid fee") ||
-            text.includes("unpaid fees") ||
-            text.includes("pending fee") ||
-            text.includes("pending fees")
-        ) {
-
-            return await unpaidFees();
-
-        }
-
-
-        // ----------------------------------------------
-        // TODAY ATTENDANCE
-        // ----------------------------------------------
-
-        if (
-            text.includes("today") &&
-            text.includes("attendance")
-        ) {
-
-            return await attendanceSummary();
-
-        }
-
-
-        // ----------------------------------------------
-        // OVERVIEW
-        // ----------------------------------------------
-
-        if (
-            text.includes("overview") ||
-            text.includes("summary") ||
-            text.includes("dashboard summary") ||
-            text.includes("database summary")
-        ) {
-
-            return await databaseOverview();
-
-        }
-
-
-        // ----------------------------------------------
-        // HELP
-        // ----------------------------------------------
-
-        if (
-            text === "help" ||
-            text.includes("what can you do") ||
-            text.includes("what can you ask")
-        ) {
+        if (!cleanedName) {
 
             return `
-                <strong>I can currently help with:</strong><br><br>
+                Please provide the student's name.<br><br>
 
-                👨‍🎓 Students<br>
-                • Show all students<br><br>
-
-                👨‍🏫 Teachers<br>
-                • Show all teachers<br><br>
-
-                📅 Attendance<br>
-                • Show today's attendance summary<br><br>
-
-                💰 Fees<br>
-                • Show students with unpaid fees<br><br>
-
-                📊 Dashboard<br>
-                • Show EduPortal overview
+                Example:<br>
+                <strong>Find student Hassan</strong>
             `;
 
         }
 
 
-        // ----------------------------------------------
-        // UNKNOWN QUESTION
-        // ----------------------------------------------
+        const students =
+            await getStudents();
+
+
+        const matched =
+            students.filter(function(student) {
+
+                const name =
+                    String(
+                        student.name ||
+                        student.full_name ||
+                        ""
+                    )
+                    .toLowerCase();
+
+                return name.includes(
+                    cleanedName.toLowerCase()
+                );
+
+            });
+
+
+        if (!matched.length) {
+
+            return `
+                ❌ No student found for:
+                <strong>${safeText(cleanedName)}</strong>
+            `;
+
+        }
+
+
+        let html =
+            `<strong>Student Search</strong><br><br>`;
+
+
+        matched
+            .slice(0, 20)
+            .forEach(function(student, index) {
+
+                html += `
+                    ${index + 1}.
+                    👨‍🎓
+                    ${safeText(
+                        student.name ||
+                        student.full_name ||
+                        "Unnamed"
+                    )}
+                    <br>
+
+                    ID:
+                    ${safeText(
+                        student.student_id ||
+                        student.id
+                    )}
+                    <br>
+
+                    Class:
+                    ${safeText(
+                        student.student_class ||
+                        "-"
+                    )}
+                    <br>
+
+                    Section:
+                    ${safeText(
+                        student.section ||
+                        "-"
+                    )}
+
+                    <br><br>
+                `;
+
+            });
+
+
+        return html;
+    }
+
+
+    // ======================================================
+    // ALL TEACHERS
+    // ======================================================
+
+    if (
+        text.includes("all teachers") ||
+        text.includes("teachers list") ||
+        text.includes("teacher list") ||
+        text === "teachers"
+    ) {
+
+        return await allTeachers();
+
+    }
+
+
+    // ======================================================
+    // TEACHER COUNT
+    // ======================================================
+
+    if (
+        text.includes("how many teachers") ||
+        text.includes("total teachers") ||
+        text.includes("number of teachers")
+    ) {
+
+        const teachers =
+            await getTeachers();
 
         return `
-            I can search the EduPortal data, but I don't
-            understand this question yet.<br><br>
+            <strong>Teacher Count</strong><br><br>
 
-            Try:<br>
+            👨‍🏫 Total Teachers:
+            <strong>${teachers.length}</strong>
+        `;
+
+    }
+
+
+    // ======================================================
+    // UNPAID FEES
+    // ======================================================
+
+    if (
+        text.includes("unpaid fee") ||
+        text.includes("unpaid fees") ||
+        text.includes("pending fee") ||
+        text.includes("pending fees")
+    ) {
+
+        return await unpaidFees();
+
+    }
+
+
+    // ======================================================
+    // TOTAL OUTSTANDING FEE
+    // ======================================================
+
+    if (
+        text.includes("total outstanding") ||
+        text.includes("total unpaid") ||
+        text.includes("outstanding fee amount") ||
+        text.includes("remaining fee")
+    ) {
+
+        const fees =
+            await getFees();
+
+
+        const outstanding =
+            fees.reduce(
+                function(total, fee) {
+
+                    return total +
+                        Number(
+                            fee.remaining_amount || 0
+                        );
+
+                },
+                0
+            );
+
+
+        return `
+            <strong>Outstanding Fees</strong><br><br>
+
+            💰 Total Outstanding:
+            <strong>${outstanding.toLocaleString()}</strong>
+        `;
+
+    }
+
+
+    // ======================================================
+    // TODAY ATTENDANCE
+    // ======================================================
+
+    if (
+        text.includes("today") &&
+        text.includes("attendance")
+    ) {
+
+        return await attendanceSummary();
+
+    }
+
+
+    // ======================================================
+    // ATTENDANCE ABSENT COUNT
+    // ======================================================
+
+    if (
+        text.includes("how many") &&
+        (
+            text.includes("absent") ||
+            text.includes("absentees")
+        )
+    ) {
+
+        const attendance =
+            await getAttendance();
+
+        const today =
+            getToday();
+
+
+        const todayRecords =
+            attendance.filter(
+                function(record) {
+
+                    return String(
+                        record.attendance_date ||
+                        ""
+                    ).substring(0, 10)
+                    === today;
+
+                }
+            );
+
+
+        const absent =
+            todayRecords.filter(
+                function(record) {
+
+                    return String(
+                        record.status || ""
+                    )
+                    .toLowerCase()
+                    === "absent";
+
+                }
+            ).length;
+
+
+        return `
+            <strong>Today's Absentees</strong><br><br>
+
+            📅 Date: ${today}<br>
+            🔴 Absent:
+            <strong>${absent}</strong>
+        `;
+
+    }
+
+
+    // ======================================================
+    // RESULTS
+    // ======================================================
+
+    if (
+        text.includes("results") ||
+        text.includes("result records") ||
+        text.includes("exam results")
+    ) {
+
+        const results =
+            await getResults();
+
+
+        return `
+            <strong>Results</strong><br><br>
+
+            📊 Total Result Records:
+            <strong>${results.length}</strong>
+        `;
+
+    }
+
+
+    // ======================================================
+    // ASSIGNMENTS
+    // ======================================================
+
+    if (
+        text.includes("assignments") ||
+        text.includes("assignment count")
+    ) {
+
+        const assignments =
+            await getAssignments();
+
+
+        return `
+            <strong>Assignments</strong><br><br>
+
+            📝 Total Assignments:
+            <strong>${assignments.length}</strong>
+        `;
+
+    }
+
+
+    // ======================================================
+    // NOTICES
+    // ======================================================
+
+    if (
+        text.includes("notices") ||
+        text.includes("notice count")
+    ) {
+
+        const notices =
+            await getNotices();
+
+
+        return `
+            <strong>Notices</strong><br><br>
+
+            📢 Total Notices:
+            <strong>${notices.length}</strong>
+        `;
+
+    }
+
+
+    // ======================================================
+    // OVERVIEW
+    // ======================================================
+
+    if (
+        text.includes("overview") ||
+        text.includes("dashboard summary") ||
+        text.includes("database summary") ||
+        text.includes("system summary") ||
+        text === "summary"
+    ) {
+
+        return await databaseOverview();
+
+    }
+
+
+    // ======================================================
+    // HELP
+    // ======================================================
+
+    if (
+        text === "help" ||
+        text.includes("what can you do") ||
+        text.includes("what can i ask")
+    ) {
+
+        return `
+            <strong>EduPortal AI can help with:</strong><br><br>
+
+            👨‍🎓 Students<br>
+            • How many students are there?<br>
             • Show all students<br>
-            • Show all teachers<br>
-            • Show today's attendance summary<br>
-            • Show students with unpaid fees<br>
+            • Find student Hassan<br>
+            • How many students are in class 9?<br><br>
+
+            👨‍🏫 Teachers<br>
+            • How many teachers are there?<br>
+            • Show all teachers<br><br>
+
+            📅 Attendance<br>
+            • Show today's attendance<br>
+            • How many students are absent today?<br><br>
+
+            💰 Fees<br>
+            • Show unpaid fees<br>
+            • What is the total outstanding fee?<br><br>
+
+            📊 Results<br>
+            • Show results<br><br>
+
+            📝 Assignments<br>
+            • Show assignments<br><br>
+
+            📢 Notices<br>
+            • Show notices<br><br>
+
+            📊 System<br>
             • Show EduPortal overview
         `;
 
     }
 
+
+    // ======================================================
+    // UNKNOWN QUESTION
+    // ======================================================
+
+    return `
+        🤖 I couldn't understand that question yet.
+
+        <br><br>
+
+        Try:
+
+        <br>
+        • How many students are there?
+        <br>
+        • Find student Hassan
+        <br>
+        • How many students are in class 9?
+        <br>
+        • How many students are absent today?
+        <br>
+        • What is the total outstanding fee?
+        <br>
+        • Show EduPortal overview
+    `;
+
+}
 
     // ======================================================
     // SEND MESSAGE
