@@ -12713,8 +12713,7 @@ if (
     currentHour >= 12
 ) {
 
-    await autoMarkAbsentAfterNoon();
-
+    // Auto-absent is now handled by Supabase pg_cron.
     await updateStudentAttendanceUI();
 
     alert(
@@ -13261,15 +13260,14 @@ updateStudentAttendanceSummary();
 
 
 // ==========================================
-// AUTO ABSENT CHECK EVERY MINUTE
+// AUTO ABSENT IS DATABASE-SCHEDULED
+// Supabase pg_cron handles the server-side write.
 // ==========================================
-
-autoMarkAbsentAfterNoon();
 
 setInterval(
     async function() {
 
-        await autoMarkAbsentAfterNoon();
+        // Supabase pg_cron handles auto-absent; this interval only refreshes the UI.
 
         // Refresh Admin Attendance table
         if (
@@ -16326,15 +16324,8 @@ document.addEventListener(
         }
 
         // ==========================================
-// AUTO GENERATE MONTHLY FEES
-// ==========================================
-
-if (
-    typeof generateMonthlyStudentFees ===
-    "function"
-) {
-    await generateMonthlyStudentFees();
-}
+// MONTHLY FEES ARE DATABASE-SCHEDULED
+// Supabase pg_cron generates fees on the 1st; no page-open trigger is required.
 
         // ==========================================
         // SUPABASE CHECK
