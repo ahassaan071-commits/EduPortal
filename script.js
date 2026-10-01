@@ -44694,14 +44694,18 @@ async function deleteAcademicAssignment(assignmentId) {
 
 async function sendMessage() {
 
+    const questionSelect =
+        document.getElementById(
+            "adminAiQuestionSelect"
+        );
+
     const selectedQuestion =
-        document.getElementById("adminAiQuestionSelect")?.value;
+        questionSelect?.value;
 
     if (!selectedQuestion) {
 
         addAiMessage(
-            "Please select a question first.",
-            "assistant"
+            "Please select a question first."
         );
 
         return;
@@ -44723,8 +44727,7 @@ async function sendMessage() {
     ) {
 
         addAiMessage(
-            "You are not authorized to use the Admin AI Assistant.",
-            "assistant"
+            "You are not authorized to use the Admin AI Assistant."
         );
 
         return;
@@ -44772,7 +44775,7 @@ async function sendMessage() {
         questionLabels[selectedQuestion];
 
     // ==========================================
-    // SHOW USER QUESTION
+    // SHOW QUESTION
     // ==========================================
 
     addAiMessage(
@@ -44788,18 +44791,7 @@ async function sendMessage() {
 
     try {
 
-        // ==========================================
-        // TODAY
-        // ==========================================
-
-        const today =
-            getToday();
-
-        // ==========================================
-        // SELECTIVE DATA LOADING
-        // ==========================================
-
-        let context = {};
+        let answer = "";
 
         // ==========================================
         // 1. STUDENT COUNT
@@ -44813,15 +44805,8 @@ async function sendMessage() {
             const students =
                 await getStudents();
 
-            context = {
-
-                type:
-                    "student_count",
-
-                totalStudents:
-                    students.length
-
-            };
+            answer =
+                `👨‍🎓 There are <strong>${students.length}</strong> registered students in EduPortal.`;
 
         }
 
@@ -44837,18 +44822,43 @@ async function sendMessage() {
             const students =
                 await getStudents();
 
-            context = {
+            if (!students.length) {
 
-                type:
-                    "all_students",
+                answer =
+                    "No students are currently registered.";
 
-                totalStudents:
-                    students.length,
+            } else {
 
-                students:
-                    students.slice(0, 100)
+                answer =
+                    `<strong>👨‍🎓 Registered Students (${students.length})</strong><br><br>`;
 
-            };
+                students.forEach(
+                    (student, index) => {
+
+                        const name =
+                            student.name ||
+                            student.full_name ||
+                            "Unknown";
+
+                        const studentId =
+                            student.student_id ||
+                            "—";
+
+                        const studentClass =
+                            student.student_class ||
+                            "—";
+
+                        const section =
+                            student.section ||
+                            "";
+
+                        answer +=
+                            `${index + 1}. <strong>${escapeHtml(name)}</strong> — ${escapeHtml(studentId)} — ${escapeHtml(studentClass)}${section ? " - " + escapeHtml(section) : ""}<br>`;
+
+                    }
+                );
+
+            }
 
         }
 
@@ -44864,15 +44874,8 @@ async function sendMessage() {
             const teachers =
                 await getTeachers();
 
-            context = {
-
-                type:
-                    "teacher_count",
-
-                totalTeachers:
-                    teachers.length
-
-            };
+            answer =
+                `👨‍🏫 There are <strong>${teachers.length}</strong> registered teachers in EduPortal.`;
 
         }
 
@@ -44888,18 +44891,35 @@ async function sendMessage() {
             const teachers =
                 await getTeachers();
 
-            context = {
+            if (!teachers.length) {
 
-                type:
-                    "all_teachers",
+                answer =
+                    "No teachers are currently registered.";
 
-                totalTeachers:
-                    teachers.length,
+            } else {
 
-                teachers:
-                    teachers.slice(0, 100)
+                answer =
+                    `<strong>👨‍🏫 Registered Teachers (${teachers.length})</strong><br><br>`;
 
-            };
+                teachers.forEach(
+                    (teacher, index) => {
+
+                        const name =
+                            teacher.name ||
+                            teacher.full_name ||
+                            "Unknown Teacher";
+
+                        const username =
+                            teacher.username ||
+                            "—";
+
+                        answer +=
+                            `${index + 1}. <strong>${escapeHtml(name)}</strong> — Username: ${escapeHtml(username)}<br>`;
+
+                    }
+                );
+
+            }
 
         }
 
@@ -44914,6 +44934,9 @@ async function sendMessage() {
 
             const attendance =
                 await getAttendance();
+
+            const today =
+                getToday();
 
             const todayAttendance =
                 Array.isArray(attendance)
@@ -44967,30 +44990,15 @@ async function sendMessage() {
                 }
             );
 
-            context = {
-
-                type:
-                    "today_attendance",
-
-                date:
-                    today,
-
-                totalRecords:
-                    todayAttendance.length,
-
-                present:
-                    present,
-
-                absent:
-                    absent,
-
-                late:
-                    late,
-
-                leave:
-                    leave
-
-            };
+            answer = `
+                <strong>📊 Today's Attendance</strong><br><br>
+                📅 Date: ${today}<br><br>
+                🟢 Present: <strong>${present}</strong><br>
+                🔴 Absent: <strong>${absent}</strong><br>
+                🟡 Late: <strong>${late}</strong><br>
+                🔵 Leave: <strong>${leave}</strong><br>
+                📋 Total Records: <strong>${todayAttendance.length}</strong>
+            `;
 
         }
 
@@ -45013,15 +45021,16 @@ async function sendMessage() {
 
             ]);
 
+            const today =
+                getToday();
+
             const todayAttendance =
-                Array.isArray(attendance)
-                    ? attendance.filter(
-                        record =>
-                            String(
-                                record.attendance_date
-                            ).slice(0, 10) === today
-                    )
-                    : [];
+                attendance.filter(
+                    record =>
+                        String(
+                            record.attendance_date
+                        ).slice(0, 10) === today
+                );
 
             const absentRecords =
                 todayAttendance.filter(
@@ -45034,9 +45043,18 @@ async function sendMessage() {
                         "absent"
                 );
 
-            const absentStudents =
-                absentRecords.map(
-                    record => {
+            if (!absentRecords.length) {
+
+                answer =
+                    "🟢 No students are marked absent today.";
+
+            } else {
+
+                answer =
+                    `<strong>❌ Students Absent Today (${absentRecords.length})</strong><br><br>`;
+
+                absentRecords.forEach(
+                    (record, index) => {
 
                         const student =
                             students.find(
@@ -45045,45 +45063,23 @@ async function sendMessage() {
                                     String(record.student_id)
                             );
 
-                        return {
+                        const name =
+                            student?.name ||
+                            student?.full_name ||
+                            "Unknown Student";
 
-                            student_id:
-                                student?.student_id ||
-                                record.student_id,
+                        const studentId =
+                            student?.student_id ||
+                            record.student_id ||
+                            "—";
 
-                            name:
-                                student?.name ||
-                                student?.full_name ||
-                                "Unknown Student",
-
-                            class:
-                                student?.student_class ||
-                                "",
-
-                            section:
-                                student?.section ||
-                                ""
-
-                        };
+                        answer +=
+                            `${index + 1}. <strong>${escapeHtml(name)}</strong> — ${escapeHtml(studentId)}<br>`;
 
                     }
                 );
 
-            context = {
-
-                type:
-                    "absent_today",
-
-                date:
-                    today,
-
-                totalAbsent:
-                    absentStudents.length,
-
-                students:
-                    absentStudents.slice(0, 100)
-
-            };
+            }
 
         }
 
@@ -45100,75 +45096,59 @@ async function sendMessage() {
                 await getFees();
 
             const outstandingFees =
-                Array.isArray(fees)
-                    ? fees.filter(
-                        record => {
+                fees.filter(
+                    record => {
 
-                            const status =
-                                String(
-                                    record.status || ""
-                                )
-                                .trim()
-                                .toLowerCase();
+                        const status =
+                            String(
+                                record.status || ""
+                            )
+                            .trim()
+                            .toLowerCase();
 
-                            const remaining =
-                                Number(
-                                    record.remaining_amount || 0
-                                );
-
-                            return (
-                                status === "unpaid" ||
-                                status === "partial" ||
-                                remaining > 0
+                        const remaining =
+                            Number(
+                                record.remaining_amount || 0
                             );
 
-                        }
-                    )
-                    : [];
+                        return (
+                            status === "unpaid" ||
+                            status === "partial" ||
+                            remaining > 0
+                        );
 
-            context = {
+                    }
+                );
 
-                type:
-                    "unpaid_fees",
+            if (!outstandingFees.length) {
 
-                totalRecords:
-                    outstandingFees.length,
+                answer =
+                    "🟢 There are no outstanding student fees.";
 
-                fees:
-                    outstandingFees
-                        .slice(0, 100)
-                        .map(record => ({
+            } else {
 
-                            studentId:
-                                record.student_id,
+                answer =
+                    `<strong>💰 Students With Unpaid Fees (${outstandingFees.length})</strong><br><br>`;
 
-                            studentName:
-                                record.student_name,
+                outstandingFees.forEach(
+                    (record, index) => {
 
-                            class:
-                                record.student_class,
+                        const name =
+                            record.student_name ||
+                            "Unknown Student";
 
-                            section:
-                                record.section,
+                        const remaining =
+                            Number(
+                                record.remaining_amount || 0
+                            );
 
-                            feeAmount:
-                                record.fee_amount,
+                        answer +=
+                            `${index + 1}. <strong>${escapeHtml(name)}</strong> — Outstanding: <strong>Rs. ${remaining.toLocaleString()}</strong><br>`;
 
-                            paidAmount:
-                                record.paid_amount,
+                    }
+                );
 
-                            remainingAmount:
-                                record.remaining_amount,
-
-                            status:
-                                record.status,
-
-                            dueDate:
-                                record.due_date
-
-                        }))
-
-            };
+            }
 
         }
 
@@ -45184,58 +45164,34 @@ async function sendMessage() {
             const fees =
                 await getFees();
 
-            const outstandingFees =
-                Array.isArray(fees)
-                    ? fees.filter(
-                        record => {
-
-                            const status =
-                                String(
-                                    record.status || ""
-                                )
-                                .trim()
-                                .toLowerCase();
-
-                            const remaining =
-                                Number(
-                                    record.remaining_amount || 0
-                                );
-
-                            return (
-                                status === "unpaid" ||
-                                status === "partial" ||
-                                remaining > 0
-                            );
-
-                        }
-                    )
-                    : [];
-
             const totalOutstanding =
-                outstandingFees.reduce(
+                fees.reduce(
                     (
                         total,
                         record
-                    ) =>
-                        total +
-                        Number(
-                            record.remaining_amount || 0
-                        ),
+                    ) => {
+
+                        const remaining =
+                            Number(
+                                record.remaining_amount || 0
+                            );
+
+                        return total +
+                            (
+                                remaining > 0
+                                    ? remaining
+                                    : 0
+                            );
+
+                    },
                     0
                 );
 
-            context = {
-
-                type:
-                    "outstanding_fees",
-
-                outstandingRecords:
-                    outstandingFees.length,
-
-                totalOutstanding:
-                    totalOutstanding
-
-            };
+            answer = `
+                <strong>💰 Outstanding Fees</strong><br><br>
+                Total Outstanding Amount:<br>
+                <strong>Rs. ${totalOutstanding.toLocaleString()}</strong>
+            `;
 
         }
 
@@ -45251,18 +45207,47 @@ async function sendMessage() {
             const results =
                 await getResults();
 
-            context = {
+            if (!results.length) {
 
-                type:
-                    "recent_results",
+                answer =
+                    "No student results are currently available.";
 
-                totalResults:
-                    results.length,
+            } else {
 
-                results:
-                    results.slice(0, 50)
+                answer =
+                    `<strong>📊 Recent Student Results</strong><br><br>`;
 
-            };
+                results
+                    .slice(0, 20)
+                    .forEach(
+                        (result, index) => {
+
+                            const studentName =
+                                result.student_name ||
+                                result.name ||
+                                result.student?.name ||
+                                "Student";
+
+                            const subject =
+                                result.subject_name ||
+                                result.subject ||
+                                "Subject";
+
+                            const percentage =
+                                result.percentage ??
+                                "—";
+
+                            const grade =
+                                result.grade ||
+                                "—";
+
+                            answer +=
+                                `${index + 1}. <strong>${escapeHtml(studentName)}</strong> — ${escapeHtml(subject)} — ${escapeHtml(percentage)}% — Grade: ${escapeHtml(grade)}<br>`;
+
+                        }
+                    );
+
+            }
 
         }
 
@@ -45285,80 +45270,61 @@ async function sendMessage() {
 
             ]);
 
-            context = {
+            answer =
+                `<strong>📚 Recent Assignments</strong><br><br>`;
 
-                type:
-                    "recent_activity",
+            if (!assignments.length) {
 
-                assignments:
-                    assignments.slice(0, 20),
+                answer +=
+                    "No assignments available.<br>";
 
-                notices:
-                    notices.slice(0, 20)
+            } else {
 
-            };
+                assignments
+                    .slice(0, 10)
+                    .forEach(
+                        (item, index) => {
 
-        }
+                            const title =
+                                item.title ||
+                                item.assignment_title ||
+                                "Untitled Assignment";
 
-        // ==========================================
-        // SUPABASE EDGE FUNCTION
-        // ==========================================
+                            answer +=
+                                `${index + 1}. ${escapeHtml(title)}<br>`;
 
-        const functionUrl =
-            SUPABASE_URL +
-            "/functions/v1/admin-ai";
+                        }
+                    );
 
-        const response =
-            await fetch(
-                functionUrl,
-                {
-                    method: "POST",
+            }
 
-                    headers: {
+            answer +=
+                `<br><strong>📢 Recent Notices</strong><br><br>`;
 
-                        "Content-Type":
-                            "application/json",
+            if (!notices.length) {
 
-                        "apikey":
-                            SUPABASE_PUBLISHABLE_KEY,
+                answer +=
+                    "No notices available.";
 
-                        "Authorization":
-                            "Bearer " +
-                            SUPABASE_PUBLISHABLE_KEY
+            } else {
 
-                    },
+                notices
+                    .slice(0, 10)
+                    .forEach(
+                        (item, index) => {
 
-                    body: JSON.stringify({
+                            const title =
+                                item.title ||
+                                item.notice_title ||
+                                "Untitled Notice";
 
-                        question:
-                            question,
+                            answer +=
+                                `${index + 1}. ${escapeHtml(title)}<br>`;
 
-                        context:
-                            context
+                        }
+                    );
 
-                    })
-
-                }
-            );
-
-        const data =
-            await response.json();
-
-        // ==========================================
-        // ERROR
-        // ==========================================
-
-        if (!response.ok) {
-
-            console.error(
-                "ADMIN AI ERROR:",
-                data
-            );
-
-            throw new Error(
-                data?.error ||
-                "AI request failed."
-            );
+            }
 
         }
 
@@ -45367,12 +45333,8 @@ async function sendMessage() {
         // ==========================================
 
         addAiMessage(
-
-            data.answer ||
-            "I couldn't generate an answer.",
-
+            answer,
             "assistant"
-
         );
 
     }
@@ -45380,16 +45342,17 @@ async function sendMessage() {
     catch (error) {
 
         console.error(
-            "EDUPORTAL AI ERROR:",
+            "EDUPORTAL ADMIN AI ERROR:",
             error
         );
 
         addAiMessage(
-
-            "Sorry, AI se response lene mein problem aa gayi. Please try again.",
-
+            "❌ Data load karte waqt problem aa gayi.<br><br>" +
+            escapeHtml(
+                error?.message ||
+                "Unknown error"
+            ),
             "assistant"
-
         );
 
     }
@@ -45401,11 +45364,6 @@ async function sendMessage() {
 
         adminAiSendBtn.disabled =
             false;
-
-        const questionSelect =
-            document.getElementById(
-                "adminAiQuestionSelect"
-            );
 
         if (questionSelect) {
 

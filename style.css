@@ -47125,3 +47125,600 @@ html.edu-session-restoring.edu-role-student #studentDashboard {
     }
 
 }
+/* ==========================================================
+   EDUPORTAL AI ASSISTANT - PREMIUM UI
+   ========================================================== */
+
+.admin-ai-shell {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+
+/* ==========================================================
+   HEADER
+   ========================================================== */
+
+.admin-ai-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 24px 28px;
+    margin-bottom: 18px;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff 0%,
+            #f5f8ff 100%
+        );
+
+    border: 1px solid #e4eaf5;
+
+    box-shadow:
+        0 12px 35px rgba(30, 64, 175, 0.08);
+}
+
+
+.admin-ai-title {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+
+.admin-ai-title-icon {
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 17px;
+
+    font-size: 30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #4f46e5
+        );
+
+    box-shadow:
+        0 10px 22px rgba(37, 99, 235, 0.25);
+}
+
+
+.admin-ai-header h2 {
+    margin: 0;
+
+    font-size: 26px;
+    font-weight: 800;
+
+    letter-spacing: -0.5px;
+
+    color: #172554;
+}
+
+
+.admin-ai-header p {
+    margin: 5px 0 0;
+
+    color: #64748b;
+
+    font-size: 14px;
+}
+
+
+/* ==========================================================
+   ADMIN ONLY BADGE
+   ========================================================== */
+
+.admin-ai-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 9px 15px;
+
+    border-radius: 999px;
+
+    background: #eff6ff;
+
+    border: 1px solid #dbeafe;
+
+    color: #2563eb;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+.admin-ai-status-dot {
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+
+    background: #22c55e;
+
+    box-shadow:
+        0 0 0 4px rgba(34, 197, 94, 0.12);
+}
+
+
+/* ==========================================================
+   CHAT CARD
+   ========================================================== */
+
+.admin-ai-chat-card {
+    overflow: hidden;
+
+    border-radius: 24px;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+
+    box-shadow:
+        0 18px 45px rgba(15, 23, 42, 0.08);
+}
+
+
+/* ==========================================================
+   CHAT AREA
+   ========================================================== */
+
+.admin-ai-messages {
+    height: 430px;
+
+    padding: 28px;
+
+    overflow-y: auto;
+
+    scroll-behavior: smooth;
+
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(37, 99, 235, 0.06),
+            transparent 30%
+        ),
+        #f8fafc;
+}
+
+
+/* Scrollbar */
+
+.admin-ai-messages::-webkit-scrollbar {
+    width: 7px;
+}
+
+
+.admin-ai-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+.admin-ai-messages::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 20px;
+}
+
+
+.admin-ai-messages::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+
+/* ==========================================================
+   MESSAGE
+   ========================================================== */
+
+.admin-ai-message {
+    display: flex;
+
+    gap: 14px;
+
+    margin-bottom: 18px;
+
+    animation:
+        adminAiMessageIn
+        0.25s ease;
+}
+
+
+@keyframes adminAiMessageIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* ==========================================================
+   AI AVATAR
+   ========================================================== */
+
+.admin-ai-avatar {
+    flex: 0 0 46px;
+
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    font-size: 23px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #4f46e5
+        );
+
+    box-shadow:
+        0 8px 18px rgba(37, 99, 235, 0.20);
+}
+
+
+/* ==========================================================
+   MESSAGE BUBBLE
+   ========================================================== */
+
+.admin-ai-bubble {
+    max-width: 85%;
+
+    padding: 16px 19px;
+
+    border-radius: 17px;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+
+    box-shadow:
+        0 5px 18px rgba(15, 23, 42, 0.05);
+}
+
+
+.admin-ai-bubble strong {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 14px;
+
+    color: #1e3a8a;
+}
+
+
+.admin-ai-bubble p {
+    margin: 0;
+
+    color: #334155;
+
+    line-height: 1.65;
+
+    font-size: 15px;
+}
+
+
+/* ==========================================================
+   WELCOME HINT
+   ========================================================== */
+
+.admin-ai-welcome-hint {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 12px;
+
+    margin-top: 18px;
+    padding: 14px 16px;
+
+    border-radius: 14px;
+
+    background: #f8fafc;
+
+    border: 1px solid #e2e8f0;
+}
+
+
+.admin-ai-welcome-icon {
+    font-size: 20px;
+}
+
+
+.admin-ai-welcome-hint strong {
+    margin-bottom: 3px;
+}
+
+
+.admin-ai-welcome-hint p {
+    font-size: 13px;
+    color: #64748b;
+}
+
+
+/* ==========================================================
+   INPUT AREA
+   ========================================================== */
+
+.admin-ai-input-area {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 17px 20px;
+
+    background: #ffffff;
+
+    border-top: 1px solid #e2e8f0;
+}
+
+
+/* ==========================================================
+   QUESTION SELECT
+   ========================================================== */
+
+.admin-ai-question-select {
+    flex: 1;
+
+    height: 52px;
+
+    padding: 0 16px;
+
+    border-radius: 13px;
+
+    border: 1px solid #cbd5e1;
+
+    background: #f8fafc;
+
+    color: #334155;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    outline: none;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.admin-ai-question-select:hover {
+    background: #ffffff;
+}
+
+
+.admin-ai-question-select:focus {
+    background: #ffffff;
+
+    border-color: #3b82f6;
+
+    box-shadow:
+        0 0 0 4px rgba(59, 130, 246, 0.10);
+}
+
+
+/* ==========================================================
+   ASK AI BUTTON
+   ========================================================== */
+
+#adminAiSendBtn {
+    min-width: 100px;
+    height: 52px;
+
+    border: none;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #4f46e5
+        );
+
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 18px rgba(37, 99, 235, 0.25);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
+}
+
+
+#adminAiSendBtn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 24px rgba(37, 99, 235, 0.30);
+}
+
+
+#adminAiSendBtn:active {
+    transform: translateY(0);
+}
+
+
+#adminAiSendBtn:disabled {
+    opacity: 0.55;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* ==========================================================
+   FOOTER
+   ========================================================== */
+
+.admin-ai-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 12px 20px;
+
+    background: #f8fafc;
+
+    border-top: 1px solid #e2e8f0;
+
+    color: #64748b;
+
+    font-size: 12px;
+}
+
+
+.admin-ai-footer span:first-child {
+    color: #475569;
+    font-weight: 700;
+}
+
+
+/* ==========================================================
+   TYPING INDICATOR
+   ========================================================== */
+
+.admin-ai-typing {
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 10px 25px;
+
+    background: #f8fafc;
+
+    color: #64748b;
+
+    font-size: 12px;
+}
+
+
+.admin-ai-typing span:not(:last-child) {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #3b82f6;
+
+    animation:
+        adminAiTyping
+        1.2s infinite;
+}
+
+
+.admin-ai-typing span:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+
+.admin-ai-typing span:nth-child(3) {
+    animation-delay: 0.30s;
+}
+
+
+@keyframes adminAiTyping {
+
+    0%,
+    60%,
+    100% {
+        opacity: 0.25;
+        transform: translateY(0);
+    }
+
+    30% {
+        opacity: 1;
+        transform: translateY(-3px);
+    }
+
+}
+
+
+/* ==========================================================
+   MOBILE
+   ========================================================== */
+
+@media (max-width: 768px) {
+
+    .admin-ai-header {
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 16px;
+
+        padding: 20px;
+    }
+
+
+    .admin-ai-header h2 {
+        font-size: 21px;
+    }
+
+
+    .admin-ai-messages {
+        height: 400px;
+
+        padding: 18px;
+    }
+
+
+    .admin-ai-input-area {
+        flex-direction: column;
+    }
+
+
+    .admin-ai-question-select,
+    #adminAiSendBtn {
+        width: 100%;
+    }
+
+
+    .admin-ai-footer {
+        flex-direction: column;
+        gap: 5px;
+
+        align-items: flex-start;
+    }
+
+
+    .admin-ai-bubble {
+        max-width: 90%;
+    }
+
+}
