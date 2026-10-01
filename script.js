@@ -43361,8 +43361,7 @@ async function deleteAcademicAssignment(assignmentId) {
     // GET AI ELEMENTS
     // ------------------------------------------------------
 
-    const aiInput =
-        document.getElementById("adminAiInput");
+   
 
     const aiSendBtn =
         document.getElementById("adminAiSendBtn");
@@ -44694,12 +44693,18 @@ async function deleteAcademicAssignment(assignmentId) {
     // SEND MESSAGE
     // ======================================================
 
-   async function sendMessage() {
+async function sendMessage() {
 
-    const question =
-        adminAiInput.value.trim();
+    const selectedQuestion =
+        document.getElementById("adminAiQuestionSelect")?.value;
 
-    if (!question) {
+    if (!selectedQuestion) {
+
+        addAiMessage(
+            "Please select a question first.",
+            "assistant"
+        );
+
         return;
     }
 
@@ -44727,15 +44732,54 @@ async function deleteAcademicAssignment(assignmentId) {
     }
 
     // ==========================================
-    // SHOW USER MESSAGE
+    // QUESTION LABELS
+    // ==========================================
+
+    const questionLabels = {
+
+        student_count:
+            "How many students are registered?",
+
+        all_students:
+            "Show all students",
+
+        teacher_count:
+            "How many teachers are registered?",
+
+        all_teachers:
+            "Show all teachers",
+
+        today_attendance:
+            "Show today's attendance summary",
+
+        absent_today:
+            "Show students absent today",
+
+        unpaid_fees:
+            "Show students with unpaid fees",
+
+        outstanding_fees:
+            "What is the total outstanding fee amount?",
+
+        recent_results:
+            "Show recent student results",
+
+        recent_activity:
+            "Show recent assignments and notices"
+
+    };
+
+    const question =
+        questionLabels[selectedQuestion];
+
+    // ==========================================
+    // SHOW USER QUESTION
     // ==========================================
 
     addAiMessage(
         question,
         "user"
     );
-
-    adminAiInput.value = "";
 
     adminAiTyping.style.display =
         "flex";
@@ -44746,30 +44790,6 @@ async function deleteAcademicAssignment(assignmentId) {
     try {
 
         // ==========================================
-        // LOAD EDUPORTAL DATA
-        // ==========================================
-
-        const [
-            students,
-            teachers,
-            attendance,
-            fees,
-            results,
-            assignments,
-            notices
-        ] = await Promise.all([
-
-            getStudents(),
-            getTeachers(),
-            getAttendance(),
-            getFees(),
-            getResults(),
-            getAssignments(),
-            getNotices()
-
-        ]);
-
-        // ==========================================
         // TODAY
         // ==========================================
 
@@ -44777,26 +44797,142 @@ async function deleteAcademicAssignment(assignmentId) {
             getToday();
 
         // ==========================================
-        // TODAY ATTENDANCE
+        // SELECTIVE DATA LOADING
         // ==========================================
 
-        const todayAttendance =
-            Array.isArray(attendance)
-                ? attendance.filter(
-                    record =>
-                        String(
-                            record.attendance_date
-                        ).slice(0, 10) === today
-                )
-                : [];
+        let context = {};
 
         // ==========================================
-        // UNPAID / PARTIAL FEES
+        // 1. STUDENT COUNT
         // ==========================================
 
-        const outstandingFees =
-            Array.isArray(fees)
-                ? fees.filter(record => {
+        if (
+            selectedQuestion ===
+            "student_count"
+        ) {
+
+            const students =
+                await getStudents();
+
+            context = {
+
+                type:
+                    "student_count",
+
+                totalStudents:
+                    students.length
+
+            };
+
+        }
+
+        // ==========================================
+        // 2. ALL STUDENTS
+        // ==========================================
+
+        else if (
+            selectedQuestion ===
+            "all_students"
+        ) {
+
+            const students =
+                await getStudents();
+
+            context = {
+
+                type:
+                    "all_students",
+
+                totalStudents:
+                    students.length,
+
+                students:
+                    students.slice(0, 100)
+
+            };
+
+        }
+
+        // ==========================================
+        // 3. TEACHER COUNT
+        // ==========================================
+
+        else if (
+            selectedQuestion ===
+            "teacher_count"
+        ) {
+
+            const teachers =
+                await getTeachers();
+
+            context = {
+
+                type:
+                    "teacher_count",
+
+                totalTeachers:
+                    teachers.length
+
+            };
+
+        }
+
+        // ==========================================
+        // 4. ALL TEACHERS
+        // ==========================================
+
+        else if (
+            selectedQuestion ===
+            "all_teachers"
+        ) {
+
+            const teachers =
+                await getTeachers();
+
+            context = {
+
+                type:
+                    "all_teachers",
+
+                totalTeachers:
+                    teachers.length,
+
+                teachers:
+                    teachers.slice(0, 100)
+
+            };
+
+        }
+
+        // ==========================================
+        // 5. TODAY ATTENDANCE
+        // ==========================================
+
+        else if (
+            selectedQuestion ===
+            "today_attendance"
+        ) {
+
+            const attendance =
+                await getAttendance();
+
+            const todayAttendance =
+                Array.isArray(attendance)
+                    ? attendance.filter(
+                        record =>
+                            String(
+                                record.attendance_date
+                            ).slice(0, 10) === today
+                    )
+                    : [];
+
+            let present = 0;
+            let absent = 0;
+            let late = 0;
+            let leave = 0;
+
+            todayAttendance.forEach(
+                record => {
 
                     const status =
                         String(
@@ -44805,80 +44941,365 @@ async function deleteAcademicAssignment(assignmentId) {
                         .trim()
                         .toLowerCase();
 
-                    const remaining =
+                    if (
+                        status === "present"
+                    ) {
+                        present++;
+                    }
+
+                    else if (
+                        status === "absent"
+                    ) {
+                        absent++;
+                    }
+
+                    else if (
+                        status === "late"
+                    ) {
+                        late++;
+                    }
+
+                    else if (
+                        status === "leave"
+                    ) {
+                        leave++;
+                    }
+
+                }
+            );
+
+            context = {
+
+                type:
+                    "today_attendance",
+
+                date:
+                    today,
+
+                totalRecords:
+                    todayAttendance.length,
+
+                present:
+                    present,
+
+                absent:
+                    absent,
+
+                late:
+                    late,
+
+                leave:
+                    leave
+
+            };
+
+        }
+
+        // ==========================================
+        // 6. ABSENT TODAY
+        // ==========================================
+
+        else if (
+            selectedQuestion ===
+            "absent_today"
+        ) {
+
+            const [
+                attendance,
+                students
+            ] = await Promise.all([
+
+                getAttendance(),
+                getStudents()
+
+            ]);
+
+            const todayAttendance =
+                Array.isArray(attendance)
+                    ? attendance.filter(
+                        record =>
+                            String(
+                                record.attendance_date
+                            ).slice(0, 10) === today
+                    )
+                    : [];
+
+            const absentRecords =
+                todayAttendance.filter(
+                    record =>
+                        String(
+                            record.status || ""
+                        )
+                        .trim()
+                        .toLowerCase() ===
+                        "absent"
+                );
+
+            const absentStudents =
+                absentRecords.map(
+                    record => {
+
+                        const student =
+                            students.find(
+                                s =>
+                                    String(s.id) ===
+                                    String(record.student_id)
+                            );
+
+                        return {
+
+                            student_id:
+                                student?.student_id ||
+                                record.student_id,
+
+                            name:
+                                student?.name ||
+                                student?.full_name ||
+                                "Unknown Student",
+
+                            class:
+                                student?.student_class ||
+                                "",
+
+                            section:
+                                student?.section ||
+                                ""
+
+                        };
+
+                    }
+                );
+
+            context = {
+
+                type:
+                    "absent_today",
+
+                date:
+                    today,
+
+                totalAbsent:
+                    absentStudents.length,
+
+                students:
+                    absentStudents.slice(0, 100)
+
+            };
+
+        }
+
+        // ==========================================
+        // 7. UNPAID FEES
+        // ==========================================
+
+        else if (
+            selectedQuestion ===
+            "unpaid_fees"
+        ) {
+
+            const fees =
+                await getFees();
+
+            const outstandingFees =
+                Array.isArray(fees)
+                    ? fees.filter(
+                        record => {
+
+                            const status =
+                                String(
+                                    record.status || ""
+                                )
+                                .trim()
+                                .toLowerCase();
+
+                            const remaining =
+                                Number(
+                                    record.remaining_amount || 0
+                                );
+
+                            return (
+                                status === "unpaid" ||
+                                status === "partial" ||
+                                remaining > 0
+                            );
+
+                        }
+                    )
+                    : [];
+
+            context = {
+
+                type:
+                    "unpaid_fees",
+
+                totalRecords:
+                    outstandingFees.length,
+
+                fees:
+                    outstandingFees
+                        .slice(0, 100)
+                        .map(record => ({
+
+                            studentId:
+                                record.student_id,
+
+                            studentName:
+                                record.student_name,
+
+                            class:
+                                record.student_class,
+
+                            section:
+                                record.section,
+
+                            feeAmount:
+                                record.fee_amount,
+
+                            paidAmount:
+                                record.paid_amount,
+
+                            remainingAmount:
+                                record.remaining_amount,
+
+                            status:
+                                record.status,
+
+                            dueDate:
+                                record.due_date
+
+                        }))
+
+            };
+
+        }
+
+        // ==========================================
+        // 8. TOTAL OUTSTANDING FEES
+        // ==========================================
+
+        else if (
+            selectedQuestion ===
+            "outstanding_fees"
+        ) {
+
+            const fees =
+                await getFees();
+
+            const outstandingFees =
+                Array.isArray(fees)
+                    ? fees.filter(
+                        record => {
+
+                            const status =
+                                String(
+                                    record.status || ""
+                                )
+                                .trim()
+                                .toLowerCase();
+
+                            const remaining =
+                                Number(
+                                    record.remaining_amount || 0
+                                );
+
+                            return (
+                                status === "unpaid" ||
+                                status === "partial" ||
+                                remaining > 0
+                            );
+
+                        }
+                    )
+                    : [];
+
+            const totalOutstanding =
+                outstandingFees.reduce(
+                    (
+                        total,
+                        record
+                    ) =>
+                        total +
                         Number(
                             record.remaining_amount || 0
-                        );
+                        ),
+                    0
+                );
 
-                    return (
-                        status === "unpaid" ||
-                        status === "partial" ||
-                        remaining > 0
-                    );
+            context = {
 
-                })
-                : [];
+                type:
+                    "outstanding_fees",
 
-  // ==========================================
-// CONTEXT FOR GEMINI
-// ==========================================
+                outstandingRecords:
+                    outstandingFees.length,
 
-const context = {
+                totalOutstanding:
+                    totalOutstanding
 
-    summary: {
+            };
 
-        totalStudents:
-            students.length,
+        }
 
-        totalTeachers:
-            teachers.length,
+        // ==========================================
+        // 9. RECENT RESULTS
+        // ==========================================
 
-        totalAttendanceRecords:
-            attendance.length,
+        else if (
+            selectedQuestion ===
+            "recent_results"
+        ) {
 
-        todayAttendanceRecords:
-            todayAttendance.length,
+            const results =
+                await getResults();
 
-        totalFeeRecords:
-            fees.length,
+            context = {
 
-        outstandingFeeRecords:
-            outstandingFees.length,
+                type:
+                    "recent_results",
 
-        totalResults:
-            results.length,
+                totalResults:
+                    results.length,
 
-        totalAssignments:
-            assignments.length,
+                results:
+                    results.slice(0, 50)
 
-        totalNotices:
-            notices.length
+            };
 
-    },
+        }
 
-    // Only small samples are sent to Gemini
-    students:
-        students.slice(0, 30),
+        // ==========================================
+        // 10. RECENT ASSIGNMENTS + NOTICES
+        // ==========================================
 
-    teachers:
-        teachers.slice(0, 20),
+        else if (
+            selectedQuestion ===
+            "recent_activity"
+        ) {
 
-    todayAttendance:
-        todayAttendance.slice(0, 50),
+            const [
+                assignments,
+                notices
+            ] = await Promise.all([
 
-    outstandingFees:
-        outstandingFees.slice(0, 50),
+                getAssignments(),
+                getNotices()
 
-    results:
-        results.slice(0, 50),
+            ]);
 
-    assignments:
-        assignments.slice(0, 30),
+            context = {
 
-    notices:
-        notices.slice(0, 30)
+                type:
+                    "recent_activity",
 
-};
+                assignments:
+                    assignments.slice(0, 20),
+
+                notices:
+                    notices.slice(0, 20)
+
+            };
+
+        }
 
         // ==========================================
         // SUPABASE EDGE FUNCTION
@@ -44925,7 +45346,7 @@ const context = {
             await response.json();
 
         // ==========================================
-        // HANDLE ERROR
+        // ERROR
         // ==========================================
 
         if (!response.ok) {
@@ -44943,16 +45364,20 @@ const context = {
         }
 
         // ==========================================
-        // SHOW GEMINI ANSWER
+        // SHOW ANSWER
         // ==========================================
 
         addAiMessage(
+
             data.answer ||
             "I couldn't generate an answer.",
+
             "assistant"
+
         );
 
     }
+
     catch (error) {
 
         console.error(
@@ -44961,11 +45386,15 @@ const context = {
         );
 
         addAiMessage(
+
             "Sorry, AI se response lene mein problem aa gayi. Please try again.",
+
             "assistant"
+
         );
 
     }
+
     finally {
 
         adminAiTyping.style.display =
@@ -44974,7 +45403,17 @@ const context = {
         adminAiSendBtn.disabled =
             false;
 
-        adminAiInput.focus();
+        const questionSelect =
+            document.getElementById(
+                "adminAiQuestionSelect"
+            );
+
+        if (questionSelect) {
+
+            questionSelect.value =
+                "";
+
+        }
 
     }
 
