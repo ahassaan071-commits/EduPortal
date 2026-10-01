@@ -14702,7 +14702,8 @@ const {
         id,
         student_id,
         student_class,
-        section
+        section,
+        monthly_fee
     `);
 
 if (studentsListError) {
@@ -14795,7 +14796,24 @@ const studentClassMap = {};
 
     tableBody.innerHTML = "";
 
+// ==========================================
+// CREATE STUDENT MONTHLY FEE MAP
+// ==========================================
 
+const studentMonthlyFeeMap = {};
+
+(studentsList || []).forEach(
+    function(student) {
+
+        studentMonthlyFeeMap[
+            String(student.id)
+        ] =
+            Number(
+                student.monthly_fee || 0
+            );
+
+    }
+);
     // ==========================================
     // NO RECORDS
     // ==========================================
@@ -21713,13 +21731,62 @@ const isLeaveDate =
                     String(student.id)
                 );
 
-    const status =
-    attendance?.status ||
-    (
-        isLeaveDate
-            ? "Leave"
-            : "Absent"
-    );
+let status = "";
+
+const attendanceStatus =
+    String(
+        attendance?.status || ""
+    )
+        .trim()
+        .toLowerCase();
+
+if (isLeaveDate) {
+
+    status = "Leave";
+
+}
+else if (
+    attendanceStatus === "present"
+) {
+
+    status = "Present";
+
+}
+else if (
+    attendanceStatus === "leave"
+) {
+
+    status = "Leave";
+
+}
+else {
+
+    const pakistanTime =
+        new Date().toLocaleString(
+            "en-US",
+            {
+                timeZone: "Asia/Karachi"
+            }
+        );
+
+    const pakistanNow =
+        new Date(pakistanTime);
+
+    const currentHour =
+        pakistanNow.getHours();
+
+    if (currentHour < 12) {
+
+        status = "Not Marked";
+
+    }
+    else {
+
+        status = "Absent";
+
+    }
+
+}
 
             const normalizedStatus =
                 String(status)
