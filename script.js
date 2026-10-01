@@ -11751,30 +11751,30 @@ if (
 
     <td>
 
-                ${
-            attendanceRecord &&
-            attendanceRecord.status
-                ? `
-                    <span
-                        class="attendance-status-badge
-                        ${attendanceRecord.status.toLowerCase()}">
-                        ${attendanceRecord.status}
-                    </span>
-                  `
-                : isLeaveDate
-                    ? `
-                        <span
-                            class="attendance-status-badge leave">
-                            Leave
-                        </span>
-                      `
-                    : `
-                        <span
-                            class="attendance-status-badge pending">
-                            Not Marked
-                        </span>
-                      `
-        }
+   ${
+    isLeaveDate
+        ? `
+            <span
+                class="attendance-status-badge leave">
+                Leave
+            </span>
+          `
+        : attendanceRecord &&
+          attendanceRecord.status
+            ? `
+                <span
+                    class="attendance-status-badge
+                    ${attendanceRecord.status.toLowerCase()}">
+                    ${attendanceRecord.status}
+                </span>
+              `
+            : `
+                <span
+                    class="attendance-status-badge pending">
+                    Not Marked
+                </span>
+              `
+}
 
     </td>
 
