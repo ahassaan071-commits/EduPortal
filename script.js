@@ -42812,7 +42812,7 @@ async function deleteAcademicAssignment(assignmentId) {
     // SETTINGS
     // ======================================================
 
-    const REFRESH_INTERVAL = 60000;
+    const REFRESH_INTERVAL = 15000;
 
     let refreshTimer = null;
     let refreshRunning = false;
