@@ -15628,7 +15628,7 @@ if (!monthlyFeeError && monthlyFeeStudent) {
                     style="
                         display:grid;
                         grid-template-columns:
-                            repeat(3,1fr);
+                            repeat(2,1fr);
                         gap:12px;
                         margin-bottom:22px;
                     "
