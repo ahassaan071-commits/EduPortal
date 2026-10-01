@@ -3392,6 +3392,11 @@ Administrator Dashboard
     📋 Audit Logs
 </li>
 
+<li id="adminAiAssistantMenu"
+    onclick="setTimeout(function(){ window.showAdminModuleDirect('aiAssistant'); }, 0)">
+    🤖 AI Assistant
+</li>
+
 <li id="adminLogoutBtn">
 🚪 Logout
 </li>
@@ -6144,6 +6149,81 @@ ADMIN AUDIT LOGS SECTION
     </div>
 
 </div>
+
+</div>
+
+<!-- ==========================================
+ADMIN AI ASSISTANT SECTION
+========================================== -->
+
+<div id="adminAiAssistantSection" style="display:none;">
+
+    <div class="admin-ai-shell">
+
+        <div class="admin-ai-header">
+            <div>
+                <div class="admin-ai-title">
+                    <span class="admin-ai-title-icon">🤖</span>
+                    <div>
+                        <h2>EduPortal AI Assistant</h2>
+                        <p>Ask about students, teachers, attendance, fees, results and more.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-ai-status">
+                <span class="admin-ai-status-dot"></span>
+                Admin Only
+            </div>
+        </div>
+
+        <div class="admin-ai-chat-card">
+
+            <div id="adminAiMessages" class="admin-ai-messages">
+
+                <div class="admin-ai-message assistant">
+                    <div class="admin-ai-avatar">🤖</div>
+                    <div class="admin-ai-bubble">
+                        <strong>EduPortal AI</strong>
+                        <p>Assalam-o-Alaikum! 👋<br>
+                        Main aapka EduPortal Admin Assistant hoon. Aap normal language mein data search kar sakte hain.</p>
+                        <p class="admin-ai-example-label">Try asking:</p>
+                        <div class="admin-ai-suggestions">
+                            <button type="button" data-ai-prompt="Show me all students">All Students</button>
+                            <button type="button" data-ai-prompt="Show students with unpaid fees">Unpaid Fees</button>
+                            <button type="button" data-ai-prompt="Show today's attendance summary">Today's Attendance</button>
+                            <button type="button" data-ai-prompt="Show all teachers">All Teachers</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="admin-ai-typing" id="adminAiTyping" style="display:none;">
+                <span></span><span></span><span></span>
+                <span>EduPortal AI is thinking...</span>
+            </div>
+
+            <div class="admin-ai-input-area">
+                <textarea
+                    id="adminAiInput"
+                    rows="1"
+                    placeholder="Ask anything about EduPortal..."
+                    autocomplete="off"></textarea>
+
+                <button type="button" id="adminAiSendBtn" title="Send">
+                    ➤
+                </button>
+            </div>
+
+            <div class="admin-ai-footer">
+                <span>🔒 Read-only Admin Assistant</span>
+                <span>Enter to send • Shift+Enter for new line</span>
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 
