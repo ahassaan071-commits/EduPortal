@@ -13282,7 +13282,7 @@ studentCheckIn
 }
 
 
-updateStudentAttendanceUI();
+// ATTACH CHECK-IN BUTTON
 
 updateStudentAttendanceSummary();
 
