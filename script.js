@@ -4178,18 +4178,13 @@ if (
 // PASSWORD VALIDATION
 // ==========================================
 
-if (
-    !/^.{8,12}$/.test(
-        password
-    )
-) {
+if (!isValidPassword(password)) {
 
-    alert(
-        "Password must contain 8 to 12 characters."
-    );
+    alert(PASSWORD_RULE_MESSAGE);
 
     return;
 }
+
         // ==========================================
         // CHECK DUPLICATE STUDENT ID
         // ==========================================
@@ -9878,25 +9873,18 @@ document.addEventListener(
         // PASSWORD VALIDATION
         // ==========================================
 
-        if (
-            !/^[0-9]{6,8}$/.test(
-                password
-            )
-        ) {
+       if (!isValidPassword(password)) {
 
-            alert(
-                "Password must contain 6 to 8 digits only."
-            );
+    alert(PASSWORD_RULE_MESSAGE);
 
-            document
-                .getElementById(
-                    "adminTeacherPassword"
-                )
-                .focus();
+    document
+        .getElementById(
+            "adminTeacherPassword"
+        )
+        .focus();
 
-            return;
-        }
-
+    return;
+}
 
         // ==========================================
         // CHECK DUPLICATE USERNAME
