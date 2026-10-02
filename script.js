@@ -31112,6 +31112,19 @@ const StudentDashboard = {
 
 ]);
 
+// ==========================================
+// REFRESH TODAY ATTENDANCE AFTER DASHBOARD LOAD
+// ==========================================
+
+if (
+    typeof updateStudentAttendanceUI ===
+    "function"
+) {
+
+    await updateStudentAttendanceUI();
+
+}
+
 await this.loadAssignments(student);
 
 await this.loadAssignmentResults(student);
