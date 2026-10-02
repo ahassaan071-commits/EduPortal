@@ -6573,10 +6573,10 @@ height:48px;
 
         <input type="password"
     id="adminNewStudentPassword"
-    placeholder="Enter 8–12 digit password"
+    placeholder="Enter 8–12 character password"
     minlength="8"
     maxlength="12"
-    inputmode="numeric">
+    autocomplete="new-password">
 
     </div>
     <div class="input-group">
@@ -6828,13 +6828,11 @@ ADMIN ADD TEACHER MODAL - PREMIUM
 <input
     type="password"
     id="adminTeacherPassword"
-    placeholder="Enter 6–8 digit password"
+    placeholder="Enter 8–12 character password"
     autocomplete="new-password"
-    inputmode="numeric"
-    minlength="6"
-    maxlength="8"
-    pattern="[0-9]{6,8}"
-    title="Password must contain 6 to 8 digits only"
+    minlength="8"
+    maxlength="12"
+    title="Password must contain 8 to 12 characters"
     required>
         
         <button
@@ -7315,9 +7313,10 @@ ADMINISTRATOR PASSWORD RECOVERY
     </label>
 
     <input
-        type="text"
-        id="editUserNewPassword"
-        placeholder="Enter new password"
+    type="text"
+    id="editUserNewPassword"
+    placeholder="Enter 8–12 character password"
+    maxlength="12"
         style="
             width:100%;
             padding:12px 14px;
