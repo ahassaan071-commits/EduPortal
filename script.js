@@ -19889,16 +19889,13 @@ return;
 
 // Check new password length
 
-if (newPassword.length < 6) {
+if (!isValidPassword(newPassword)) {
 
-alert(
-"New password must contain at least 6 characters."
-);
+alert(PASSWORD_RULE_MESSAGE);
 
 return;
 
 }
-
 
 // Confirm new password
 
@@ -35480,20 +35477,14 @@ async function saveStudentAccountSettings() {
 
 
     if (
-        newPassword !== "" &&
-        (
-            !/^\d+$/.test(newPassword) ||
-            newPassword.length < 6 ||
-            newPassword.length > 8
-        )
-    ) {
+    newPassword !== "" &&
+    !isValidPassword(newPassword)
+) {
 
-        alert(
-            "Password must contain 6 to 8 digits. ⚠️"
-        );
+    alert(PASSWORD_RULE_MESSAGE);
 
-        return;
-    }
+    return;
+}
 
 
     /* -----------------------------------------
