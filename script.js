@@ -31483,12 +31483,14 @@ async loadDashboard(student) {
     );
 
 
-    this.setText(
-        "studentClass",
-        data.studentClass ||
-        data.class ||
-        "N/A"
-    );
+this.setText(
+    "studentClass",
+    data.studentClass ||
+    data.student_class ||
+    data.class ||
+    data.class_name ||
+    "Not Assigned"
+);
 
 
     this.setText(
