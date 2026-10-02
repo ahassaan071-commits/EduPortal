@@ -57,6 +57,28 @@ function escapeHtml(value) {
         );
 }
 
+// =====================================================
+// EDUPORTAL - SINGLE PASSWORD RULE (ALL DASHBOARDS)
+// 8 to 12 characters, spaces allowed nahi
+// =====================================================
+
+const PASSWORD_MIN_LENGTH = 8;
+const PASSWORD_MAX_LENGTH = 12;
+
+const PASSWORD_RULE_MESSAGE =
+    "Password must contain 8 to 12 characters (no spaces).";
+
+function isValidPassword(password) {
+
+    const value = String(password || "");
+
+    return (
+        value.length >= PASSWORD_MIN_LENGTH &&
+        value.length <= PASSWORD_MAX_LENGTH &&
+        !/\s/.test(value)
+    );
+}
+
 // =========================================================
 // EDU PORTAL — HOLIDAY / LEAVE HELPERS
 // =========================================================
