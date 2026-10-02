@@ -30770,20 +30770,16 @@ document.addEventListener(
 
 
         if (
-            newPassword &&
-            !/^[0-9]{8,12}$/.test(
-                newPassword
-            )
-        ) {
+    newPassword &&
+    !isValidPassword(newPassword)
+) {
 
-            alert(
-                "Password must contain 8 to 12 digits only."
-            );
+    alert(PASSWORD_RULE_MESSAGE);
 
-            newPasswordField.focus();
+    newPasswordField.focus();
 
-            return;
-        }
+    return;
+}
 
 
         // ==========================================
