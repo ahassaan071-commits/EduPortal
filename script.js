@@ -39727,13 +39727,13 @@ document.addEventListener(
             return;
         }
 
-        if (newPassword.length < 6) {
-            recoveryMessage(
-                "Password must be at least 6 characters.",
-                true
-            );
-            return;
-        }
+     if (!isValidPassword(newPassword)) {
+    recoveryMessage(
+        PASSWORD_RULE_MESSAGE,
+        true
+    );
+    return;
+}
 
         if (newPassword !== confirmPassword) {
             recoveryMessage(
