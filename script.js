@@ -12496,7 +12496,31 @@ async function updateStudentAttendanceUI() {
 
             return;
         }
+// ------------------------------
+// LEAVE / HOLIDAY
+// ------------------------------
 
+if (
+    status.toLowerCase() === "leave"
+) {
+
+    checkInButton.disabled = true;
+
+    checkInButton.innerHTML =
+        "🏖️ Holiday / Leave";
+
+    message.textContent =
+        "Today's attendance: Leave";
+
+    if (todayStatus) {
+
+        todayStatus.textContent =
+            "Leave";
+
+    }
+
+    return;
+}
 
         // ------------------------------
         // OTHER STATUS
@@ -16179,6 +16203,73 @@ if (!oldFeeRecord) {
                 }
 
 // ==========================================
+// AUTOMATIC FEE NOTICE — PAYMENT STATUS
+// ==========================================
+
+const updatedFeeRecord = {
+    ...oldFeeRecord,
+
+    paid_amount:
+        newPaidAmount,
+
+    remaining_amount:
+        newRemainingAmount,
+
+    status:
+        newStatus,
+
+    payment_method:
+        "Cash",
+
+    payment_date:
+        selectedDate
+};
+
+
+// ==========================================
+// PARTIAL PAYMENT NOTICE
+// ==========================================
+
+if (
+    newStatus === "Partial" &&
+    newRemainingAmount > 0
+) {
+
+    await createAutomaticFeeNotice({
+
+        feeRecord:
+            updatedFeeRecord,
+
+        noticeType:
+            "PARTIAL_PAYMENT"
+
+    });
+
+}
+
+
+// ==========================================
+// FULL PAYMENT NOTICE
+// ==========================================
+
+if (
+    newStatus === "Paid" &&
+    newRemainingAmount === 0
+) {
+
+    await createAutomaticFeeNotice({
+
+        feeRecord:
+            updatedFeeRecord,
+
+        noticeType:
+            "FULL_PAYMENT"
+
+    });
+
+}
+
+// ==========================================
 // CREATE AUDIT LOG — FEE PAYMENT UPDATE
 // ==========================================
 
@@ -16368,6 +16459,352 @@ document.addEventListener(
 
     }
 );
+
+// =========================================================
+// FEE MANAGEMENT → NOTICE AUTOMATION
+// AUTOMATIC FEE PAYMENT / REMAINING FEE NOTICES
+// =========================================================
+
+async function createAutomaticFeeNotice({
+    feeRecord,
+    noticeType
+}) {
+
+    // ==========================================
+    // SUPABASE CHECK
+    // ==========================================
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+
+        console.error(
+            "Supabase connection is missing."
+        );
+
+        return;
+
+    }
+
+
+    if (!feeRecord) {
+
+        console.error(
+            "Fee record is missing."
+        );
+
+        return;
+
+    }
+
+
+    const studentId =
+        feeRecord.student_id;
+
+
+    const studentName =
+        feeRecord.student_name ||
+        "Student";
+
+
+    const feeAmount =
+        Number(
+            feeRecord.fee_amount || 0
+        );
+
+
+    const paidAmount =
+        Number(
+            feeRecord.paid_amount || 0
+        );
+
+
+    const remainingAmount =
+        Number(
+            feeRecord.remaining_amount || 0
+        );
+
+
+    const month =
+        feeRecord.month ||
+        "Current Month";
+
+
+    const dueDate =
+        feeRecord.due_date ||
+        null;
+
+
+    // ==========================================
+    // NOTICE CONFIGURATION
+    // ==========================================
+
+    let title = "";
+
+    let message = "";
+
+    let automationKey = "";
+
+
+    // ==========================================
+    // PARTIAL PAYMENT
+    // ==========================================
+
+    if (
+        noticeType ===
+        "PARTIAL_PAYMENT"
+    ) {
+
+        title =
+            "⚠️ Partial Fee Payment";
+
+
+        message =
+            `Your monthly fee for ${month} is Rs. ${feeAmount.toLocaleString()}. ` +
+            `We have received Rs. ${paidAmount.toLocaleString()}. ` +
+            `Your remaining fee is Rs. ${remainingAmount.toLocaleString()}. ` +
+            (
+                dueDate
+                    ? `Please pay the remaining amount before ${dueDate}.`
+                    : "Please pay the remaining amount as soon as possible."
+            );
+
+
+        automationKey =
+            `FEE_PARTIAL_${feeRecord.id}`;
+
+    }
+
+
+    // ==========================================
+    // FULL PAYMENT
+    // ==========================================
+
+    else if (
+        noticeType ===
+        "FULL_PAYMENT"
+    ) {
+
+        title =
+            "✅ Fee Paid Successfully";
+
+
+        message =
+            `Your monthly fee of Rs. ${feeAmount.toLocaleString()} ` +
+            `for ${month} has been paid in full. Thank you.`;
+
+
+        automationKey =
+            `FEE_PAID_${feeRecord.id}`;
+
+    }
+
+
+    // ==========================================
+    // UNPAID REMINDER
+    // ==========================================
+
+    else if (
+        noticeType ===
+        "UNPAID_REMINDER"
+    ) {
+
+        title =
+            "⚠️ Fee Payment Reminder";
+
+
+        message =
+            `Your monthly fee of Rs. ${feeAmount.toLocaleString()} ` +
+            `for ${month} is still unpaid. ` +
+            (
+                dueDate
+                    ? `Please pay before ${dueDate}.`
+                    : "Please complete your fee payment."
+            );
+
+
+        automationKey =
+            `FEE_UNPAID_${feeRecord.id}`;
+
+    }
+
+
+    // ==========================================
+    // REMAINING FEE REMINDER
+    // ==========================================
+
+    else if (
+        noticeType ===
+        "REMAINING_FEE"
+    ) {
+
+        title =
+            "⚠️ Remaining Fee Reminder";
+
+
+        message =
+            `Your total fee for ${month} is Rs. ${feeAmount.toLocaleString()}. ` +
+            `Paid: Rs. ${paidAmount.toLocaleString()}. ` +
+            `Remaining: Rs. ${remainingAmount.toLocaleString()}. ` +
+            (
+                dueDate
+                    ? `Please pay the remaining amount before ${dueDate}.`
+                    : "Please pay the remaining amount."
+            );
+
+
+        automationKey =
+            `FEE_REMAINING_${feeRecord.id}`;
+
+    }
+
+
+    // ==========================================
+    // UNKNOWN TYPE
+    // ==========================================
+
+    else {
+
+        console.error(
+            "Unknown fee notice type:",
+            noticeType
+        );
+
+        return;
+
+    }
+
+
+    // ==========================================
+    // CHECK DUPLICATE AUTOMATIC NOTICE
+    // ==========================================
+
+    const {
+        data: existingNotice,
+        error: existingNoticeError
+    } =
+        await supabaseClient
+            .from("notices")
+            .select("id")
+            .eq(
+                "automation_key",
+                automationKey
+            )
+            .maybeSingle();
+
+
+    if (
+        existingNoticeError
+    ) {
+
+        console.error(
+            "FEE NOTICE DUPLICATE CHECK ERROR:",
+            existingNoticeError
+        );
+
+        return;
+
+    }
+
+
+    // ==========================================
+    // DO NOT CREATE DUPLICATE
+    // ==========================================
+
+    if (existingNotice) {
+
+        console.log(
+            "Automatic fee notice already exists:",
+            automationKey
+        );
+
+        return;
+
+    }
+
+
+    // ==========================================
+    // CREATE NOTICE
+    // ==========================================
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("notices")
+            .insert({
+
+                title:
+                    title,
+
+                message:
+                    message,
+
+                target_role:
+                    "Student:" +
+                    String(studentId),
+
+                notice_date:
+                    new Date()
+                        .toLocaleDateString(
+                            "en-CA",
+                            {
+                                timeZone:
+                                    "Asia/Karachi"
+                            }
+                        ),
+
+                expiry_date:
+                    dueDate,
+
+                is_holiday_notice:
+                    false,
+
+                holiday_date:
+                    null,
+
+                auto_generated:
+                    true,
+
+                automation_key:
+                    automationKey,
+
+                created_at:
+                    new Date().toISOString()
+
+            })
+            .select();
+
+
+    // ==========================================
+    // ERROR
+    // ==========================================
+
+    if (error) {
+
+        console.error(
+            "AUTOMATIC FEE NOTICE ERROR:",
+            error
+        );
+
+        return;
+
+    }
+
+
+    // ==========================================
+    // SUCCESS
+    // ==========================================
+
+    console.log(
+        "Automatic fee notice created:",
+        data?.[0] ||
+        automationKey
+    );
+
+}
 // ==========================================
 // ADMIN NOTICES MANAGEMENT
 // ==========================================
@@ -16417,6 +16854,28 @@ const noticeAudience =
     document.getElementById(
         "adminNoticeAudience"
     );
+
+// ==========================================
+// DEFAULT NOTICE DATE — PAKISTAN DATE
+// ==========================================
+const adminNoticeDate =
+    document.getElementById(
+        "adminNoticeDate"
+    );
+
+if (adminNoticeDate && !adminNoticeDate.value) {
+    const pakistanToday =
+        new Date().toLocaleDateString(
+            "en-CA",
+            {
+                timeZone: "Asia/Karachi"
+            }
+        );
+
+    adminNoticeDate.value =
+        pakistanToday;
+}
+
 
 const noticeClassGroup =
     document.getElementById(
@@ -16723,10 +17182,42 @@ async function () {
         "adminNoticeDate"
     ).value;
 
-const expiryDate =
-    document.getElementById(
-        "adminNoticeExpiryDate"
-    ).value;
+// ==========================================
+// AUTOMATIC EXPIRY DATE
+// ==========================================
+
+let expiryDate = date;
+
+if (date) {
+
+    const selectedDate =
+        new Date(
+            `${date}T00:00:00`
+        );
+
+    const day =
+        selectedDate.getDay();
+
+    // Saturday → Sunday
+    if (day === 6) {
+
+        selectedDate.setDate(
+            selectedDate.getDate() + 1
+        );
+
+        expiryDate =
+            selectedDate
+                .toISOString()
+                .slice(0, 10);
+    }
+
+    // Sunday → Sunday
+    else {
+
+        expiryDate = date;
+
+    }
+}
 
     // ==========================================
 // HOLIDAY AUTOMATION
@@ -16742,24 +17233,13 @@ const isHolidayNotice =
         ? holidayCheckbox.checked
         : false;
 
+// ==========================================
+// HOLIDAY DATE RANGE
+// ==========================================
+
 const holidayDate =
     isHolidayNotice
-        ? (() => {
-
-            const d =
-                new Date(
-                    `${date}T00:00:00`
-                );
-
-            d.setDate(
-                d.getDate() + 1
-            );
-
-            return d
-                .toISOString()
-                .slice(0, 10);
-
-        })()
+        ? date
         : null;
 
     const description =
@@ -16817,12 +17297,7 @@ if (
         return;
     }
 
-if (!expiryDate) {
-    alert(
-        "Please select expiry date."
-    );
-    return;
-}
+
 
 if (expiryDate < date) {
     alert(
@@ -16878,14 +17353,18 @@ const noticeRecord = {
 
     message: description,
 
-    target_role:
-        isHolidayNotice
-            ? "everyone"
-            : (
-                audience === "Class"
-                    ? "Class:" + selectedClass
-                    : audience
-            ),
+   target_role:
+    isHolidayNotice
+        ? "everyone"
+        : (
+            audience === "Everyone"
+                ? "everyone"
+                : (
+                    audience === "Class"
+                        ? "Class:" + selectedClass
+                        : audience
+                )
+        ),
 
     notice_date: date,
 
@@ -16927,6 +17406,58 @@ const {
             }
         )
         .select();
+
+
+// ==========================================
+// HOLIDAY → HOLIDAYS TABLE
+// ==========================================
+
+if (
+    !error &&
+    isHolidayNotice &&
+    holidayDate
+) {
+
+    const {
+        error: holidayError
+    } =
+        await supabaseClient
+            .from("holidays")
+            .upsert(
+                {
+                    holiday_date:
+                        holidayDate,
+
+                    title:
+                        title,
+
+                    holiday_type:
+                        "Official",
+
+                    is_active:
+                        true
+                },
+                {
+                    onConflict:
+                        "holiday_date"
+                }
+            );
+
+    if (holidayError) {
+
+        console.error(
+            "HOLIDAY SAVE ERROR:",
+            holidayError
+        );
+
+        alert(
+            "Notice saved, but Holiday could not be registered:\n\n" +
+            holidayError.message
+        );
+
+        return;
+    }
+}
 
     // ==========================================
     // ERROR
@@ -17654,10 +18185,17 @@ editButton.addEventListener(
             notice.title || "";
 
 
-        document.getElementById(
-            "adminNoticeAudience"
-        ).value =
-            notice.target_role || "";
+       const noticeAudienceValue =
+    String(
+        notice.target_role || ""
+    ).toLowerCase();
+
+document.getElementById(
+    "adminNoticeAudience"
+).value =
+    noticeAudienceValue === "everyone"
+        ? "Everyone"
+        : notice.target_role || "";
 
 
        document.getElementById(
@@ -18374,14 +18912,42 @@ const notices =
                 // STUDENT
                 // -------------------------------
 
-                if (
-                    target === "student"
-                ) {
+              if (
+    target === "student"
+) {
 
-                    return true;
+    return true;
 
-                }
+}
 
+
+// -------------------------------
+// SPECIFIC STUDENT
+// -------------------------------
+
+if (
+    target.startsWith("student:")
+) {
+
+    const noticeStudentId =
+        target
+            .replace(
+                /^student:/i,
+                ""
+            )
+            .trim();
+
+    const currentStudentId =
+        String(
+            student?.id || ""
+        ).trim();
+
+    return (
+        noticeStudentId ===
+        currentStudentId
+    );
+
+}
 
                 // -------------------------------
                 // SPECIFIC CLASS + SECTION
@@ -19569,7 +20135,13 @@ updateAdminForgotPassword();
 
         async loadData() {
 
-            try {
+    if (this._loadingData) {
+        return;
+    }
+
+    this._loadingData = true;
+
+    try {
 
                 const [
                     studentsResult,
@@ -19847,13 +20419,18 @@ updateAdminForgotPassword();
 
                 this.updateDashboard();
 
-            }
+                       }
             catch (error) {
 
                 console.error(
                     "NEW ADMIN DASHBOARD ERROR:",
                     error
                 );
+
+            }
+            finally {
+
+                this._loadingData = false;
 
             }
 
@@ -42772,11 +43349,11 @@ async function deleteAcademicAssignment(assignmentId) {
 
     loadAcademicAssignments();
 }
-// ==========================================================
-// EDUPORTAL — CENTRAL 5 SECOND DASHBOARD LIVE SYNC
+// =====================================================
+// EDUPORTAL CENTRAL DASHBOARD AUTO REFRESH
 // ADMIN + TEACHER + STUDENT
-// ONE CENTRAL ENGINE
-// ==========================================================
+// ONE CENTRAL ENGINE — 15 SECOND CYCLE
+// =====================================================
 
 (function () {
 
@@ -43235,7 +43812,7 @@ async function deleteAcademicAssignment(assignmentId) {
 
 
     // ======================================================
-    // START CENTRAL 5 SECOND ENGINE
+    // START CENTRAL DASHBOARD ENGINE
     // ======================================================
 
     function startCentralRefresh() {
