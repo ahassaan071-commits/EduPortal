@@ -47888,3 +47888,127 @@ body:has(#adminDashboard[style*="display"]) #adminDashboard {
     margin: 0 !important;
     padding: 0 !important;
 }
+
+/* ==========================================================
+   FINAL DASHBOARD VISUAL FIX
+   CSS ONLY — no HTML/JS changes
+========================================================== */
+
+/* Completely remove the visible page/background strip while a dashboard is open. */
+html:has(body #studentDashboard[style*="display"]),
+html:has(body #teacherDashboard[style*="display"]),
+html:has(body #adminDashboard[style*="display"]),
+body:has(#studentDashboard[style*="display"]),
+body:has(#teacherDashboard[style*="display"]),
+body:has(#adminDashboard[style*="display"]) {
+    background: #f1f5f9 !important;
+    background-image: none !important;
+}
+
+/* Same blue sidebar on all three dashboards. */
+body #studentDashboard .sidebar,
+body #teacherDashboard .teacher-sidebar,
+body #teacherDashboard .sidebar,
+body #adminDashboard .admin-sidebar {
+    background: #1e3a8a !important;
+    background-image: none !important;
+}
+
+/* Remove any remaining decorative dashboard background layers. */
+body #studentDashboard::before,
+body #studentDashboard::after,
+body #teacherDashboard::before,
+body #teacherDashboard::after,
+body #adminDashboard::before,
+body #adminDashboard::after {
+    display: none !important;
+    background: none !important;
+}
+
+/* Force ONE thin 6px scrollbar on the actual page/body. */
+html:has(body #studentDashboard[style*="display"])::-webkit-scrollbar,
+html:has(body #teacherDashboard[style*="display"])::-webkit-scrollbar,
+html:has(body #adminDashboard[style*="display"])::-webkit-scrollbar,
+body:has(#studentDashboard[style*="display"])::-webkit-scrollbar,
+body:has(#teacherDashboard[style*="display"])::-webkit-scrollbar,
+body:has(#adminDashboard[style*="display"])::-webkit-scrollbar {
+    width: 6px !important;
+    height: 6px !important;
+}
+
+html:has(body #studentDashboard[style*="display"])::-webkit-scrollbar-track,
+html:has(body #teacherDashboard[style*="display"])::-webkit-scrollbar-track,
+html:has(body #adminDashboard[style*="display"])::-webkit-scrollbar-track,
+body:has(#studentDashboard[style*="display"])::-webkit-scrollbar-track,
+body:has(#teacherDashboard[style*="display"])::-webkit-scrollbar-track,
+body:has(#adminDashboard[style*="display"])::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+
+html:has(body #studentDashboard[style*="display"])::-webkit-scrollbar-thumb,
+html:has(body #teacherDashboard[style*="display"])::-webkit-scrollbar-thumb,
+html:has(body #adminDashboard[style*="display"])::-webkit-scrollbar-thumb,
+body:has(#studentDashboard[style*="display"])::-webkit-scrollbar-thumb,
+body:has(#teacherDashboard[style*="display"])::-webkit-scrollbar-thumb,
+body:has(#adminDashboard[style*="display"])::-webkit-scrollbar-thumb {
+    background: #94a3b8 !important;
+    border-radius: 999px !important;
+    border: 0 !important;
+}
+
+/* Thin sidebar scrollbar. */
+body #studentDashboard .sidebar::-webkit-scrollbar,
+body #teacherDashboard .teacher-sidebar::-webkit-scrollbar,
+body #teacherDashboard .sidebar::-webkit-scrollbar,
+body #adminDashboard .admin-sidebar::-webkit-scrollbar,
+body #adminDashboard .admin-sidebar > ul::-webkit-scrollbar {
+    width: 6px !important;
+    height: 6px !important;
+}
+
+body #studentDashboard .sidebar::-webkit-scrollbar-track,
+body #teacherDashboard .teacher-sidebar::-webkit-scrollbar-track,
+body #teacherDashboard .sidebar::-webkit-scrollbar-track,
+body #adminDashboard .admin-sidebar::-webkit-scrollbar-track,
+body #adminDashboard .admin-sidebar > ul::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+
+body #studentDashboard .sidebar::-webkit-scrollbar-thumb,
+body #teacherDashboard .teacher-sidebar::-webkit-scrollbar-thumb,
+body #teacherDashboard .sidebar::-webkit-scrollbar-thumb,
+body #adminDashboard .admin-sidebar::-webkit-scrollbar-thumb,
+body #adminDashboard .admin-sidebar > ul::-webkit-scrollbar-thumb {
+    width: 6px !important;
+    background: rgba(255,255,255,.28) !important;
+    border-radius: 999px !important;
+    border: 0 !important;
+}
+
+/* Firefox scrollbar width. */
+html:has(body #studentDashboard[style*="display"]),
+html:has(body #teacherDashboard[style*="display"]),
+html:has(body #adminDashboard[style*="display"]),
+body:has(#studentDashboard[style*="display"]),
+body:has(#teacherDashboard[style*="display"]),
+body:has(#adminDashboard[style*="display"]),
+body #studentDashboard .sidebar,
+body #teacherDashboard .teacher-sidebar,
+body #teacherDashboard .sidebar,
+body #adminDashboard .admin-sidebar,
+body #adminDashboard .admin-sidebar > ul {
+    scrollbar-width: thin !important;
+    scrollbar-color: #94a3b8 transparent !important;
+}
+
+/* Remove old scrollbar arrows. */
+html:has(body #studentDashboard[style*="display"])::-webkit-scrollbar-button,
+html:has(body #teacherDashboard[style*="display"])::-webkit-scrollbar-button,
+html:has(body #adminDashboard[style*="display"])::-webkit-scrollbar-button,
+body #studentDashboard .sidebar::-webkit-scrollbar-button,
+body #teacherDashboard .teacher-sidebar::-webkit-scrollbar-button,
+body #teacherDashboard .sidebar::-webkit-scrollbar-button,
+body #adminDashboard .admin-sidebar::-webkit-scrollbar-button,
+body #adminDashboard .admin-sidebar > ul::-webkit-scrollbar-button {
+    display: none !important;
+}
