@@ -47668,18 +47668,97 @@ body:has(#adminDashboard[style*="display"])::-webkit-scrollbar-button,
     --edu-shadow: 0 10px 30px rgba(15, 23, 42, .08);
 }
 
-/* Same font everywhere inside all three dashboards. */
+
+
+/* =========================================================
+   EDUPORTAL — FINAL SHARED DASHBOARD DESIGN SYSTEM
+   CSS ONLY
+   Login page is intentionally untouched.
+   ========================================================= */
+
+/* ---------- Dashboard-only page shell ---------- */
+
+body:has(#studentDashboard[style*="display: block"]),
+body:has(#adminDashboard[style*="display: block"]),
+body:has(#teacherDashboard[style*="display: block"]),
+body:has(#teacherDashboard[style*="display: flex"]) {
+    background: #f1f5f9 !important;
+}
+
+html:has(#studentDashboard[style*="display: block"]),
+html:has(#adminDashboard[style*="display: block"]),
+html:has(#teacherDashboard[style*="display: block"]),
+html:has(#teacherDashboard[style*="display: flex"]) {
+    background: #f1f5f9 !important;
+}
+
+/* Keep the visible dashboard inside the viewport.
+   Its own content areas handle scrolling. */
+html:has(#studentDashboard[style*="display: block"]),
+html:has(#adminDashboard[style*="display: block"]),
+html:has(#teacherDashboard[style*="display: block"]),
+html:has(#teacherDashboard[style*="display: flex"]) {
+    scrollbar-width: thin !important;
+    scrollbar-color: #94a3b8 transparent !important;
+}
+
+body:has(#studentDashboard[style*="display: block"]),
+body:has(#adminDashboard[style*="display: block"]),
+body:has(#teacherDashboard[style*="display: block"]),
+body:has(#teacherDashboard[style*="display: flex"]) {
+    scrollbar-width: thin !important;
+    scrollbar-color: #94a3b8 transparent !important;
+}
+
+/* ---------- Shared dashboard colors ---------- */
+
 #studentDashboard,
 #teacherDashboard,
-#adminDashboard,
+#adminDashboard {
+    --edu-primary: #2563eb;
+    --edu-primary-dark: #1d4ed8;
+    --edu-sidebar: #1e3a8a;
+    --edu-page: #f1f5f9;
+    --edu-card: #ffffff;
+    --edu-border: #e2e8f0;
+    --edu-text: #1e293b;
+    --edu-muted: #64748b;
+    --edu-radius: 16px;
+    --edu-shadow: 0 8px 24px rgba(15, 23, 42, .07);
+
+    background: var(--edu-page) !important;
+    color: var(--edu-text);
+}
+
+/* ---------- Same typography ---------- */
+
+#studentDashboard,
 #studentDashboard *,
+#teacherDashboard,
 #teacherDashboard *,
+#adminDashboard,
 #adminDashboard * {
     font-family: 'Poppins', sans-serif !important;
 }
 
-/* Remove decorative dashboard background shapes.
-   The actual dashboard/page background stays clean and solid. */
+#studentDashboard h1,
+#studentDashboard h2,
+#studentDashboard h3,
+#studentDashboard h4,
+#teacherDashboard h1,
+#teacherDashboard h2,
+#teacherDashboard h3,
+#teacherDashboard h4,
+#adminDashboard h1,
+#adminDashboard h2,
+#adminDashboard h3,
+#adminDashboard h4 {
+    color: #1e3a8a !important;
+    font-weight: 700 !important;
+}
+
+/* ---------- Remove decorative dashboard layers ---------- */
+
 #studentDashboard::before,
 #studentDashboard::after,
 #teacherDashboard::before,
@@ -47688,327 +47767,253 @@ body:has(#adminDashboard[style*="display"])::-webkit-scrollbar-button,
 #adminDashboard::after {
     display: none !important;
     content: none !important;
-}
-
-/* Same clean page background. */
-body:has(#studentDashboard[style*="display"]),
-body:has(#teacherDashboard[style*="display"]),
-body:has(#adminDashboard[style*="display"]),
-#studentDashboard,
-#teacherDashboard,
-#adminDashboard {
-    background: var(--edu-page) !important;
-}
-
-/* Full-width dashboard shells. */
-body:has(#studentDashboard[style*="display"]) #studentDashboard,
-body:has(#teacherDashboard[style*="display"]) #teacherDashboard,
-body:has(#adminDashboard[style*="display"]) #adminDashboard {
-    width: 100% !important;
-    min-width: 0 !important;
-    min-height: 100vh !important;
-    background: var(--edu-page) !important;
-}
-
-/* Same sidebar language and dimensions. */
-#studentDashboard .sidebar,
-#teacherDashboard .sidebar,
-#teacherDashboard .teacher-sidebar,
-#adminDashboard .admin-sidebar {
-    background: var(--edu-sidebar) !important;
-    color: #fff !important;
-}
-
-/* Keep all sidebar text/icons in the same visual language. */
-#studentDashboard .sidebar h2,
-#teacherDashboard .sidebar h2,
-#teacherDashboard .teacher-sidebar-brand,
-#adminDashboard .admin-sidebar h2,
-#adminDashboard .admin-sidebar .admin-brand,
-#adminDashboard .admin-sidebar .admin-logo {
-    font-family: 'Poppins', sans-serif !important;
-    font-weight: 700 !important;
-}
-
-/* Same main page background/content language. */
-#studentDashboard .main-content,
-#teacherDashboard .main-content,
-#teacherDashboard .teacher-main-content,
-#adminDashboard .admin-main-content {
-    background: var(--edu-page) !important;
-    color: var(--edu-text) !important;
-}
-
-/* Same section/card appearance across all dashboard modules. */
-#studentDashboard .profile-card,
-#studentDashboard .card,
-#studentDashboard .analytics-card,
-#studentDashboard .quick-card,
-#studentDashboard .notice-board,
-#studentDashboard .notification-box,
-#studentDashboard .student-id-card,
-#teacherDashboard .teacher-section-card,
-#teacherDashboard .teacher-analytics-card,
-#teacherDashboard .teacher-today-card,
-#teacherDashboard .teacher-settings-card,
-#teacherDashboard .teacher-profile-card,
-#adminDashboard .admin-section-card,
-#adminDashboard .admin-analytics-card,
-#adminDashboard .academic-setup-card,
-#adminDashboard .fee-records-card,
-#adminDashboard .results-list-card,
-#adminDashboard .results-filter-card,
-#adminDashboard .admin-students-table-container,
-#adminDashboard .admin-teachers-table-wrapper,
-#adminDashboard .assignment-card {
-    background: var(--edu-card) !important;
-    border: 1px solid var(--edu-border) !important;
-    border-radius: var(--edu-radius) !important;
-    box-shadow: var(--edu-shadow) !important;
-}
-
-/* Same headings. */
-#studentDashboard h1,
-#studentDashboard h2,
-#studentDashboard h3,
-#teacherDashboard h1,
-#teacherDashboard h2,
-#teacherDashboard h3,
-#adminDashboard h1,
-#adminDashboard h2,
-#adminDashboard h3 {
-    font-family: 'Poppins', sans-serif !important;
-    color: #1e3a8a !important;
-}
-
-/* Same form controls for every module/data-entry screen. */
-#studentDashboard input:not([type="checkbox"]):not([type="radio"]),
-#studentDashboard select,
-#studentDashboard textarea,
-#teacherDashboard input:not([type="checkbox"]):not([type="radio"]),
-#teacherDashboard select,
-#teacherDashboard textarea,
-#adminDashboard input:not([type="checkbox"]):not([type="checkbox"]):not([type="radio"]),
-#adminDashboard select,
-#adminDashboard textarea {
-    font-family: 'Poppins', sans-serif !important;
-    color: var(--edu-text) !important;
-    background: #fff !important;
-    border: 1px solid #cbd5e1 !important;
-    border-radius: 10px !important;
-    outline: none !important;
-}
-
-#studentDashboard input:not([type="checkbox"]):not([type="radio"]):focus,
-#studentDashboard select:focus,
-#studentDashboard textarea:focus,
-#teacherDashboard input:not([type="checkbox"]):not([type="radio"]):focus,
-#teacherDashboard select:focus,
-#teacherDashboard textarea:focus,
-#adminDashboard input:not([type="checkbox"]):not([type="radio"]):focus,
-#adminDashboard select:focus,
-#adminDashboard textarea:focus {
-    border-color: var(--edu-primary) !important;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, .10) !important;
-}
-
-/* Same primary action language. */
-#studentDashboard button:not(.sidebar *),
-#teacherDashboard button:not(.sidebar *),
-#teacherDashboard button:not(.teacher-sidebar *),
-#adminDashboard button:not(.admin-sidebar *) {
-    font-family: 'Poppins', sans-serif !important;
-}
-
-/* Same table language. */
-#studentDashboard table,
-#teacherDashboard table,
-#adminDashboard table {
-    font-family: 'Poppins', sans-serif !important;
-    border-collapse: separate !important;
-    border-spacing: 0 !important;
-}
-
-#studentDashboard th,
-#teacherDashboard th,
-#adminDashboard th {
-    font-weight: 700 !important;
-    color: #334155 !important;
-    background: #f8fafc !important;
-}
-
-#studentDashboard td,
-#teacherDashboard td,
-#adminDashboard td {
-    color: #475569 !important;
-}
-
-/* Same thin scrollbar everywhere. */
-#studentDashboard ::-webkit-scrollbar,
-#teacherDashboard ::-webkit-scrollbar,
-#adminDashboard ::-webkit-scrollbar {
-    width: 6px !important;
-    height: 6px !important;
-}
-
-#studentDashboard ::-webkit-scrollbar-track,
-#teacherDashboard ::-webkit-scrollbar-track,
-#adminDashboard ::-webkit-scrollbar-track {
-    background: transparent !important;
-}
-
-#studentDashboard ::-webkit-scrollbar-thumb,
-#teacherDashboard ::-webkit-scrollbar-thumb,
-#adminDashboard ::-webkit-scrollbar-thumb {
-    background: #94a3b8 !important;
-    border-radius: 999px !important;
-}
-
-#studentDashboard ::-webkit-scrollbar-thumb:hover,
-#teacherDashboard ::-webkit-scrollbar-thumb:hover,
-#adminDashboard ::-webkit-scrollbar-thumb:hover {
-    background: #64748b !important;
-}
-
-/* Firefox */
-#studentDashboard,
-#teacherDashboard,
-#adminDashboard,
-#studentDashboard *,
-#teacherDashboard *,
-#adminDashboard * {
-    scrollbar-width: thin;
-    scrollbar-color: #94a3b8 transparent;
-}
-
-/* Prevent an unwanted outer page strip/gap. */
-body:has(#studentDashboard[style*="display"]) #studentDashboard,
-body:has(#teacherDashboard[style*="display"]) #teacherDashboard,
-body:has(#adminDashboard[style*="display"]) #adminDashboard {
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-/* ==========================================================
-   FINAL DASHBOARD VISUAL FIX
-   CSS ONLY — no HTML/JS changes
-========================================================== */
-
-/* Completely remove the visible page/background strip while a dashboard is open. */
-html:has(body #studentDashboard[style*="display"]),
-html:has(body #teacherDashboard[style*="display"]),
-html:has(body #adminDashboard[style*="display"]),
-body:has(#studentDashboard[style*="display"]),
-body:has(#teacherDashboard[style*="display"]),
-body:has(#adminDashboard[style*="display"]) {
-    background: #f1f5f9 !important;
-    background-image: none !important;
-}
-
-/* Same blue sidebar on all three dashboards. */
-body #studentDashboard .sidebar,
-body #teacherDashboard .teacher-sidebar,
-body #teacherDashboard .sidebar,
-body #adminDashboard .admin-sidebar {
-    background: #1e3a8a !important;
-    background-image: none !important;
-}
-
-/* Remove any remaining decorative dashboard background layers. */
-body #studentDashboard::before,
-body #studentDashboard::after,
-body #teacherDashboard::before,
-body #teacherDashboard::after,
-body #adminDashboard::before,
-body #adminDashboard::after {
-    display: none !important;
     background: none !important;
 }
 
-/* Force ONE thin 6px scrollbar on the actual page/body. */
-html:has(body #studentDashboard[style*="display"])::-webkit-scrollbar,
-html:has(body #teacherDashboard[style*="display"])::-webkit-scrollbar,
-html:has(body #adminDashboard[style*="display"])::-webkit-scrollbar,
-body:has(#studentDashboard[style*="display"])::-webkit-scrollbar,
-body:has(#teacherDashboard[style*="display"])::-webkit-scrollbar,
-body:has(#adminDashboard[style*="display"])::-webkit-scrollbar {
-    width: 6px !important;
-    height: 6px !important;
+/* ---------- Same sidebar ---------- */
+
+html body #studentDashboard .sidebar,
+html body #teacherDashboard .sidebar,
+html body #teacherDashboard .teacher-sidebar,
+html body #adminDashboard .admin-sidebar {
+    background: #1e3a8a !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    border-color: rgba(255,255,255,.10) !important;
 }
 
-html:has(body #studentDashboard[style*="display"])::-webkit-scrollbar-track,
-html:has(body #teacherDashboard[style*="display"])::-webkit-scrollbar-track,
-html:has(body #adminDashboard[style*="display"])::-webkit-scrollbar-track,
-body:has(#studentDashboard[style*="display"])::-webkit-scrollbar-track,
-body:has(#teacherDashboard[style*="display"])::-webkit-scrollbar-track,
-body:has(#adminDashboard[style*="display"])::-webkit-scrollbar-track {
-    background: transparent !important;
+html body #studentDashboard .sidebar a,
+html body #teacherDashboard .sidebar a,
+html body #teacherDashboard .teacher-sidebar a,
+html body #adminDashboard .admin-sidebar a,
+html body #studentDashboard .sidebar button,
+html body #teacherDashboard .sidebar button,
+html body #teacherDashboard .teacher-sidebar button,
+html body #adminDashboard .admin-sidebar button {
+    font-family: 'Poppins', sans-serif !important;
 }
 
-html:has(body #studentDashboard[style*="display"])::-webkit-scrollbar-thumb,
-html:has(body #teacherDashboard[style*="display"])::-webkit-scrollbar-thumb,
-html:has(body #adminDashboard[style*="display"])::-webkit-scrollbar-thumb,
-body:has(#studentDashboard[style*="display"])::-webkit-scrollbar-thumb,
-body:has(#teacherDashboard[style*="display"])::-webkit-scrollbar-thumb,
-body:has(#adminDashboard[style*="display"])::-webkit-scrollbar-thumb {
-    background: #94a3b8 !important;
-    border-radius: 999px !important;
-    border: 0 !important;
+html body #studentDashboard .sidebar li,
+html body #teacherDashboard .sidebar li,
+html body #teacherDashboard .teacher-sidebar li,
+html body #adminDashboard .admin-sidebar li {
+    border-radius: 10px !important;
 }
 
-/* Thin sidebar scrollbar. */
-body #studentDashboard .sidebar::-webkit-scrollbar,
-body #teacherDashboard .teacher-sidebar::-webkit-scrollbar,
-body #teacherDashboard .sidebar::-webkit-scrollbar,
-body #adminDashboard .admin-sidebar::-webkit-scrollbar,
-body #adminDashboard .admin-sidebar > ul::-webkit-scrollbar {
-    width: 6px !important;
-    height: 6px !important;
+html body #studentDashboard .sidebar li.active,
+html body #teacherDashboard .sidebar li.active,
+html body #teacherDashboard .teacher-sidebar li.active,
+html body #adminDashboard .admin-sidebar li.active {
+    background: rgba(255,255,255,.14) !important;
 }
 
-body #studentDashboard .sidebar::-webkit-scrollbar-track,
-body #teacherDashboard .teacher-sidebar::-webkit-scrollbar-track,
-body #teacherDashboard .sidebar::-webkit-scrollbar-track,
-body #adminDashboard .admin-sidebar::-webkit-scrollbar-track,
-body #adminDashboard .admin-sidebar > ul::-webkit-scrollbar-track {
-    background: transparent !important;
+/* ---------- Same main content surface ---------- */
+
+html body #studentDashboard .main-content,
+html body #teacherDashboard .main-content,
+html body #teacherDashboard .teacher-main-content,
+html body #adminDashboard .main-content,
+html body #adminDashboard .admin-main-content {
+    background: #f1f5f9 !important;
+    color: #1e293b !important;
+    min-height: 100vh;
 }
 
-body #studentDashboard .sidebar::-webkit-scrollbar-thumb,
-body #teacherDashboard .teacher-sidebar::-webkit-scrollbar-thumb,
-body #teacherDashboard .sidebar::-webkit-scrollbar-thumb,
-body #adminDashboard .admin-sidebar::-webkit-scrollbar-thumb,
-body #adminDashboard .admin-sidebar > ul::-webkit-scrollbar-thumb {
-    width: 6px !important;
-    background: rgba(255,255,255,.28) !important;
-    border-radius: 999px !important;
-    border: 0 !important;
+/* ---------- Shared cards / modules ---------- */
+
+html body #studentDashboard .card,
+html body #studentDashboard .profile-card,
+html body #studentDashboard .analytics-card,
+html body #studentDashboard .quick-card,
+html body #studentDashboard .notice-board,
+html body #studentDashboard .notification-box,
+html body #studentDashboard .student-id-card,
+
+html body #teacherDashboard .card,
+html body #teacherDashboard .teacher-section-card,
+html body #teacherDashboard .teacher-analytics-card,
+html body #teacherDashboard .teacher-today-card,
+html body #teacherDashboard .teacher-settings-card,
+html body #teacherDashboard .teacher-profile-card,
+
+html body #adminDashboard .card,
+html body #adminDashboard .admin-section-card,
+html body #adminDashboard .admin-analytics-card,
+html body #adminDashboard .academic-setup-card,
+html body #adminDashboard .fee-records-card,
+html body #adminDashboard .results-list-card,
+html body #adminDashboard .results-filter-card,
+html body #adminDashboard .admin-students-table-container,
+html body #adminDashboard .admin-teachers-table-wrapper,
+html body #adminDashboard .assignment-card {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 8px 24px rgba(15,23,42,.07) !important;
 }
 
-/* Firefox scrollbar width. */
-html:has(body #studentDashboard[style*="display"]),
-html:has(body #teacherDashboard[style*="display"]),
-html:has(body #adminDashboard[style*="display"]),
-body:has(#studentDashboard[style*="display"]),
-body:has(#teacherDashboard[style*="display"]),
-body:has(#adminDashboard[style*="display"]),
-body #studentDashboard .sidebar,
-body #teacherDashboard .teacher-sidebar,
-body #teacherDashboard .sidebar,
-body #adminDashboard .admin-sidebar,
-body #adminDashboard .admin-sidebar > ul {
+/* Do not force every nested element to become a white card. */
+html body #studentDashboard .card *,
+html body #teacherDashboard .card *,
+html body #adminDashboard .card * {
+    box-shadow: none;
+}
+
+/* ---------- Shared form / data-entry controls ---------- */
+
+html body #studentDashboard input:not([type="checkbox"]):not([type="radio"]),
+html body #studentDashboard select,
+html body #studentDashboard textarea,
+html body #teacherDashboard input:not([type="checkbox"]):not([type="radio"]),
+html body #teacherDashboard select,
+html body #teacherDashboard textarea,
+html body #adminDashboard input:not([type="checkbox"]):not([type="radio"]),
+html body #adminDashboard select,
+html body #adminDashboard textarea {
+    font-family: 'Poppins', sans-serif !important;
+    color: #1e293b !important;
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 10px !important;
+    box-shadow: none !important;
+}
+
+html body #studentDashboard input:not([type="checkbox"]):not([type="radio"]):focus,
+html body #studentDashboard select:focus,
+html body #studentDashboard textarea:focus,
+html body #teacherDashboard input:not([type="checkbox"]):not([type="radio"]):focus,
+html body #teacherDashboard select:focus,
+html body #teacherDashboard textarea:focus,
+html body #adminDashboard input:not([type="checkbox"]):not([type="radio"]):focus,
+html body #adminDashboard select:focus,
+html body #adminDashboard textarea:focus {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 3px rgba(37,99,235,.10) !important;
+    outline: none !important;
+}
+
+/* ---------- Shared tables ---------- */
+
+html body #studentDashboard table,
+html body #teacherDashboard table,
+html body #adminDashboard table {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+html body #studentDashboard th,
+html body #teacherDashboard th,
+html body #adminDashboard th {
+    background: #f8fafc !important;
+    color: #334155 !important;
+    font-weight: 700 !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+html body #studentDashboard td,
+html body #teacherDashboard td,
+html body #adminDashboard td {
+    color: #475569 !important;
+    border-bottom: 1px solid #eef2f7 !important;
+}
+
+/* ---------- Shared buttons ---------- */
+
+html body #studentDashboard button,
+html body #teacherDashboard button,
+html body #adminDashboard button {
+    font-family: 'Poppins', sans-serif !important;
+}
+
+html body #studentDashboard .btn-primary,
+html body #teacherDashboard .btn-primary,
+html body #adminDashboard .btn-primary {
+    background: #2563eb !important;
+    border-color: #2563eb !important;
+    color: #ffffff !important;
+}
+
+/* ---------- Thin ChatGPT-style scrollbars ---------- */
+
+html body #studentDashboard *,
+html body #teacherDashboard *,
+html body #adminDashboard * {
     scrollbar-width: thin !important;
     scrollbar-color: #94a3b8 transparent !important;
 }
 
-/* Remove old scrollbar arrows. */
-html:has(body #studentDashboard[style*="display"])::-webkit-scrollbar-button,
-html:has(body #teacherDashboard[style*="display"])::-webkit-scrollbar-button,
-html:has(body #adminDashboard[style*="display"])::-webkit-scrollbar-button,
-body #studentDashboard .sidebar::-webkit-scrollbar-button,
-body #teacherDashboard .teacher-sidebar::-webkit-scrollbar-button,
-body #teacherDashboard .sidebar::-webkit-scrollbar-button,
-body #adminDashboard .admin-sidebar::-webkit-scrollbar-button,
-body #adminDashboard .admin-sidebar > ul::-webkit-scrollbar-button {
+html body #studentDashboard *::-webkit-scrollbar,
+html body #teacherDashboard *::-webkit-scrollbar,
+html body #adminDashboard *::-webkit-scrollbar {
+    width: 6px !important;
+    height: 6px !important;
+}
+
+html body #studentDashboard *::-webkit-scrollbar-track,
+html body #teacherDashboard *::-webkit-scrollbar-track,
+html body #adminDashboard *::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+
+html body #studentDashboard *::-webkit-scrollbar-thumb,
+html body #teacherDashboard *::-webkit-scrollbar-thumb,
+html body #adminDashboard *::-webkit-scrollbar-thumb {
+    background: #94a3b8 !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+}
+
+html body #studentDashboard *::-webkit-scrollbar-thumb:hover,
+html body #teacherDashboard *::-webkit-scrollbar-thumb:hover,
+html body #adminDashboard *::-webkit-scrollbar-thumb:hover {
+    background: #64748b !important;
+}
+
+html body #studentDashboard *::-webkit-scrollbar-button,
+html body #teacherDashboard *::-webkit-scrollbar-button,
+html body #adminDashboard *::-webkit-scrollbar-button {
     display: none !important;
+}
+
+/* Force the known dashboard sidebar scroll containers to remain thin. */
+html body #studentDashboard .sidebar,
+html body #teacherDashboard .sidebar,
+html body #teacherDashboard .teacher-sidebar,
+html body #adminDashboard .admin-sidebar,
+html body #adminDashboard .admin-sidebar > ul {
+    scrollbar-width: thin !important;
+    scrollbar-color: rgba(255,255,255,.35) transparent !important;
+}
+
+html body #studentDashboard .sidebar::-webkit-scrollbar,
+html body #teacherDashboard .sidebar::-webkit-scrollbar,
+html body #teacherDashboard .teacher-sidebar::-webkit-scrollbar,
+html body #adminDashboard .admin-sidebar::-webkit-scrollbar,
+html body #adminDashboard .admin-sidebar > ul::-webkit-scrollbar {
+    width: 6px !important;
+    height: 6px !important;
+}
+
+html body #studentDashboard .sidebar::-webkit-scrollbar-thumb,
+html body #teacherDashboard .sidebar::-webkit-scrollbar-thumb,
+html body #teacherDashboard .teacher-sidebar::-webkit-scrollbar-thumb,
+html body #adminDashboard .admin-sidebar::-webkit-scrollbar-thumb,
+html body #adminDashboard .admin-sidebar > ul::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,.35) !important;
+    border-radius: 999px !important;
+    border: 0 !important;
+}
+
+/* ---------- Responsive consistency ---------- */
+
+@media (max-width: 900px) {
+    html body #studentDashboard .main-content,
+    html body #teacherDashboard .main-content,
+    html body #teacherDashboard .teacher-main-content,
+    html body #adminDashboard .main-content,
+    html body #adminDashboard .admin-main-content {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
 }
