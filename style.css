@@ -1998,10 +1998,6 @@ overflow-x:hidden;
 /* Mobile */
 @media(max-width:768px){
 
-    .subjects-grid{
-        grid-template-columns:1fr;
-    }
-
     .subject-card{
         min-height:auto;
     }
@@ -3189,10 +3185,6 @@ overflow-x:hidden;
     #subjectsSection .subjects-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-
-    #assignmentsSection .assignment-list {
-        grid-template-columns: 1fr;
-    }
 }
 
 
@@ -3842,10 +3834,6 @@ body.dark-mode #resultsSection .profile-card > p {
 
 /* Responsive - desktop/tablet */
 @media (max-width: 900px) {
-
-    #resultsSection .results-summary {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
 
 }
 /* ==============================
@@ -4904,11 +4892,6 @@ body.dark-mode .login-side-panel {
         transform: translateY(20px) scale(.97);
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-
 }
 
 
@@ -5895,10 +5878,6 @@ body.dark-mode .login-side-panel {
 
 /* Mobile */
 @media (max-width: 650px) {
-
-    #adminAddStudentModal {
-        padding: 10px !important;
-    }
 
     #adminAddStudentModal .admin-student-modal-box {
         max-height: 94vh !important;
@@ -8385,10 +8364,6 @@ body.dark-mode .login-side-panel {
     #adminTeacherModal .admin-assignment-modal-actions {
         flex-direction: column !important;
     }
-
-    #adminTeacherModal .admin-assignment-modal-actions button {
-        width: 100%;
-    }
 }
 /* ==========================================
    PHONE VALIDATION VISUAL FEEDBACK
@@ -8557,11 +8532,6 @@ body.dark-mode .login-side-panel {
     from {
         opacity: 0;
         transform: translateY(15px) scale(0.97);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
     }
 }
 
@@ -9224,11 +9194,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     from {
         opacity: 0;
         transform: translateY(8px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
     }
 }
 
@@ -10032,15 +9997,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 @keyframes resultsFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 
@@ -10643,11 +10599,6 @@ height: 25px;
     from {
         opacity: 0;
         transform: translateY(20px) scale(0.98);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
     }
 }
 
@@ -12604,16 +12555,6 @@ height: 25px;
 
     }
 
-    to {
-
-        opacity: 1;
-
-        transform:
-            translateY(0)
-            scale(1);
-
-    }
-
 }
 
 
@@ -13876,11 +13817,6 @@ height: 25px;
     from {
         opacity: 0;
         transform: translateY(6px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
     }
 
 }
@@ -21283,21 +21219,6 @@ table tbody tr:hover td {
    --------------------------------------------------------- */
 
 @media (max-width: 800px) {
-
-    #adminDashboard
-    .admin-section-header,
-    #adminDashboard
-    .attendance-page-header,
-    #adminDashboard
-    .results-page-header {
-
-        align-items:
-            flex-start;
-
-        flex-direction:
-            column;
-
-    }
 
 
     #adminDashboard
@@ -33149,19 +33070,10 @@ align-self: flex-end !important;
 
 @media (max-width: 1050px) {
 
-    #studentDashboard .dashboard-cards {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr)) !important;
-    }
-
 }
 
 
 @media (max-width: 600px) {
-
-    #studentDashboard .dashboard-cards {
-        grid-template-columns: 1fr !important;
-    }
 
 }
 /* =========================================================
@@ -33340,10 +33252,6 @@ align-self: flex-end !important;
    ========================= */
 
 @media (max-width: 950px) {
-
-    #studentDashboard .analytics-section {
-        grid-template-columns: 1fr !important;
-    }
 
 }
 
@@ -34879,11 +34787,6 @@ align-self: flex-end !important;
    ========================================================= */
 
 @media (max-width: 1000px) {
-
-    .attendance-summary {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-    }
 
 }
 
@@ -38648,27 +38551,6 @@ align-self: flex-end !important;
     color: #dc2626;
     border-color: #fecaca;
     transform: translateY(-1px);
-}
-.latest-notice-content {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-}
-
-.latest-notice-title {
-    font-size: 16px;
-    font-weight: 700;
-}
-
-.latest-notice-message {
-    font-size: 14px;
-    line-height: 1.5;
-}
-
-.latest-notice-time {
-    font-size: 12px;
-    opacity: 0.65;
-    margin-top: 3px;
 }
 .latest-notice-content {
     display: flex;
@@ -43010,14 +42892,6 @@ align-self: flex-end !important;
 }
 
 
-#teacherDashboard .teacher-dashboard-date strong {
-
-    color: #172554 !important;
-
-    font-size: 12px !important;
-}
-
-
 #teacherDashboard .teacher-dashboard-date small {
 
     color: #64748b !important;
@@ -43269,14 +43143,6 @@ align-self: flex-end !important;
 }
 
 
-#teacherDashboard .teacher-chart-column small {
-
-    color: #64748b !important;
-
-    font-size: 10px !important;
-}
-
-
 /* =========================================================
    STUDENT DISTRIBUTION
    ========================================================= */
@@ -43323,12 +43189,6 @@ align-self: flex-end !important;
 }
 
 
-#teacherDashboard .teacher-donut-center span {
-
-    color: #64748b !important;
-}
-
-
 #teacherDashboard .teacher-distribution-legend {
 
     gap: 20px !important;
@@ -43348,12 +43208,6 @@ align-self: flex-end !important;
     color: #172554 !important;
 
     font-size: 12px !important;
-}
-
-
-#teacherDashboard .teacher-distribution-legend small {
-
-    color: #94a3b8 !important;
 }
 
 
@@ -43402,17 +43256,6 @@ align-self: flex-end !important;
    ========================================================= */
 
 @media (max-width: 1200px) {
-
-    #teacherDashboard .teacher-statistics-grid {
-
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr)) !important;
-    }
-
-    #teacherDashboard .teacher-analytics-grid {
-
-        grid-template-columns: 1fr !important;
-    }
 }
 
 
@@ -43438,13 +43281,6 @@ align-self: flex-end !important;
         padding-left: 20px !important;
 
         padding-right: 20px !important;
-    }
-
-    #teacherDashboard .teacher-dashboard-heading {
-
-        flex-direction: column !important;
-
-        align-items: flex-start !important;
     }
 
     #teacherDashboard .teacher-dashboard-date {
@@ -43473,11 +43309,6 @@ align-self: flex-end !important;
 
         padding:
             15px 14px !important;
-    }
-
-    #teacherDashboard .teacher-statistics-grid {
-
-        grid-template-columns: 1fr !important;
     }
 
     #teacherDashboard .teacher-dashboard-heading h2 {
@@ -43817,20 +43648,6 @@ align-self: flex-end !important;
     font-weight: 700 !important;
 }
 
-#teacherDashboard .teacher-card-heading h3 i {
-    color: #2563eb !important;
-
-    margin-right: 7px !important;
-}
-
-#teacherDashboard .teacher-card-heading p {
-    margin: 5px 0 0 !important;
-
-    color: #64748b !important;
-
-    font-size: 12px !important;
-}
-
 #teacherDashboard .teacher-card-heading select {
     height: 36px !important;
 
@@ -43995,14 +43812,6 @@ align-self: flex-end !important;
    ========================================================= */
 
 @media (max-width: 1200px) {
-
-    #teacherDashboard .teacher-statistics-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    }
-
-    #teacherDashboard .teacher-analytics-grid {
-        grid-template-columns: 1fr !important;
-    }
 }
 
 
@@ -44047,10 +43856,6 @@ align-self: flex-end !important;
         margin-right: -15px !important;
 
         padding: 15px !important;
-    }
-
-    #teacherDashboard .teacher-statistics-grid {
-        grid-template-columns: 1fr !important;
     }
 
     #teacherDashboard .teacher-dashboard-heading {
@@ -44861,10 +44666,6 @@ align-self: flex-end !important;
 }
 
 @media (max-width: 650px) {
-
-    #teacherDashboard .teacher-dashboard-top-cards {
-        grid-template-columns: 1fr !important;
-    }
 
 }
 /* ==========================================
@@ -47307,12 +47108,6 @@ html.edu-session-restoring.edu-role-student #studentDashboard {
 }
 
 
-.admin-ai-messages::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 20px;
-}
-
-
 .admin-ai-messages::-webkit-scrollbar-thumb:hover {
     background: #94a3b8;
 }
@@ -47336,16 +47131,6 @@ html.edu-session-restoring.edu-role-student #studentDashboard {
 
 
 @keyframes adminAiMessageIn {
-
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 
 }
 
@@ -47569,11 +47354,6 @@ html.edu-session-restoring.edu-role-student #studentDashboard {
 }
 
 
-#adminAiSendBtn:active {
-    transform: translateY(0);
-}
-
-
 #adminAiSendBtn:disabled {
     opacity: 0.55;
 
@@ -47640,11 +47420,6 @@ html.edu-session-restoring.edu-role-student #studentDashboard {
     animation:
         adminAiTyping
         1.2s infinite;
-}
-
-
-.admin-ai-typing span:nth-child(2) {
-    animation-delay: 0.15s;
 }
 
 
@@ -47721,4 +47496,155 @@ html.edu-session-restoring.edu-role-student #studentDashboard {
         max-width: 90%;
     }
 
+}
+
+/* ==========================================================
+   EDUPORTAL CSS CLEANUP — DASHBOARD VIEWPORT + SCROLLBAR
+   CSS ONLY. Login styles intentionally excluded.
+========================================================== */
+
+/* Dashboard pages use the full browser viewport without creating
+   an unnecessary second page scrollbar. */
+html:has(#studentDashboard[style*="display"]),
+html:has(#teacherDashboard[style*="display"]),
+html:has(#adminDashboard[style*="display"]) {
+    width: 100%;
+    min-height: 100%;
+}
+
+body:has(#studentDashboard[style*="display"]),
+body:has(#teacherDashboard[style*="display"]),
+body:has(#adminDashboard[style*="display"]) {
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+}
+
+/* Student dashboard */
+body:has(#studentDashboard[style*="display"]) #studentDashboard {
+    width: 100% !important;
+    min-height: 100vh !important;
+    height: auto !important;
+    overflow: visible !important;
+}
+
+body:has(#studentDashboard[style*="display"]) #studentDashboard .main-content {
+    min-height: 100vh !important;
+}
+
+/* Teacher dashboard */
+body:has(#teacherDashboard[style*="display"]) #teacherDashboard {
+    width: 100% !important;
+    min-height: 100vh !important;
+    height: auto !important;
+    overflow: visible !important;
+}
+
+body:has(#teacherDashboard[style*="display"]) #teacherDashboard > .main-content {
+    min-height: 100vh !important;
+    box-sizing: border-box !important;
+}
+
+/* Admin dashboard — higher specificity overrides old fixed/hidden patches. */
+body:has(#adminDashboard[style*="display"]) #adminDashboard {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 100vh !important;
+    height: auto !important;
+    overflow: visible !important;
+    display: flex !important;
+}
+
+body:has(#adminDashboard[style*="display"]) #adminDashboard .admin-sidebar {
+    flex: 0 0 300px !important;
+    width: 300px !important;
+    height: 100vh !important;
+    position: sticky !important;
+    top: 0 !important;
+    overflow: hidden !important;
+}
+
+body:has(#adminDashboard[style*="display"]) #adminDashboard .admin-sidebar > ul {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+/* One clean, thin scrollbar — Chrome/Edge + Firefox. */
+body:has(#studentDashboard[style*="display"])::-webkit-scrollbar,
+body:has(#teacherDashboard[style*="display"])::-webkit-scrollbar,
+body:has(#adminDashboard[style*="display"])::-webkit-scrollbar,
+#studentDashboard::-webkit-scrollbar,
+#teacherDashboard::-webkit-scrollbar,
+#adminDashboard::-webkit-scrollbar,
+#studentDashboard .sidebar::-webkit-scrollbar,
+#teacherDashboard .sidebar::-webkit-scrollbar,
+#adminDashboard .admin-sidebar > ul::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+body:has(#studentDashboard[style*="display"])::-webkit-scrollbar-track,
+body:has(#teacherDashboard[style*="display"])::-webkit-scrollbar-track,
+body:has(#adminDashboard[style*="display"])::-webkit-scrollbar-track,
+#studentDashboard::-webkit-scrollbar-track,
+#teacherDashboard::-webkit-scrollbar-track,
+#adminDashboard::-webkit-scrollbar-track,
+#studentDashboard .sidebar::-webkit-scrollbar-track,
+#teacherDashboard .sidebar::-webkit-scrollbar-track,
+#adminDashboard .admin-sidebar > ul::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+body:has(#studentDashboard[style*="display"])::-webkit-scrollbar-thumb,
+body:has(#teacherDashboard[style*="display"])::-webkit-scrollbar-thumb,
+body:has(#adminDashboard[style*="display"])::-webkit-scrollbar-thumb,
+#studentDashboard::-webkit-scrollbar-thumb,
+#teacherDashboard::-webkit-scrollbar-thumb,
+#adminDashboard::-webkit-scrollbar-thumb,
+#studentDashboard .sidebar::-webkit-scrollbar-thumb,
+#teacherDashboard .sidebar::-webkit-scrollbar-thumb,
+#adminDashboard .admin-sidebar > ul::-webkit-scrollbar-thumb {
+    background: #94a3b8;
+    border-radius: 999px;
+}
+
+body:has(#studentDashboard[style*="display"])::-webkit-scrollbar-thumb:hover,
+body:has(#teacherDashboard[style*="display"])::-webkit-scrollbar-thumb:hover,
+body:has(#adminDashboard[style*="display"])::-webkit-scrollbar-thumb:hover,
+#studentDashboard::-webkit-scrollbar-thumb:hover,
+#teacherDashboard::-webkit-scrollbar-thumb:hover,
+#adminDashboard::-webkit-scrollbar-thumb:hover,
+#studentDashboard .sidebar::-webkit-scrollbar-thumb:hover,
+#teacherDashboard .sidebar::-webkit-scrollbar-thumb:hover,
+#adminDashboard .admin-sidebar > ul::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
+body:has(#studentDashboard[style*="display"]),
+body:has(#teacherDashboard[style*="display"]),
+body:has(#adminDashboard[style*="display"]),
+#studentDashboard,
+#teacherDashboard,
+#adminDashboard,
+#studentDashboard .sidebar,
+#teacherDashboard .sidebar,
+#adminDashboard .admin-sidebar > ul {
+    scrollbar-width: thin;
+    scrollbar-color: #94a3b8 transparent;
+}
+
+/* Remove scrollbar arrows/buttons. */
+body:has(#studentDashboard[style*="display"])::-webkit-scrollbar-button,
+body:has(#teacherDashboard[style*="display"])::-webkit-scrollbar-button,
+body:has(#adminDashboard[style*="display"])::-webkit-scrollbar-button,
+#studentDashboard .sidebar::-webkit-scrollbar-button,
+#teacherDashboard .sidebar::-webkit-scrollbar-button,
+#adminDashboard .admin-sidebar > ul::-webkit-scrollbar-button {
+    display: none;
 }
