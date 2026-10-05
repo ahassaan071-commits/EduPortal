@@ -37118,7 +37118,13 @@ let historyRecords =
 
     Array.isArray(records)
 
-        ? [...records]
+        ? records.filter(function(record) {
+
+            return String(
+                record.attendance_date || ""
+            ) === String(today);
+
+        })
 
         : [];
 
@@ -43376,7 +43382,7 @@ async function deleteAcademicAssignment(assignmentId) {
     // SETTINGS
     // ======================================================
 
-    const REFRESH_INTERVAL = 15000;
+    const REFRESH_INTERVAL = 120000;
 
     let refreshTimer = null;
     let refreshRunning = false;
@@ -45976,6 +45982,2170 @@ async function sendMessage() {
 
     console.log(
         "EduPortal Admin AI Assistant loaded successfully."
+    );
+
+})();
+
+// =====================================================
+// EDUPORTAL - LIGHT ADMIN DASHBOARD LOADER
+// Saves Supabase egress: no select("*"), only needed
+// columns, attendance only for the selected date.
+// KEEP THIS AT THE VERY END OF script.js
+// =====================================================
+
+(function () {
+
+    "use strict";
+
+    if (!window.AdminDashboard) {
+        return;
+    }
+
+    const AD = window.AdminDashboard;
+
+    // ------------------------------------------------
+    // LIGHT loadData (replaces the heavy one)
+    // ------------------------------------------------
+
+    AD.loadData = async function () {
+
+        if (this._loadingData) {
+            return;
+        }
+
+        this._loadingData = true;
+
+        try {
+
+            const dateInput =
+                document.getElementById("adminDashboardDate");
+
+            const selectedDate =
+                dateInput && dateInput.value
+                    ? dateInput.value
+                    : new Date().toLocaleDateString(
+                        "en-CA",
+                        { timeZone: "Asia/Karachi" }
+                    );
+
+            const [
+                studentsResult,
+                teachersResult,
+                attendanceResult,
+                resultsResult,
+                subjectsResult,
+                feesResult,
+                assignmentsResult,
+                noticesResult
+            ] = await Promise.all([
+
+                supabaseClient
+                    .from("students")
+                    .select("id, student_id, name, student_class, section, status"),
+
+                supabaseClient
+                    .from("teachers")
+                    .select("id"),
+
+                supabaseClient
+                    .from("attendance")
+                    .select("id, student_id, attendance_date, status")
+                    .eq("attendance_date", selectedDate),
+
+                supabaseClient
+                    .from("results")
+                    .select("id, marks, total_marks"),
+
+                supabaseClient
+                    .from("subjects")
+                    .select("id"),
+
+                supabaseClient
+                    .from("fee_records")
+                    .select("id, fee_amount, paid_amount"),
+
+                supabaseClient
+                    .from("assignments")
+                    .select("id"),
+
+                supabaseClient
+                    .from("notices")
+                    .select("id")
+
+            ]);
+
+            this.students    = studentsResult.error    ? [] : (studentsResult.data    || []);
+            this.teachers    = teachersResult.error    ? [] : (teachersResult.data    || []);
+            this.attendance  = attendanceResult.error  ? [] : (attendanceResult.data  || []);
+            this.results     = resultsResult.error     ? [] : (resultsResult.data     || []);
+            this.subjects    = subjectsResult.error    ? [] : (subjectsResult.data    || []);
+            this.fees        = feesResult.error        ? [] : (feesResult.data        || []);
+            this.assignments = assignmentsResult.error ? [] : (assignmentsResult.data || []);
+            this.notices     = noticesResult.error     ? [] : (noticesResult.data     || []);
+
+            this.updateDashboard();
+
+        } catch (error) {
+
+            console.error(
+                "LIGHT ADMIN DASHBOARD ERROR:",
+                error
+            );
+
+        } finally {
+
+            this._loadingData = false;
+
+        }
+
+    };
+
+
+    // ------------------------------------------------
+    // Realtime refresh: max once every 5 seconds
+    // ------------------------------------------------
+
+    let realtimeTimer = null;
+
+    window.queueEduPortalRealtimeRefresh = function () {
+
+        clearTimeout(realtimeTimer);
+
+        realtimeTimer = setTimeout(function () {
+
+            if (window.AdminDashboard) {
+                window.AdminDashboard.loadData();
+            }
+
+        }, 5000);
+
+    };
+
+})();
+// ============================================================
+// EDUPORTAL - SUPABASE EGRESS OPTIMIZATION FIX
+// Version: 1.0
+// ============================================================
+
+(function () {
+
+    console.log("🚀 EduPortal Egress Optimization loaded");
+
+    // --------------------------------------------------------
+    // 1. OPTIMIZED ATTENDANCE TABLE
+    // --------------------------------------------------------
+
+    window.renderAttendanceTable = async function () {
+
+        syncAttendanceDateWithToday();
+
+        const tableBody =
+            document.getElementById("attendanceTableBody");
+
+        if (!tableBody) return;
+
+        if (
+            typeof supabaseClient === "undefined"
+        ) {
+            console.error("Supabase connection missing.");
+            return;
+        }
+
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="6"
+                    style="text-align:center;padding:35px;">
+                    Loading attendance...
+                </td>
+            </tr>
+        `;
+
+        // ----------------------------------------------------
+        // DATE
+        // ----------------------------------------------------
+
+        const attendanceDateFilter =
+            document.getElementById("attendanceDateFilter");
+
+        const selectedDate =
+            attendanceDateFilter &&
+            attendanceDateFilter.value
+                ? attendanceDateFilter.value
+                : getTodayDate();
+
+        // ----------------------------------------------------
+        // CLASS / SECTION
+        // ----------------------------------------------------
+
+        const classFilter =
+            document.getElementById(
+                "attendanceClassFilter"
+            );
+
+        const selectedClassSection =
+            classFilter && classFilter.value
+                ? classFilter.value
+                : "all";
+
+        let selectedClass = "";
+        let selectedSection = "";
+
+        if (
+            selectedClassSection !== "all"
+        ) {
+            const parts =
+                selectedClassSection.split("||");
+
+            selectedClass =
+                String(parts[0] || "").trim();
+
+            selectedSection =
+                String(parts[1] || "")
+                    .trim()
+                    .toUpperCase();
+        }
+
+        // ----------------------------------------------------
+        // SEARCH
+        // ----------------------------------------------------
+
+        const searchInput =
+            document.getElementById(
+                "adminAttendanceSearch"
+            );
+
+        const searchValue =
+            searchInput
+                ? searchInput.value
+                    .trim()
+                    .toLowerCase()
+                : "";
+
+        // ----------------------------------------------------
+        // STUDENTS
+        //
+        // IMPORTANT:
+        // select("*") removed.
+        // Only required columns are downloaded.
+        // ----------------------------------------------------
+
+        const {
+            data: studentsData,
+            error: studentsError
+        } =
+            await supabaseClient
+                .from("students")
+                .select(`
+                    id,
+                    student_id,
+                    name,
+                    father_name,
+                    student_class,
+                    section,
+                    roll_number,
+                    date_of_birth,
+                    mobile,
+                    status,
+                    created_at
+                `)
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+        if (studentsError) {
+
+            console.error(
+                "ATTENDANCE STUDENTS LOAD ERROR:",
+                studentsError
+            );
+
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="6"
+                        style="text-align:center;padding:35px;">
+                        Unable to load students.
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+        const students =
+            (studentsData || []).map(
+                function (student) {
+
+                    return {
+                        id: student.id,
+                        studentId: student.student_id,
+                        fullName: student.name,
+                        name: student.name,
+                        fatherName: student.father_name,
+                        studentClass:
+                            student.student_class,
+                        section: student.section,
+                        rollNumber:
+                            student.roll_number,
+                        dob:
+                            student.date_of_birth || "",
+                        mobile:
+                            student.mobile || "",
+                        status:
+                            student.status || "Active",
+                        createdAt:
+                            student.created_at
+                    };
+
+                }
+            );
+
+        // ----------------------------------------------------
+        // BUILD CLASS FILTER
+        // ----------------------------------------------------
+
+        if (classFilter) {
+
+            const previousValue =
+                classFilter.value || "all";
+
+            const combinations =
+                new Map();
+
+            students.forEach(
+                function (student) {
+
+                    const className =
+                        String(
+                            student.studentClass || ""
+                        ).trim();
+
+                    const section =
+                        String(
+                            student.section || ""
+                        )
+                            .trim()
+                            .toUpperCase();
+
+                    if (!className) return;
+
+                    const key =
+                        `${className}||${section}`;
+
+                    if (!combinations.has(key)) {
+
+                        combinations.set(
+                            key,
+                            {
+                                className,
+                                section
+                            }
+                        );
+
+                    }
+
+                }
+            );
+
+            classFilter.innerHTML = `
+                <option value="all">
+                    All Classes
+                </option>
+            `;
+
+            Array.from(
+                combinations.values()
+            )
+                .sort(
+                    function (a, b) {
+                        return (
+                            Number(a.className) -
+                            Number(b.className)
+                        );
+                    }
+                )
+                .forEach(
+                    function (item) {
+
+                        const option =
+                            document.createElement(
+                                "option"
+                            );
+
+                        option.value =
+                            `${item.className}||${item.section}`;
+
+                        option.textContent =
+                            item.section
+                                ? `Class ${item.className} ${item.section}`
+                                : `Class ${item.className}`;
+
+                        classFilter.appendChild(
+                            option
+                        );
+
+                    }
+                );
+
+            if (
+                Array.from(
+                    classFilter.options
+                ).some(
+                    function (option) {
+                        return (
+                            option.value ===
+                            previousValue
+                        );
+                    }
+                )
+            ) {
+                classFilter.value =
+                    previousValue;
+            }
+
+        }
+
+        // ----------------------------------------------------
+        // ATTENDANCE
+        //
+        // IMPORTANT:
+        // Date filter is applied AT SUPABASE.
+        // We no longer download historical attendance.
+        // ----------------------------------------------------
+
+        const {
+            data: attendanceData,
+            error: attendanceError
+        } =
+            await supabaseClient
+                .from("attendance")
+                .select(`
+                    id,
+                    student_id,
+                    attendance_date,
+                    status,
+                    check_in_time,
+                    check_out_time
+                `)
+                .eq(
+                    "attendance_date",
+                    selectedDate
+                );
+
+        if (attendanceError) {
+
+            console.error(
+                "ATTENDANCE LOAD ERROR:",
+                attendanceError
+            );
+
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="6"
+                        style="text-align:center;padding:35px;">
+                        Unable to load attendance.
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+        const records =
+            attendanceData || [];
+
+        // ----------------------------------------------------
+        // LEAVE DATE
+        // ----------------------------------------------------
+
+        const isLeaveDate =
+            await checkAttendanceLeaveDate(
+                selectedDate
+            );
+
+        // ----------------------------------------------------
+        // FILTER STUDENTS
+        // ----------------------------------------------------
+
+        const filteredStudents =
+            students.filter(
+                function (student) {
+
+                    const studentClass =
+                        String(
+                            student.studentClass || ""
+                        ).trim();
+
+                    const studentSection =
+                        String(
+                            student.section || ""
+                        )
+                            .trim()
+                            .toUpperCase();
+
+                    const classMatch =
+                        selectedClassSection === "all" ||
+                        (
+                            studentClass ===
+                            selectedClass &&
+                            studentSection ===
+                            selectedSection
+                        );
+
+                    const studentName =
+                        String(
+                            student.fullName ||
+                            student.name ||
+                            ""
+                        ).toLowerCase();
+
+                    const studentRoll =
+                        String(
+                            student.rollNumber || ""
+                        ).toLowerCase();
+
+                    const studentId =
+                        String(
+                            student.studentId || ""
+                        ).toLowerCase();
+
+                    const searchMatch =
+                        searchValue === "" ||
+                        studentName.includes(
+                            searchValue
+                        ) ||
+                        studentRoll.includes(
+                            searchValue
+                        ) ||
+                        studentId.includes(
+                            searchValue
+                        );
+
+                    return (
+                        classMatch &&
+                        searchMatch
+                    );
+
+                }
+            );
+
+        tableBody.innerHTML = "";
+
+        if (
+            filteredStudents.length === 0
+        ) {
+
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="6"
+                        style="text-align:center;padding:40px;">
+                        No students found.
+                    </td>
+                </tr>
+            `;
+
+        } else {
+
+            filteredStudents.forEach(
+                function (student, index) {
+
+                    const attendanceRecord =
+                        records.find(
+                            function (record) {
+
+                                return (
+                                    String(
+                                        record.student_id
+                                    ) ===
+                                    String(
+                                        student.id
+                                    )
+                                );
+
+                            }
+                        );
+
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
+
+                    row.innerHTML = `
+
+                        <td>
+                            ${index + 1}
+                        </td>
+
+                        <td>
+                            ${student.rollNumber || "—"}
+                        </td>
+
+                        <td>
+                            <strong>
+                                ${
+                                    student.fullName ||
+                                    student.name ||
+                                    "—"
+                                }
+                            </strong>
+                        </td>
+
+                        <td>
+                            ${
+                                formatClassSection(
+                                    student.studentClass,
+                                    student.section
+                                )
+                            }
+                        </td>
+
+                        <td>
+                            ${
+                                isLeaveDate
+                                    ? `
+                                        <span
+                                            class="attendance-status-badge leave">
+                                            Leave
+                                        </span>
+                                    `
+                                    : attendanceRecord &&
+                                      attendanceRecord.status
+                                        ? `
+                                            <span
+                                                class="attendance-status-badge
+                                                ${String(
+                                                    attendanceRecord.status
+                                                ).toLowerCase()}">
+                                                ${attendanceRecord.status}
+                                            </span>
+                                        `
+                                        : `
+                                            <span
+                                                class="attendance-status-badge pending">
+                                                Not Marked
+                                            </span>
+                                        `
+                            }
+                        </td>
+
+                        <td>
+                            ${
+                                attendanceRecord &&
+                                attendanceRecord.check_in_time
+                                    ? new Date(
+                                        attendanceRecord.check_in_time
+                                    ).toLocaleTimeString(
+                                        [],
+                                        {
+                                            hour: "2-digit",
+                                            minute: "2-digit"
+                                        }
+                                    )
+                                    : "-"
+                            }
+                        </td>
+                    `;
+
+                    tableBody.appendChild(row);
+
+                }
+            );
+
+        }
+
+        const entriesText =
+            document.getElementById(
+                "attendanceEntriesText"
+            );
+
+        if (entriesText) {
+
+            entriesText.textContent =
+                `Showing ${filteredStudents.length} entries`;
+
+        }
+
+        // ONE statistics call only
+        await window.updateAttendanceStatistics();
+
+    };
+
+
+    // --------------------------------------------------------
+    // 2. OPTIMIZED ATTENDANCE STATISTICS
+    // --------------------------------------------------------
+
+    window.updateAttendanceStatistics =
+        async function () {
+
+            if (
+                typeof supabaseClient ===
+                "undefined"
+            ) {
+                return;
+            }
+
+            const classFilter =
+                document.getElementById(
+                    "attendanceClassFilter"
+                );
+
+            const dateFilter =
+                document.getElementById(
+                    "attendanceDateFilter"
+                );
+
+            const selectedClassSection =
+                classFilter &&
+                classFilter.value
+                    ? classFilter.value
+                    : "all";
+
+            const selectedDate =
+                dateFilter &&
+                dateFilter.value
+                    ? dateFilter.value
+                    : getTodayDate();
+
+            let selectedClass = "";
+            let selectedSection = "";
+
+            if (
+                selectedClassSection !== "all"
+            ) {
+
+                const parts =
+                    selectedClassSection.split(
+                        "||"
+                    );
+
+                selectedClass =
+                    String(
+                        parts[0] || ""
+                    ).trim();
+
+                selectedSection =
+                    String(
+                        parts[1] || ""
+                    )
+                        .trim()
+                        .toUpperCase();
+
+            }
+
+            // ------------------------------------------------
+            // ONLY REQUIRED STUDENT DATA
+            // ------------------------------------------------
+
+            const {
+                data: students,
+                error: studentsError
+            } =
+                await supabaseClient
+                    .from("students")
+                    .select(
+                        "id, student_class, section"
+                    );
+
+            if (studentsError) {
+
+                console.error(
+                    "ATTENDANCE STUDENTS ERROR:",
+                    studentsError
+                );
+
+                return;
+            }
+
+            // ------------------------------------------------
+            // ONLY SELECTED DATE
+            //
+            // OLD:
+            // .select("id, student_id, attendance_date, status")
+            // WITHOUT DATE FILTER
+            //
+            // NEW:
+            // DATE FILTER AT DATABASE LEVEL
+            // ------------------------------------------------
+
+            const {
+                data: attendance,
+                error: attendanceError
+            } =
+                await supabaseClient
+                    .from("attendance")
+                    .select(
+                        "student_id, status"
+                    )
+                    .eq(
+                        "attendance_date",
+                        selectedDate
+                    );
+
+            if (attendanceError) {
+
+                console.error(
+                    "ATTENDANCE RECORDS ERROR:",
+                    attendanceError
+                );
+
+                return;
+            }
+
+            // ------------------------------------------------
+            // FILTER STUDENTS
+            // ------------------------------------------------
+
+            const filteredStudents =
+                (students || []).filter(
+                    function (student) {
+
+                        if (
+                            selectedClassSection ===
+                            "all"
+                        ) {
+                            return true;
+                        }
+
+                        return (
+                            String(
+                                student.student_class ||
+                                ""
+                            ).trim() ===
+                            selectedClass &&
+                            String(
+                                student.section ||
+                                ""
+                            )
+                                .trim()
+                                .toUpperCase() ===
+                            selectedSection
+                        );
+
+                    }
+                );
+
+            const filteredStudentIds =
+                new Set(
+                    filteredStudents.map(
+                        function (student) {
+                            return String(
+                                student.id
+                            );
+                        }
+                    )
+                );
+
+            const relevantRecords =
+                (attendance || []).filter(
+                    function (record) {
+
+                        return filteredStudentIds.has(
+                            String(
+                                record.student_id
+                            )
+                        );
+
+                    }
+                );
+
+            const present =
+                relevantRecords.filter(
+                    function (record) {
+
+                        return (
+                            String(
+                                record.status || ""
+                            ).toLowerCase() ===
+                            "present"
+                        );
+
+                    }
+                ).length;
+
+            const absent =
+                relevantRecords.filter(
+                    function (record) {
+
+                        return (
+                            String(
+                                record.status || ""
+                            ).toLowerCase() ===
+                            "absent"
+                        );
+
+                    }
+                ).length;
+
+            const isLeaveDate =
+                await checkAttendanceLeaveDate(
+                    selectedDate
+                );
+
+            const total =
+                isLeaveDate
+                    ? 0
+                    : filteredStudents.length;
+
+            const displayPresent =
+                isLeaveDate
+                    ? 0
+                    : present;
+
+            const displayAbsent =
+                isLeaveDate
+                    ? 0
+                    : absent;
+
+            const rate =
+                isLeaveDate
+                    ? 0
+                    : total > 0
+                        ? Math.round(
+                            (
+                                present /
+                                total
+                            ) * 100
+                        )
+                        : 0;
+
+            const totalElement =
+                document.getElementById(
+                    "attendanceTotalStudents"
+                );
+
+            const presentElement =
+                document.getElementById(
+                    "attendancePresentToday"
+                );
+
+            const absentElement =
+                document.getElementById(
+                    "attendanceAbsentToday"
+                );
+
+            const rateElement =
+                document.getElementById(
+                    "attendanceRate"
+                );
+
+            if (totalElement) {
+                totalElement.textContent =
+                    total;
+            }
+
+            if (presentElement) {
+                presentElement.textContent =
+                    displayPresent;
+            }
+
+            if (absentElement) {
+                absentElement.textContent =
+                    displayAbsent;
+            }
+
+            if (rateElement) {
+                rateElement.textContent =
+                    `${rate}%`;
+            }
+
+        };
+
+
+    // --------------------------------------------------------
+    // 3. OPTIMIZED ADMIN STUDENTS
+    // --------------------------------------------------------
+
+    window.renderAdminStudents =
+        async function () {
+
+            const tableBody =
+                document.getElementById(
+                    "adminStudentsTableBody"
+                );
+
+            if (!tableBody) return;
+
+            if (
+                typeof supabaseClient ===
+                "undefined"
+            ) {
+                return;
+            }
+
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="9"
+                        style="text-align:center;">
+                        Loading students...
+                    </td>
+                </tr>
+            `;
+
+            // IMPORTANT:
+            // select("*") REMOVED
+            const {
+                data: students,
+                error
+            } =
+                await supabaseClient
+                    .from("students")
+                    .select(`
+                        id,
+                        student_id,
+                        name,
+                        father_name,
+                        student_class,
+                        section,
+                        roll_number,
+                        date_of_birth,
+                        email,
+                        mobile,
+                        created_at
+                    `)
+                    .order(
+                        "created_at",
+                        {
+                            ascending: false
+                        }
+                    );
+
+            if (error) {
+
+                console.error(
+                    "ADMIN STUDENTS LOAD ERROR:",
+                    error
+                );
+
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="9"
+                            style="text-align:center;">
+                            Unable to load students.
+                        </td>
+                    </tr>
+                `;
+
+                return;
+            }
+
+            if (
+                !Array.isArray(students) ||
+                students.length === 0
+            ) {
+
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="9"
+                            style="text-align:center;">
+                            No students found.
+                        </td>
+                    </tr>
+                `;
+
+                const countElement =
+                    document.getElementById(
+                        "adminTotalStudents"
+                    );
+
+                if (countElement) {
+                    countElement.textContent =
+                        "0";
+                }
+
+                return;
+            }
+
+            tableBody.innerHTML = "";
+
+            students.forEach(
+                function (student, index) {
+
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
+
+                    row.innerHTML = `
+
+                        <td>
+                            ${index + 1}
+                        </td>
+
+                        <td>
+                            ${student.student_id || ""}
+                        </td>
+
+                        <td>
+                            ${student.name || ""}
+                        </td>
+
+                        <td>
+                            ${student.father_name || ""}
+                        </td>
+
+                        <td>
+                            ${
+                                formatClassSection(
+                                    student.student_class,
+                                    student.section
+                                )
+                            }
+                        </td>
+
+                        <td>
+                            ${student.roll_number || ""}
+                        </td>
+
+                        <td>
+                            ${student.date_of_birth || ""}
+                        </td>
+
+                        <td>
+                            ${student.email || ""}
+                        </td>
+
+                        <td>
+                            ${student.mobile || ""}
+                        </td>
+
+                    `;
+
+                    tableBody.appendChild(row);
+
+                }
+            );
+
+            const countElement =
+                document.getElementById(
+                    "adminTotalStudents"
+                );
+
+            if (countElement) {
+
+                countElement.textContent =
+                    students.length;
+
+            }
+
+        };
+
+
+    // --------------------------------------------------------
+    // 4. SINGLE DEBOUNCED ATTENDANCE REALTIME REFRESH
+    // --------------------------------------------------------
+
+    let attendanceRefreshTimer = null;
+    let attendanceRefreshRunning = false;
+
+    window.eduPortalAttendanceRefresh =
+        function () {
+
+            clearTimeout(
+                attendanceRefreshTimer
+            );
+
+            attendanceRefreshTimer =
+                setTimeout(
+                    async function () {
+
+                        if (
+                            attendanceRefreshRunning
+                        ) {
+                            return;
+                        }
+
+                        attendanceRefreshRunning =
+                            true;
+
+                        try {
+
+                            console.log(
+                                "🔄 Optimized attendance refresh"
+                            );
+
+                            await window.renderAttendanceTable();
+
+                        } catch (error) {
+
+                            console.error(
+                                "Optimized attendance refresh error:",
+                                error
+                            );
+
+                        } finally {
+
+                            attendanceRefreshRunning =
+                                false;
+
+                        }
+
+                    },
+                    5000
+                );
+
+        };
+
+
+    // --------------------------------------------------------
+    // 5. REPLACE ATTENDANCE REALTIME HANDLER
+    // --------------------------------------------------------
+
+    if (
+        typeof adminAttendanceRealtimeChannel !==
+        "undefined" &&
+        adminAttendanceRealtimeChannel
+    ) {
+
+        try {
+
+            supabaseClient.removeChannel(
+                adminAttendanceRealtimeChannel
+            );
+
+            adminAttendanceRealtimeChannel =
+                null;
+
+            console.log(
+                "♻️ Old attendance realtime channel removed"
+            );
+
+        } catch (error) {
+
+            console.warn(
+                "Could not remove old realtime channel:",
+                error
+            );
+
+        }
+
+    }
+
+
+    window.initializeOptimizedAttendanceRealtime =
+        function () {
+
+            if (
+                typeof supabaseClient ===
+                "undefined"
+            ) {
+                return;
+            }
+
+            const channel =
+                supabaseClient
+                    .channel(
+                        "admin-attendance-optimized"
+                    )
+                    .on(
+                        "postgres_changes",
+                        {
+                            event: "*",
+                            schema: "public",
+                            table: "attendance"
+                        },
+                        function () {
+
+                            console.log(
+                                "📡 Attendance change detected"
+                            );
+
+                            window.eduPortalAttendanceRefresh();
+
+                        }
+                    )
+                    .subscribe(
+                        function (status) {
+
+                            console.log(
+                                "📡 Optimized attendance realtime:",
+                                status
+                            );
+
+                        }
+                    );
+
+            window.eduPortalOptimizedAttendanceChannel =
+                channel;
+
+        };
+
+
+    window.initializeOptimizedAttendanceRealtime();
+
+
+    console.log(
+        "✅ Egress optimization active"
+    );
+
+})();
+// =========================================================
+// EDUPORTAL EGRESS FIX
+// TEACHER ATTENDANCE OPTIMIZATION
+// =========================================================
+
+(function () {
+
+    console.log("EDUPORTAL: Teacher Attendance Egress Fix Loaded");
+
+    // -----------------------------------------------------
+    // STATE
+    // -----------------------------------------------------
+
+    let teacherAttendanceRefreshTimer = null;
+    let teacherAttendanceLoading = false;
+
+
+    // =====================================================
+    // OPTIMIZED TEACHER ATTENDANCE LOAD
+    // =====================================================
+
+    window.loadTeacherAttendanceSection = async function () {
+
+        const tableBody =
+            document.getElementById(
+                "teacherAttendanceTableBody"
+            );
+
+        if (!tableBody) {
+            return;
+        }
+
+
+        // -------------------------------------------------
+        // GET TEACHER
+        // -------------------------------------------------
+
+        const teacher =
+            JSON.parse(
+                localStorage.getItem(
+                    "loggedInTeacher"
+                )
+            ) || {};
+
+
+        // -------------------------------------------------
+        // SUPABASE CHECK
+        // -------------------------------------------------
+
+        if (
+            typeof supabaseClient ===
+            "undefined"
+        ) {
+            console.error(
+                "Supabase connection is missing."
+            );
+
+            return;
+        }
+
+
+        // -------------------------------------------------
+        // PREVENT DUPLICATE REQUESTS
+        // -------------------------------------------------
+
+        if (teacherAttendanceLoading) {
+            return;
+        }
+
+        teacherAttendanceLoading = true;
+
+
+        try {
+
+            // =============================================
+            // LOAD ONLY REQUIRED STUDENT COLUMNS
+            // =============================================
+
+            const {
+                data: students,
+                error: studentsError
+            } =
+                await supabaseClient
+                    .from("students")
+                    .select(`
+    id,
+    student_id,
+    name,
+    student_class,
+    section
+`);
+
+            if (studentsError) {
+
+                console.error(
+                    "TEACHER ATTENDANCE STUDENTS ERROR:",
+                    studentsError
+                );
+
+                tableBody.innerHTML = `
+                    <tr>
+                        <td
+                            colspan="6"
+                            style="
+                                text-align:center;
+                                padding:40px;
+                                color:#ef4444;
+                            "
+                        >
+                            Unable to load students.
+                        </td>
+                    </tr>
+                `;
+
+                return;
+            }
+
+
+            // =============================================
+            // GET TEACHER ASSIGNED CLASS
+            // =============================================
+
+            const assignedClassKeys =
+                await getTeacherAssignedClassKeys(
+                    teacher
+                );
+
+
+            // =============================================
+            // FILTER ONLY TEACHER CLASS
+            // =============================================
+
+            const assignedStudents =
+                (students || []).filter(
+                    function (student) {
+
+                        const studentClass =
+                            String(
+                                student.student_class ||
+                                ""
+                            )
+                                .trim()
+                                .toLowerCase()
+                                .replace(
+                                    /^class\s*/i,
+                                    ""
+                                )
+                                .replace(
+                                    /[^a-z0-9]/g,
+                                    ""
+                                );
+
+
+                        const studentSection =
+                            String(
+                                student.section ||
+                                ""
+                            )
+                                .trim()
+                                .toLowerCase()
+                                .replace(
+                                    /[^a-z0-9]/g,
+                                    ""
+                                );
+
+
+                        const studentClassKey =
+                            studentClass +
+                            studentSection;
+
+
+                        return assignedClassKeys.includes(
+                            studentClassKey
+                        );
+
+                    }
+                );
+
+
+            // =============================================
+            // SHOW TEACHER CLASS
+            // =============================================
+
+            const classElement =
+                document.getElementById(
+                    "teacherAttendanceClass"
+                );
+
+            if (classElement) {
+
+                classElement.textContent =
+                    teacher.teacherClass ||
+                    "Not Assigned";
+
+            }
+
+
+            // =============================================
+            // DATE
+            // =============================================
+
+            const dateInput =
+                document.getElementById(
+                    "teacherAttendanceDate"
+                );
+
+
+            if (
+                dateInput &&
+                !dateInput.value
+            ) {
+
+                dateInput.value =
+                    new Date()
+                        .toISOString()
+                        .split("T")[0];
+
+            }
+
+
+            const teacherAttendanceDate =
+                dateInput &&
+                dateInput.value
+                    ? dateInput.value
+                    : getStudentAttendanceDate();
+
+
+            // =============================================
+            // LEAVE DATE
+            // =============================================
+
+            const isLeaveDate =
+                await checkAttendanceLeaveDate(
+                    teacherAttendanceDate
+                );
+
+
+            // =============================================
+            // STUDENT IDS
+            // =============================================
+
+            const assignedStudentIds =
+                assignedStudents.map(
+                    function (student) {
+
+                        return String(
+                            student.id
+                        );
+
+                    }
+                );
+
+
+            // =============================================
+            // LOAD ONLY SELECTED DATE ATTENDANCE
+            // =============================================
+
+            let todayAttendance = [];
+
+
+            if (
+                assignedStudentIds.length > 0
+            ) {
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+                        .from("attendance")
+                        .select(`
+                            student_id,
+                            status,
+                            check_in_time,
+                            check_out_time
+                        `)
+                        .eq(
+                            "attendance_date",
+                            teacherAttendanceDate
+                        )
+                        .in(
+                            "student_id",
+                            assignedStudentIds
+                        );
+
+
+                if (error) {
+
+                    console.error(
+                        "TEACHER ATTENDANCE ERROR:",
+                        error
+                    );
+
+                } else {
+
+                    todayAttendance =
+                        data || [];
+
+                }
+
+            }
+
+
+            // =============================================
+            // ATTENDANCE MAP
+            // =============================================
+
+            const attendanceMap =
+                new Map();
+
+
+            todayAttendance.forEach(
+                function (record) {
+
+                    attendanceMap.set(
+                        String(
+                            record.student_id
+                        ),
+                        record
+                    );
+
+                }
+            );
+
+
+            // =============================================
+            // CLEAR TABLE
+            // =============================================
+
+            tableBody.innerHTML = "";
+
+
+            // =============================================
+            // NO STUDENTS
+            // =============================================
+
+            if (
+                assignedStudents.length ===
+                0
+            ) {
+
+                tableBody.innerHTML = `
+                    <tr>
+                        <td
+                            colspan="6"
+                            style="
+                                text-align:center;
+                                padding:50px;
+                                color:#64748b;
+                            "
+                        >
+                            🎓
+                            <br><br>
+                            No students found
+                            for your class.
+                        </td>
+                    </tr>
+                `;
+
+
+                if (
+                    typeof updateTeacherAttendanceCounts ===
+                    "function"
+                ) {
+
+                    updateTeacherAttendanceCounts();
+
+                }
+
+
+                return;
+
+            }
+
+
+            // =============================================
+            // RENDER STUDENTS
+            // =============================================
+
+            assignedStudents.forEach(
+                function (
+                    student,
+                    index
+                ) {
+
+                    const attendance =
+                        attendanceMap.get(
+                            String(
+                                student.id
+                            )
+                        );
+
+
+                    // -------------------------------------
+                    // STATUS
+                    // -------------------------------------
+
+                    let status = "";
+
+
+                    const attendanceStatus =
+                        String(
+                            attendance?.status ||
+                            ""
+                        )
+                            .trim()
+                            .toLowerCase();
+
+
+                    if (isLeaveDate) {
+
+                        status = "Leave";
+
+                    }
+                    else if (
+                        attendanceStatus ===
+                        "present"
+                    ) {
+
+                        status = "Present";
+
+                    }
+                    else if (
+                        attendanceStatus ===
+                        "leave"
+                    ) {
+
+                        status = "Leave";
+
+                    }
+                    else {
+
+                        const pakistanTime =
+                            new Date().toLocaleString(
+                                "en-US",
+                                {
+                                    timeZone:
+                                        "Asia/Karachi"
+                                }
+                            );
+
+
+                        const pakistanNow =
+                            new Date(
+                                pakistanTime
+                            );
+
+
+                        const currentHour =
+                            pakistanNow.getHours();
+
+
+                        if (
+                            currentHour < 12
+                        ) {
+
+                            status =
+                                "Not Marked";
+
+                        }
+                        else {
+
+                            status =
+                                "Absent";
+
+                        }
+
+                    }
+
+
+                    // -------------------------------------
+                    // STATUS CLASS
+                    // -------------------------------------
+
+                    const normalizedStatus =
+                        String(status)
+                            .trim()
+                            .toLowerCase();
+
+
+                    const statusClass =
+                        normalizedStatus ===
+                        "present"
+                            ? "present"
+                            : normalizedStatus ===
+                              "late"
+                                ? "late"
+                                : normalizedStatus ===
+                                  "leave"
+                                    ? "leave"
+                                    : "absent";
+
+
+                    // -------------------------------------
+                    // CHECK-IN
+                    // -------------------------------------
+
+                    const checkInTime =
+                        attendance?.check_in_time
+                            ? new Date(
+                                attendance.check_in_time
+                            ).toLocaleTimeString(
+                                [],
+                                {
+                                    hour:
+                                        "2-digit",
+                                    minute:
+                                        "2-digit"
+                                }
+                            )
+                            : "—";
+
+
+                    // -------------------------------------
+                    // CHECK-OUT
+                    // -------------------------------------
+
+                    const checkOutTime =
+                        attendance?.check_out_time
+                            ? new Date(
+                                attendance.check_out_time
+                            ).toLocaleTimeString(
+                                [],
+                                {
+                                    hour:
+                                        "2-digit",
+                                    minute:
+                                        "2-digit"
+                                }
+                            )
+                            : "—";
+
+
+                    // -------------------------------------
+                    // ROW
+                    // -------------------------------------
+
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    row.innerHTML = `
+
+                        <td>
+                            ${index + 1}
+                        </td>
+
+                        <td>
+                            <strong>
+                                ${
+    student.name ||
+    "—"
+}
+                            </strong>
+                        </td>
+
+                        <td>
+                            ${
+                                student.student_id ||
+                                student.id ||
+                                "—"
+                            }
+                        </td>
+
+                        <td>
+                            ${
+                                student.student_class
+                                    ? String(
+                                        student.student_class
+                                    )
+                                    .replace(
+                                        /^Class\s*/i,
+                                        ""
+                                    )
+                                    +
+                                    (
+                                        student.section
+                                            ? "-" +
+                                              String(
+                                                  student.section
+                                              )
+                                              .trim()
+                                              .toUpperCase()
+                                            : ""
+                                    )
+                                    : "—"
+                            }
+                        </td>
+
+                        <td>
+
+                            <span
+                                class="
+                                    teacher-attendance-status-badge
+                                    ${statusClass}
+                                "
+                                data-status="${status}"
+                            >
+                                ${status}
+                            </span>
+
+                        </td>
+
+                        <td
+                            class="teacher-check-in-cell"
+                        >
+
+                            <strong>
+                                ${checkInTime}
+                            </strong>
+
+                            ${
+                                checkOutTime !==
+                                "—"
+                                    ? `
+                                        <small
+                                            style="
+                                                display:block;
+                                                margin-top:4px;
+                                                opacity:.65;
+                                            "
+                                        >
+                                            Out:
+                                            ${checkOutTime}
+                                        </small>
+                                      `
+                                    : ""
+                            }
+
+                        </td>
+
+                    `;
+
+
+                    tableBody.appendChild(
+                        row
+                    );
+
+                }
+            );
+
+
+            // =============================================
+            // EXISTING COUNTS
+            // =============================================
+
+            if (
+                typeof updateTeacherAttendanceCounts ===
+                "function"
+            ) {
+
+                updateTeacherAttendanceCounts();
+
+            }
+
+
+            // =============================================
+            // EXISTING SAVED ATTENDANCE
+            // =============================================
+
+            if (
+                typeof loadSavedTeacherAttendance ===
+                "function"
+            ) {
+
+                loadSavedTeacherAttendance();
+
+            }
+
+
+        }
+        catch (error) {
+
+            console.error(
+                "OPTIMIZED TEACHER ATTENDANCE ERROR:",
+                error
+            );
+
+        }
+        finally {
+
+            teacherAttendanceLoading =
+                false;
+
+        }
+
+    };
+
+
+    // =====================================================
+    // REMOVE OLD TEACHER ATTENDANCE REALTIME
+    // =====================================================
+
+    try {
+
+        if (
+            typeof teacherAttendanceRealtimeChannel !==
+            "undefined" &&
+            teacherAttendanceRealtimeChannel
+        ) {
+
+            supabaseClient.removeChannel(
+                teacherAttendanceRealtimeChannel
+            );
+
+            teacherAttendanceRealtimeChannel =
+                null;
+
+            console.log(
+                "EDUPORTAL: Old teacher attendance realtime removed."
+            );
+
+        }
+
+    }
+    catch (error) {
+
+        console.warn(
+            "Could not remove old teacher realtime:",
+            error
+        );
+
+    }
+
+
+    // =====================================================
+    // OPTIMIZED REALTIME
+    // =====================================================
+
+    window.initializeOptimizedTeacherAttendanceRealtime =
+        function () {
+
+            if (
+                typeof supabaseClient ===
+                "undefined"
+            ) {
+                return;
+            }
+
+
+            // Remove previous optimized channel
+            try {
+
+                if (
+                    window.eduPortalTeacherAttendanceChannel
+                ) {
+
+                    supabaseClient.removeChannel(
+                        window.eduPortalTeacherAttendanceChannel
+                    );
+
+                }
+
+            }
+            catch (error) {
+
+                console.warn(
+                    "Previous optimized channel cleanup failed.",
+                    error
+                );
+
+            }
+
+
+            window.eduPortalTeacherAttendanceChannel =
+                supabaseClient
+                    .channel(
+                        "teacher-attendance-optimized"
+                    )
+                    .on(
+                        "postgres_changes",
+                        {
+                            event: "*",
+                            schema: "public",
+                            table: "attendance"
+                        },
+                        function () {
+
+                            // ---------------------------------
+                            // ONLY REFRESH IF ATTENDANCE
+                            // SECTION IS ACTUALLY VISIBLE
+                            // ---------------------------------
+
+                            const section =
+                                document.getElementById(
+                                    "teacherAttendanceSection"
+                                );
+
+
+                            if (!section) {
+                                return;
+                            }
+
+
+                            const isVisible =
+                                section.offsetParent !== null;
+
+
+                            if (!isVisible) {
+                                return;
+                            }
+
+
+                            // ---------------------------------
+                            // DEBOUNCE
+                            // ---------------------------------
+
+                            clearTimeout(
+                                teacherAttendanceRefreshTimer
+                            );
+
+
+                            teacherAttendanceRefreshTimer =
+                                setTimeout(
+                                    function () {
+
+                                        loadTeacherAttendanceSection();
+
+                                    },
+                                    5000
+                                );
+
+                        }
+                    )
+                    .subscribe(
+                        function (status) {
+
+                            console.log(
+                                "OPTIMIZED TEACHER ATTENDANCE REALTIME:",
+                                status
+                            );
+
+                        }
+                    );
+
+        };
+
+
+    // =====================================================
+    // START OPTIMIZED REALTIME
+    // =====================================================
+
+    window.initializeOptimizedTeacherAttendanceRealtime();
+
+
+    // =====================================================
+    // OPTIONAL GLOBAL MANUAL REFRESH
+    // =====================================================
+
+    window.refreshTeacherAttendanceOptimized =
+        function () {
+
+            clearTimeout(
+                teacherAttendanceRefreshTimer
+            );
+
+            loadTeacherAttendanceSection();
+
+        };
+
+
+    console.log(
+        "EDUPORTAL: Teacher Attendance Egress Optimization ACTIVE."
     );
 
 })();
