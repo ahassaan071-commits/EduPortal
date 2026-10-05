@@ -1998,6 +1998,10 @@ overflow-x:hidden;
 /* Mobile */
 @media(max-width:768px){
 
+    .subjects-grid{
+        grid-template-columns:1fr;
+    }
+
     .subject-card{
         min-height:auto;
     }
@@ -3185,6 +3189,10 @@ overflow-x:hidden;
     #subjectsSection .subjects-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
+    #assignmentsSection .assignment-list {
+        grid-template-columns: 1fr;
+    }
 }
 
 
@@ -3834,6 +3842,10 @@ body.dark-mode #resultsSection .profile-card > p {
 
 /* Responsive - desktop/tablet */
 @media (max-width: 900px) {
+
+    #resultsSection .results-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 
 }
 /* ==============================
@@ -4892,6 +4904,11 @@ body.dark-mode .login-side-panel {
         transform: translateY(20px) scale(.97);
     }
 
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
 }
 
 
@@ -5878,6 +5895,10 @@ body.dark-mode .login-side-panel {
 
 /* Mobile */
 @media (max-width: 650px) {
+
+    #adminAddStudentModal {
+        padding: 10px !important;
+    }
 
     #adminAddStudentModal .admin-student-modal-box {
         max-height: 94vh !important;
@@ -8364,6 +8385,10 @@ body.dark-mode .login-side-panel {
     #adminTeacherModal .admin-assignment-modal-actions {
         flex-direction: column !important;
     }
+
+    #adminTeacherModal .admin-assignment-modal-actions button {
+        width: 100%;
+    }
 }
 /* ==========================================
    PHONE VALIDATION VISUAL FEEDBACK
@@ -8532,6 +8557,11 @@ body.dark-mode .login-side-panel {
     from {
         opacity: 0;
         transform: translateY(15px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
     }
 }
 
@@ -9194,6 +9224,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     from {
         opacity: 0;
         transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
@@ -9997,6 +10032,15 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 @keyframes resultsFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 
@@ -10599,6 +10643,11 @@ height: 25px;
     from {
         opacity: 0;
         transform: translateY(20px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
     }
 }
 
@@ -12555,6 +12604,16 @@ height: 25px;
 
     }
 
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+    }
+
 }
 
 
@@ -13817,6 +13876,11 @@ height: 25px;
     from {
         opacity: 0;
         transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 
 }
@@ -21219,6 +21283,21 @@ table tbody tr:hover td {
    --------------------------------------------------------- */
 
 @media (max-width: 800px) {
+
+    #adminDashboard
+    .admin-section-header,
+    #adminDashboard
+    .attendance-page-header,
+    #adminDashboard
+    .results-page-header {
+
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+
+    }
 
 
     #adminDashboard
@@ -33070,10 +33149,19 @@ align-self: flex-end !important;
 
 @media (max-width: 1050px) {
 
+    #studentDashboard .dashboard-cards {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr)) !important;
+    }
+
 }
 
 
 @media (max-width: 600px) {
+
+    #studentDashboard .dashboard-cards {
+        grid-template-columns: 1fr !important;
+    }
 
 }
 /* =========================================================
@@ -33252,6 +33340,10 @@ align-self: flex-end !important;
    ========================= */
 
 @media (max-width: 950px) {
+
+    #studentDashboard .analytics-section {
+        grid-template-columns: 1fr !important;
+    }
 
 }
 
@@ -34787,6 +34879,11 @@ align-self: flex-end !important;
    ========================================================= */
 
 @media (max-width: 1000px) {
+
+    .attendance-summary {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
 
 }
 
@@ -38551,6 +38648,27 @@ align-self: flex-end !important;
     color: #dc2626;
     border-color: #fecaca;
     transform: translateY(-1px);
+}
+.latest-notice-content {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.latest-notice-title {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.latest-notice-message {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.latest-notice-time {
+    font-size: 12px;
+    opacity: 0.65;
+    margin-top: 3px;
 }
 .latest-notice-content {
     display: flex;
@@ -42892,6 +43010,14 @@ align-self: flex-end !important;
 }
 
 
+#teacherDashboard .teacher-dashboard-date strong {
+
+    color: #172554 !important;
+
+    font-size: 12px !important;
+}
+
+
 #teacherDashboard .teacher-dashboard-date small {
 
     color: #64748b !important;
@@ -43143,6 +43269,14 @@ align-self: flex-end !important;
 }
 
 
+#teacherDashboard .teacher-chart-column small {
+
+    color: #64748b !important;
+
+    font-size: 10px !important;
+}
+
+
 /* =========================================================
    STUDENT DISTRIBUTION
    ========================================================= */
@@ -43189,6 +43323,12 @@ align-self: flex-end !important;
 }
 
 
+#teacherDashboard .teacher-donut-center span {
+
+    color: #64748b !important;
+}
+
+
 #teacherDashboard .teacher-distribution-legend {
 
     gap: 20px !important;
@@ -43208,6 +43348,12 @@ align-self: flex-end !important;
     color: #172554 !important;
 
     font-size: 12px !important;
+}
+
+
+#teacherDashboard .teacher-distribution-legend small {
+
+    color: #94a3b8 !important;
 }
 
 
@@ -43256,6 +43402,17 @@ align-self: flex-end !important;
    ========================================================= */
 
 @media (max-width: 1200px) {
+
+    #teacherDashboard .teacher-statistics-grid {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    #teacherDashboard .teacher-analytics-grid {
+
+        grid-template-columns: 1fr !important;
+    }
 }
 
 
@@ -43281,6 +43438,13 @@ align-self: flex-end !important;
         padding-left: 20px !important;
 
         padding-right: 20px !important;
+    }
+
+    #teacherDashboard .teacher-dashboard-heading {
+
+        flex-direction: column !important;
+
+        align-items: flex-start !important;
     }
 
     #teacherDashboard .teacher-dashboard-date {
@@ -43309,6 +43473,11 @@ align-self: flex-end !important;
 
         padding:
             15px 14px !important;
+    }
+
+    #teacherDashboard .teacher-statistics-grid {
+
+        grid-template-columns: 1fr !important;
     }
 
     #teacherDashboard .teacher-dashboard-heading h2 {
@@ -43648,6 +43817,20 @@ align-self: flex-end !important;
     font-weight: 700 !important;
 }
 
+#teacherDashboard .teacher-card-heading h3 i {
+    color: #2563eb !important;
+
+    margin-right: 7px !important;
+}
+
+#teacherDashboard .teacher-card-heading p {
+    margin: 5px 0 0 !important;
+
+    color: #64748b !important;
+
+    font-size: 12px !important;
+}
+
 #teacherDashboard .teacher-card-heading select {
     height: 36px !important;
 
@@ -43812,6 +43995,14 @@ align-self: flex-end !important;
    ========================================================= */
 
 @media (max-width: 1200px) {
+
+    #teacherDashboard .teacher-statistics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    #teacherDashboard .teacher-analytics-grid {
+        grid-template-columns: 1fr !important;
+    }
 }
 
 
@@ -43856,6 +44047,10 @@ align-self: flex-end !important;
         margin-right: -15px !important;
 
         padding: 15px !important;
+    }
+
+    #teacherDashboard .teacher-statistics-grid {
+        grid-template-columns: 1fr !important;
     }
 
     #teacherDashboard .teacher-dashboard-heading {
@@ -44666,6 +44861,10 @@ align-self: flex-end !important;
 }
 
 @media (max-width: 650px) {
+
+    #teacherDashboard .teacher-dashboard-top-cards {
+        grid-template-columns: 1fr !important;
+    }
 
 }
 /* ==========================================
@@ -47108,6 +47307,12 @@ html.edu-session-restoring.edu-role-student #studentDashboard {
 }
 
 
+.admin-ai-messages::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 20px;
+}
+
+
 .admin-ai-messages::-webkit-scrollbar-thumb:hover {
     background: #94a3b8;
 }
@@ -47131,6 +47336,16 @@ html.edu-session-restoring.edu-role-student #studentDashboard {
 
 
 @keyframes adminAiMessageIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 
 }
 
@@ -47354,6 +47569,11 @@ html.edu-session-restoring.edu-role-student #studentDashboard {
 }
 
 
+#adminAiSendBtn:active {
+    transform: translateY(0);
+}
+
+
 #adminAiSendBtn:disabled {
     opacity: 0.55;
 
@@ -47420,6 +47640,11 @@ html.edu-session-restoring.edu-role-student #studentDashboard {
     animation:
         adminAiTyping
         1.2s infinite;
+}
+
+
+.admin-ai-typing span:nth-child(2) {
+    animation-delay: 0.15s;
 }
 
 
@@ -47496,524 +47721,4 @@ html.edu-session-restoring.edu-role-student #studentDashboard {
         max-width: 90%;
     }
 
-}
-
-/* ==========================================================
-   EDUPORTAL CSS CLEANUP — DASHBOARD VIEWPORT + SCROLLBAR
-   CSS ONLY. Login styles intentionally excluded.
-========================================================== */
-
-/* Dashboard pages use the full browser viewport without creating
-   an unnecessary second page scrollbar. */
-html:has(#studentDashboard[style*="display"]),
-html:has(#teacherDashboard[style*="display"]),
-html:has(#adminDashboard[style*="display"]) {
-    width: 100%;
-    min-height: 100%;
-}
-
-body:has(#studentDashboard[style*="display"]),
-body:has(#teacherDashboard[style*="display"]),
-body:has(#adminDashboard[style*="display"]) {
-    width: 100%;
-    min-height: 100vh;
-    height: auto;
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-}
-
-/* Student dashboard */
-body:has(#studentDashboard[style*="display"]) #studentDashboard {
-    width: 100% !important;
-    min-height: 100vh !important;
-    height: auto !important;
-    overflow: visible !important;
-}
-
-body:has(#studentDashboard[style*="display"]) #studentDashboard .main-content {
-    min-height: 100vh !important;
-}
-
-/* Teacher dashboard */
-body:has(#teacherDashboard[style*="display"]) #teacherDashboard {
-    width: 100% !important;
-    min-height: 100vh !important;
-    height: auto !important;
-    overflow: visible !important;
-}
-
-body:has(#teacherDashboard[style*="display"]) #teacherDashboard > .main-content {
-    min-height: 100vh !important;
-    box-sizing: border-box !important;
-}
-
-/* Admin dashboard — higher specificity overrides old fixed/hidden patches. */
-body:has(#adminDashboard[style*="display"]) #adminDashboard {
-    position: relative !important;
-    inset: auto !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    min-height: 100vh !important;
-    height: auto !important;
-    overflow: visible !important;
-    display: flex !important;
-}
-
-body:has(#adminDashboard[style*="display"]) #adminDashboard .admin-sidebar {
-    flex: 0 0 300px !important;
-    width: 300px !important;
-    height: 100vh !important;
-    position: sticky !important;
-    top: 0 !important;
-    overflow: hidden !important;
-}
-
-body:has(#adminDashboard[style*="display"]) #adminDashboard .admin-sidebar > ul {
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-}
-
-/* One clean, thin scrollbar — Chrome/Edge + Firefox. */
-body:has(#studentDashboard[style*="display"])::-webkit-scrollbar,
-body:has(#teacherDashboard[style*="display"])::-webkit-scrollbar,
-body:has(#adminDashboard[style*="display"])::-webkit-scrollbar,
-#studentDashboard::-webkit-scrollbar,
-#teacherDashboard::-webkit-scrollbar,
-#adminDashboard::-webkit-scrollbar,
-#studentDashboard .sidebar::-webkit-scrollbar,
-#teacherDashboard .sidebar::-webkit-scrollbar,
-#adminDashboard .admin-sidebar > ul::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-
-body:has(#studentDashboard[style*="display"])::-webkit-scrollbar-track,
-body:has(#teacherDashboard[style*="display"])::-webkit-scrollbar-track,
-body:has(#adminDashboard[style*="display"])::-webkit-scrollbar-track,
-#studentDashboard::-webkit-scrollbar-track,
-#teacherDashboard::-webkit-scrollbar-track,
-#adminDashboard::-webkit-scrollbar-track,
-#studentDashboard .sidebar::-webkit-scrollbar-track,
-#teacherDashboard .sidebar::-webkit-scrollbar-track,
-#adminDashboard .admin-sidebar > ul::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-body:has(#studentDashboard[style*="display"])::-webkit-scrollbar-thumb,
-body:has(#teacherDashboard[style*="display"])::-webkit-scrollbar-thumb,
-body:has(#adminDashboard[style*="display"])::-webkit-scrollbar-thumb,
-#studentDashboard::-webkit-scrollbar-thumb,
-#teacherDashboard::-webkit-scrollbar-thumb,
-#adminDashboard::-webkit-scrollbar-thumb,
-#studentDashboard .sidebar::-webkit-scrollbar-thumb,
-#teacherDashboard .sidebar::-webkit-scrollbar-thumb,
-#adminDashboard .admin-sidebar > ul::-webkit-scrollbar-thumb {
-    background: #94a3b8;
-    border-radius: 999px;
-}
-
-body:has(#studentDashboard[style*="display"])::-webkit-scrollbar-thumb:hover,
-body:has(#teacherDashboard[style*="display"])::-webkit-scrollbar-thumb:hover,
-body:has(#adminDashboard[style*="display"])::-webkit-scrollbar-thumb:hover,
-#studentDashboard::-webkit-scrollbar-thumb:hover,
-#teacherDashboard::-webkit-scrollbar-thumb:hover,
-#adminDashboard::-webkit-scrollbar-thumb:hover,
-#studentDashboard .sidebar::-webkit-scrollbar-thumb:hover,
-#teacherDashboard .sidebar::-webkit-scrollbar-thumb:hover,
-#adminDashboard .admin-sidebar > ul::-webkit-scrollbar-thumb:hover {
-    background: #64748b;
-}
-
-body:has(#studentDashboard[style*="display"]),
-body:has(#teacherDashboard[style*="display"]),
-body:has(#adminDashboard[style*="display"]),
-#studentDashboard,
-#teacherDashboard,
-#adminDashboard,
-#studentDashboard .sidebar,
-#teacherDashboard .sidebar,
-#adminDashboard .admin-sidebar > ul {
-    scrollbar-width: thin;
-    scrollbar-color: #94a3b8 transparent;
-}
-
-/* Remove scrollbar arrows/buttons. */
-body:has(#studentDashboard[style*="display"])::-webkit-scrollbar-button,
-body:has(#teacherDashboard[style*="display"])::-webkit-scrollbar-button,
-body:has(#adminDashboard[style*="display"])::-webkit-scrollbar-button,
-#studentDashboard .sidebar::-webkit-scrollbar-button,
-#teacherDashboard .sidebar::-webkit-scrollbar-button,
-#adminDashboard .admin-sidebar > ul::-webkit-scrollbar-button {
-    display: none;
-}
-
-/* ==========================================================
-   EDUPORTAL — UNIFIED DASHBOARD DESIGN SYSTEM
-   CSS ONLY — STUDENT / TEACHER / ADMIN
-   Login screen intentionally excluded.
-========================================================== */
-
-:root {
-    --edu-primary: #2563eb;
-    --edu-primary-dark: #1d4ed8;
-    --edu-sidebar: #1e3a8a;
-    --edu-page: #f1f5f9;
-    --edu-card: #ffffff;
-    --edu-border: #e2e8f0;
-    --edu-text: #1e293b;
-    --edu-muted: #64748b;
-    --edu-radius: 16px;
-    --edu-shadow: 0 10px 30px rgba(15, 23, 42, .08);
-}
-
-
-
-/* =========================================================
-   EDUPORTAL — FINAL SHARED DASHBOARD DESIGN SYSTEM
-   CSS ONLY
-   Login page is intentionally untouched.
-   ========================================================= */
-
-/* ---------- Dashboard-only page shell ---------- */
-
-body:has(#studentDashboard[style*="display: block"]),
-body:has(#adminDashboard[style*="display: block"]),
-body:has(#teacherDashboard[style*="display: block"]),
-body:has(#teacherDashboard[style*="display: flex"]) {
-    background: #f1f5f9 !important;
-}
-
-html:has(#studentDashboard[style*="display: block"]),
-html:has(#adminDashboard[style*="display: block"]),
-html:has(#teacherDashboard[style*="display: block"]),
-html:has(#teacherDashboard[style*="display: flex"]) {
-    background: #f1f5f9 !important;
-}
-
-/* Keep the visible dashboard inside the viewport.
-   Its own content areas handle scrolling. */
-html:has(#studentDashboard[style*="display: block"]),
-html:has(#adminDashboard[style*="display: block"]),
-html:has(#teacherDashboard[style*="display: block"]),
-html:has(#teacherDashboard[style*="display: flex"]) {
-    scrollbar-width: thin !important;
-    scrollbar-color: #94a3b8 transparent !important;
-}
-
-body:has(#studentDashboard[style*="display: block"]),
-body:has(#adminDashboard[style*="display: block"]),
-body:has(#teacherDashboard[style*="display: block"]),
-body:has(#teacherDashboard[style*="display: flex"]) {
-    scrollbar-width: thin !important;
-    scrollbar-color: #94a3b8 transparent !important;
-}
-
-/* ---------- Shared dashboard colors ---------- */
-
-#studentDashboard,
-#teacherDashboard,
-#adminDashboard {
-    --edu-primary: #2563eb;
-    --edu-primary-dark: #1d4ed8;
-    --edu-sidebar: #1e3a8a;
-    --edu-page: #f1f5f9;
-    --edu-card: #ffffff;
-    --edu-border: #e2e8f0;
-    --edu-text: #1e293b;
-    --edu-muted: #64748b;
-    --edu-radius: 16px;
-    --edu-shadow: 0 8px 24px rgba(15, 23, 42, .07);
-
-    background: var(--edu-page) !important;
-    color: var(--edu-text);
-}
-
-/* ---------- Same typography ---------- */
-
-#studentDashboard,
-#studentDashboard *,
-#teacherDashboard,
-#teacherDashboard *,
-#adminDashboard,
-#adminDashboard * {
-    font-family: 'Poppins', sans-serif !important;
-}
-
-#studentDashboard h1,
-#studentDashboard h2,
-#studentDashboard h3,
-#studentDashboard h4,
-#teacherDashboard h1,
-#teacherDashboard h2,
-#teacherDashboard h3,
-#teacherDashboard h4,
-#adminDashboard h1,
-#adminDashboard h2,
-#adminDashboard h3,
-#adminDashboard h4 {
-    color: #1e3a8a !important;
-    font-weight: 700 !important;
-}
-
-/* ---------- Remove decorative dashboard layers ---------- */
-
-#studentDashboard::before,
-#studentDashboard::after,
-#teacherDashboard::before,
-#teacherDashboard::after,
-#adminDashboard::before,
-#adminDashboard::after {
-    display: none !important;
-    content: none !important;
-    background: none !important;
-}
-
-/* ---------- Same sidebar ---------- */
-
-html body #studentDashboard .sidebar,
-html body #teacherDashboard .sidebar,
-html body #teacherDashboard .teacher-sidebar,
-html body #adminDashboard .admin-sidebar {
-    background: #1e3a8a !important;
-    background-image: none !important;
-    color: #ffffff !important;
-    border-color: rgba(255,255,255,.10) !important;
-}
-
-html body #studentDashboard .sidebar a,
-html body #teacherDashboard .sidebar a,
-html body #teacherDashboard .teacher-sidebar a,
-html body #adminDashboard .admin-sidebar a,
-html body #studentDashboard .sidebar button,
-html body #teacherDashboard .sidebar button,
-html body #teacherDashboard .teacher-sidebar button,
-html body #adminDashboard .admin-sidebar button {
-    font-family: 'Poppins', sans-serif !important;
-}
-
-html body #studentDashboard .sidebar li,
-html body #teacherDashboard .sidebar li,
-html body #teacherDashboard .teacher-sidebar li,
-html body #adminDashboard .admin-sidebar li {
-    border-radius: 10px !important;
-}
-
-html body #studentDashboard .sidebar li.active,
-html body #teacherDashboard .sidebar li.active,
-html body #teacherDashboard .teacher-sidebar li.active,
-html body #adminDashboard .admin-sidebar li.active {
-    background: rgba(255,255,255,.14) !important;
-}
-
-/* ---------- Same main content surface ---------- */
-
-html body #studentDashboard .main-content,
-html body #teacherDashboard .main-content,
-html body #teacherDashboard .teacher-main-content,
-html body #adminDashboard .main-content,
-html body #adminDashboard .admin-main-content {
-    background: #f1f5f9 !important;
-    color: #1e293b !important;
-    min-height: 100vh;
-}
-
-/* ---------- Shared cards / modules ---------- */
-
-html body #studentDashboard .card,
-html body #studentDashboard .profile-card,
-html body #studentDashboard .analytics-card,
-html body #studentDashboard .quick-card,
-html body #studentDashboard .notice-board,
-html body #studentDashboard .notification-box,
-html body #studentDashboard .student-id-card,
-
-html body #teacherDashboard .card,
-html body #teacherDashboard .teacher-section-card,
-html body #teacherDashboard .teacher-analytics-card,
-html body #teacherDashboard .teacher-today-card,
-html body #teacherDashboard .teacher-settings-card,
-html body #teacherDashboard .teacher-profile-card,
-
-html body #adminDashboard .card,
-html body #adminDashboard .admin-section-card,
-html body #adminDashboard .admin-analytics-card,
-html body #adminDashboard .academic-setup-card,
-html body #adminDashboard .fee-records-card,
-html body #adminDashboard .results-list-card,
-html body #adminDashboard .results-filter-card,
-html body #adminDashboard .admin-students-table-container,
-html body #adminDashboard .admin-teachers-table-wrapper,
-html body #adminDashboard .assignment-card {
-    background: #ffffff !important;
-    border: 1px solid #e2e8f0 !important;
-    border-radius: 16px !important;
-    box-shadow: 0 8px 24px rgba(15,23,42,.07) !important;
-}
-
-/* Do not force every nested element to become a white card. */
-html body #studentDashboard .card *,
-html body #teacherDashboard .card *,
-html body #adminDashboard .card * {
-    box-shadow: none;
-}
-
-/* ---------- Shared form / data-entry controls ---------- */
-
-html body #studentDashboard input:not([type="checkbox"]):not([type="radio"]),
-html body #studentDashboard select,
-html body #studentDashboard textarea,
-html body #teacherDashboard input:not([type="checkbox"]):not([type="radio"]),
-html body #teacherDashboard select,
-html body #teacherDashboard textarea,
-html body #adminDashboard input:not([type="checkbox"]):not([type="radio"]),
-html body #adminDashboard select,
-html body #adminDashboard textarea {
-    font-family: 'Poppins', sans-serif !important;
-    color: #1e293b !important;
-    background: #ffffff !important;
-    border: 1px solid #cbd5e1 !important;
-    border-radius: 10px !important;
-    box-shadow: none !important;
-}
-
-html body #studentDashboard input:not([type="checkbox"]):not([type="radio"]):focus,
-html body #studentDashboard select:focus,
-html body #studentDashboard textarea:focus,
-html body #teacherDashboard input:not([type="checkbox"]):not([type="radio"]):focus,
-html body #teacherDashboard select:focus,
-html body #teacherDashboard textarea:focus,
-html body #adminDashboard input:not([type="checkbox"]):not([type="radio"]):focus,
-html body #adminDashboard select:focus,
-html body #adminDashboard textarea:focus {
-    border-color: #2563eb !important;
-    box-shadow: 0 0 0 3px rgba(37,99,235,.10) !important;
-    outline: none !important;
-}
-
-/* ---------- Shared tables ---------- */
-
-html body #studentDashboard table,
-html body #teacherDashboard table,
-html body #adminDashboard table {
-    border-collapse: separate !important;
-    border-spacing: 0 !important;
-    font-family: 'Poppins', sans-serif !important;
-}
-
-html body #studentDashboard th,
-html body #teacherDashboard th,
-html body #adminDashboard th {
-    background: #f8fafc !important;
-    color: #334155 !important;
-    font-weight: 700 !important;
-    border-bottom: 1px solid #e2e8f0 !important;
-}
-
-html body #studentDashboard td,
-html body #teacherDashboard td,
-html body #adminDashboard td {
-    color: #475569 !important;
-    border-bottom: 1px solid #eef2f7 !important;
-}
-
-/* ---------- Shared buttons ---------- */
-
-html body #studentDashboard button,
-html body #teacherDashboard button,
-html body #adminDashboard button {
-    font-family: 'Poppins', sans-serif !important;
-}
-
-html body #studentDashboard .btn-primary,
-html body #teacherDashboard .btn-primary,
-html body #adminDashboard .btn-primary {
-    background: #2563eb !important;
-    border-color: #2563eb !important;
-    color: #ffffff !important;
-}
-
-/* ---------- Thin ChatGPT-style scrollbars ---------- */
-
-html body #studentDashboard *,
-html body #teacherDashboard *,
-html body #adminDashboard * {
-    scrollbar-width: thin !important;
-    scrollbar-color: #94a3b8 transparent !important;
-}
-
-html body #studentDashboard *::-webkit-scrollbar,
-html body #teacherDashboard *::-webkit-scrollbar,
-html body #adminDashboard *::-webkit-scrollbar {
-    width: 6px !important;
-    height: 6px !important;
-}
-
-html body #studentDashboard *::-webkit-scrollbar-track,
-html body #teacherDashboard *::-webkit-scrollbar-track,
-html body #adminDashboard *::-webkit-scrollbar-track {
-    background: transparent !important;
-}
-
-html body #studentDashboard *::-webkit-scrollbar-thumb,
-html body #teacherDashboard *::-webkit-scrollbar-thumb,
-html body #adminDashboard *::-webkit-scrollbar-thumb {
-    background: #94a3b8 !important;
-    border: 0 !important;
-    border-radius: 999px !important;
-}
-
-html body #studentDashboard *::-webkit-scrollbar-thumb:hover,
-html body #teacherDashboard *::-webkit-scrollbar-thumb:hover,
-html body #adminDashboard *::-webkit-scrollbar-thumb:hover {
-    background: #64748b !important;
-}
-
-html body #studentDashboard *::-webkit-scrollbar-button,
-html body #teacherDashboard *::-webkit-scrollbar-button,
-html body #adminDashboard *::-webkit-scrollbar-button {
-    display: none !important;
-}
-
-/* Force the known dashboard sidebar scroll containers to remain thin. */
-html body #studentDashboard .sidebar,
-html body #teacherDashboard .sidebar,
-html body #teacherDashboard .teacher-sidebar,
-html body #adminDashboard .admin-sidebar,
-html body #adminDashboard .admin-sidebar > ul {
-    scrollbar-width: thin !important;
-    scrollbar-color: rgba(255,255,255,.35) transparent !important;
-}
-
-html body #studentDashboard .sidebar::-webkit-scrollbar,
-html body #teacherDashboard .sidebar::-webkit-scrollbar,
-html body #teacherDashboard .teacher-sidebar::-webkit-scrollbar,
-html body #adminDashboard .admin-sidebar::-webkit-scrollbar,
-html body #adminDashboard .admin-sidebar > ul::-webkit-scrollbar {
-    width: 6px !important;
-    height: 6px !important;
-}
-
-html body #studentDashboard .sidebar::-webkit-scrollbar-thumb,
-html body #teacherDashboard .sidebar::-webkit-scrollbar-thumb,
-html body #teacherDashboard .teacher-sidebar::-webkit-scrollbar-thumb,
-html body #adminDashboard .admin-sidebar::-webkit-scrollbar-thumb,
-html body #adminDashboard .admin-sidebar > ul::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,.35) !important;
-    border-radius: 999px !important;
-    border: 0 !important;
-}
-
-/* ---------- Responsive consistency ---------- */
-
-@media (max-width: 900px) {
-    html body #studentDashboard .main-content,
-    html body #teacherDashboard .main-content,
-    html body #teacherDashboard .teacher-main-content,
-    html body #adminDashboard .main-content,
-    html body #adminDashboard .admin-main-content {
-        width: 100% !important;
-        max-width: 100% !important;
-    }
 }
