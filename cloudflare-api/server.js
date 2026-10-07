@@ -78,6 +78,84 @@ app.get("/api/admins", async (req, res) => {
     }
 });
 
+// ===============================
+// LOGIN API
+// ADMIN + TEACHER + STUDENT
+// ===============================
+
+app.post("/api/login", async (req, res) => {
+    try {
+        const { role, username, password } = req.body;
+
+        if (!role || !username || !password) {
+            return res.status(400).json({
+                success: false,
+                message: "Role, username and password are required"
+            });
+        }
+
+        const tableMap = {
+            administrator: "admins",
+            teacher: "teachers",
+            student: "students"
+        };
+
+        const table = tableMap[role];
+
+        if (!table) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid login role"
+            });
+        }
+
+        const result = await pool.query(
+            `
+            SELECT *
+            FROM ${table}
+            WHERE LOWER(TRIM(username)) = LOWER(TRIM($1))
+            LIMIT 1
+            `,
+            [username]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(401).json({
+                success: false,
+                message: "Account not found"
+            });
+        }
+
+        const account = result.rows[0];
+
+        if (String(account.password) !== String(password)) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid password"
+            });
+        }
+
+        // Password frontend ko return nahi karna
+        const safeAccount = { ...account };
+        delete safeAccount.password;
+
+        res.json({
+            success: true,
+            message: "Login successful",
+            role: role,
+            data: safeAccount
+        });
+
+    } catch (error) {
+        console.error("Login error:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Login failed"
+        });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`EduPortal API running on http://localhost:${PORT}`);
 });
