@@ -128,6 +128,18 @@ app.post("/api/login", async (req, res) => {
 
         const account = result.rows[0];
 
+        // Check whether the account is active
+if (
+    ["inactive", "disabled"].includes(
+        String(account.status || "Active").trim().toLowerCase()
+    )
+) {
+    return res.status(403).json({
+        success: false,
+        message: "This account is inactive"
+    });
+}
+
         if (String(account.password) !== String(password)) {
             return res.status(401).json({
                 success: false,
