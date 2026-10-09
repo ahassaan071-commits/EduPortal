@@ -640,213 +640,51 @@ loginBtn.addEventListener("click", async function () {
         return;
     }
 
+   
     let account = null;
 
     // ==========================================
-    // ADMINISTRATOR
+    // LOGIN THROUGH LOCAL POSTGRESQL API
     // ==========================================
-if (selectedRole === "administrator") {
 
-    // Always check Administrator account from Supabase first
     try {
+        const response = await fetch(
+            "http://localhost:3000/api/login",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    role: selectedRole,
+                    username: enteredUsername,
+                    password: enteredPassword
+                })
+            }
+        );
 
-        const usernameToFind =
-            String(enteredUsername || "")
-                .trim();
+        const result = await response.json();
 
-        const result =
-            await supabaseClient
-                .from("admins")
-                .select("*")
-                .ilike(
-                    "username",
-                    usernameToFind
-                )
-                .limit(1);
-
-        if (result.error) {
-
-            console.error(
-                "Administrator database error:",
-                result.error
-            );
-
+        if (!response.ok || !result.success) {
             messageElement.style.color = "red";
-
             messageElement.textContent =
-                "Administrator login error: " +
-                result.error.message;
-
+                result.message || "Invalid username or password.";
             return;
         }
 
-        if (
-            result.data &&
-            result.data.length > 0
-        ) {
-
-            account =
-                result.data[0];
-
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Administrator database error:",
-            error
-        );
-
-        messageElement.style.color = "red";
-
-        messageElement.textContent =
-            "Unable to connect to Administrator account.";
-
-        return;
-    }
-
-
-    if (!account) {
-
-        messageElement.style.color = "red";
-
-        messageElement.textContent =
-            "Administrator account not found.";
-
-        return;
-    }
-
-}
-// ==========================================
-// TEACHER
-// ==========================================
-
-else if (selectedRole === "teacher") {
-
-    // ==========================================
-    // FIRST: CHECK SUPABASE
-    // ==========================================
-
-    try {
-
-        const result =
-            await supabaseClient
-                .from("teachers")
-                .select("*")
-                .ilike(
-                    "username",
-                    enteredUsername
-                )
-                .limit(1);
-
-        if (
-            !result.error &&
-            result.data &&
-            result.data.length > 0
-        ) {
-
-            account =
-                result.data[0];
-
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Teacher Supabase login error:",
-            error
-        );
-
-    }
-
-
-// ==========================================
-// TEACHER LOGIN
-// SUPABASE ONLY
-// ==========================================
-
-// Teacher account must exist in Supabase.
-// No LocalStorage fallback is used.
-    if (!account) {
-
-        messageElement.style.color =
-            "red";
-
-        messageElement.textContent =
-            "Teacher account not found.";
-
-        return;
-    }
-}
-
-    // ==========================================
-    // STUDENT
-    // ==========================================
-
-    else {
-
-        try {
-
-            const result =
-                await supabaseClient
-                    .from("students")
-                    .select("*")
-                    .ilike(
-                        "username",
-                        enteredUsername
-                    )
-                    .limit(1);
-
-            if (
-                !result.error &&
-                result.data &&
-                result.data.length > 0
-            ) {
-                account = result.data[0];
-            }
-
-        } catch (error) {
-
-            console.error(
-                "Student database error:",
-                error
-            );
-        }
-// ==========================================
-// STUDENT LOGIN
-// SUPABASE ONLY
-// ==========================================
-
-// Student account must exist in Supabase.
-// No LocalStorage fallback is used.
+        account = result.data;
 
         if (!account) {
-
             messageElement.style.color = "red";
-            messageElement.textContent =
-                "Student account not found.";
+            messageElement.textContent = "Account data not found.";
             return;
         }
-    }
 
-    // ==========================================
-    // PASSWORD CHECK
-    // ==========================================
-
-    const savedPassword =
-        String(account.password || "");
-
-
-
-    if (
-        enteredPassword !==
-        savedPassword
-    ) {
-
+    } catch (error) {
+        console.error("EduPortal API login error:", error);
         messageElement.style.color = "red";
         messageElement.textContent =
-            "Invalid Username or Password ❌";
-
+            "Unable to connect to the local API. Please ensure the API server is running.";
         return;
     }
 
