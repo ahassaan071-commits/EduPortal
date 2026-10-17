@@ -7437,57 +7437,29 @@ async function renderUserManagementStudents() {
     // LOAD STUDENTS FROM SUPABASE
     // ==========================================
 
-    let students = [];
+   let students = [];
 
-    try {
+try {
+    const response = await fetch(
+        "http://localhost:3000/api/students"
+    );
 
-    const {
-    data,
-    error
-} =
-    await supabaseClient
-        .from("students")
-        .select(`
-            id,
-            student_id,
-            name,
-            father_name,
-            student_class,
-            section,
-            roll_number,
-            email,
-            mobile,
-            status,
-            username,
-            password,
-            created_at
-        `)
-        .order(
-            "created_at",
-            {
-                ascending: false
-            }
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+        throw new Error(
+            result.message || "Failed to load students"
         );
-
-        if (error) {
-            console.error(
-                "USER MANAGEMENT STUDENT ERROR:",
-                error
-            );
-        } else {
-            students = data || [];
-        }
-
-    } catch (error) {
-
-        console.error(
-            "STUDENT LOAD ERROR:",
-            error
-        );
-
     }
 
+    students = result.data || [];
 
+} catch (error) {
+    console.error(
+        "USER MANAGEMENT STUDENT ERROR:",
+        error
+    );
+}
     // ==========================================
     // LOAD TEACHERS FROM SUPABASE
     // ==========================================
