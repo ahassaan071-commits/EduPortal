@@ -58,6 +58,28 @@ app.get("/api/students", async (req, res) => {
     }
 });
 
+
+app.get("/api/teachers", async (req, res) => {
+    try {
+        const result = await pool.query(
+            "SELECT * FROM teachers ORDER BY id DESC"
+        );
+
+        res.json({
+            success: true,
+            data: result.rows,
+        });
+    } catch (error) {
+        console.error("Teachers error:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Unable to load teachers",
+        });
+    }
+});
+
+
 app.get("/api/admins", async (req, res) => {
     try {
         const result = await pool.query(
