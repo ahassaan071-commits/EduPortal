@@ -1586,31 +1586,10 @@ if (isLoggedIn === "true") {
 
         try {
 
-            const {
-                data,
-                error
-            } = await supabaseClient
-                .from("admins")
-                .select("*")
-                .eq("id", admin.id)
-                .limit(1);
-
-if (
-    error ||
-    !data ||
-    data.length === 0
-) {
-
-    console.warn(
-        "Admin Supabase verification failed. Keeping existing login session."
-    );
-
-    // Keep existing localStorage session
-    // Do NOT logout the administrator
+// Admin session is restored from localStorage.
+if (!admin || !admin.id) {
+    throw new Error("Admin session data is missing.");
 }
-
-
-            admin = data[0];
 
 
             localStorage.setItem(
